@@ -14,3 +14,34 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.container{
+  width: 100%;
+  max-width: 1024px;
+  margin: 0 auto;
+}
+
+.wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.navbar{
+  order: 1;
+  min-height: 50px;
+  border-bottom: 1px solid #ccc;
+  text-align: center;
+}
+
+.main {
+  order: 2;
+  min-height: 100vh;
+  padding: 4rem 0;
+}
+
+.footer {
+  order: 3;
+  min-height: 50px;
+  border-top: 1px solid #ccc;
+  text-align: center;
+}
