@@ -1,14 +1,21 @@
+import type { NextPage } from 'next'
+
 import Navbar from './navbar'
 import Footer from './footer'
 
-export default function Layout({ children }) {
+
+const Layout: NextPage = ({ children }) => {
+
   return (
     <div className='wrap'>
-      <Navbar/>
+      <Navbar />
 
       {children}
 
       <Footer />
     </div>
   )
+
 }
+
+export default Layout

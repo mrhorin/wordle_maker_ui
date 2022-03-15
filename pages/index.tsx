@@ -4,6 +4,7 @@ import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 
 const Home: NextPage = () => {
+
   return (
     <main className='main'>
       <div className='container'>
@@ -16,6 +17,7 @@ const Home: NextPage = () => {
         <h1 className='title'>
           Index.tsx
         </h1>
+
       </div>
     </main>
   )
