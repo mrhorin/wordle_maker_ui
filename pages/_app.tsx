@@ -3,7 +3,7 @@ import { useState, useLayoutEffect, createContext } from 'react'
 import Ajv from 'ajv'
 
 import Layout from '../components/layout'
-import '../styles/globals.css'
+import '../styles/globals.scss'
 
 /*-----------------------------------------
   contexts
