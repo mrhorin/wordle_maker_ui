@@ -1,15 +1,13 @@
 import type { AppProps } from 'next/app'
-import { useState, useLayoutEffect, createContext } from 'react'
 import type { UserInfo, Token, Query } from '../types/global'
+import { useState, useLayoutEffect } from 'react'
 import Ajv from 'ajv'
+
+import CurrentUserInfoContext from '../contexts/current_user_info'
+import ShowAccountMenuContext from '../contexts/show_account_menu'
 
 import Layout from '../components/layout'
 import '../styles/globals.scss'
-
-/*-----------------------------------------
-  contexts
------------------------------------------*/
-export const CurrentUserInfoContext = createContext<UserInfo | undefined>(undefined)
 
 /*-----------------------------------------
   Ajv schemas
@@ -61,8 +59,9 @@ const validate = {
   components
 -----------------------------------------*/
 export default function MyApp({ Component, pageProps }: AppProps) {
-  const [currenttoken, setCurrentToken] = useState<Token>()
-  const [currentUserInfo, setCurrentUserInfo] = useState<UserInfo>()
+  const [currenttoken, setCurrentToken] = useState<Token | undefined>()
+  const [currentUserInfo, setCurrentUserInfo] = useState<UserInfo | undefined>()
+  const [showAccountMenu, setShowAccountMenu] = useState<boolean>(false)
 
   useLayoutEffect(() => {
     const query: Query = getQuery()
@@ -106,10 +105,12 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   }, [])
 
   return (
-    <CurrentUserInfoContext.Provider value={currentUserInfo}>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
+    <CurrentUserInfoContext.Provider value={{ currentUserInfo, setCurrentUserInfo }}>
+      <ShowAccountMenuContext.Provider value={{ showAccountMenu, setShowAccountMenu }}>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </ShowAccountMenuContext.Provider>
     </CurrentUserInfoContext.Provider>
   )
 }
@@ -159,7 +160,7 @@ function loadToken(): Token | null{
 function getQuery(): Query{
   const url_search: string[] = location.search.slice(1).split('&')
 	let key: string[] = []
-  let query: { [key: string]: string } = {}
+  let query: Query = {}
   for (let i = 0; i < url_search.length; i++){
 		key = url_search[i].split("=")
 		query[key[0]] = key[1]
