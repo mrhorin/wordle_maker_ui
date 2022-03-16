@@ -1,5 +1,6 @@
 import type { AppProps } from 'next/app'
 import { useState, useLayoutEffect, createContext } from 'react'
+import type { UserInfo, Token, Query } from '../types/global'
 import Ajv from 'ajv'
 
 import Layout from '../components/layout'
@@ -165,26 +166,3 @@ function getQuery(): Query{
   }
   return query
 }
-
-/*-----------------------------------------
-  types
------------------------------------------*/
-type Token = {
-  accessToken: string,
-  client: string,
-  uid: string,
-  expiry: string,
-}
-
-type UserInfo = {
-  provider: string,
-  name: string,
-  nickname: string,
-  uid: string,
-  image: string,
-}
-
-type Query = {
-  [key: string]: string
-}
-
