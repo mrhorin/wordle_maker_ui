@@ -1,63 +1,15 @@
 import type { AppProps } from 'next/app'
 import type { UserInfo, Token, Query } from '../types/global'
 import { useState, useLayoutEffect } from 'react'
-import Ajv from 'ajv'
 
 import CurrentUserInfoContext from '../contexts/current_user_info'
 import ShowAccountMenuContext from '../contexts/show_account_menu'
 
+import validate from '../validate'
+
 import Layout from '../components/layout'
 import '../styles/globals.scss'
 
-/*-----------------------------------------
-  Ajv schemas
------------------------------------------*/
-const ajv = new Ajv()
-const schema = {
-  token: {
-    type: 'object',
-    properties: {
-      accessToken: { type: 'string' },
-      client: { type: 'string' },
-      uid: { type: 'string' },
-      expiry: { type: 'string' },
-    },
-    required: ['accessToken', 'client', 'uid', 'expiry'],
-    additionalProperties: false,
-  },
-  queryToken: {
-    type: 'object',
-    properties: {
-      auth_token: { type: 'string' },
-      client_id: { type: 'string' },
-      uid: { type: 'string' },
-      expiry: { type: 'string' },
-    },
-    required: ['auth_token', 'client_id', 'uid', 'expiry'],
-    additionalProperties: true,
-  },
-  userInfo: {
-    type: 'object',
-    properties: {
-      provider: { type: 'string' },
-      name: { type: 'string' },
-      nickname: { type: 'string' },
-      uid: { type: 'string' },
-      image: { type: 'string' },
-    },
-    required: ['provider', 'name', 'nickname', 'uid', 'image'],
-    additionalProperties: false,
-  },
-}
-const validate = {
-  token: ajv.compile(schema.token),
-  queryToken: ajv.compile(schema.queryToken),
-  userInfo: ajv.compile(schema.userInfo)
-}
-
-/*-----------------------------------------
-  components
------------------------------------------*/
 export default function MyApp({ Component, pageProps }: AppProps) {
   const [currenttoken, setCurrentToken] = useState<Token | undefined>()
   const [currentUserInfo, setCurrentUserInfo] = useState<UserInfo | undefined>()
