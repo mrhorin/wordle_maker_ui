@@ -1,6 +1,6 @@
 html,
 body {
-  background: #1c1c1c;
+  background: #0b0b0b;
   color: #fff;
   padding: 0;
   margin: 0;
@@ -28,11 +28,8 @@ a {
   flex-direction: column;
 }
 
-.navbar{
+.header{
   order: 1;
-  min-height: 50px;
-  border-bottom: 1px solid #ccc;
-  text-align: center;
 }
 
 .main {
@@ -43,7 +40,39 @@ a {
 
 .footer {
   order: 3;
+}
+
+/* ---------- Header ---------- */
+.header{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background: #1a1a1a;
+  border-bottom: 1px solid #393939;
+  min-height: 55px;
+  .header-home{
+    order: 1;
+    padding: 10px 0px 10px 25px;
+  }
+  .header-navbar{
+    order: 2;
+    padding: 10px 25px 10px;
+    .header-navbar-account-image{
+      img{border-radius: 100px;}
+    }
+  }
+}
+
+/* ---------- Footer ---------- */
+.footer {
+  order: 3;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background: #1a1a1a;
   min-height: 50px;
-  border-top: 1px solid #ccc;
+  border-top: 1px solid #393939;
   text-align: center;
 }

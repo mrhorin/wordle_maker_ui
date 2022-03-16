@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 
-import Navbar from './navbar'
+import Header from './header'
 import Footer from './footer'
 
 
@@ -8,7 +8,7 @@ const Layout: NextPage = ({ children }) => {
 
   return (
     <div className='wrap'>
-      <Navbar />
+      <Header />
 
       {children}
 

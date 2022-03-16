@@ -10,23 +10,17 @@ const Navbar: NextPage = () => {
   const currentUserInfo = () => {
     const userInfo = useContext(CurrentUserInfoContext)
     if (userInfo) {
-      return <p>Welcome { userInfo.name }</p>
+      return (
+        <div>{ userInfo.name }</div>
+      )
     } else {
-      return <p>Welcome Guest</p>
+      return <Link href="/signup"><a>Sign Up</a></Link>
     }
   }
 
   return (
-    <nav className='navbar'>
-      <div className='container'>
-        { currentUserInfo() }
-        <Link href="/">
-          <a>[HOME]</a>
-        </Link>
-        <Link href="/signup">
-          <a>[SIGNUP]</a>
-        </Link>
-      </div>
+    <nav className='header-navbar'>
+      { currentUserInfo() }
     </nav>
   )
 }
