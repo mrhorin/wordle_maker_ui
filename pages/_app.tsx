@@ -148,7 +148,7 @@ function saveToken(token: Token): void {
 
 function loadToken(): Token | null{
   const token = JSON.parse(localStorage.getItem('token') || '{}')
-  if (validate.userInfo(token)) {
+  if (validate.token(token)) {
     return token as Token
   } else {
     return null
