@@ -2,6 +2,7 @@ import type { AppProps } from 'next/app'
 import type { UserInfo, Token, Query } from '../types/global'
 import { useState, useLayoutEffect } from 'react'
 
+import CurrentTokenContext from '../contexts/current_token'
 import CurrentUserInfoContext from '../contexts/current_user_info'
 import ShowAccountMenuContext from '../contexts/show_account_menu'
 
@@ -11,8 +12,8 @@ import Layout from '../components/layout'
 import '../styles/globals.scss'
 
 export default function MyApp({ Component, pageProps }: AppProps) {
-  const [currenttoken, setCurrentToken] = useState<Token | undefined>()
-  const [currentUserInfo, setCurrentUserInfo] = useState<UserInfo | undefined>()
+  const [currentToken, setCurrentToken] = useState<Token | null>(null)
+  const [currentUserInfo, setCurrentUserInfo] = useState<UserInfo | null>(null)
   const [showAccountMenu, setShowAccountMenu] = useState<boolean>(false)
 
   useLayoutEffect(() => {
@@ -52,18 +53,22 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         // Delete stored token and user info
         localStorage.removeItem('token')
         localStorage.removeItem('userInfo')
+        setCurrentToken(null)
+        setCurrentUserInfo(null)
       }
     }
   }, [])
 
   return (
-    <CurrentUserInfoContext.Provider value={{ currentUserInfo, setCurrentUserInfo }}>
-      <ShowAccountMenuContext.Provider value={{ showAccountMenu, setShowAccountMenu }}>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </ShowAccountMenuContext.Provider>
-    </CurrentUserInfoContext.Provider>
+    <CurrentTokenContext.Provider value={{ currentToken, setCurrentToken }}>
+      <CurrentUserInfoContext.Provider value={{ currentUserInfo, setCurrentUserInfo }}>
+        <ShowAccountMenuContext.Provider value={{ showAccountMenu, setShowAccountMenu }}>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </ShowAccountMenuContext.Provider>
+      </CurrentUserInfoContext.Provider>
+    </CurrentTokenContext.Provider>
   )
 }
 

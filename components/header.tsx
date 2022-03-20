@@ -1,30 +1,20 @@
 import type { NextPage } from 'next'
+import type { Token } from '../types/global'
 import React, { useContext } from 'react'
 
+import CurrentTokenContext from '../contexts/current_token'
 import CurrentUserInfoContext from '../contexts/current_user_info'
 import ShowAccountMenuContext from '../contexts/show_account_menu'
+
+import validate from '../validate'
 
 import Link from 'next/link'
 import Image from 'next/image'
 
 const Header: NextPage = () => {
+  const currentTokenContext = useContext(CurrentTokenContext)
   const currentUserInfoContext = useContext(CurrentUserInfoContext)
   const showAccountMenuContext = useContext(ShowAccountMenuContext)
-
-  function getAccountComponent(): JSX.Element {
-    if (currentUserInfoContext.currentUserInfo) {
-      return (
-        <div className='header-account-image' onClick={toggleAccountMenu}>
-          <Image src={currentUserInfoContext.currentUserInfo.image} width={30} height={30} />
-          <ul className={getAccountMenuStyle()}>
-            <li onClick={()=> {console.log('Sign Out')}}>Sign Out</li>
-          </ul>
-        </div>
-      )
-    } else {
-      return <Link href="/signup"><a>Sign Up</a></Link>
-    }
-  }
 
   function getAccountMenuStyle(): string{
     if (showAccountMenuContext.showAccountMenu) {
@@ -42,6 +32,53 @@ const Header: NextPage = () => {
     }
   }
 
+  async function fetchSignOut(token: Token) {
+    const res = await fetch('http://localhost:3000/api/v1/auth/sign_out', {
+      method: 'DELETE',
+      headers: {
+        'access-token': token.accessToken,
+        'client': token.client,
+        'uid': token.uid
+      }
+    })
+    return await res.json()
+  }
+
+  function handleSignOut(): void {
+    if (validate.token(currentTokenContext.currentToken)) {
+      fetchSignOut(currentTokenContext.currentToken).then(json => {
+        if (json.success) {
+          // Delete stored token and user info
+          localStorage.removeItem('token')
+          localStorage.removeItem('userInfo')
+          currentTokenContext.setCurrentToken(null)
+          currentUserInfoContext.setCurrentUserInfo(null)
+        }
+      })
+    } else {
+      // Delete stored token and user info
+      localStorage.removeItem('token')
+      localStorage.removeItem('userInfo')
+      currentTokenContext.setCurrentToken(null)
+      currentUserInfoContext.setCurrentUserInfo(null)
+    }
+  }
+
+  function accountComponent(): JSX.Element {
+    if (currentUserInfoContext.currentUserInfo) {
+      return (
+        <div className='header-account-image' onClick={toggleAccountMenu}>
+          <Image src={currentUserInfoContext.currentUserInfo.image} width={30} height={30} />
+          <ul className={getAccountMenuStyle()}>
+            <li onClick={handleSignOut}>Sign Out</li>
+          </ul>
+        </div>
+      )
+    } else {
+      return <Link href="/signup"><a>Sign Up</a></Link>
+    }
+  }
+
   return (
     <header className='header'>
       <div className='header-menu'>Menu</div>
@@ -49,7 +86,7 @@ const Header: NextPage = () => {
         <Link href="/">HOME</Link>
       </div>
       <div className='header-account'>
-        { getAccountComponent() }
+        { accountComponent() }
       </div>
     </header>
   )
