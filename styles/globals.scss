@@ -57,17 +57,23 @@ a {
   min-height: 55px;
   .header-menu{
     order: 1;
+    flex-basis: 33%;
     padding: 10px 10px 10px 25px;
+    text-align: left;
     visibility: hidden;
   }
   .header-home{
     order: 2;
+    flex-basis: 34%;
     padding: 10px;
+    text-align: center;
     font-weight: bold;
   }
   .header-account{
     order: 3;
+    flex-basis: 33%;
     padding: 10px 25px 10px 10px;
+    text-align: right;
     position: relative;
     .header-account-image{
       img{border-radius: 100px;}
@@ -91,6 +97,7 @@ a {
         white-space: nowrap;
         line-height: 40px;
         padding: 0 25px;
+        text-align: left;
       }
       li:hover{
         background: lighten($base-color2 , 8%);
