@@ -45,7 +45,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       // When query doesn't have a token
       let prevToken: Token | null = loadToken()
       let prevUserInfo: UserInfo | null = loadUserInfo()
-      if (prevToken && prevUserInfo) {
+      if (validate.token(prevToken) && validate.userInfo(prevUserInfo) && new Date(Number(prevToken.expiry.padEnd(13, '0'))) > new Date()) {
         // Restore user info
         setCurrentToken(prevToken)
         setCurrentUserInfo(prevUserInfo)
