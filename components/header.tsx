@@ -47,13 +47,15 @@ const Header: NextPage = () => {
   function handleSignOut(): void {
     if (validate.token(currentTokenContext.currentToken)) {
       fetchSignOut(currentTokenContext.currentToken).then(json => {
-        if (json.success) {
-          // Delete stored token and user info
-          localStorage.removeItem('token')
-          localStorage.removeItem('userInfo')
-          currentTokenContext.setCurrentToken(null)
-          currentUserInfoContext.setCurrentUserInfo(null)
-        }
+        if (!json.success) console.error('Error', json)
+      }).catch(error => {
+        console.error(error)
+      }).finally(() => {
+        // Delete stored token and user info
+        localStorage.removeItem('token')
+        localStorage.removeItem('userInfo')
+        currentTokenContext.setCurrentToken(null)
+        currentUserInfoContext.setCurrentUserInfo(null)
       })
     } else {
       // Delete stored token and user info
