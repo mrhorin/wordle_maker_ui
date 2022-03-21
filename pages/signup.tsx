@@ -16,11 +16,9 @@ const Signup: NextPage = () => {
         </Head>
 
         <h1 className='title'>Signup.tsx</h1>
-
-        <form method="get" action='http://localhost:3000/api/v1/auth/twitter?callback_url=http%3A%2F%2Flocalhost%3A3000%2Fsignup'>
-          <button>[GET]Twitterでログイン</button>
+        <form method="post" action='http://localhost:3000/api/v1/auth/twitter'>
+          <button>Twitterでログイン</button>
         </form>
-
       </div>
     </main>
   )
