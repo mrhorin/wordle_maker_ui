@@ -1,6 +1,7 @@
 import type { AppProps } from 'next/app'
 import type { UserInfo, Token, Query } from '../types/global'
 import { useState, useLayoutEffect } from 'react'
+import { parseCookies, setCookie, destroyCookie } from 'nookies'
 
 import CurrentTokenContext from '../contexts/current_token'
 import CurrentUserInfoContext from '../contexts/current_user_info'
@@ -51,8 +52,8 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         setCurrentUserInfo(prevUserInfo)
       } else {
         // Delete stored token and user info
-        localStorage.removeItem('token')
-        localStorage.removeItem('userInfo')
+        destroyCookie(null, 'token')
+        destroyCookie(null, 'userInfo')
         setCurrentToken(null)
         setCurrentUserInfo(null)
       }
@@ -89,11 +90,15 @@ async function fetchCurrentUser(token: Token) {
 }
 
 function saveUserInfo(userInfo: UserInfo): void{
-  localStorage.setItem('userInfo', JSON.stringify(userInfo))
+  setCookie(null, 'userInfo', JSON.stringify(userInfo), {
+    maxAge: 30 * 24 * 60 * 60,
+    path: '/',
+  })
 }
 
 function loadUserInfo(): UserInfo | null{
-  const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}')
+  const cookies = parseCookies()
+  const userInfo = JSON.parse(cookies['userInfo'] || '{}')
   if (validate.userInfo(userInfo)) {
     return userInfo as UserInfo
   } else {
@@ -102,11 +107,15 @@ function loadUserInfo(): UserInfo | null{
 }
 
 function saveToken(token: Token): void {
-  localStorage.setItem('token', JSON.stringify(token))
+  setCookie(null, 'token', JSON.stringify(token), {
+    maxAge: 30 * 24 * 60 * 60,
+    path: '/',
+  })
 }
 
 function loadToken(): Token | null{
-  const token = JSON.parse(localStorage.getItem('token') || '{}')
+  const cookies = parseCookies()
+  const token = JSON.parse(cookies['token'] || '{}')
   if (validate.token(token)) {
     return token as Token
   } else {

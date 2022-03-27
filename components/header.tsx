@@ -1,6 +1,7 @@
 import type { NextPage } from 'next'
 import type { Token } from '../types/global'
 import React, { useContext } from 'react'
+import { destroyCookie } from 'nookies'
 
 import CurrentTokenContext from '../contexts/current_token'
 import CurrentUserInfoContext from '../contexts/current_user_info'
@@ -52,15 +53,15 @@ const Header: NextPage = () => {
         console.error(error)
       }).finally(() => {
         // Delete stored token and user info
-        localStorage.removeItem('token')
-        localStorage.removeItem('userInfo')
+        destroyCookie(null, 'token')
+        destroyCookie(null, 'userInfo')
         currentTokenContext.setCurrentToken(null)
         currentUserInfoContext.setCurrentUserInfo(null)
       })
     } else {
       // Delete stored token and user info
-      localStorage.removeItem('token')
-      localStorage.removeItem('userInfo')
+      destroyCookie(null, 'token')
+      destroyCookie(null, 'userInfo')
       currentTokenContext.setCurrentToken(null)
       currentUserInfoContext.setCurrentUserInfo(null)
     }
