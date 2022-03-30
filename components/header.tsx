@@ -1,5 +1,6 @@
 import type { NextPage } from 'next'
 import type { Token } from '../types/global'
+import { useRouter } from 'next/router'
 import React, { useContext } from 'react'
 import { destroyCookie } from 'nookies'
 
@@ -16,6 +17,7 @@ const Header: NextPage = () => {
   const currentTokenContext = useContext(CurrentTokenContext)
   const currentUserInfoContext = useContext(CurrentUserInfoContext)
   const showAccountMenuContext = useContext(ShowAccountMenuContext)
+  const router = useRouter()
 
   function getAccountMenuStyle(): string{
     if (showAccountMenuContext.showAccountMenu) {
@@ -45,6 +47,10 @@ const Header: NextPage = () => {
     return await res.json()
   }
 
+  function handleSettings(): void{
+    router.replace('/settings')
+  }
+
   function handleSignOut(): void {
     if (validate.token(currentTokenContext.currentToken)) {
       fetchSignOut(currentTokenContext.currentToken).then(json => {
@@ -53,26 +59,29 @@ const Header: NextPage = () => {
         console.error(error)
       }).finally(() => {
         // Delete stored token and user info
-        destroyCookie(null, 'token')
-        destroyCookie(null, 'userInfo')
         currentTokenContext.setCurrentToken(null)
+        currentTokenContext.destroyTokenCookies()
         currentUserInfoContext.setCurrentUserInfo(null)
+        currentUserInfoContext.destroyUserInfoCookies()
+        router.replace('/signup')
       })
     } else {
       // Delete stored token and user info
-      destroyCookie(null, 'token')
-      destroyCookie(null, 'userInfo')
       currentTokenContext.setCurrentToken(null)
+      currentTokenContext.destroyTokenCookies()
       currentUserInfoContext.setCurrentUserInfo(null)
+      currentUserInfoContext.destroyUserInfoCookies()
+      router.replace('/signup')
     }
   }
 
   function accountComponent(): JSX.Element {
-    if (currentUserInfoContext.currentUserInfo) {
+    if (validate.userInfo(currentUserInfoContext.currentUserInfo)) {
       return (
         <div className='header-account-image' onClick={toggleAccountMenu}>
           <Image src={currentUserInfoContext.currentUserInfo.image} width={30} height={30} />
           <ul className={getAccountMenuStyle()}>
+            <li onClick={handleSettings}>Settings</li>
             <li onClick={handleSignOut}>Sign Out</li>
           </ul>
         </div>

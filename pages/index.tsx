@@ -1,12 +1,10 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 
-import styles from '../styles/Home.module.scss'
-
 const Home: NextPage = () => {
 
   return (
-    <main className='main'>
+    <main id='main'>
       <div className='container'>
         <Head>
           <title>WORDLE MAKER APP</title>

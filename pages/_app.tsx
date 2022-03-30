@@ -12,6 +12,8 @@ import validate from '../validate'
 import Layout from '../components/layout'
 import '../styles/globals.scss'
 
+const cookieOptions = { maxAge: 30 * 24 * 60 * 60, path: '/' }
+
 export default function MyApp({ Component, pageProps }: AppProps) {
   const [currentToken, setCurrentToken] = useState<Token | null>(null)
   const [currentUserInfo, setCurrentUserInfo] = useState<UserInfo | null>(null)
@@ -52,8 +54,8 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         setCurrentUserInfo(prevUserInfo)
       } else {
         // Delete stored token and user info
-        destroyCookie(null, 'token')
-        destroyCookie(null, 'userInfo')
+        destroyTokenCookies()
+        destroyUserInfoCookies()
         setCurrentToken(null)
         setCurrentUserInfo(null)
       }
@@ -61,8 +63,8 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   }, [])
 
   return (
-    <CurrentTokenContext.Provider value={{ currentToken, setCurrentToken }}>
-      <CurrentUserInfoContext.Provider value={{ currentUserInfo, setCurrentUserInfo }}>
+    <CurrentTokenContext.Provider value={{ currentToken, setCurrentToken, destroyTokenCookies }}>
+      <CurrentUserInfoContext.Provider value={{ currentUserInfo, setCurrentUserInfo, destroyUserInfoCookies }}>
         <ShowAccountMenuContext.Provider value={{ showAccountMenu, setShowAccountMenu }}>
           <Layout>
             <Component {...pageProps} />
@@ -90,15 +92,31 @@ async function fetchCurrentUser(token: Token) {
 }
 
 function saveUserInfo(userInfo: UserInfo): void{
-  setCookie(null, 'userInfo', JSON.stringify(userInfo), {
-    maxAge: 30 * 24 * 60 * 60,
-    path: '/',
-  })
+  setCookie(null, 'provider', userInfo.provider, cookieOptions)
+  setCookie(null, 'name', userInfo.name, cookieOptions)
+  setCookie(null, 'nickname', userInfo.nickname, cookieOptions)
+  setCookie(null, 'uid', userInfo.uid, cookieOptions)
+  setCookie(null, 'image', userInfo.image, cookieOptions)
+}
+
+function destroyUserInfoCookies(): void{
+  destroyCookie(null, 'provider')
+  destroyCookie(null, 'name')
+  destroyCookie(null, 'nickname')
+  destroyCookie(null, 'image')
+  const cookies = parseCookies()
+  if (!cookies['accessToken']) destroyCookie(null, 'uid')
 }
 
 function loadUserInfo(): UserInfo | null{
   const cookies = parseCookies()
-  const userInfo = JSON.parse(cookies['userInfo'] || '{}')
+  const userInfo = {
+    provider: cookies['provider'],
+    name: cookies['name'],
+    nickname: cookies['nickname'],
+    uid: cookies['uid'],
+    image: cookies['image'],
+  }
   if (validate.userInfo(userInfo)) {
     return userInfo as UserInfo
   } else {
@@ -107,15 +125,28 @@ function loadUserInfo(): UserInfo | null{
 }
 
 function saveToken(token: Token): void {
-  setCookie(null, 'token', JSON.stringify(token), {
-    maxAge: 30 * 24 * 60 * 60,
-    path: '/',
-  })
+  setCookie(null, 'accessToken', token.accessToken, cookieOptions)
+  setCookie(null, 'client', token.client, cookieOptions)
+  setCookie(null, 'uid', token.uid, cookieOptions)
+  setCookie(null, 'expiry', token.expiry, cookieOptions)
+}
+
+function destroyTokenCookies(): void{
+  destroyCookie(null, 'accessToken')
+  destroyCookie(null, 'client')
+  destroyCookie(null, 'expiry')
+  const cookies = parseCookies()
+  if (!cookies['nickname']) destroyCookie(null, 'uid')
 }
 
 function loadToken(): Token | null{
   const cookies = parseCookies()
-  const token = JSON.parse(cookies['token'] || '{}')
+  const token = {
+    accessToken: cookies['accessToken'],
+    client: cookies['client'],
+    uid: cookies['uid'],
+    expiry: cookies['expiry'],
+  }
   if (validate.token(token)) {
     return token as Token
   } else {
