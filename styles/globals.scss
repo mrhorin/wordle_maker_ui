@@ -16,6 +16,15 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
+::-webkit-scrollbar{
+  background: $base-color2 !important;
+  border-left: 1px solid $base-color3 !important;
+}
+::-webkit-scrollbar-thumb{
+  background: lighten($base-color2, 5%) !important;
+  border-radius: 100px;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -215,18 +224,9 @@ label{
   #main{
     .modal-window{
       width: 95%;
+      margin-top: 60px;
       .modal-window-body{
         overflow-y: scroll;
-      }
-      .modal-window-body::-webkit-scrollbar{
-        background: darken($base-color2, 5%) !important;
-        border-left: 1px solid $base-color3 !important;
-      }
-      .modal-window-body::-webkit-scrollbar-thumb{
-        background: lighten($base-color2, 10%) !important;
-        border-left: 1px solid $base-color3 !important;
-        width: 80%;
-        border-radius: 20px;
       }
     }
   }
