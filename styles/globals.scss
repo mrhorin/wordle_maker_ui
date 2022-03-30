@@ -27,7 +27,11 @@ a {
 
 input[type="checkbox"]{
   transform: scale(1.4);
-  margin-right: 10px;
+  margin-right: 0.75rem;
+}
+
+label{
+  font-weight: bold;
 }
 
 .container{
@@ -66,7 +70,7 @@ input[type="checkbox"]{
   font-size: 1rem;
   line-height: 1.7rem;
   padding: 0 1rem;
-  margin: 0 0.5rem;
+  margin: 0.25rem;
   border: $base-color3;
   border-radius: 20px;
   cursor: pointer;
@@ -163,24 +167,30 @@ input[type="checkbox"]{
   .modal-window{
     position: fixed;
     width: 70%;
-    height: 50%;
+    max-width: $sp-break-point;
+    height: auto;
     inset: 0;
     margin: auto;
-    background: $base-color2;
-    border: 1px solid $base-color3;
-    border-radius: 5px;
+    margin-top: 25px;
+    margin-bottom: 25px;
     z-index: 4;
     display: flex;
     flex-direction: column;
     .modal-window-header{
       order: 1;
       padding: 1rem;
-      border-bottom: 1px solid $base-color3;
+      margin-top: auto;
+      background: $base-color2;
+      border: 1px solid $base-color3;
+      border-radius: 5px 5px 0px 0px;
       font-size: 1.3rem;
     }
     .modal-window-body{
       order: 2;
       padding: 1rem;
+      background: $base-color2;
+      border-left: 1px solid $base-color3;
+      border-right: 1px solid $base-color3;
       li{
         line-height: 2rem;
       }
@@ -188,9 +198,11 @@ input[type="checkbox"]{
     .modal-window-footer{
       order: 3;
       padding: 1rem;
-      margin-top: auto;
+      margin-bottom: auto;
       text-align: right;
-      border-top: 1px solid $base-color3;
+      background: $base-color2;
+      border: 1px solid $base-color3;
+      border-radius: 0px 0px 5px 5px;
     }
   }
   .modal-overlay.hidden,
@@ -203,7 +215,19 @@ input[type="checkbox"]{
   #main{
     .modal-window{
       width: 95%;
-      height: 500px;
+      .modal-window-body{
+        overflow-y: scroll;
+      }
+      .modal-window-body::-webkit-scrollbar{
+        background: darken($base-color2, 5%) !important;
+        border-left: 1px solid $base-color3 !important;
+      }
+      .modal-window-body::-webkit-scrollbar-thumb{
+        background: lighten($base-color2, 10%) !important;
+        border-left: 1px solid $base-color3 !important;
+        width: 80%;
+        border-radius: 20px;
+      }
     }
   }
 }
