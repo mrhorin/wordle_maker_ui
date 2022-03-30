@@ -15,7 +15,6 @@ const Home: NextPage = () => {
         <h1 className='title'>
           Index.tsx
         </h1>
-
       </div>
     </main>
   )

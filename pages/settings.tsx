@@ -4,7 +4,6 @@ import { useRouter } from 'next/router'
 import { useState, useMemo, useContext } from 'react'
 import nookies from 'nookies'
 import Head from 'next/head'
-import { destroyCookie } from 'nookies'
 
 import validate from '../validate'
 
@@ -18,13 +17,13 @@ type Props = {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const cookies = nookies.get(context)
-  const token = {
+  const token: Token = {
     accessToken: cookies['accessToken'],
     client: cookies['client'],
     uid: cookies['uid'],
     expiry: cookies['expiry'],
   }
-  const userInfo = {
+  const userInfo: UserInfo = {
     provider: cookies['provider'],
     name: cookies['name'],
     nickname: cookies['nickname'],

@@ -2,7 +2,6 @@ import type { NextPage } from 'next'
 import type { Token } from '../types/global'
 import { useRouter } from 'next/router'
 import React, { useContext } from 'react'
-import { destroyCookie } from 'nookies'
 
 import CurrentTokenContext from '../contexts/current_token'
 import CurrentUserInfoContext from '../contexts/current_user_info'
