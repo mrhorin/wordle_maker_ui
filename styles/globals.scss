@@ -131,6 +131,7 @@ label{
     position: relative;
     .header-account-image{
       img{border-radius: 100px;}
+      display: inline-block;
     }
     .header-account-image:hover{
       cursor: pointer;
@@ -138,7 +139,7 @@ label{
     ul.header-account-menu-hide{
       position: absolute;
       right: 15px;
-      top: 40px;
+      top: 50px;
       display: none;
       flex-direction: column;
       margin: 0;
