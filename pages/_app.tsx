@@ -2,6 +2,9 @@ import type { AppProps } from 'next/app'
 import type { UserInfo, Token, Query } from '../types/global'
 import { useState, useLayoutEffect } from 'react'
 import { parseCookies, setCookie, destroyCookie } from 'nookies'
+import { config } from '@fortawesome/fontawesome-svg-core'
+import '@fortawesome/fontawesome-svg-core/styles.css'
+config.autoAddCss = false
 
 import CurrentTokenContext from '../contexts/current_token'
 import CurrentUserInfoContext from '../contexts/current_user_info'

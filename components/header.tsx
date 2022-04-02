@@ -2,6 +2,8 @@ import type { NextPage } from 'next'
 import type { Token } from '../types/global'
 import { useRouter } from 'next/router'
 import React, { useContext } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCaretDown ,faGamepad, faGear, faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 
 import CurrentTokenContext from '../contexts/current_token'
 import CurrentUserInfoContext from '../contexts/current_user_info'
@@ -46,6 +48,10 @@ const Header: NextPage = () => {
     return await res.json()
   }
 
+  function handleMyGames(): void{
+    router.replace('/mygames/create')
+  }
+
   function handleSettings(): void{
     router.replace('/settings')
   }
@@ -74,14 +80,16 @@ const Header: NextPage = () => {
     }
   }
 
-  function accountComponent(): JSX.Element {
+  function headerAccountComponent(): JSX.Element {
     if (validate.userInfo(currentUserInfoContext.currentUserInfo)) {
       return (
         <div className='header-account-image' onClick={toggleAccountMenu}>
           <Image src={currentUserInfoContext.currentUserInfo.image} width={30} height={30} />
+          <FontAwesomeIcon icon={faCaretDown} />
           <ul className={getAccountMenuStyle()}>
-            <li onClick={handleSettings}>Settings</li>
-            <li onClick={handleSignOut}>Sign Out</li>
+            <li onClick={handleMyGames}><FontAwesomeIcon icon={faGamepad} />My Games</li>
+            <li onClick={handleSettings}><FontAwesomeIcon icon={faGear} />Settings</li>
+            <li onClick={handleSignOut}><FontAwesomeIcon icon={faRightFromBracket} />Sign Out</li>
           </ul>
         </div>
       )
@@ -92,12 +100,14 @@ const Header: NextPage = () => {
 
   return (
     <header className='header'>
-      <div className='header-menu'>Menu</div>
-      <div className='header-home'>
-        <Link href="/">HOME</Link>
-      </div>
-      <div className='header-account'>
-        { accountComponent() }
+      <div className='container'>
+        <div className='header-menu'>Menu</div>
+        <div className='header-home'>
+          <Link href="/">HOME</Link>
+        </div>
+        <div className='header-account'>
+          { headerAccountComponent() }
+        </div>
       </div>
     </header>
   )

@@ -13,7 +13,7 @@ const Home: NextPage = () => {
         </Head>
 
         <h1 className='title'>
-          Index.tsx
+          Home
         </h1>
       </div>
     </main>
