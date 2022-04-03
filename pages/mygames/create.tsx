@@ -1,5 +1,5 @@
 import type { UserInfo, Token, Lang } from '../../types/global'
-import { useState, useLayoutEffect, useEffect, useContext } from 'react'
+import { useState, useContext } from 'react'
 import { GetServerSideProps } from 'next'
 import nookies from 'nookies'
 import Head from 'next/head'
@@ -42,7 +42,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       props: props,
       redirect: {
         statusCode: 302,
-        destination: 'signup',
+        destination: '/signup',
       }
     }
   }
