@@ -4,7 +4,7 @@ import { GetServerSideProps } from 'next'
 import nookies from 'nookies'
 import Head from 'next/head'
 
-import MygamesSidebar from '../../components/mygames_sidebar'
+import Sidemenu from '../../components/sidemenu'
 
 import validate from '../../validate'
 
@@ -99,10 +99,10 @@ const MygamesCreate = (props: Props) => {
       </Head>
 
       <div className='container'>
-        <div id='sidebar-container'>
-          <MygamesSidebar activeMenu={'create' }/>
+        <div id='sidemenu-container'>
+          <Sidemenu activeMenu={'create' }/>
 
-          <div id='sidebar-main'>
+          <div id='sidemenu-main'>
             <h1 className='title'>Create a game</h1>
             <form id='create-game-form'>
               <div className='form-group'>

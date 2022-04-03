@@ -4,7 +4,7 @@ import nookies from 'nookies'
 
 import Head from 'next/head'
 
-import MygamesSidebar from '../../components/mygames_sidebar'
+import Sidemenu from '../../components/sidemenu'
 
 
 import validate from '../../validate'
@@ -58,10 +58,10 @@ const MygamesEdit = (props: Props) => {
       </Head>
 
       <div className='container'>
-        <div id='sidebar-container'>
-          <MygamesSidebar activeMenu={'edit' }/>
+        <div id='sidemenu-container'>
+          <Sidemenu activeMenu={'edit' }/>
 
-          <div id='sidebar-main'>
+          <div id='sidemenu-main'>
             <h1 className='title'>Edit games</h1>
           </div>
         </div>

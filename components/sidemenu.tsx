@@ -8,28 +8,28 @@ type Props = {
   activeMenu?: string
 }
 
-const MyGamesSidebar = (props: Props) => {
+const Sidemenu = (props: Props) => {
   useEffect(() => {
-    let activeMenu = document.querySelector(`.sidebar-menu-${props.activeMenu}`)
-    activeMenu?.classList.add('sidebar-menu-active')
+    let activeMenu = document.querySelector(`.sidemenu-menu-${props.activeMenu}`)
+    activeMenu?.classList.add('sidemenu-menu-active')
   }, [])
 
   return (
-    <div id='sidebar'>
-      <ul id='sidebar-menu'>
-        <li className='sidebar-menu-title'>
+    <div id='sidemenu'>
+      <ul id='sidemenu-menu'>
+        <li className='sidemenu-menu-title'>
           <FontAwesomeIcon icon={faGamepad} />My Games
         </li>
-        <li className='sidebar-menu-create'>
+        <li className='sidemenu-menu-create'>
           <Link href="/mygames/create">
-            <a className='sidebar-menu sidebar-menu-mygames-create'>
+            <a className='sidemenu-menu sidemenu-menu-mygames-create'>
               <FontAwesomeIcon icon={faPlus} />Create
             </a>
           </Link>
         </li>
-        <li className='sidebar-menu-edit'>
+        <li className='sidemenu-menu-edit'>
           <Link href="/mygames/edit">
-            <a className='sidebar-menu sidebar-menu-mygames-edit'>
+            <a className='sidemenu-menu sidemenu-menu-mygames-edit'>
               <FontAwesomeIcon icon={faPenToSquare} />Edit
             </a>
           </Link>
@@ -39,4 +39,4 @@ const MyGamesSidebar = (props: Props) => {
   )
 }
 
-export default MyGamesSidebar
+export default Sidemenu
