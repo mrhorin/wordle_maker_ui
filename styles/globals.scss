@@ -38,6 +38,16 @@ a {
   text-decoration: none;
 }
 
+input[type="text"],
+select{
+  font-size: 1rem;
+  line-height: 1.5rem;
+  background: lighten($base-color1, 8%);
+  color: $font-color;
+  padding: 0.3rem 1rem;
+  border: 1px solid $base-color3;
+  border-radius: 3px;
+}
 input[type="checkbox"]{
   transform: scale(1.4);
   margin-right: 0.75rem;
@@ -45,6 +55,24 @@ input[type="checkbox"]{
 
 label{
   font-weight: bold;
+}
+
+form{
+  .form-group{
+    display: flex;
+    flex-direction: column;
+    margin: 1rem 0;
+    label{
+      order: 1;
+      display: block;
+      font-size: 1rem;
+      margin-bottom: 0.2rem;
+    }
+    input,select{
+      order: 2;
+      display: block;
+    }
+  }
 }
 
 .container{
