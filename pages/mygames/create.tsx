@@ -54,7 +54,7 @@ const MygamesCreate = (props: Props) => {
   const [inputCharCount, setInputCharCount] = useState<string>('5')
   const currentTokenContext = useContext(CurrentTokenContext)
 
-  function handleSubmit(): void{
+  function handleClickSubmit(): void{
     if (validate.token(currentTokenContext.currentToken)) {
       const languageElement: HTMLSelectElement = document.querySelector('#create-game-language') as HTMLSelectElement
       const body = {
@@ -93,7 +93,7 @@ const MygamesCreate = (props: Props) => {
 
           <div id='sidemenu-main'>
             <h1 className='title'>Create a game</h1>
-            <form id='create-game-form'>
+            <form id='create-game-form' onSubmit={e=> e.preventDefault()}>
               <div className='form-group'>
                 <label>Title</label>
                 <input type='text' id='create-game-title' maxLength={20} value={inputTitle} onChange={e => setInputTitle(e.target.value)} />
@@ -119,7 +119,7 @@ const MygamesCreate = (props: Props) => {
                   <option value='10'>10</option>
                 </select>
               </div>
-              <button type='button' id='create-game-submit' className='btn btn-defalt' onClick={handleSubmit}>Submit</button>
+              <button type='button' id='create-game-submit' className='btn btn-defalt' onClick={handleClickSubmit}>Submit</button>
             </form>
           </div>
         </div>
