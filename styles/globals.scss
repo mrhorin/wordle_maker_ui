@@ -1,7 +1,7 @@
 $base-color1: #121924;
 $base-color2: lighten($base-color1, 3%);
 $base-color3: lighten($base-color1, 6%);
-$accent-color: #3dcaa7;
+$accent-color1: #3dcaa7;
 $accent-color2: #dfa157;
 $font-color: #dfe3e5;
 
@@ -298,6 +298,7 @@ form{
       li{
         cursor: default;
         padding: 0.5rem;
+        font-weight: 500;
         white-space: nowrap;
         a{
           display: inline-block;
@@ -308,22 +309,21 @@ form{
           color: darken($font-color, 30%);
         }
         a:hover{
-          color: $accent-color;
+          color: $accent-color1;
           cursor: pointer;
         }
       }
       li.sidemenu-menu-active{
-        a{ color: $font-color; }
+        a{ color: $accent-color2; }
         a:hover{
-          color: $accent-color;
+          color: $accent-color1;
           cursor: pointer;
         }
       }
       li.sidemenu-menu-title,
       li.sidemenu-menu-title:hover{
         font-size: 1rem;
-        font-weight: bold;
-        color: $accent-color2;
+        color: $font-color;
         svg, i{
           width: 30px;
           margin-right: 0.5rem;
