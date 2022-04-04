@@ -1,6 +1,7 @@
 import type { UserInfo, Token } from '../../types/global'
-import { useState, useContext } from 'react'
 import { GetServerSideProps } from 'next'
+import { useRouter } from 'next/router'
+import { useState, useContext } from 'react'
 import nookies from 'nookies'
 import Head from 'next/head'
 
@@ -9,6 +10,7 @@ import Sidemenu from '../../components/sidemenu'
 import validate from '../../validate'
 
 import CurrentTokenContext from '../../contexts/current_token'
+import CurrentUserInfoContext from '../../contexts/current_user_info'
 
 type Props = {
   token: Token,
@@ -53,6 +55,8 @@ const MygamesCreate = (props: Props) => {
   const [inputLanguage, setInputLanguage] = useState<string>('English')
   const [inputCharCount, setInputCharCount] = useState<string>('5')
   const currentTokenContext = useContext(CurrentTokenContext)
+  const currentUserInfoContext = useContext(CurrentUserInfoContext)
+  const router = useRouter()
 
   function handleClickSubmit(): void{
     if (validate.token(currentTokenContext.currentToken)) {
@@ -76,6 +80,13 @@ const MygamesCreate = (props: Props) => {
       }).then(res => res.json())
         .then(json => console.log(json))
         .catch(error => console.log(error))
+    } else {
+      // Delete stored token and user info
+      currentTokenContext.setCurrentToken(null)
+      currentTokenContext.destroyTokenCookies()
+      currentUserInfoContext.setCurrentUserInfo(null)
+      currentUserInfoContext.destroyUserInfoCookies()
+      router.replace('/signup')
     }
   }
 

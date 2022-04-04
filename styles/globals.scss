@@ -52,6 +52,9 @@ input[type="checkbox"]{
   transform: scale(1.4);
   margin-right: 0.75rem;
 }
+.input-invalid{
+  border: 1px solid #ff6600;
+}
 
 label{
   font-weight: bold;
@@ -61,7 +64,7 @@ form{
   .form-group{
     display: flex;
     flex-direction: column;
-    margin: 1rem 0;
+    margin: 1.5rem 0;
     label{
       order: 1;
       display: block;
