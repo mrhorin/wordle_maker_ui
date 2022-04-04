@@ -291,12 +291,11 @@ form{
   flex-direction: row;
   #sidemenu{
     width: 200px;
-    ul#sidemenu-menu{
+    ul.sidemenu-menu{
       padding: 0;
       margin: 0;
       list-style: none;
       li{
-        font-weight: 500;
         cursor: default;
         padding: 0.5rem;
         white-space: nowrap;
@@ -314,9 +313,7 @@ form{
         }
       }
       li.sidemenu-menu-active{
-        a{
-          color: $font-color;
-        }
+        a{ color: $font-color; }
         a:hover{
           color: $accent-color;
           cursor: pointer;
@@ -325,6 +322,7 @@ form{
       li.sidemenu-menu-title,
       li.sidemenu-menu-title:hover{
         font-size: 1rem;
+        font-weight: bold;
         color: $accent-color2;
         svg, i{
           width: 30px;

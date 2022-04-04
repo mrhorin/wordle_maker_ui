@@ -53,7 +53,7 @@ const Header: NextPage = () => {
   }
 
   function handleSettings(): void{
-    router.replace('/settings')
+    router.replace('/settings/account')
   }
 
   function handleSignOut(): void {

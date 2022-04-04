@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGamepad, faPlus, faPenToSquare } from '@fortawesome/free-solid-svg-icons'
+import { faGamepad, faPlus, faPenToSquare, faGear, faUser } from '@fortawesome/free-solid-svg-icons'
 
 import Link from 'next/link'
 
@@ -16,7 +16,8 @@ const Sidemenu = (props: Props) => {
 
   return (
     <div id='sidemenu'>
-      <ul id='sidemenu-menu'>
+      {/* My Games */}
+      <ul className='sidemenu-menu'>
         <li className='sidemenu-menu-title'>
           <FontAwesomeIcon icon={faGamepad} />My Games
         </li>
@@ -31,6 +32,19 @@ const Sidemenu = (props: Props) => {
           <Link href="/mygames/edit">
             <a className='sidemenu-menu sidemenu-menu-mygames-edit'>
               <FontAwesomeIcon icon={faPenToSquare} />Edit
+            </a>
+          </Link>
+        </li>
+      </ul>
+      {/* Settings */}
+      <ul className='sidemenu-menu' style={ {marginTop: '1rem'} }>
+        <li className='sidemenu-menu-title'>
+          <FontAwesomeIcon icon={faGear} />Setteings
+        </li>
+        <li className='sidemenu-menu-account'>
+          <Link href="/settings/account">
+            <a className='sidemenu-menu sidemenu-menu-settings-account'>
+              <FontAwesomeIcon icon={faUser} />Account
             </a>
           </Link>
         </li>
