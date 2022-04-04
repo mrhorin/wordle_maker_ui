@@ -1,4 +1,4 @@
-import type { UserInfo, Token, Lang } from '../../types/global'
+import type { UserInfo, Token } from '../../types/global'
 import { useState, useContext } from 'react'
 import { GetServerSideProps } from 'next'
 import nookies from 'nookies'
@@ -50,28 +50,17 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 const MygamesCreate = (props: Props) => {
   const [inputTitle, setInputTitle] = useState<string>('Pokemon Gen 2')
+  const [inputLanguage, setInputLanguage] = useState<string>('English')
   const [inputCharCount, setInputCharCount] = useState<string>('5')
   const currentTokenContext = useContext(CurrentTokenContext)
-  const langs: Lang[] = [{ code: 'en', name:'English' }, {code: 'ja', name: 'Japanese'}]
 
-  function optionLanguageComponent(): JSX.Element {
-    let options = langs.map((lang, index) => {
-      return <option value={lang["code"]} key={index}>{ lang["name"] }</option>
-    })
-    return (
-      <select id='create-game-language'>{ options }</select>
-    )
-  }
-
-  function handleSubmmit(): void{
+  function handleSubmit(): void{
     if (validate.token(currentTokenContext.currentToken)) {
-      const titleElement: HTMLInputElement = document.querySelector('#create-game-title') as HTMLInputElement
-      const charCountElement: HTMLInputElement = document.querySelector('#create-game-char-count') as HTMLInputElement
       const languageElement: HTMLSelectElement = document.querySelector('#create-game-language') as HTMLSelectElement
       const body = {
         game: {
-          'title': titleElement.value,
-          'char_count': charCountElement.value,
+          'title': inputTitle,
+          'char_count': inputCharCount,
           'language': languageElement.value
         }
       }
@@ -107,17 +96,30 @@ const MygamesCreate = (props: Props) => {
             <form id='create-game-form'>
               <div className='form-group'>
                 <label>Title</label>
-                <input type='text' id='create-game-title' maxLength={20} value={inputTitle} onChange={(e) => setInputTitle(e.target.value)} />
+                <input type='text' id='create-game-title' maxLength={20} value={inputTitle} onChange={e => setInputTitle(e.target.value)} />
               </div>
               <div className='form-group'>
                 <label>Language</label>
-                { optionLanguageComponent() }
+                <select id='create-game-language' value={inputLanguage} onChange={e => setInputLanguage(e.target.value)}>
+                  <option value='en'>English</option>
+                  <option value='ja'>Japanese</option>
+                </select>
               </div>
               <div className='form-group'>
                 <label>Character count</label>
-                <input type='text' id='create-game-char-count' maxLength={2} value={inputCharCount} onChange={(e) => setInputCharCount(e.target.value)} />
+                <select id='create-game-charcount' value={inputCharCount} onChange={e => setInputCharCount(e.target.value)}>
+                  <option value='2'>2</option>
+                  <option value='3'>3</option>
+                  <option value='4'>4</option>
+                  <option value='5'>5</option>
+                  <option value='6'>6</option>
+                  <option value='7'>7</option>
+                  <option value='8'>8</option>
+                  <option value='9'>9</option>
+                  <option value='10'>10</option>
+                </select>
               </div>
-              <button type='button' id='create-game-submmit' className='btn btn-defalt' onClick={handleSubmmit}>Submmit</button>
+              <button type='button' id='create-game-submit' className='btn btn-defalt' onClick={handleSubmit}>Submit</button>
             </form>
           </div>
         </div>

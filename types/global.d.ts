@@ -16,8 +16,3 @@ export type Token = {
 export type Query = {
   [key: string]: string
 }
-
-export type Lang = {
-  name: string,
-  code: string
-}
