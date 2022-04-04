@@ -51,35 +51,55 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 }
 
 const MygamesCreate = (props: Props) => {
-  const [inputTitle, setInputTitle] = useState<string>('Pokemon Gen 2')
+  const [inputTitle, setInputTitle] = useState<string>('')
   const [inputLanguage, setInputLanguage] = useState<string>('English')
   const [inputCharCount, setInputCharCount] = useState<string>('5')
   const currentTokenContext = useContext(CurrentTokenContext)
   const currentUserInfoContext = useContext(CurrentUserInfoContext)
   const router = useRouter()
 
+  function validateTitle(): boolean{
+    const titleLength: number = Number(inputTitle.length)
+    const titleInvalidFeedback: HTMLElement | null = document.querySelector('#create-game-title-invalid-feedback')
+    if (titleLength < 1) {
+      document.querySelector('#create-game-title')?.classList.add('input-invalid')
+      if (titleInvalidFeedback) titleInvalidFeedback.innerHTML = '* Title is required.'
+      return false
+    } else if (titleLength > 20) {
+      document.querySelector('#create-game-title')?.classList.add('input-invalid')
+      if (titleInvalidFeedback?.innerHTML) titleInvalidFeedback.innerHTML = '* Title must be 20 characters or less.'
+      return false
+    } else {
+      document.querySelector('#create-game-title')?.classList.remove('input-invalid')
+      if (titleInvalidFeedback?.innerHTML) titleInvalidFeedback.innerHTML = ''
+      return true
+    }
+  }
+
   function handleClickSubmit(): void{
     if (validate.token(currentTokenContext.currentToken)) {
-      const languageElement: HTMLSelectElement = document.querySelector('#create-game-language') as HTMLSelectElement
-      const body = {
-        game: {
-          'title': inputTitle,
-          'char_count': inputCharCount,
-          'language': languageElement.value
+      if (validateTitle()) {
+        const languageElement: HTMLSelectElement = document.querySelector('#create-game-language') as HTMLSelectElement
+        const body = {
+          game: {
+            'title': inputTitle,
+            'char_count': inputCharCount,
+            'language': languageElement.value
+          }
         }
+        fetch('http://localhost:3000/api/v1/games/create', {
+          method: 'POST',
+          headers: {
+            "Content-Type": "application/json",
+            'access-token': currentTokenContext.currentToken.accessToken,
+            'client': currentTokenContext.currentToken.client,
+            'uid': currentTokenContext.currentToken.uid
+          },
+          body: JSON.stringify(body)
+        }).then(res => res.json())
+          .then(json => console.log(json))
+          .catch(error => console.log(error))
       }
-      fetch('http://localhost:3000/api/v1/games/create', {
-        method: 'POST',
-        headers: {
-          "Content-Type": "application/json",
-          'access-token': currentTokenContext.currentToken.accessToken,
-          'client': currentTokenContext.currentToken.client,
-          'uid': currentTokenContext.currentToken.uid
-        },
-        body: JSON.stringify(body)
-      }).then(res => res.json())
-        .then(json => console.log(json))
-        .catch(error => console.log(error))
     } else {
       // Delete stored token and user info
       currentTokenContext.setCurrentToken(null)
@@ -107,7 +127,8 @@ const MygamesCreate = (props: Props) => {
             <form id='create-game-form' onSubmit={e=> e.preventDefault()}>
               <div className='form-group'>
                 <label>Title</label>
-                <input type='text' id='create-game-title' maxLength={20} value={inputTitle} onChange={e => setInputTitle(e.target.value)} />
+                <input type='text' id='create-game-title' className='' maxLength={20} value={inputTitle} onChange={e => setInputTitle(e.target.value)} />
+                <div id='create-game-title-invalid-feedback' className='form-group-invalid-feedback'></div>
               </div>
               <div className='form-group'>
                 <label>Language</label>

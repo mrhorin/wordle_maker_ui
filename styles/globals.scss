@@ -53,7 +53,7 @@ input[type="checkbox"]{
   margin-right: 0.75rem;
 }
 .input-invalid{
-  border: 1px solid #ff6600;
+  border: 1px solid #ff6600 !important;
 }
 
 label{
@@ -65,6 +65,7 @@ form{
     display: flex;
     flex-direction: column;
     margin: 1.5rem 0;
+    position: relative;
     label{
       order: 1;
       display: block;
@@ -74,6 +75,15 @@ form{
     input,select{
       order: 2;
       display: block;
+    }
+    .form-group-invalid-feedback{
+      order: 3;
+      color: #ff6600;
+      font-size: 0.8rem;
+      font-weight: 500;
+      position: absolute;
+      bottom: -1rem;
+      left: 0;
     }
   }
 }
