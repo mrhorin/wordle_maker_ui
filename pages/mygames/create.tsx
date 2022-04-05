@@ -52,6 +52,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 const MygamesCreate = (props: Props) => {
   const [inputTitle, setInputTitle] = useState<string>('')
+  const [inputDesc, setInputDesc] = useState<string>('')
   const [inputLanguage, setInputLanguage] = useState<string>('English')
   const [inputCharCount, setInputCharCount] = useState<string>('5')
   const currentTokenContext = useContext(CurrentTokenContext)
@@ -83,6 +84,7 @@ const MygamesCreate = (props: Props) => {
         const body = {
           game: {
             'title': inputTitle,
+            'desc': inputDesc,
             'char_count': inputCharCount,
             'language': languageElement.value
           }
@@ -124,12 +126,20 @@ const MygamesCreate = (props: Props) => {
 
           <div id='sidemenu-main'>
             <h1 className='title'>Create a game</h1>
-            <form id='create-game-form' onSubmit={e=> e.preventDefault()}>
+            <form id='create-game-form' onSubmit={e => e.preventDefault()}>
+              {/* Title */}
               <div className='form-group'>
                 <label>Title</label>
                 <input type='text' id='create-game-title' className='' maxLength={20} value={inputTitle} onChange={e => setInputTitle(e.target.value)} />
                 <div id='create-game-title-invalid-feedback' className='form-group-invalid-feedback'></div>
               </div>
+              {/* Description */}
+              <div className='form-group'>
+                <label>Description</label>
+                <textarea id='create-game-desc' rows={3} className='' maxLength={100} value={inputDesc} onChange={e => setInputDesc(e.target.value)} />
+                <div id='create-game-title-invalid-feedback' className='form-group-invalid-feedback'></div>
+              </div>
+              {/* Languagte */}
               <div className='form-group'>
                 <label>Language</label>
                 <select id='create-game-language' value={inputLanguage} onChange={e => setInputLanguage(e.target.value)}>
@@ -137,6 +147,7 @@ const MygamesCreate = (props: Props) => {
                   <option value='ja'>Japanese</option>
                 </select>
               </div>
+              {/* Character count */}
               <div className='form-group'>
                 <label>Character count</label>
                 <select id='create-game-charcount' value={inputCharCount} onChange={e => setInputCharCount(e.target.value)}>
@@ -151,6 +162,7 @@ const MygamesCreate = (props: Props) => {
                   <option value='10'>10</option>
                 </select>
               </div>
+              {/* Submit */}
               <button type='button' id='create-game-submit' className='btn btn-defalt' onClick={handleClickSubmit}>Submit</button>
             </form>
           </div>
