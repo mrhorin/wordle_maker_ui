@@ -34,8 +34,11 @@ body {
 }
 
 a {
-  color: inherit;
+  color: $accent-color1;
   text-decoration: none;
+}
+a:hover{
+  text-decoration: underline;
 }
 
 input[type="text"],
@@ -169,6 +172,8 @@ form{
     padding: 10px;
     text-align: center;
     font-weight: bold;
+    a{ color: $font-color; }
+    a:hover{  text-decoration: none; }
   }
   .header-account{
     order: 3;
@@ -305,42 +310,49 @@ form{
   flex-direction: row;
   #sidemenu{
     width: 200px;
-    ul.sidemenu-menu{
-      padding: 0;
-      margin: 0;
-      list-style: none;
-      li{
-        cursor: default;
-        padding: 0.5rem;
-        font-weight: 500;
-        white-space: nowrap;
-        a{
-          display: inline-block;
+    height: 100vh;
+    .sidemenu-items-container{
+      position: sticky;
+      top: 65px;
+      ul.sidemenu-item{
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        li{
+          cursor: default;
+          padding: 0.5rem;
+          font-weight: 500;
+          white-space: nowrap;
+          a{
+            display: inline-block;
+            svg, i{
+              width: 30px;
+              margin-right: 0.5rem;
+            }
+            color: darken($font-color, 30%);
+          }
+          a:hover{
+            color: $accent-color1;
+            text-decoration: none;
+            cursor: pointer;
+          }
+        }
+        li.sidemenu-item-active{
+          a{ color: $accent-color2; }
+          a:hover{
+            color: $accent-color1;
+            text-decoration: none;
+            cursor: pointer;
+          }
+        }
+        li.sidemenu-item-title,
+        li.sidemenu-item-title:hover{
+          font-size: 1rem;
+          color: $font-color;
           svg, i{
             width: 30px;
             margin-right: 0.5rem;
           }
-          color: darken($font-color, 30%);
-        }
-        a:hover{
-          color: $accent-color1;
-          cursor: pointer;
-        }
-      }
-      li.sidemenu-menu-active{
-        a{ color: $accent-color2; }
-        a:hover{
-          color: $accent-color1;
-          cursor: pointer;
-        }
-      }
-      li.sidemenu-menu-title,
-      li.sidemenu-menu-title:hover{
-        font-size: 1rem;
-        color: $font-color;
-        svg, i{
-          width: 30px;
-          margin-right: 0.5rem;
         }
       }
     }
@@ -361,3 +373,4 @@ form{
   min-height: 50px;
   text-align: center;
 }
+

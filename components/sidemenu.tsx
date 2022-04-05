@@ -10,45 +10,47 @@ type Props = {
 
 const Sidemenu = (props: Props) => {
   useEffect(() => {
-    let activeMenu = document.querySelector(`.sidemenu-menu-${props.activeMenu}`)
-    activeMenu?.classList.add('sidemenu-menu-active')
+    let activeMenu = document.querySelector(`.sidemenu-item-${props.activeMenu}`)
+    activeMenu?.classList.add('sidemenu-item-active')
   }, [])
 
   return (
     <div id='sidemenu'>
-      {/* My Games */}
-      <ul className='sidemenu-menu'>
-        <li className='sidemenu-menu-title'>
-          <FontAwesomeIcon icon={faGamepad} />My Games
-        </li>
-        <li className='sidemenu-menu-create'>
-          <Link href="/mygames/create">
-            <a className='sidemenu-menu sidemenu-menu-mygames-create'>
-              <FontAwesomeIcon icon={faPlus} />Create
-            </a>
-          </Link>
-        </li>
-        <li className='sidemenu-menu-edit'>
-          <Link href="/mygames/edit">
-            <a className='sidemenu-menu sidemenu-menu-mygames-edit'>
-              <FontAwesomeIcon icon={faPenToSquare} />Edit
-            </a>
-          </Link>
-        </li>
-      </ul>
-      {/* Settings */}
-      <ul className='sidemenu-menu' style={ {marginTop: '1rem'} }>
-        <li className='sidemenu-menu-title'>
-          <FontAwesomeIcon icon={faGear} />Setteings
-        </li>
-        <li className='sidemenu-menu-account'>
-          <Link href="/settings/account">
-            <a className='sidemenu-menu sidemenu-menu-settings-account'>
-              <FontAwesomeIcon icon={faUser} />Account
-            </a>
-          </Link>
-        </li>
-      </ul>
+      <div className='sidemenu-items-container'>
+        {/* My Games */}
+        <ul className='sidemenu-item'>
+          <li className='sidemenu-item-title'>
+            <FontAwesomeIcon icon={faGamepad} />My Games
+          </li>
+          <li className='sidemenu-item-create'>
+            <Link href="/mygames/create">
+              <a className='sidemenu-item sidemenu-item-mygames-create'>
+                <FontAwesomeIcon icon={faPlus} />Create
+              </a>
+            </Link>
+          </li>
+          <li className='sidemenu-item-edit'>
+            <Link href="/mygames/edit">
+              <a className='sidemenu-item sidemenu-item-mygames-edit'>
+                <FontAwesomeIcon icon={faPenToSquare} />Edit
+              </a>
+            </Link>
+          </li>
+        </ul>
+        {/* Settings */}
+        <ul className='sidemenu-item' style={ {marginTop: '1rem'} }>
+          <li className='sidemenu-item-title'>
+            <FontAwesomeIcon icon={faGear} />Setteings
+          </li>
+          <li className='sidemenu-item-account'>
+            <Link href="/settings/account">
+              <a className='sidemenu-item sidemenu-item-settings-account'>
+                <FontAwesomeIcon icon={faUser} />Account
+              </a>
+            </Link>
+          </li>
+        </ul>
+      </div>
     </div>
   )
 }
