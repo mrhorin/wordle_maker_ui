@@ -47,7 +47,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       props: props,
       redirect: {
         statusCode: 302,
-        destination: 'signup',
+        destination: '/signup',
       }
     }
   }
