@@ -103,12 +103,12 @@ function saveUserInfo(userInfo: UserInfo): void{
 }
 
 function destroyUserInfoCookies(): void{
-  destroyCookie(null, 'provider')
-  destroyCookie(null, 'name')
-  destroyCookie(null, 'nickname')
-  destroyCookie(null, 'image')
+  destroyCookie(null, 'provider', cookieOptions)
+  destroyCookie(null, 'name', cookieOptions)
+  destroyCookie(null, 'nickname', cookieOptions)
+  destroyCookie(null, 'image', cookieOptions)
   const cookies = parseCookies()
-  if (!cookies['accessToken']) destroyCookie(null, 'uid')
+  if (!cookies['accessToken']) destroyCookie(null, 'uid', cookieOptions)
 }
 
 function loadUserInfo(): UserInfo | null{
@@ -135,11 +135,11 @@ function saveToken(token: Token): void {
 }
 
 function destroyTokenCookies(): void{
-  destroyCookie(null, 'accessToken')
-  destroyCookie(null, 'client')
-  destroyCookie(null, 'expiry')
+  destroyCookie(null, 'accessToken', cookieOptions)
+  destroyCookie(null, 'client', cookieOptions)
+  destroyCookie(null, 'expiry', cookieOptions)
   const cookies = parseCookies()
-  if (!cookies['nickname']) destroyCookie(null, 'uid')
+  if (!cookies['nickname']) destroyCookie(null, 'uid', cookieOptions)
 }
 
 function loadToken(): Token | null{
