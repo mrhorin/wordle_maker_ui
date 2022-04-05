@@ -16,3 +16,12 @@ export type Token = {
 export type Query = {
   [key: string]: string
 }
+
+export type Game = {
+  id: number,
+  title: string,
+  desc: string,
+  lang: string,
+  char_count: number,
+  user_id?: number,
+}

@@ -374,3 +374,58 @@ form{
   text-align: center;
 }
 
+/* ---------- My Games ---------- */
+.game-index{
+  display: flex;
+  flex-direction: column;
+  .game-index-item{
+    display: flex;
+    flex-direction: column;
+    max-width: 600px;
+    margin: 1rem;
+    list-style-type: decimal;
+    .game-index-item-title{
+      order: 1;
+      font-size: 1.3rem;
+      line-height: 2rem;
+    }
+    .game-index-item-desc{
+      order: 2;
+      font-size: 1rem;
+      line-height: 1.5rem;
+    }
+    .game-index-item-attrs{
+      order: 3;
+      font-size: 1rem;
+      line-height: 1.5rem;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      .game-index-item-attrs-item{
+        display: flex;
+        flex-direction: row;
+        margin-right: 2rem;
+        .game-index-item-attrs-item-label{
+          order: 1;
+          display: inline-block;
+          margin-right: 1rem;
+          color: darken($font-color, 20%);
+        }
+        .game-index-item-attrs-item-value{
+          order: 2;
+          display: inline-block;
+        }
+      }
+      .game-index-item-attrs-item:last-child{
+        margin-right: 0;
+      }
+    }
+  }
+}
+
+
+/* ------- react-loading ------- */
+.loading-center{
+  text-align: center;
+  margin: 0 auto;
+}
