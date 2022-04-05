@@ -53,7 +53,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 const MygamesCreate = (props: Props) => {
   const [inputTitle, setInputTitle] = useState<string>('')
   const [inputDesc, setInputDesc] = useState<string>('')
-  const [inputLanguage, setInputLanguage] = useState<string>('English')
+  const [inputLang, setinputLang] = useState<string>('English')
   const [inputCharCount, setInputCharCount] = useState<string>('5')
   const currentTokenContext = useContext(CurrentTokenContext)
   const currentUserInfoContext = useContext(CurrentUserInfoContext)
@@ -80,13 +80,13 @@ const MygamesCreate = (props: Props) => {
   function handleClickSubmit(): void{
     if (validate.token(currentTokenContext.currentToken)) {
       if (validateTitle()) {
-        const languageElement: HTMLSelectElement = document.querySelector('#create-game-language') as HTMLSelectElement
+        const langElement: HTMLSelectElement = document.querySelector('#create-game-lang') as HTMLSelectElement
         const body = {
           game: {
             'title': inputTitle,
             'desc': inputDesc,
             'char_count': inputCharCount,
-            'language': languageElement.value
+            'lang': langElement.value
           }
         }
         fetch('http://localhost:3000/api/v1/games/create', {
@@ -139,10 +139,10 @@ const MygamesCreate = (props: Props) => {
                 <textarea id='create-game-desc' rows={3} className='' maxLength={100} value={inputDesc} onChange={e => setInputDesc(e.target.value)} />
                 <div id='create-game-title-invalid-feedback' className='form-group-invalid-feedback'></div>
               </div>
-              {/* Languagte */}
+              {/* Languagge */}
               <div className='form-group'>
                 <label>Language</label>
-                <select id='create-game-language' value={inputLanguage} onChange={e => setInputLanguage(e.target.value)}>
+                <select id='create-game-lang' value={inputLang} onChange={e => setinputLang(e.target.value)}>
                   <option value='en'>English</option>
                   <option value='ja'>Japanese</option>
                 </select>
