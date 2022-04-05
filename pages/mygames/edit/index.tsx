@@ -47,7 +47,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 }
 
-const MygamesEdit = (props: Props) => {
+const MygamesEditIndex = (props: Props) => {
 
   return (
     <main id='main'>
@@ -70,4 +70,4 @@ const MygamesEdit = (props: Props) => {
   )
 }
 
-export default MygamesEdit
+export default MygamesEditIndex
