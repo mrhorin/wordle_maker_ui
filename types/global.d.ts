@@ -18,10 +18,10 @@ export type Query = {
 }
 
 export type Game = {
-  id: number,
   title: string,
   desc: string,
   lang: string,
   char_count: number,
+  id?: number,
   user_id?: number,
 }

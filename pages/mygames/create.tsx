@@ -1,4 +1,4 @@
-import type { UserInfo, Token } from '../../types/global'
+import type { UserInfo, Token, Game } from '../../types/global'
 import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import { useState, useContext } from 'react'
@@ -6,11 +6,13 @@ import nookies from 'nookies'
 import Head from 'next/head'
 
 import Sidemenu from '../../components/sidemenu'
+import GameForm from '../../components/game/form'
 
 import validate from '../../validate'
 
 import CurrentTokenContext from '../../contexts/current_token'
 import CurrentUserInfoContext from '../../contexts/current_user_info'
+
 
 type Props = {
   token: Token,
@@ -50,28 +52,32 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 }
 
+const defaultGame: Game = {
+  title: '',
+  desc: '',
+  lang: 'en',
+  char_count: 5,
+}
+
 const MygamesCreate = (props: Props) => {
-  const [inputTitle, setInputTitle] = useState<string>('')
-  const [inputDesc, setInputDesc] = useState<string>('')
-  const [inputLang, setinputLang] = useState<string>('English')
-  const [inputCharCount, setInputCharCount] = useState<string>('5')
+  const [game, setGame] = useState<Game>(defaultGame)
   const currentTokenContext = useContext(CurrentTokenContext)
   const currentUserInfoContext = useContext(CurrentUserInfoContext)
   const router = useRouter()
 
   function validateTitle(): boolean{
-    const titleLength: number = Number(inputTitle.length)
-    const titleInvalidFeedback: HTMLElement | null = document.querySelector('#create-game-title-invalid-feedback')
+    const titleLength: number = Number(game.title.length)
+    const titleInvalidFeedback: HTMLElement | null = document.querySelector('#game-title-invalid-feedback')
     if (titleLength < 1) {
-      document.querySelector('#create-game-title')?.classList.add('input-invalid')
+      document.querySelector('#game-title')?.classList.add('input-invalid')
       if (titleInvalidFeedback) titleInvalidFeedback.innerHTML = '* Title is required.'
       return false
     } else if (titleLength > 20) {
-      document.querySelector('#create-game-title')?.classList.add('input-invalid')
+      document.querySelector('#game-title')?.classList.add('input-invalid')
       if (titleInvalidFeedback?.innerHTML) titleInvalidFeedback.innerHTML = '* Title must be 20 characters or less.'
       return false
     } else {
-      document.querySelector('#create-game-title')?.classList.remove('input-invalid')
+      document.querySelector('#game-title')?.classList.remove('input-invalid')
       if (titleInvalidFeedback?.innerHTML) titleInvalidFeedback.innerHTML = ''
       return true
     }
@@ -80,12 +86,12 @@ const MygamesCreate = (props: Props) => {
   function handleClickSubmit(): void{
     if (validate.token(currentTokenContext.currentToken)) {
       if (validateTitle()) {
-        const langElement: HTMLSelectElement = document.querySelector('#create-game-lang') as HTMLSelectElement
+        const langElement: HTMLSelectElement = document.querySelector('#game-lang') as HTMLSelectElement
         const body = {
           game: {
-            'title': inputTitle,
-            'desc': inputDesc,
-            'char_count': inputCharCount,
+            'title': game.title,
+            'desc': game.desc,
+            'char_count': game.char_count,
             'lang': langElement.value
           }
         }
@@ -126,45 +132,7 @@ const MygamesCreate = (props: Props) => {
 
           <div id='sidemenu-main'>
             <h1 className='title'>Create a game</h1>
-            <form id='create-game-form' onSubmit={e => e.preventDefault()}>
-              {/* Title */}
-              <div className='form-group'>
-                <label>Title</label>
-                <input type='text' id='create-game-title' className='' maxLength={20} value={inputTitle} onChange={e => setInputTitle(e.target.value)} />
-                <div id='create-game-title-invalid-feedback' className='form-group-invalid-feedback'></div>
-              </div>
-              {/* Description */}
-              <div className='form-group'>
-                <label>Description</label>
-                <textarea id='create-game-desc' rows={3} className='' maxLength={100} value={inputDesc} onChange={e => setInputDesc(e.target.value)} />
-                <div id='create-game-title-invalid-feedback' className='form-group-invalid-feedback'></div>
-              </div>
-              {/* Languagge */}
-              <div className='form-group'>
-                <label>Language</label>
-                <select id='create-game-lang' value={inputLang} onChange={e => setinputLang(e.target.value)}>
-                  <option value='en'>English</option>
-                  <option value='ja'>Japanese</option>
-                </select>
-              </div>
-              {/* Character count */}
-              <div className='form-group'>
-                <label>Character count</label>
-                <select id='create-game-charcount' value={inputCharCount} onChange={e => setInputCharCount(e.target.value)}>
-                  <option value='2'>2</option>
-                  <option value='3'>3</option>
-                  <option value='4'>4</option>
-                  <option value='5'>5</option>
-                  <option value='6'>6</option>
-                  <option value='7'>7</option>
-                  <option value='8'>8</option>
-                  <option value='9'>9</option>
-                  <option value='10'>10</option>
-                </select>
-              </div>
-              {/* Submit */}
-              <button type='button' id='create-game-submit' className='btn btn-defalt' onClick={handleClickSubmit}>Submit</button>
-            </form>
+            <GameForm game={game} setGame={setGame} handleClickSubmit={handleClickSubmit}/>
           </div>
         </div>
       </div>
