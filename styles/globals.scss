@@ -11,6 +11,7 @@ $tablet-break-point: 1024px;
 html,
 body {
   font-family: "Helvetica Neue",Arial,"Hiragino Kaku Gothic ProN","Hiragino Sans",Helvetica,Roboto,Meiryo,sans-serif;
+  word-break: break-word;
   background: $base-color1;
   color: $font-color;
   font-size: 16px;
