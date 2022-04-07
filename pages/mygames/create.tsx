@@ -105,7 +105,9 @@ const MygamesCreate = (props: Props) => {
           },
           body: JSON.stringify(body)
         }).then(res => res.json())
-          .then(json => console.log(json))
+          .then(json => {
+            json.ok ? router.replace(`/games/${json.data.id}`) : console.error(json)
+          })
           .catch(error => console.log(error))
       }
     } else {

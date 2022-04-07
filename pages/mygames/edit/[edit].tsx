@@ -3,8 +3,12 @@ import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import { useState, useLayoutEffect, useContext } from 'react'
 import ReactLoading from 'react-loading'
-import nookies from 'nookies'
+import Link from 'next/link'
 import Head from 'next/head'
+import nookies from 'nookies'
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons'
 
 import Sidemenu from '../../../components/sidemenu'
 import GameForm from '../../../components/game/form'
@@ -53,6 +57,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 }
 
 const defaultGame: Game = {
+  id: '',
   title: '',
   desc: '',
   lang: 'en',
@@ -168,6 +173,12 @@ const MygamesEdit = (props: Props) => {
 
           <div id='sidemenu-main'>
             <h1 className='title'>Edit games</h1>
+            <div style={{display: 'inline-block', marginRight: '0.5rem'}}>Game URL:</div>
+            <Link href={`/games/${game.id}`}>
+              <a className='sidemenu-item sidemenu-item-mygames-create'>
+                {`http://localhost:8000/games/${game.id}`}
+              </a>
+            </Link>
             {createEditGameComponent()}
           </div>
         </div>
