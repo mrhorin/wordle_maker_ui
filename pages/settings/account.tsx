@@ -6,6 +6,7 @@ import nookies from 'nookies'
 import Head from 'next/head'
 
 import Sidemenu from '../../components/sidemenu'
+import Modal from '../../components/modal'
 
 import validate from '../../validate'
 
@@ -54,26 +55,13 @@ const Account = (props: Props) => {
   const currentTokenContext = useContext(CurrentTokenContext)
   const currentUserInfoContext = useContext(CurrentUserInfoContext)
   const [checkedConfirmation, setCheckedConfirmation] = useState<boolean | undefined>(false)
+  const [showModal, setShowModal] = useState<boolean>(false)
   const handleConfirmation = useMemo(() => {
     return () => {
       setCheckedConfirmation(!checkedConfirmation);
     }
   }, [checkedConfirmation])
   const router = useRouter()
-
-  function showModal(): void{
-    let modalOverlay = document.querySelector('.modal-overlay')
-    let modalWindow = document.querySelector('.modal-window')
-    modalOverlay?.classList.remove('hidden')
-    modalWindow?.classList.remove('hidden')
-  }
-
-  function hideModal(): void{
-    let modalOverlay = document.querySelector('.modal-overlay')
-    let modalWindow = document.querySelector('.modal-window')
-    modalOverlay?.classList.add('hidden')
-    modalWindow?.classList.add('hidden')
-  }
 
   async function fetchDeleteAccount(token: Token) {
     const res = await fetch('http://localhost:3000/api/v1/auth/', {
@@ -115,29 +103,29 @@ const Account = (props: Props) => {
       </Head>
 
       {/* Modal */}
-      <div className='modal-overlay hidden' onClick={hideModal}>
-      </div>
-      <div className='modal-window hidden'>
-        <div className='modal-window-header'>
-          Delete Account
+      <Modal showModal={showModal} setShowModal={setShowModal}>
+        <div className='modal-window-container'>
+          <div className='modal-window-header'>
+            Delete Account
+          </div>
+          <div className='modal-window-body'>
+            <p>Are you sure?</p>
+            <ol>
+              <li>Your account and related information will be deleted.</li>
+              <li>We can't recover your account and related information you deleted.</li>
+              <li>If you send an inquiry to us about it, We can't reply to you.</li>
+            </ol>
+            <div>
+            <input type="checkbox" id="confirmation" checked={checkedConfirmation} onChange={handleConfirmation} />
+            <label>I agree.</label>
+          </div>
+          </div>
+          <div className='modal-window-footer'>
+            <button className='btn btn-danger' onClick={handleDeleteAccount} disabled={!checkedConfirmation}>Delete Account</button>
+            <button className='btn btn-default' onClick={()=>setShowModal(false)}>Close</button>
+          </div>
         </div>
-        <div className='modal-window-body'>
-          <p>Are you sure?</p>
-          <ol>
-            <li>Your account and related information will be deleted.</li>
-            <li>We can't recover your account and related information you deleted.</li>
-            <li>If you send an inquiry to us about it, We can't reply to you.</li>
-          </ol>
-          <div>
-          <input type="checkbox" id="confirmation" checked={checkedConfirmation} onChange={handleConfirmation} />
-          <label>I agree.</label>
-        </div>
-        </div>
-        <div className='modal-window-footer'>
-          <button className='btn btn-danger' onClick={handleDeleteAccount} disabled={!checkedConfirmation}>Delete Account</button>
-          <button className='btn btn-default' onClick={hideModal}>Close</button>
-        </div>
-      </div>
+      </Modal>
 
       <div className='container'>
         <div id='sidemenu-container'>
@@ -147,7 +135,7 @@ const Account = (props: Props) => {
           {/* Main */}
           <div id='sidemenu-main'>
             <h1 className='title'>Account</h1>
-            <button className='btn btn-danger' onClick={showModal}>Delete Account</button>
+            <button className='btn btn-danger' onClick={() => { setShowModal(true) }}>Delete Account</button>
           </div>
         </div>
       </div>
