@@ -72,9 +72,9 @@ const MygamesCreate = (props: Props) => {
       document.querySelector('#game-title')?.classList.add('input-invalid')
       if (titleInvalidFeedback) titleInvalidFeedback.innerHTML = '* Title is required.'
       return false
-    } else if (titleLength > 20) {
+    } else if (titleLength > 100) {
       document.querySelector('#game-title')?.classList.add('input-invalid')
-      if (titleInvalidFeedback?.innerHTML) titleInvalidFeedback.innerHTML = '* Title must be 20 characters or less.'
+      if (titleInvalidFeedback?.innerHTML) titleInvalidFeedback.innerHTML = '* Title must be 100 characters or less.'
       return false
     } else {
       document.querySelector('#game-title')?.classList.remove('input-invalid')

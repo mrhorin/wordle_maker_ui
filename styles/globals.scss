@@ -21,12 +21,12 @@ body {
 }
 
 ::-webkit-scrollbar{
-  background: $base-color2 !important;
-  border-left: 1px solid lighten($base-color3, 5%) !important;
+  background: $base-color2;
+  border-left: 1px solid lighten($base-color3, 5%);
 }
 ::-webkit-scrollbar-thumb{
-  background: lighten($base-color2, 5%) !important;
-  border-left: 1px solid lighten($base-color3, 5%) !important;
+  background: lighten($base-color2, 5%);
+  border-left: 1px solid lighten($base-color3, 5%);
 }
 
 * {
@@ -53,12 +53,32 @@ select{
   border: 1px solid $base-color3;
   border-radius: 3px;
 }
+input[type="text"].input-invalid,
+textarea.input-invalid,
+select.input-invalid{
+  border: 1px solid #ff6600;
+  border-bottom: none;
+}
+input[type="text"]:focus,
+textarea:focus,
+select:focus{
+  outline: none;
+  border: 1px solid #0099ff;
+}
 input[type="checkbox"]{
   transform: scale(1.4);
   margin-right: 0.75rem;
 }
-.input-invalid{
-  border: 1px solid #ff6600 !important;
+textarea{
+  resize: none;
+}
+textarea::-webkit-scrollbar{
+  background: lighten($base-color2, 5%);
+  cursor: default;
+}
+textarea::-webkit-scrollbar-thumb{
+  background: $base-color2;
+  cursor: default;
 }
 
 label{
@@ -80,6 +100,55 @@ form{
     input,textarea,select{
       order: 2;
       display: block;
+    }
+    .form-countable-input-group{
+      order: 2;
+      display: flex;
+      flex-direction: column;
+      input[type="text"], textarea{
+        order: 1;
+        width: 100%;
+        padding-bottom: 0;
+        border-bottom: none;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+      .form-countable-input-counter{
+        order: 2;
+        text-align: right;
+        font-size: 0.8rem;
+        color: darken($font-color, 30%);
+        line-height: 1rem;
+        background: lighten($base-color1, 8%);
+        padding: 0 0.5rem 0.25rem 0.5rem;
+        border: 1px solid $base-color3;
+        border-top: none;
+        border-radius: 0 0 3px 3px;
+      }
+      // When focus
+      input[type="text"]:focus, textarea:focus{
+        border: 1px solid #0099ff;
+        border-bottom: none;
+      }
+      input[type="text"]:focus + .form-countable-input-counter,
+      textarea:focus + .form-countable-input-counter{
+        border: 1px solid #0099ff;
+        border-top: none;
+      }
+      // When invalid
+      input[type="text"].input-invalid + .form-countable-input-counter,
+      textarea.input-invalid + .form-countable-input-counter,
+      select.input-invalid + .form-countable-input-counter{
+        border: 1px solid #ff6600;
+        border-top: none;
+      }
+      // When invalid + focus
+      input[type="text"].input-invalid:focus,
+      textarea.input-invalid:focus,
+      select.input-invalid:focus{
+        border: 1px solid #ff6600;
+        border-bottom: none;
+      }
     }
     .form-group-invalid-feedback{
       order: 3;
@@ -423,7 +492,6 @@ form{
     }
   }
 }
-
 
 /* ------- react-loading ------- */
 .loading-center{

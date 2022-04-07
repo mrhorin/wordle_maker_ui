@@ -20,7 +20,9 @@ const GameForm = (props: Props) => {
       title: props.game.title,
       desc: props.game.desc,
       lang: props.game.lang,
-      char_count: props.game.char_count
+      char_count: props.game.char_count,
+      id: props.game.id,
+      user_id: props.game.user_id,
     }
     if (event.target.id == 'game-title') nextGame.title = event.target.value
     if (event.target.id == 'game-desc') nextGame.desc = event.target.value
@@ -34,13 +36,19 @@ const GameForm = (props: Props) => {
       {/* Title */}
       <div className='form-group'>
         <label>Title</label>
-        <input type='text' id='game-title' className='' maxLength={20} value={props.game.title} onChange={e => handleGameForm(e)} />
+        <div className='form-countable-input-group'>
+          <input type='text' id='game-title' maxLength={100} value={props.game.title} onChange={e => handleGameForm(e)} />
+          <div className='form-countable-input-counter'>{`${props.game.title.length} / 100`}</div>
+        </div>
         <div id='game-title-invalid-feedback' className='form-group-invalid-feedback'></div>
       </div>
       {/* Description */}
       <div className='form-group'>
         <label>Description</label>
-        <textarea id='game-desc' rows={3} className='' maxLength={100} value={props.game.desc} onChange={e => handleGameForm(e)} />
+        <div className='form-countable-input-group'>
+          <textarea id='game-desc' rows={3} maxLength={200} value={props.game.desc} onChange={e => handleGameForm(e)} />
+          <div className='form-countable-input-counter'>{`${props.game.desc.length} / 200`}</div>
+        </div>
         <div id='game-title-invalid-feedback' className='form-group-invalid-feedback'></div>
       </div>
       {/* Languagge */}
