@@ -118,14 +118,15 @@ const MygamesEdit = (props: Props) => {
         const langElement: HTMLSelectElement = document.querySelector('#game-lang') as HTMLSelectElement
         const body = {
           game: {
+            'id': game.id,
             'title': game.title,
             'desc': game.desc,
             'char_count': game.char_count,
             'lang': langElement.value
           }
         }
-        fetch('http://localhost:3000/api/v1/games/create', {
-          method: 'POST',
+        fetch(`http://localhost:3000/api/v1/games/${game.id}`, {
+          method: 'PUT',
           headers: {
             "Content-Type": "application/json",
             'access-token': currentTokenContext.currentToken.accessToken,
