@@ -325,7 +325,7 @@ form{
     height: 100vh;
     .sidemenu-items-container{
       position: sticky;
-      top: 65px;
+      top: 70px;
       ul.sidemenu-item{
         padding: 0;
         margin: 0;
@@ -409,9 +409,11 @@ form{
       .modal-window-header{
         order: 1;
         padding: 1rem;
+        padding-bottom: 0;
         margin-top: auto;
         background: $base-color2;
         border: 1px solid $base-color3;
+        border-bottom: none;
         border-radius: 5px 5px 0px 0px;
         font-size: 1.3rem;
       }
@@ -428,10 +430,12 @@ form{
       .modal-window-footer{
         order: 3;
         padding: 1rem;
+        padding-top: 0;
         margin-bottom: auto;
         text-align: right;
         background: $base-color2;
         border: 1px solid $base-color3;
+        border-top: none;
         border-radius: 0px 0px 5px 5px;
       }
     }

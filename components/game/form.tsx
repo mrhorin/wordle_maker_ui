@@ -3,7 +3,8 @@ import type { Game } from '../../types/global'
 interface Props {
   game: Game,
   setGame: React.Dispatch<React.SetStateAction<Game>>,
-  handleClickSubmit: VoidFunction
+  handleClickSubmit: VoidFunction,
+  children?: JSX.Element
 }
 
 const defaultGame: Game = {
@@ -76,6 +77,7 @@ const GameForm = (props: Props) => {
       </div>
       {/* Submit */}
       <button type='button' id='game-submit' className='btn btn-defalt' onClick={props.handleClickSubmit}>Submit</button>
+      { props.children }
     </form>
   )
 }
