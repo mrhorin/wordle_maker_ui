@@ -94,7 +94,7 @@ const MygamesEdit = (props: Props) => {
   }, [])
 
   function createEditGameComponent(): JSX.Element{
-    if (game) {
+    if (game && game.id) {
       return (
         <GameForm game={game} setGame={setGame} handleClickSubmit={handleClickSubmit}>
           <button className='btn btn-danger' onClick={() => { setShowModal(true) }}>Delete</button>
@@ -239,12 +239,20 @@ const MygamesEdit = (props: Props) => {
           <Sidemenu activeMenu={'edit'}/>
           <div id='sidemenu-main'>
             <h1 className='title'>Edit games</h1>
-            <div style={{display: 'inline-block', marginRight: '0.5rem'}}>Game URL:</div>
-            <Link href={`/games/${game.id}`}>
-              <a className='sidemenu-item sidemenu-item-mygames-create'>
-                {`http://localhost:8000/games/${game.id}`}
-              </a>
-            </Link>
+            {(() => {
+              if (game && game.id) {
+                return (
+                  <div>
+                    <div style={{ display: 'inline-block', marginRight: '0.5rem' }}>Game Link:</div>
+                    <Link href={`/games/${game.id}`}>
+                      <a className='sidemenu-item sidemenu-item-mygames-create'>
+                        {`http://localhost:8000/games/${game.id}`}
+                      </a>
+                    </Link>
+                  </div>
+                )
+              }
+            })()}
             {createEditGameComponent()}
             <LoadingOverlay showOverlay={showOverlay} />
           </div>
