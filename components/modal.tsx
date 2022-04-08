@@ -1,6 +1,3 @@
-import { evaluatedPropsToName } from 'ajv/dist/compile/util'
-import { useState } from 'react'
-
 interface Props {
   showModal: boolean,
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>,

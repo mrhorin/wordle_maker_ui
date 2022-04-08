@@ -1,3 +1,12 @@
+/*
+[z-index]
+0: body
+  1: #sidemenu
+    2:.modal-overlay
+      3: .modal-window
+        4: .loading-overlay
+          5: .header
+*/
 $base-color1: #121924;
 $base-color2: lighten($base-color1, 3%);
 $base-color3: lighten($base-color1, 6%);
@@ -17,6 +26,7 @@ body {
   font-size: 16px;
   padding: 0;
   margin: 0;
+  z-index: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
@@ -180,7 +190,7 @@ form{
   height: 70px;
   position: fixed;
   top: 0;
-  z-index: 4;
+  z-index: 5;
   background: $base-color1;
 }
 
@@ -323,6 +333,7 @@ form{
   #sidemenu{
     width: 200px;
     height: 100vh;
+    z-index: 1;
     .sidemenu-items-container{
       position: sticky;
       top: 70px;
@@ -393,7 +404,7 @@ form{
     width: 100%;
     height: 100%;
     background: rgba(0,0,0, 0.9);
-    z-index: 3;
+    z-index: 2;
   }
   .modal-window{
     position: fixed;
@@ -402,7 +413,7 @@ form{
     transform: translate(-50%, -50%);
     width: 70%;
     max-width: $sp-break-point;
-    z-index: 4;
+    z-index: 3;
     .modal-window-container{
       display: flex;
       flex-direction: column;
@@ -446,7 +457,6 @@ form{
   }
 }
 
-
 @media screen and (max-width: $sp-break-point){
   .modal{
     .modal-window{
@@ -457,6 +467,27 @@ form{
       }
     }
   }
+}
+
+/* ---------- LoadingOverlay ---------- */
+.loading-overlay{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0, 0.3);
+  z-index: 4;
+  .loading-overlay-spin-center{
+    text-align: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+.loading-overlay.hidden{
+  display: none;
 }
 
 /* ---------- My Games ---------- */

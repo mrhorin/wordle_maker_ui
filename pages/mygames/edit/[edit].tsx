@@ -10,6 +10,7 @@ import nookies from 'nookies'
 import Sidemenu from '../../../components/sidemenu'
 import GameForm from '../../../components/game/form'
 import Modal from '../../../components/modal'
+import LoadingOverlay from '../../../components/loading_overlay'
 
 import CurrentTokenContext from '../../../contexts/current_token'
 import CurrentUserInfoContext from '../../../contexts/current_user_info'
@@ -66,6 +67,7 @@ const MygamesEdit = (props: Props) => {
   const [game, setGame] = useState<Game>(defaultGame)
   const [checkedConfirmation, setCheckedConfirmation] = useState<boolean>(false)
   const [showModal, setShowModal] = useState<boolean>(false)
+  const [showOverlay, setShowOverlay] = useState<boolean>(false)
   const currentTokenContext = useContext(CurrentTokenContext)
   const currentUserInfoContext = useContext(CurrentUserInfoContext)
   const handleConfirmation = useMemo(() => {
@@ -134,6 +136,7 @@ const MygamesEdit = (props: Props) => {
             'lang': langElement.value
           }
         }
+        setShowOverlay(true)
         fetch(`http://localhost:3000/api/v1/games/${game.id}`, {
           method: 'PUT',
           headers: {
@@ -146,6 +149,7 @@ const MygamesEdit = (props: Props) => {
         }).then(res => res.json())
           .then(json => console.log(json))
           .catch(error => console.log(error))
+          .finally(() => setShowOverlay(false))
       }
     } else {
       // Delete stored token and user info
@@ -160,6 +164,7 @@ const MygamesEdit = (props: Props) => {
   function handleClickDelete(): void{
     if (validate.token(currentTokenContext.currentToken)) {
       if (validateTitle()) {
+        setShowOverlay(true)
         fetch(`http://localhost:3000/api/v1/games/${game.id}`, {
           method: 'DELETE',
           headers: {
@@ -170,9 +175,16 @@ const MygamesEdit = (props: Props) => {
           }
         }).then(res => res.json())
           .then(json => {
-            if(json.ok) router.replace('/mygames/edit')
+            if (json.ok) {
+              router.replace('/mygames/edit')
+            } else {
+              console.error(json.message)
+            }
           })
-          .catch(error => console.log(error))
+          .catch(error => {
+            console.log(error)
+            setShowOverlay(false)
+          })
       }
     }
   }
@@ -201,12 +213,12 @@ const MygamesEdit = (props: Props) => {
       <Modal showModal={showModal} setShowModal={setShowModal}>
         <div className='modal-window-container'>
           <div className='modal-window-header'>
-            Delete {`${game.title}`}
+            Delete Game
           </div>
           <div className='modal-window-body'>
             <p>Are you sure?</p>
             <ol>
-              <li>{`${game.title}`} will be deleted.</li>
+              <li>The game will be deleted.</li>
               <li>We can't recover it.</li>
               <li>If you send an inquiry to us about it, we can't reply to you.</li>
             </ol>
@@ -234,6 +246,7 @@ const MygamesEdit = (props: Props) => {
               </a>
             </Link>
             {createEditGameComponent()}
+            <LoadingOverlay showOverlay={showOverlay} />
           </div>
         </div>
       </div>

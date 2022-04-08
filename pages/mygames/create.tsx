@@ -7,6 +7,7 @@ import Head from 'next/head'
 
 import Sidemenu from '../../components/sidemenu'
 import GameForm from '../../components/game/form'
+import LoadingOverlay from '../../components/loading_overlay'
 
 import validate from '../../validate'
 
@@ -61,6 +62,7 @@ const defaultGame: Game = {
 
 const MygamesCreate = (props: Props) => {
   const [game, setGame] = useState<Game>(defaultGame)
+  const [showOverlay, setShowOverlay] = useState<boolean>(false)
   const currentTokenContext = useContext(CurrentTokenContext)
   const currentUserInfoContext = useContext(CurrentUserInfoContext)
   const router = useRouter()
@@ -95,6 +97,7 @@ const MygamesCreate = (props: Props) => {
             'lang': langElement.value
           }
         }
+        setShowOverlay(true)
         fetch('http://localhost:3000/api/v1/games/create', {
           method: 'POST',
           headers: {
@@ -106,9 +109,16 @@ const MygamesCreate = (props: Props) => {
           body: JSON.stringify(body)
         }).then(res => res.json())
           .then(json => {
-            json.ok ? router.replace(`/games/${json.data.id}`) : console.error(json)
+            if (json.ok) {
+              router.replace(`/games/${json.data.id}`)
+            } else {
+              console.error(json)
+            }
           })
-          .catch(error => console.log(error))
+          .catch(error => {
+            console.log(error)
+            setShowOverlay(false)
+          })
       }
     } else {
       // Delete stored token and user info
@@ -134,7 +144,8 @@ const MygamesCreate = (props: Props) => {
 
           <div id='sidemenu-main'>
             <h1 className='title'>Create a game</h1>
-            <GameForm game={game} setGame={setGame} handleClickSubmit={handleClickSubmit}/>
+            <GameForm game={game} setGame={setGame} handleClickSubmit={handleClickSubmit} />
+            <LoadingOverlay showOverlay={showOverlay} />
           </div>
         </div>
       </div>
