@@ -75,7 +75,7 @@ const MygamesEditIndex = (props: Props) => {
   }, [])
 
   function createGameComponents(): JSX.Element[] | JSX.Element{
-    if (games) {
+    if (games && games.length > 0) {
       const gameComponents: JSX.Element[] = games.map((game: Game, index: number) => {
         return (
           <div className='game-index-item' key={index}>
@@ -101,8 +101,10 @@ const MygamesEditIndex = (props: Props) => {
         )
       })
       return gameComponents
-    } else {
+    }else if(games == null){
       return <ReactLoading type={'spin'} color={'#008eff'} height={'25px'} width={'25px'} className='loading-center' />
+    } else {
+      return <p style={{textAlign: 'center', margin: '10rem auto'}}>Looks like you haven't created anything yet..?</p>
     }
   }
 
