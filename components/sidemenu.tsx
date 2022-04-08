@@ -22,17 +22,17 @@ const Sidemenu = (props: Props) => {
           <li className='sidemenu-item-title'>
             <FontAwesomeIcon icon={faGamepad} />My Games
           </li>
-          <li className='sidemenu-item-create'>
-            <Link href="/mygames/create">
-              <a className='sidemenu-item sidemenu-item-mygames-create'>
-                <FontAwesomeIcon icon={faPlus} />Create
-              </a>
-            </Link>
-          </li>
           <li className='sidemenu-item-edit'>
             <Link href="/mygames/edit">
               <a className='sidemenu-item sidemenu-item-mygames-edit'>
                 <FontAwesomeIcon icon={faPenToSquare} />Edit
+              </a>
+            </Link>
+          </li>
+          <li className='sidemenu-item-create'>
+            <Link href="/mygames/create">
+              <a className='sidemenu-item sidemenu-item-mygames-create'>
+                <FontAwesomeIcon icon={faPlus} />Create
               </a>
             </Link>
           </li>

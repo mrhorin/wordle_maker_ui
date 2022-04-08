@@ -49,7 +49,7 @@ const Header: NextPage = () => {
   }
 
   function handleMyGames(): void{
-    router.replace('/mygames/create')
+    router.replace('/mygames/edit')
   }
 
   function handleSettings(): void{
