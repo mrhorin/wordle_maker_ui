@@ -1,4 +1,4 @@
-import type { UserInfo, Token, Game } from '../../../types/global'
+import type { UserInfo, Token, Game } from 'types/global'
 import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import { useState, useLayoutEffect, useContext } from 'react'
@@ -6,12 +6,12 @@ import ReactLoading from 'react-loading'
 import nookies from 'nookies'
 import Head from 'next/head'
 
-import Sidemenu from '../../../components/sidemenu'
+import Sidemenu from 'components/sidemenu'
 
-import CurrentTokenContext from '../../../contexts/current_token'
-import CurrentUserInfoContext from '../../../contexts/current_user_info'
+import CurrentTokenContext from 'contexts/current_token'
+import CurrentUserInfoContext from 'contexts/current_user_info'
 
-import validate from '../../../validate'
+import validate from 'validate'
 
 import Link from 'next/link'
 

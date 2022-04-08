@@ -1,5 +1,5 @@
 import React, { createContext } from 'react'
-import { UserInfo } from '../types/global'
+import { UserInfo } from 'types/global'
 
 const CurrentUserInfoContext = createContext({} as {
   currentUserInfo: UserInfo | null,

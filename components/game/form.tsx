@@ -1,4 +1,4 @@
-import type { Game } from '../../types/global'
+import type { Game } from 'types/global'
 
 interface Props {
   game: Game,

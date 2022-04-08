@@ -1,5 +1,5 @@
 import React, { createContext } from 'react'
-import { Token } from '../types/global'
+import { Token } from 'types/global'
 
 const CurrentTokenContext = createContext({} as {
   currentToken: Token | null,

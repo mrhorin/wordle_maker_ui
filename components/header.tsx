@@ -1,15 +1,15 @@
 import type { NextPage } from 'next'
-import type { Token } from '../types/global'
+import type { Token } from 'types/global'
 import { useRouter } from 'next/router'
 import React, { useContext } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCaretDown ,faGamepad, faGear, faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 
-import CurrentTokenContext from '../contexts/current_token'
-import CurrentUserInfoContext from '../contexts/current_user_info'
-import ShowAccountMenuContext from '../contexts/show_account_menu'
+import CurrentTokenContext from 'contexts/current_token'
+import CurrentUserInfoContext from 'contexts/current_user_info'
+import ShowAccountMenuContext from 'contexts/show_account_menu'
 
-import validate from '../validate'
+import validate from 'validate'
 
 import Link from 'next/link'
 import Image from 'next/image'

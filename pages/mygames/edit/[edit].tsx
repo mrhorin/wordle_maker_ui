@@ -1,4 +1,4 @@
-import type { UserInfo, Token, Game } from '../../../types/global'
+import type { UserInfo, Token, Game } from 'types/global'
 import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import { useState, useLayoutEffect, useContext, useMemo } from 'react'
@@ -7,15 +7,15 @@ import Link from 'next/link'
 import Head from 'next/head'
 import nookies from 'nookies'
 
-import Sidemenu from '../../../components/sidemenu'
-import GameForm from '../../../components/game/form'
-import Modal from '../../../components/modal'
-import LoadingOverlay from '../../../components/loading_overlay'
+import Sidemenu from 'components/sidemenu'
+import GameForm from 'components/game/form'
+import Modal from 'components/modal'
+import LoadingOverlay from 'components/loading_overlay'
 
-import CurrentTokenContext from '../../../contexts/current_token'
-import CurrentUserInfoContext from '../../../contexts/current_user_info'
+import CurrentTokenContext from 'contexts/current_token'
+import CurrentUserInfoContext from 'contexts/current_user_info'
 
-import validate from '../../../validate'
+import validate from 'validate'
 
 type Props = {
   token: Token,

@@ -1,4 +1,4 @@
-import type { Game } from '../../types/global'
+import type { Game } from 'types/global'
 import Head from 'next/head'
 import { GetServerSideProps } from 'next'
 
