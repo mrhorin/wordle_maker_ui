@@ -2,6 +2,7 @@ import type { UserInfo, Token } from 'types/global'
 import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import { useState, useMemo, useContext } from 'react'
+import { useAlert } from 'react-alert'
 import nookies from 'nookies'
 import Head from 'next/head'
 
@@ -62,6 +63,7 @@ const Account = (props: Props) => {
     }
   }, [checkedConfirmation])
   const router = useRouter()
+  const alert = useAlert()
 
   async function fetchDeleteAccount(token: Token) {
     const res = await fetch('http://localhost:3000/api/v1/auth/', {
@@ -84,8 +86,10 @@ const Account = (props: Props) => {
           currentTokenContext.destroyTokenCookies()
           currentUserInfoContext.setCurrentUserInfo(null)
           currentUserInfoContext.destroyUserInfoCookies()
+          alert.show('DELETED', {type: 'success'})
           router.replace('/')
         } else {
+          alert.show('FAILED', {type: 'error'})
           console.error('Error', json)
         }
       }).catch(error => {
