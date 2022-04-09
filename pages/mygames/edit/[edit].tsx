@@ -62,6 +62,7 @@ const defaultGame: Game = {
 
 const MygamesEdit = (props: Props) => {
   const [game, setGame] = useState<Game>(defaultGame)
+  const [isChanged, setIsChanged] = useState<boolean>(false)
   const [checkedConfirmation, setCheckedConfirmation] = useState<boolean>(false)
   const [showModal, setShowModal] = useState<boolean>(false)
   const [showOverlay, setShowOverlay] = useState<boolean>(false)
@@ -114,7 +115,7 @@ const MygamesEdit = (props: Props) => {
             <div id='game-title-invalid-feedback' className='form-group-invalid-feedback'></div>
           </div>
           {/* Submit */}
-          <button type='button' id='game-submit' className='btn btn-defalt' onClick={handleClickSubmit}>Submit</button>
+          <button type='button' id='game-submit' className='btn btn-default' disabled={!isChanged} onClick={handleClickSubmit}>Submit</button>
           {/* Delete */}
           <button className='btn btn-danger' onClick={() => { setShowModal(true) }}>Delete</button>
         </form>
@@ -165,7 +166,8 @@ const MygamesEdit = (props: Props) => {
         }).then(res => res.json())
           .then(json => {
             if (json.ok) {
-              alert.show('UPDATED', {type: 'success'})
+              alert.show('UPDATED', { type: 'success' })
+              setIsChanged(false)
             } else {
               alert.show('FAILED', {type: 'error'})
             }
@@ -196,7 +198,10 @@ const MygamesEdit = (props: Props) => {
     if (event.target.id == 'game-desc') nextGame.desc = event.target.value
     if (event.target.id == 'game-lang') nextGame.lang = event.target.value
     if (event.target.id == 'game-charcount') nextGame.char_count = Number(event.target.value)
-    setGame(nextGame)
+    if (game != nextGame) {
+      setGame(nextGame)
+      setIsChanged(true)
+    }
   }
 
   function handleClickDelete(): void{

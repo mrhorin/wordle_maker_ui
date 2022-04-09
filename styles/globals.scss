@@ -220,12 +220,18 @@ form{
   background-color: #fafafa;
 }
 
+.btn.btn.btn-default:disabled{
+  color: #656565;
+  background-color: #c4c4c4;
+  cursor: not-allowed;
+}
+
 .btn.btn-danger{
   color: #fff;
   background-color: #d00101;
 }
 
-.btn:disabled{
+.btn.btn-danger:disabled{
   color: #838383;
   background-color: #fa9393;
   cursor: not-allowed;
