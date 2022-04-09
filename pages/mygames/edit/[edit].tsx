@@ -23,6 +23,8 @@ type Props = {
   userInfo: UserInfo
 }
 
+const formOptions = { title: true, desc: true, lang: false, char_count: false, submit: true }
+
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const cookies = nookies.get(context)
   const token: Token = {
@@ -98,7 +100,7 @@ const MygamesEdit = (props: Props) => {
   function createEditGameComponent(): JSX.Element{
     if (game && game.id) {
       return (
-        <GameForm game={game} setGame={setGame} handleClickSubmit={handleClickSubmit}>
+        <GameForm game={game} setGame={setGame} handleClickSubmit={handleClickSubmit} options={formOptions}>
           <button className='btn btn-danger' onClick={() => { setShowModal(true) }}>Delete</button>
         </GameForm>
       )
@@ -128,14 +130,11 @@ const MygamesEdit = (props: Props) => {
   function handleClickSubmit(): void{
     if (validate.token(currentTokenContext.currentToken)) {
       if (validateTitle()) {
-        const langElement: HTMLSelectElement = document.querySelector('#game-lang') as HTMLSelectElement
         const body = {
           game: {
             'id': game.id,
             'title': game.title,
             'desc': game.desc,
-            'char_count': game.char_count,
-            'lang': langElement.value
           }
         }
         setShowOverlay(true)

@@ -21,6 +21,8 @@ type Props = {
   userInfo: UserInfo,
 }
 
+const formOptions = { title: true, desc: true, lang: true, char_count: true, submit: true }
+
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const cookies = nookies.get(context)
   const token: Token = {
@@ -145,7 +147,7 @@ const MygamesCreate = (props: Props) => {
 
           <div id='sidemenu-main'>
             <h1 className='title'>Create a game</h1>
-            <GameForm game={game} setGame={setGame} handleClickSubmit={handleClickSubmit} />
+            <GameForm game={game} setGame={setGame} handleClickSubmit={handleClickSubmit} options={formOptions} />
             <LoadingOverlay showOverlay={showOverlay} />
           </div>
         </div>
