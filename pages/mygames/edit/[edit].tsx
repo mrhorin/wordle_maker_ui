@@ -100,36 +100,32 @@ const MygamesEdit = (props: Props) => {
   }
 
   function createSummaryComponent(): JSX.Element{
-    if (game && game.id) {
-      return (
-        <form id='game-form' onSubmit={e => e.preventDefault()}>
-          {/* Gmae Link */}
-          {createGameLinkComponent()}
-          {/* Title */}
-          <div className='form-group'>
-            <label>Title</label>
-            <div className='form-countable-input-group'>
-              <input type='text' id='game-title' maxLength={100} value={game.title} onChange={e => handleChangeGameForm(e)} />
-              <div className='form-countable-input-counter'>{`${game.title.length} / 100`}</div>
-            </div>
-            <div id='game-title-invalid-feedback' className='form-group-invalid-feedback'></div>
+    return (
+      <form id='game-form' onSubmit={e => e.preventDefault()}>
+        {/* Gmae Link */}
+        {createGameLinkComponent()}
+        {/* Title */}
+        <div className='form-group'>
+          <label>Title</label>
+          <div className='form-countable-input-group'>
+            <input type='text' id='game-title' maxLength={100} value={game.title} onChange={e => handleChangeGameForm(e)} />
+            <div className='form-countable-input-counter'>{`${game.title.length} / 100`}</div>
           </div>
-          {/* Description */}
-          <div className='form-group'>
-            <label>Description</label>
-            <div className='form-countable-input-group'>
-              <textarea id='game-desc' rows={3} maxLength={200} value={game.desc} onChange={e => handleChangeGameForm(e)} />
-              <div className='form-countable-input-counter'>{`${game.desc.length} / 200`}</div>
-            </div>
-            <div id='game-title-invalid-feedback' className='form-group-invalid-feedback'></div>
+          <div id='game-title-invalid-feedback' className='form-group-invalid-feedback'></div>
+        </div>
+        {/* Description */}
+        <div className='form-group'>
+          <label>Description</label>
+          <div className='form-countable-input-group'>
+            <textarea id='game-desc' rows={3} maxLength={200} value={game.desc} onChange={e => handleChangeGameForm(e)} />
+            <div className='form-countable-input-counter'>{`${game.desc.length} / 200`}</div>
           </div>
-          {/* Submit */}
-          <button type='button' id='game-submit' className='btn btn-default' disabled={!isChanged} onClick={handleClickSubmit}>Update</button>
-        </form>
-      )
-    } else {
-      return <ReactLoading type={'spin'} color={'#008eff'} height={'25px'} width={'25px'} className='loading-center' />
-    }
+          <div id='game-title-invalid-feedback' className='form-group-invalid-feedback'></div>
+        </div>
+        {/* Submit */}
+        <button type='button' id='game-submit' className='btn btn-default' disabled={!isChanged} onClick={handleClickUpdate}>Update</button>
+      </form>
+    )
   }
 
   function createWordsComponent(): JSX.Element {
@@ -146,7 +142,7 @@ const MygamesEdit = (props: Props) => {
           </div>
         </div>
         {/* Submit */}
-        <button type='button' id='game-submit' className='btn btn-default'>Submit</button>
+        <button type='button' id='game-submit' className='btn btn-default' onClick={handleClickSubmit}>Submit</button>
       </form>
     )
   }
@@ -191,7 +187,26 @@ const MygamesEdit = (props: Props) => {
     }
   }
 
-  function handleClickSubmit(): void{
+  function handleChangeGameForm(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>): void{
+    const nextGame: Game = {
+      title: game.title,
+      desc: game.desc,
+      lang: game.lang,
+      char_count: game.char_count,
+      id: game.id,
+      user_id: game.user_id,
+    }
+    if (event.target.id == 'game-title') nextGame.title = event.target.value
+    if (event.target.id == 'game-desc') nextGame.desc = event.target.value
+    if (event.target.id == 'game-lang') nextGame.lang = event.target.value
+    if (event.target.id == 'game-charcount') nextGame.char_count = Number(event.target.value)
+    if (game != nextGame) {
+      setGame(nextGame)
+      setIsChanged(true)
+    }
+  }
+
+  function handleClickUpdate(): void{
     if (validate.token(currentTokenContext.currentToken)) {
       if (validateTitle()) {
         const body = {
@@ -233,23 +248,8 @@ const MygamesEdit = (props: Props) => {
     }
   }
 
-  function handleChangeGameForm(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>): void{
-    const nextGame: Game = {
-      title: game.title,
-      desc: game.desc,
-      lang: game.lang,
-      char_count: game.char_count,
-      id: game.id,
-      user_id: game.user_id,
-    }
-    if (event.target.id == 'game-title') nextGame.title = event.target.value
-    if (event.target.id == 'game-desc') nextGame.desc = event.target.value
-    if (event.target.id == 'game-lang') nextGame.lang = event.target.value
-    if (event.target.id == 'game-charcount') nextGame.char_count = Number(event.target.value)
-    if (game != nextGame) {
-      setGame(nextGame)
-      setIsChanged(true)
-    }
+  function handleClickSubmit(): void{
+    alert.show('succeed', { type: 'success', timeout: 500000 })
   }
 
   function handleClickDelete(): void{
@@ -331,9 +331,13 @@ const MygamesEdit = (props: Props) => {
             <h1 className='title'>Edit games</h1>
             {createTabsComponent()}
             {(() => {
-              if (currentTab == tabs[0]) return createSummaryComponent()
-              if (currentTab == tabs[1]) return createWordsComponent()
-              if (currentTab == tabs[2]) return createDeleteComponent()
+              if (game && game.id) {
+                if (currentTab == tabs[0]) return createSummaryComponent()
+                if (currentTab == tabs[1]) return createWordsComponent()
+                if (currentTab == tabs[2]) return createDeleteComponent()
+              } else {
+                return <ReactLoading type={'spin'} color={'#008eff'} height={'25px'} width={'25px'} className='loading-center' />
+              }
             })()}
             <LoadingOverlay showOverlay={showOverlay} />
           </div>
