@@ -2,6 +2,7 @@ import type { UserInfo, Token, Game } from 'types/global'
 import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import { useState, useContext } from 'react'
+import { useAlert } from 'react-alert'
 import nookies from 'nookies'
 import Head from 'next/head'
 
@@ -66,6 +67,7 @@ const MygamesCreate = (props: Props) => {
   const currentTokenContext = useContext(CurrentTokenContext)
   const currentUserInfoContext = useContext(CurrentUserInfoContext)
   const router = useRouter()
+  const alert = useAlert()
 
   function validateTitle(): boolean{
     const titleLength: number = Number(game.title.length)
@@ -110,15 +112,14 @@ const MygamesCreate = (props: Props) => {
         }).then(res => res.json())
           .then(json => {
             if (json.ok) {
+              alert.show('CREATED', {type: 'success'})
               router.replace(`/games/${json.data.id}`)
             } else {
+              alert.show('FAILED', {type: 'error'})
               console.error(json)
             }
           })
-          .catch(error => {
-            console.log(error)
-            setShowOverlay(false)
-          })
+          .catch(error => { setShowOverlay(false) })
       }
     } else {
       // Delete stored token and user info

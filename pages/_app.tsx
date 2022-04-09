@@ -1,6 +1,8 @@
 import type { AppProps } from 'next/app'
 import type { UserInfo, Token, Query } from 'types/global'
 import { useState, useLayoutEffect } from 'react'
+import { transitions, positions, Provider as AlertProvider } from 'react-alert'
+import AlertTemplate from 'react-alert-template-basic'
 import { parseCookies, setCookie, destroyCookie } from 'nookies'
 import { config } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
@@ -16,6 +18,13 @@ import Layout from 'components/layout'
 import 'styles/globals.scss'
 
 const cookieOptions = { maxAge: 30 * 24 * 60 * 60, path: '/' }
+const alertOptions = {
+  position: positions.BOTTOM_CENTER,
+  timeout: 5000,
+  offset: '0px',
+  transition: transitions.SCALE,
+  containerStyle: { textAlign: 'center', zIndex: 100 }
+}
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const [currentToken, setCurrentToken] = useState<Token | null>(null)
@@ -69,9 +78,11 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     <CurrentTokenContext.Provider value={{ currentToken, setCurrentToken, destroyTokenCookies }}>
       <CurrentUserInfoContext.Provider value={{ currentUserInfo, setCurrentUserInfo, destroyUserInfoCookies }}>
         <ShowAccountMenuContext.Provider value={{ showAccountMenu, setShowAccountMenu }}>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
+          <AlertProvider template={AlertTemplate} {...alertOptions}>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </AlertProvider>
         </ShowAccountMenuContext.Provider>
       </CurrentUserInfoContext.Provider>
     </CurrentTokenContext.Provider>

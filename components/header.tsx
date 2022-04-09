@@ -2,6 +2,7 @@ import type { NextPage } from 'next'
 import type { Token } from 'types/global'
 import { useRouter } from 'next/router'
 import React, { useContext } from 'react'
+import { useAlert } from 'react-alert'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCaretDown ,faGamepad, faGear, faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 
@@ -19,6 +20,7 @@ const Header: NextPage = () => {
   const currentUserInfoContext = useContext(CurrentUserInfoContext)
   const showAccountMenuContext = useContext(ShowAccountMenuContext)
   const router = useRouter()
+  const alert = useAlert()
 
   function getAccountMenuStyle(): string{
     if (showAccountMenuContext.showAccountMenu) {
@@ -68,6 +70,7 @@ const Header: NextPage = () => {
         currentTokenContext.destroyTokenCookies()
         currentUserInfoContext.setCurrentUserInfo(null)
         currentUserInfoContext.destroyUserInfoCookies()
+        alert.show('SIGNED OUT', {type: 'success'})
         router.replace('/signup')
       })
     } else {
@@ -76,11 +79,12 @@ const Header: NextPage = () => {
       currentTokenContext.destroyTokenCookies()
       currentUserInfoContext.setCurrentUserInfo(null)
       currentUserInfoContext.destroyUserInfoCookies()
+      alert.show('SIGNED OUT', {type: 'success'})
       router.replace('/signup')
     }
   }
 
-  function headerAccountComponent(): JSX.Element {
+  function createHeaderAccountComponent(): JSX.Element {
     if (validate.userInfo(currentUserInfoContext.currentUserInfo)) {
       return (
         <div className='header-account-image' onClick={toggleAccountMenu}>
@@ -106,7 +110,7 @@ const Header: NextPage = () => {
           <Link href="/">HOME</Link>
         </div>
         <div className='header-account'>
-          { headerAccountComponent() }
+          { createHeaderAccountComponent() }
         </div>
       </div>
     </header>

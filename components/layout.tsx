@@ -18,9 +18,7 @@ const Layout: NextPage = ({ children }) => {
   return (
     <div className='wrap' onClick={hideAccountMenu}>
       <Header />
-
-      {children}
-
+        {children}
       <Footer />
     </div>
   )
