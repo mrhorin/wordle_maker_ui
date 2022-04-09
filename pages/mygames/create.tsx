@@ -7,7 +7,6 @@ import nookies from 'nookies'
 import Head from 'next/head'
 
 import Sidemenu from 'components/sidemenu'
-import GameForm from 'components/game/form'
 import LoadingOverlay from 'components/loading_overlay'
 
 import validate from 'validate'
@@ -15,13 +14,7 @@ import validate from 'validate'
 import CurrentTokenContext from 'contexts/current_token'
 import CurrentUserInfoContext from 'contexts/current_user_info'
 
-
-type Props = {
-  token: Token,
-  userInfo: UserInfo,
-}
-
-const formOptions = { title: true, desc: true, lang: true, char_count: true, submit: true }
+type Props = { token: Token, userInfo: UserInfo }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const cookies = nookies.get(context)
@@ -133,6 +126,22 @@ const MygamesCreate = (props: Props) => {
     }
   }
 
+  function handleChangeGameForm(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>): void{
+    const nextGame: Game = {
+      title: game.title,
+      desc: game.desc,
+      lang: game.lang,
+      char_count: game.char_count,
+      id: game.id,
+      user_id: game.user_id,
+    }
+    if (event.target.id == 'game-title') nextGame.title = event.target.value
+    if (event.target.id == 'game-desc') nextGame.desc = event.target.value
+    if (event.target.id == 'game-lang') nextGame.lang = event.target.value
+    if (event.target.id == 'game-charcount') nextGame.char_count = Number(event.target.value)
+    setGame(nextGame)
+  }
+
   return (
     <main id='main'>
       <Head>
@@ -143,11 +152,57 @@ const MygamesCreate = (props: Props) => {
 
       <div className='container'>
         <div id='sidemenu-container'>
+          {/* Sidemenu */}
           <Sidemenu activeMenu={'create' }/>
-
+          {/* Main */}
           <div id='sidemenu-main'>
             <h1 className='title'>Create a game</h1>
-            <GameForm game={game} setGame={setGame} handleClickSubmit={handleClickSubmit} options={formOptions} />
+            {/* Game Form */}
+            <form id='game-form' onSubmit={e => e.preventDefault()}>
+              {/* Title */}
+              <div className='form-group'>
+                <label>Title</label>
+                <div className='form-countable-input-group'>
+                  <input type='text' id='game-title' maxLength={100} value={game.title} onChange={e => handleChangeGameForm(e)} />
+                  <div className='form-countable-input-counter'>{`${game.title.length} / 100`}</div>
+                </div>
+                <div id='game-title-invalid-feedback' className='form-group-invalid-feedback'></div>
+              </div>
+              {/* Description */}
+              <div className='form-group'>
+                <label>Description</label>
+                <div className='form-countable-input-group'>
+                  <textarea id='game-desc' rows={3} maxLength={200} value={game.desc} onChange={e => handleChangeGameForm(e)} />
+                  <div className='form-countable-input-counter'>{`${game.desc.length} / 200`}</div>
+                </div>
+                <div id='game-title-invalid-feedback' className='form-group-invalid-feedback'></div>
+              </div>
+              {/* Language */}
+              <div className='form-group'>
+                <label>Language</label>
+                <select id='game-lang' value={game.lang} onChange={e => handleChangeGameForm(e)}>
+                  <option value='en'>English</option>
+                  <option value='ja'>Japanese</option>
+                </select>
+              </div>
+              {/* Character count */}
+              <div className='form-group'>
+                <label>Character count</label>
+                <select id='game-charcount' value={game.char_count} onChange={e => handleChangeGameForm(e)}>
+                  <option value='2'>2</option>
+                  <option value='3'>3</option>
+                  <option value='4'>4</option>
+                  <option value='5'>5</option>
+                  <option value='6'>6</option>
+                  <option value='7'>7</option>
+                  <option value='8'>8</option>
+                  <option value='9'>9</option>
+                  <option value='10'>10</option>
+                </select>
+              </div>
+              {/* Submit */}
+              <button type='button' id='game-submit' className='btn btn-defalt' onClick={handleClickSubmit}>Submit</button>
+            </form>
             <LoadingOverlay showOverlay={showOverlay} />
           </div>
         </div>

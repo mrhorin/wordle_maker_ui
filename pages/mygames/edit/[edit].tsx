@@ -9,7 +9,6 @@ import Head from 'next/head'
 import nookies from 'nookies'
 
 import Sidemenu from 'components/sidemenu'
-import GameForm from 'components/game/form'
 import Modal from 'components/modal'
 import LoadingOverlay from 'components/loading_overlay'
 
@@ -18,12 +17,7 @@ import CurrentUserInfoContext from 'contexts/current_user_info'
 
 import validate from 'validate'
 
-type Props = {
-  token: Token,
-  userInfo: UserInfo
-}
-
-const formOptions = { title: true, desc: true, lang: false, char_count: false, submit: true }
+type Props = { token: Token, userInfo: UserInfo }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const cookies = nookies.get(context)
@@ -100,9 +94,30 @@ const MygamesEdit = (props: Props) => {
   function createEditGameComponent(): JSX.Element{
     if (game && game.id) {
       return (
-        <GameForm game={game} setGame={setGame} handleClickSubmit={handleClickSubmit} options={formOptions}>
+        <form id='game-form' onSubmit={e => e.preventDefault()}>
+          {/* Title */}
+          <div className='form-group'>
+            <label>Title</label>
+            <div className='form-countable-input-group'>
+              <input type='text' id='game-title' maxLength={100} value={game.title} onChange={e => handleChangeGameForm(e)} />
+              <div className='form-countable-input-counter'>{`${game.title.length} / 100`}</div>
+            </div>
+            <div id='game-title-invalid-feedback' className='form-group-invalid-feedback'></div>
+          </div>
+          {/* Description */}
+          <div className='form-group'>
+            <label>Description</label>
+            <div className='form-countable-input-group'>
+              <textarea id='game-desc' rows={3} maxLength={200} value={game.desc} onChange={e => handleChangeGameForm(e)} />
+              <div className='form-countable-input-counter'>{`${game.desc.length} / 200`}</div>
+            </div>
+            <div id='game-title-invalid-feedback' className='form-group-invalid-feedback'></div>
+          </div>
+          {/* Submit */}
+          <button type='button' id='game-submit' className='btn btn-defalt' onClick={handleClickSubmit}>Submit</button>
+          {/* Delete */}
           <button className='btn btn-danger' onClick={() => { setShowModal(true) }}>Delete</button>
-        </GameForm>
+        </form>
       )
     } else {
       return <ReactLoading type={'spin'} color={'#008eff'} height={'25px'} width={'25px'} className='loading-center' />
@@ -166,6 +181,22 @@ const MygamesEdit = (props: Props) => {
       currentUserInfoContext.destroyUserInfoCookies()
       router.replace('/signup')
     }
+  }
+
+  function handleChangeGameForm(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>): void{
+    const nextGame: Game = {
+      title: game.title,
+      desc: game.desc,
+      lang: game.lang,
+      char_count: game.char_count,
+      id: game.id,
+      user_id: game.user_id,
+    }
+    if (event.target.id == 'game-title') nextGame.title = event.target.value
+    if (event.target.id == 'game-desc') nextGame.desc = event.target.value
+    if (event.target.id == 'game-lang') nextGame.lang = event.target.value
+    if (event.target.id == 'game-charcount') nextGame.char_count = Number(event.target.value)
+    setGame(nextGame)
   }
 
   function handleClickDelete(): void{
