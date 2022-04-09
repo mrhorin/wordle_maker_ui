@@ -17,6 +17,8 @@ import CurrentUserInfoContext from 'contexts/current_user_info'
 
 import validate from 'validate'
 
+const defaultGame: Game = { id: '', title: '', desc: '', lang: 'en', char_count: 5, }
+
 type Props = { token: Token, userInfo: UserInfo }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -52,17 +54,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 }
 
-const defaultGame: Game = {
-  id: '',
-  title: '',
-  desc: '',
-  lang: 'en',
-  char_count: 5,
-}
-
 const MygamesEdit = (props: Props) => {
   const [game, setGame] = useState<Game>(defaultGame)
   const [isChanged, setIsChanged] = useState<boolean>(false)
+  const [currentTab, setCurrentTab] = useState<string>('Summary')
   const [checkedConfirmation, setCheckedConfirmation] = useState<boolean>(false)
   const [showModal, setShowModal] = useState<boolean>(false)
   const [showOverlay, setShowOverlay] = useState<boolean>(false)
@@ -75,6 +70,7 @@ const MygamesEdit = (props: Props) => {
   }, [checkedConfirmation])
   const router = useRouter()
   const alert = useAlert()
+  const tabs = ['Summary', 'Words', 'Delete']
 
   useLayoutEffect(() => {
     if (validate.token(props.token)) {
@@ -92,10 +88,23 @@ const MygamesEdit = (props: Props) => {
     }
   }, [])
 
-  function createEditGameComponent(): JSX.Element{
+  function createTabsComponent(): JSX.Element{
+    const tabComponents = tabs.map((t, index) => {
+      let style = 'tab'
+      if (currentTab == t) style += ' tab-active'
+      return <div className={style} onClick={() => { setCurrentTab(t) }} key={index}>{t}</div>
+    })
+    return (
+      <div className='tabs-container'>{tabComponents}</div>
+    )
+  }
+
+  function createSummaryComponent(): JSX.Element{
     if (game && game.id) {
       return (
         <form id='game-form' onSubmit={e => e.preventDefault()}>
+          {/* Gmae Link */}
+          {createGameLinkComponent()}
           {/* Title */}
           <div className='form-group'>
             <label>Title</label>
@@ -115,14 +124,53 @@ const MygamesEdit = (props: Props) => {
             <div id='game-title-invalid-feedback' className='form-group-invalid-feedback'></div>
           </div>
           {/* Submit */}
-          <button type='button' id='game-submit' className='btn btn-default' disabled={!isChanged} onClick={handleClickSubmit}>Submit</button>
-          {/* Delete */}
-          <button className='btn btn-danger' onClick={() => { setShowModal(true) }}>Delete</button>
+          <button type='button' id='game-submit' className='btn btn-default' disabled={!isChanged} onClick={handleClickSubmit}>Update</button>
         </form>
       )
     } else {
       return <ReactLoading type={'spin'} color={'#008eff'} height={'25px'} width={'25px'} className='loading-center' />
     }
+  }
+
+  function createWordsComponent(): JSX.Element {
+    return (
+      <form>
+        {/* Gmae Link */}
+        {createGameLinkComponent()}
+        {/* Words */}
+        <div className='form-group'>
+          <label>Add words</label>
+          <div className='form-countable-input-group'>
+            <textarea id='game-add-words' rows={3} maxLength={500} placeholder='peach,chair,teeth,great,bring,sadly,comfy,japan' />
+            <div className='form-countable-input-counter'>{`${game.desc.length} / 500`}</div>
+          </div>
+        </div>
+        {/* Submit */}
+        <button type='button' id='game-submit' className='btn btn-default'>Submit</button>
+      </form>
+    )
+  }
+
+  function createDeleteComponent(): JSX.Element{
+    return (
+      <div className='edit-delte' style={{ marginTop: '1rem' }}>
+        {createGameLinkComponent()}
+        <button className='btn btn-danger' onClick={() => { setShowModal(true) }}>Delete Game</button>
+      </div>
+    )
+  }
+
+  function createGameLinkComponent(): JSX.Element{
+    return (
+      <div className='edit-game-link' style={{margin: '2rem 0'}}>
+        <div style={{ display: 'inline-block', marginRight: '0.5rem' }}>Game Link:</div>
+        <Link href={`/games/${game.id}`}>
+          <a className='sidemenu-item sidemenu-item-mygames-create'>
+            {`http://localhost:8000/games/${game.id}`}
+          </a>
+        </Link>
+      </div>
+    )
   }
 
   function validateTitle(): boolean{
@@ -281,21 +329,12 @@ const MygamesEdit = (props: Props) => {
           <Sidemenu activeMenu={'edit'}/>
           <div id='sidemenu-main'>
             <h1 className='title'>Edit games</h1>
+            {createTabsComponent()}
             {(() => {
-              if (game && game.id) {
-                return (
-                  <div>
-                    <div style={{ display: 'inline-block', marginRight: '0.5rem' }}>Game Link:</div>
-                    <Link href={`/games/${game.id}`}>
-                      <a className='sidemenu-item sidemenu-item-mygames-create'>
-                        {`http://localhost:8000/games/${game.id}`}
-                      </a>
-                    </Link>
-                  </div>
-                )
-              }
+              if (currentTab == tabs[0]) return createSummaryComponent()
+              if (currentTab == tabs[1]) return createWordsComponent()
+              if (currentTab == tabs[2]) return createDeleteComponent()
             })()}
-            {createEditGameComponent()}
             <LoadingOverlay showOverlay={showOverlay} />
           </div>
         </div>
