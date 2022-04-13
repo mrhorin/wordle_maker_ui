@@ -11,7 +11,7 @@ import Sidemenu from 'components/sidemenu'
 import CurrentTokenContext from 'contexts/current_token'
 import CurrentUserInfoContext from 'contexts/current_user_info'
 
-import validate from 'validate'
+import validate from 'scripts/validate'
 
 import Link from 'next/link'
 

@@ -16,7 +16,7 @@ import ChipTextarea from 'components/form/chip_textarea'
 import CurrentTokenContext from 'contexts/current_token'
 import CurrentUserInfoContext from 'contexts/current_user_info'
 
-import validate from 'validate'
+import validate from 'scripts/validate'
 
 const defaultGame: Game = { id: '', title: '', desc: '', lang: 'en', char_count: 5, }
 

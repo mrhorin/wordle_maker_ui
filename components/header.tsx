@@ -10,7 +10,7 @@ import CurrentTokenContext from 'contexts/current_token'
 import CurrentUserInfoContext from 'contexts/current_user_info'
 import ShowAccountMenuContext from 'contexts/show_account_menu'
 
-import validate from 'validate'
+import validate from 'scripts/validate'
 
 import Link from 'next/link'
 import Image from 'next/image'

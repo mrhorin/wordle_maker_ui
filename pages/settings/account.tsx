@@ -9,7 +9,7 @@ import Head from 'next/head'
 import Sidemenu from 'components/sidemenu'
 import Modal from 'components/modal'
 
-import validate from 'validate'
+import validate from 'scripts/validate'
 
 import CurrentTokenContext from 'contexts/current_token'
 import CurrentUserInfoContext from 'contexts/current_user_info'
