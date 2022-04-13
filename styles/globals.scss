@@ -7,12 +7,14 @@
         4: .loading-overlay
           5: .header
 */
-$base-color1: #121924;
+$base-color1: #13171d;
 $base-color2: lighten($base-color1, 3%);
 $base-color3: lighten($base-color1, 6%);
 $accent-color1: #3dcaa7;
 $accent-color2: #dfa157;
 $font-color: #dfe3e5;
+$default-color: #fafafa;
+$danger-color: #d00101;
 
 $sp-break-point: 599px;
 $tablet-break-point: 1024px;
@@ -55,12 +57,13 @@ a:hover{
 
 input[type="text"],
 textarea,
-select{
+select,
+.chip-textarea{
   font-size: 1rem;
   line-height: 1.5rem;
-  background: lighten($base-color1, 8%);
-  color: $font-color;
   padding: 0.5rem;
+  color: $font-color;
+  background: lighten($base-color1, 5%);
   border: 1px solid $base-color3;
   border-radius: 3px;
 }
@@ -96,81 +99,85 @@ label{
   font-weight: bold;
 }
 
-form{
-  .form-group{
+.form-group{
+  display: flex;
+  flex-direction: column;
+  margin: 1.5rem 0;
+  position: relative;
+  label{
+    order: 1;
+    display: block;
+    font-size: 1rem;
+    margin-bottom: 0.2rem;
+  }
+  input,textarea,select{
+    order: 2;
+    display: block;
+  }
+  .chip-textarea{
+    order: 2;
+  }
+  .form-countable-input-group{
+    order: 2;
     display: flex;
     flex-direction: column;
-    margin: 1.5rem 0;
-    position: relative;
-    label{
+    input[type="text"], textarea, .chip-textarea{
       order: 1;
-      display: block;
-      font-size: 1rem;
-      margin-bottom: 0.2rem;
+      width: 100%;
+      padding-bottom: 0;
+      border-bottom: none;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
     }
-    input,textarea,select{
+    .form-countable-input-counter{
       order: 2;
-      display: block;
     }
-    .form-countable-input-group{
-      order: 2;
-      display: flex;
-      flex-direction: column;
-      input[type="text"], textarea{
-        order: 1;
-        width: 100%;
-        padding-bottom: 0;
-        border-bottom: none;
-        border-bottom-left-radius: 0;
-        border-bottom-right-radius: 0;
-      }
-      .form-countable-input-counter{
-        order: 2;
-        text-align: right;
-        font-size: 0.8rem;
-        color: darken($font-color, 30%);
-        line-height: 1rem;
-        background: lighten($base-color1, 8%);
-        padding: 0 0.5rem 0.25rem 0.5rem;
-        border: 1px solid $base-color3;
-        border-top: none;
-        border-radius: 0 0 3px 3px;
-      }
-      // When focus
-      input[type="text"]:focus, textarea:focus{
-        border: 1px solid #0099ff;
-        border-bottom: none;
-      }
-      input[type="text"]:focus + .form-countable-input-counter,
-      textarea:focus + .form-countable-input-counter{
-        border: 1px solid #0099ff;
-        border-top: none;
-      }
-      // When invalid
-      input[type="text"].input-invalid + .form-countable-input-counter,
-      textarea.input-invalid + .form-countable-input-counter,
-      select.input-invalid + .form-countable-input-counter{
-        border: 1px solid #ff6600;
-        border-top: none;
-      }
-      // When invalid + focus
-      input[type="text"].input-invalid:focus,
-      textarea.input-invalid:focus,
-      select.input-invalid:focus{
-        border: 1px solid #ff6600;
-        border-bottom: none;
-      }
+    // When focus
+    input[type="text"]:focus, textarea:focus{
+      border: 1px solid #0099ff;
+      border-bottom: none;
     }
-    .form-group-invalid-feedback{
-      order: 3;
-      color: #ff6600;
-      font-size: 0.8rem;
-      font-weight: 500;
-      position: absolute;
-      bottom: -1rem;
-      left: 0;
+    input[type="text"]:focus + .form-countable-input-counter,
+    textarea:focus + .form-countable-input-counter{
+      border: 1px solid #0099ff;
+      border-top: none;
+    }
+    // When invalid
+    input[type="text"].input-invalid + .form-countable-input-counter,
+    textarea.input-invalid + .form-countable-input-counter,
+    select.input-invalid + .form-countable-input-counter{
+      border: 1px solid #ff6600;
+      border-top: none;
+    }
+    // When invalid + focus
+    input[type="text"].input-invalid:focus,
+    textarea.input-invalid:focus,
+    select.input-invalid:focus{
+      border: 1px solid #ff6600;
+      border-bottom: none;
     }
   }
+  .form-group-invalid-feedback{
+    order: 3;
+    color: #ff6600;
+    font-size: 0.8rem;
+    font-weight: 500;
+    position: absolute;
+    bottom: -1rem;
+    left: 0;
+  }
+}
+
+.form-countable-input-counter{
+  text-align: right;
+  font-size: 0.8rem;
+  color: darken($font-color, 30%);
+  line-height: 1rem;
+  background: lighten($base-color1, 5%);
+  padding: 0 0.5rem 0.25rem 0.5rem;
+  border: 1px solid $base-color3;
+  border-top: none;
+  border-radius: 0 0 3px 3px;
 }
 
 .container{
@@ -217,7 +224,7 @@ form{
 
 .btn.btn-default{
   color: #111111;
-  background-color: #fafafa;
+  background-color: $default-color;
 }
 
 .btn.btn.btn-default:disabled{
@@ -228,7 +235,7 @@ form{
 
 .btn.btn-danger{
   color: #fff;
-  background-color: #d00101;
+  background-color: $danger-color;
 }
 
 .btn.btn-danger:disabled{
@@ -566,6 +573,105 @@ form{
         margin-right: 0;
       }
     }
+  }
+}
+
+/* ------- MygamesEdit ------- */
+.words{
+  .added-words{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: 3rem;
+    .added-words-item{
+      font-size: 13px;
+      font-weight: 500;
+      background: $default-color;
+      color: #111111;
+      border-radius: 100px;
+      line-height: 1.5rem;
+      padding: 0 0.5rem 0 1rem;
+      margin: 0.3rem;
+      cursor: pointer;
+      .added-words-item-xmark{
+        margin-left: 0.5rem;
+        border-radius: 100px;
+        font-size: 13px;
+        line-height: 13px;
+        width: 13px;
+        svg,i{
+          width: 13px;
+          line-height: 13px;
+        }
+      }
+      .added-words-item-xmark:hover{
+        background: #111;
+        color: $default-color;
+      }
+    }
+    .added-words-item.added-words-item-invalid{
+      background: $danger-color;
+      color: #fff;
+      .added-words-item-xmark:hover{
+        background: #fff;
+        color: $danger-color;
+      }
+    }
+  }
+}
+
+/* ------- WordEditor ------- */
+.chip-textarea{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  width: 100%;
+  min-height: 10rem;
+  cursor: text;
+  .chip-textarea-chip{
+    align-self: flex-start;
+    font-size: 0.8rem;
+    color: $font-color;
+    background: lighten($base-color1, 25%);
+    border-radius: 100px;
+    line-height: 1.2rem;
+    padding: 0 0.3rem 0 1rem;
+    margin: 0.3rem 0.2rem;
+    cursor: pointer;
+    .chip-textarea-chip-xmark{
+      margin-left: 0.5rem;
+      border-radius: 100px;
+      font-size: 13px;
+      line-height: 13px;
+      width: 13px;
+      svg,i{
+        width: 13px;
+        line-height: 13px;
+      }
+    }
+    .chip-textarea-chip-xmark:hover{
+      background: $font-color;
+      color: lighten($base-color1, 25%);
+    }
+  }
+  .chip-textarea-chip-invalid{
+    background: $danger-color;
+    color: #fff;
+    .chip-textarea-chip-xmark:hover{
+      background: #fff;
+      color: $danger-color;
+    }
+  }
+  input[type="text"].chip-textarea-input{
+    border: none;
+    padding: 0 0.5rem;
+    flex-grow: 2;
+    width: 5rem;
+  }
+  input[type="text"].chip-textarea-input:focus{
+    outline: none;
+    border: none;
   }
 }
 

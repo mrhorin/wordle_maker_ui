@@ -11,6 +11,7 @@ import nookies from 'nookies'
 import Sidemenu from 'components/sidemenu'
 import Modal from 'components/modal'
 import LoadingOverlay from 'components/loading_overlay'
+import ChipTextarea from 'components/form/chip_textarea'
 
 import CurrentTokenContext from 'contexts/current_token'
 import CurrentUserInfoContext from 'contexts/current_user_info'
@@ -56,6 +57,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 const MygamesEdit = (props: Props) => {
   const [game, setGame] = useState<Game>(defaultGame)
+  const [words, setWords] = useState<string[]>([])
   const [isChanged, setIsChanged] = useState<boolean>(false)
   const [currentTab, setCurrentTab] = useState<string>('Summary')
   const [checkedConfirmation, setCheckedConfirmation] = useState<boolean>(false)
@@ -130,20 +132,17 @@ const MygamesEdit = (props: Props) => {
 
   function createWordsComponent(): JSX.Element {
     return (
-      <form>
-        {/* Gmae Link */}
+      <div className='words'>
         {createGameLinkComponent()}
-        {/* Words */}
         <div className='form-group'>
-          <label>Add words</label>
+          <label>Words</label>
           <div className='form-countable-input-group'>
-            <textarea id='game-add-words' rows={3} maxLength={500} placeholder='peach,chair,teeth,great,bring,sadly,comfy,japan' />
-            <div className='form-countable-input-counter'>{`${game.desc.length} / 500`}</div>
+            <ChipTextarea game={game} words={words} setWords={setWords}></ChipTextarea>
+            <div className='form-countable-input-counter'>{`${words.join('').length} / 5000`}</div>
           </div>
         </div>
-        {/* Submit */}
-        <button type='button' id='game-submit' className='btn btn-default' onClick={handleClickSubmit}>Submit</button>
-      </form>
+        <button className='btn btn-default' onClick={handleClickSubmit}>Submit</button>
+      </div>
     )
   }
 
@@ -249,7 +248,7 @@ const MygamesEdit = (props: Props) => {
   }
 
   function handleClickSubmit(): void{
-    alert.show('succeed', { type: 'success', timeout: 500000 })
+    console.log(words)
   }
 
   function handleClickDelete(): void{
