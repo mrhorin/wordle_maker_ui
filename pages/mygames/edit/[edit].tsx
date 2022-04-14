@@ -141,7 +141,7 @@ const MygamesEdit = (props: Props) => {
       <div className='words'>
         {createGameLinkComponent()}
         <div className='form-group'>
-          <label>Words</label>
+          <label>Add words</label>
           <div className='form-countable-input-group'>
             <ChipTextarea chips={chips} handleSetChips={handleSetChips} handleRemoveChip={handleRemoveChip} />
             <div className='form-countable-input-counter'>{`${count} / 5000`}</div>
@@ -163,8 +163,8 @@ const MygamesEdit = (props: Props) => {
 
   function createGameLinkComponent(): JSX.Element{
     return (
-      <div className='edit-game-link' style={{margin: '2rem 0'}}>
-        <div style={{ display: 'inline-block', marginRight: '0.5rem' }}>Game Link:</div>
+      <div className='game-edit-link'>
+        <label>Game Link</label>
         <Link href={`/games/${game.id}`}>
           <a className='sidemenu-item sidemenu-item-mygames-create'>
             {`http://localhost:8000/games/${game.id}`}

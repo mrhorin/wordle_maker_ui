@@ -249,6 +249,7 @@ label{
   flex-direction: row;
   width: 100%;
   border-bottom: 2px solid lighten($base-color1, 5%);
+  margin-bottom: 1rem;
   .tab{
     padding: 1rem 0.5rem;
     color: darken($font-color, 30%);
@@ -527,7 +528,7 @@ label{
   display: none;
 }
 
-/* ---------- My Games ---------- */
+/* ---------- MygamesEditIndex ---------- */
 .game-index{
   display: flex;
   flex-direction: column;
@@ -577,50 +578,17 @@ label{
 }
 
 /* ------- MygamesEdit ------- */
-.words{
-  .added-words{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    margin-top: 3rem;
-    .added-words-item{
-      font-size: 13px;
-      font-weight: 500;
-      background: $default-color;
-      color: #111111;
-      border-radius: 100px;
-      line-height: 1.5rem;
-      padding: 0 0.5rem 0 1rem;
-      margin: 0.3rem;
-      cursor: pointer;
-      .added-words-item-xmark{
-        margin-left: 0.5rem;
-        border-radius: 100px;
-        font-size: 13px;
-        line-height: 13px;
-        width: 13px;
-        svg,i{
-          width: 13px;
-          line-height: 13px;
-        }
-      }
-      .added-words-item-xmark:hover{
-        background: #111;
-        color: $default-color;
-      }
-    }
-    .added-words-item.added-words-item-invalid{
-      background: $danger-color;
-      color: #fff;
-      .added-words-item-xmark:hover{
-        background: #fff;
-        color: $danger-color;
-      }
-    }
+.game-edit-link{
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  label{
+    font-size: 1rem;
+    margin-bottom: 0.2rem;
+    display: block;
   }
 }
 
-/* ------- WordEditor ------- */
+/* ------- ChipTextarea ------- */
 .chip-textarea{
   display: flex;
   flex-direction: row;
@@ -628,6 +596,7 @@ label{
   align-content: flex-start;
   width: 100%;
   min-height: 10rem;
+  font-size: 0.8rem;
   cursor: text;
   .chip-textarea-chip{
     align-self: flex-start;
@@ -635,9 +604,9 @@ label{
     color: $font-color;
     background: lighten($base-color1, 25%);
     border-radius: 100px;
-    line-height: 1.2rem;
+    line-height: 1.3rem;
     padding: 0 0.3rem 0 1rem;
-    margin: 0.3rem 0.2rem;
+    margin: 0.2rem;
     cursor: pointer;
     .chip-textarea-chip-xmark{
       margin-left: 0.5rem;
