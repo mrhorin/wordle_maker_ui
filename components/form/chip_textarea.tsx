@@ -7,10 +7,13 @@ interface Props {
   chips: Chip[]
   handleSetChips(inputList: string[]): void
   handleRemoveChip(index: number): void
+  handleUpdateChip(index: number, value: string): void
 }
 
-const ChipTextarea = ({ chips, handleSetChips, handleRemoveChip }: Props) => {
+const ChipTextarea = ({ chips, handleSetChips, handleRemoveChip, handleUpdateChip }: Props) => {
   const [inputValue, setInputWord] = useState<string>('')
+  const [currentEditChipIndex, setCurrentEditChipIndex] = useState<number | null>(null)
+  const [currentEditChipValue, setCurrentEditChipValue] = useState<string>('')
   const chipComponents: JSX.Element[] = []
 
   useLayoutEffect(() => {
@@ -30,6 +33,14 @@ const ChipTextarea = ({ chips, handleSetChips, handleRemoveChip }: Props) => {
     }
   }, [inputValue])
 
+  function handleBlurCurrentEditChip(event: any): void{
+    if (currentEditChipIndex && currentEditChipValue) {
+      handleUpdateChip(currentEditChipIndex, currentEditChipValue)
+    }
+    setCurrentEditChipIndex(null)
+    setCurrentEditChipValue('')
+  }
+
   function handleClickTextarea(event: any): void{
     if (event.target.id == 'chip-textarea') {
       const input = document.getElementById('chip-textarea-input')
@@ -37,13 +48,26 @@ const ChipTextarea = ({ chips, handleSetChips, handleRemoveChip }: Props) => {
     }
   }
 
+  function handleClickChip(index: number): void{
+    // handleUpdateChip(index)
+    setCurrentEditChipIndex(index)
+    setCurrentEditChipValue(chips[index].value)
+  }
+
   for (let i = 0; i < chips.length; i++){
+    let value = <span className='chip-textarea-chip-value'>{chips[i].value}</span>
+    if (i == currentEditChipIndex) {
+      value = <input
+        className='chip-textarea-chip-value' type='text' size={currentEditChipValue.length * 2} autoFocus={true}
+        value={currentEditChipValue} onChange={e => { setCurrentEditChipValue(e.target.value) }} onBlur={e => { handleBlurCurrentEditChip(e) }}
+      />
+    }
     if (chips[i]) {
       let style = 'chip-textarea-chip'
       if (!chips[i].isValid) style += ' chip-textarea-chip-invalid'
       chipComponents.push(
-        <div className={style} key={i}>
-          {chips[i].value}
+        <div className={style} key={i} onClick={() => { handleClickChip(i) }}>
+          {value}
           <span className='chip-textarea-chip-xmark' onClick={() => { handleRemoveChip(i) }}>
             <FontAwesomeIcon icon={faXmark} />
           </span>

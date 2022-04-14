@@ -608,7 +608,38 @@ label{
     padding: 0 0.3rem 0 1rem;
     margin: 0.2rem;
     cursor: pointer;
+    display: inline-flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    &:hover{
+      background: lighten($base-color1, 35%);
+    }
+    .chip-textarea-chip-value{
+      order: 1;
+      display: inline;
+      padding: 0;
+      margin: 0;
+      font-size: 0.8rem;
+      line-height: 1.3rem;
+      height: 1.3rem;
+      font-weight: 300;
+      background: rgba(0,0,0,0);
+      border: none;
+    }
+    input[type="text"].chip-textarea-chip-value{
+    }
+    input[type="text"].chip-textarea-chip-value:focus{
+      outline: none;
+      border: none;
+      padding: 0;
+      margin: 0;
+      font-size: 0.8rem;
+      line-height: 1.3rem;
+      height: 1.3rem;
+      font-weight: 300;
+    }
     .chip-textarea-chip-xmark{
+      order: 2;
       margin-left: 0.5rem;
       border-radius: 100px;
       font-size: 13px;
@@ -627,6 +658,9 @@ label{
   .chip-textarea-chip-invalid{
     background: $danger-color;
     color: #fff;
+    &:hover{
+      background: lighten($danger-color, 5%);
+    }
     .chip-textarea-chip-xmark:hover{
       background: #fff;
       color: $danger-color;

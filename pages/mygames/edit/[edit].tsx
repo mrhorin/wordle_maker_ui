@@ -143,7 +143,7 @@ const MygamesEdit = (props: Props) => {
         <div className='form-group'>
           <label>Add words</label>
           <div className='form-countable-input-group'>
-            <ChipTextarea chips={chips} handleSetChips={handleSetChips} handleRemoveChip={handleRemoveChip} />
+            <ChipTextarea chips={chips} handleSetChips={handleSetChips} handleRemoveChip={handleRemoveChip} handleUpdateChip={handleUpdateChip} />
             <div className='form-countable-input-counter'>{`${count} / 5000`}</div>
           </div>
         </div>
@@ -239,6 +239,19 @@ const MygamesEdit = (props: Props) => {
       })
       setChips(newChips)
     }
+  }
+
+  function handleUpdateChip(index: number, value: string): void{
+    const newChips: Chip[] = chips.map((c, i) => {
+      if (i == index) {
+        return  {
+          value: value,
+          isValid: game.char_count == value.length && language.validateWord(value)
+        }
+      }
+      return c
+    })
+    setChips(newChips)
   }
 
   function handleClickUpdate(): void{
