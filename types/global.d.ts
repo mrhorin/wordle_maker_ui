@@ -25,3 +25,8 @@ export type Game = {
   id?: number |string,
   user_id?: number | string,
 }
+
+export type Word = {
+  value: string,
+  isValid: boolean,
+}

@@ -3,6 +3,8 @@ import { useState, useLayoutEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 
+import Language from 'scripts/language'
+
 interface Props {
   game: Game,
   words: string[],
@@ -12,6 +14,8 @@ interface Props {
 
 const ChipTextarea = ({ game, words, setWords, children }: Props) => {
   const [inputWord, setInputWord] = useState<string>('')
+  const chipComponents: JSX.Element[] = []
+  const language: Language = new Language(game.lang)
 
   useLayoutEffect(() => {
     if (inputWord == ',') {
@@ -46,11 +50,10 @@ const ChipTextarea = ({ game, words, setWords, children }: Props) => {
     }
   }
 
-  const chipComponents: JSX.Element[] = []
   for (let i = 0; i < words.length; i++){
     if (words[i]) {
       let style = 'chip-textarea-chip'
-      if (words[i].length != game.char_count) style += ' chip-textarea-chip-invalid'
+      if (words[i].length != game.char_count || !language.validateWord(words[i])) style += ' chip-textarea-chip-invalid'
       chipComponents.push(
         <div className={style} key={i}>
           {words[i]}

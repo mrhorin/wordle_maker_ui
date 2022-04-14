@@ -17,6 +17,7 @@ import CurrentTokenContext from 'contexts/current_token'
 import CurrentUserInfoContext from 'contexts/current_user_info'
 
 import validate from 'scripts/validate'
+import Language from 'scripts/language'
 
 const defaultGame: Game = { id: '', title: '', desc: '', lang: 'en', char_count: 5, }
 
@@ -73,6 +74,7 @@ const MygamesEdit = (props: Props) => {
   const router = useRouter()
   const alert = useAlert()
   const tabs = ['Summary', 'Words', 'Delete']
+  const language: Language = new Language(game.lang)
 
   useLayoutEffect(() => {
     if (validate.token(props.token)) {
@@ -81,14 +83,17 @@ const MygamesEdit = (props: Props) => {
         if (json.ok) setGame(json.data)
       })
     } else {
-      // Delete stored token and user info
-      currentTokenContext.setCurrentToken(null)
-      currentTokenContext.destroyTokenCookies()
-      currentUserInfoContext.setCurrentUserInfo(null)
-      currentUserInfoContext.destroyUserInfoCookies()
-      router.replace('/signup')
+      signOut()
     }
   }, [])
+
+  function signOut(): void{
+    currentTokenContext.setCurrentToken(null)
+    currentTokenContext.destroyTokenCookies()
+    currentUserInfoContext.setCurrentUserInfo(null)
+    currentUserInfoContext.destroyUserInfoCookies()
+    router.replace('/signup')
+  }
 
   function createTabsComponent(): JSX.Element{
     const tabComponents = tabs.map((t, index) => {
@@ -186,6 +191,18 @@ const MygamesEdit = (props: Props) => {
     }
   }
 
+  function validateWords(): boolean{
+    const language: Language = new Language(game.lang)
+    let isValid: boolean = true
+    for (const w of words){
+      if (w.length != game.char_count || !language.validateWord(w)) {
+        isValid = false
+        break
+      }
+    }
+    return isValid
+  }
+
   function handleChangeGameForm(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>): void{
     const nextGame: Game = {
       title: game.title,
@@ -238,17 +255,43 @@ const MygamesEdit = (props: Props) => {
           .finally(() => setShowOverlay(false))
       }
     } else {
-      // Delete stored token and user info
-      currentTokenContext.setCurrentToken(null)
-      currentTokenContext.destroyTokenCookies()
-      currentUserInfoContext.setCurrentUserInfo(null)
-      currentUserInfoContext.destroyUserInfoCookies()
-      router.replace('/signup')
+      signOut()
     }
   }
 
   function handleClickSubmit(): void{
-    console.log(words)
+    if (validate.token(currentTokenContext.currentToken)) {
+      if (validateWords() && game.id) {
+        const body = { words: words, game: { game_id: game.id } }
+        fetch(`http://localhost:3000/api/v1/subjects/create`, {
+          method: 'POST',
+          headers: {
+            "Content-Type": "application/json",
+            'access-token': currentTokenContext.currentToken.accessToken,
+            'client': currentTokenContext.currentToken.client,
+            'uid': currentTokenContext.currentToken.uid
+          },
+          body: JSON.stringify(body)
+        }).then(res => res.json())
+          .then(json => {
+            if (json.ok) {
+              setWords([])
+              alert.show(language.succeedMsg, { type: 'success' })
+            } else if (json.data.length > 0) {
+              // json.dataをinvalid-chip
+              setWords(json.data)
+              alert.show(language.getInvalidMsg(game.char_count), { type: 'error' })
+            } else {
+              alert.show(language.failedMsg, { type: 'error' })
+            }
+          })
+          .catch(error => console.log(error))
+      } else {
+        alert.show(language.getInvalidMsg(game.char_count), { type: 'error' })
+      }
+    } else {
+      signOut()
+    }
   }
 
   function handleClickDelete(): void{
