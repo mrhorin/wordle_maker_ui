@@ -1,47 +1,34 @@
-import type { Game } from 'types/global'
+import type { Chip } from 'types/global'
 import { useState, useLayoutEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 
-import Language from 'scripts/language'
-
 interface Props {
-  game: Game,
-  words: string[],
-  setWords: React.Dispatch<React.SetStateAction<string[]>>,
-  children?: JSX.Element
+  chips: Chip[]
+  handleSetChips(inputList: string[]): void
+  handleRemoveChip(index: number): void
 }
 
-const ChipTextarea = ({ game, words, setWords, children }: Props) => {
-  const [inputWord, setInputWord] = useState<string>('')
+const ChipTextarea = ({ chips, handleSetChips, handleRemoveChip }: Props) => {
+  const [inputValue, setInputWord] = useState<string>('')
   const chipComponents: JSX.Element[] = []
-  const language: Language = new Language(game.lang)
 
   useLayoutEffect(() => {
-    if (inputWord == ',') {
-      // Delete inputWord when being inputed only comma
+    if (inputValue == ',') {
+      // Delete inputValue when being inputed only comma
       setInputWord('')
-    } else if (/,/g.test(inputWord)) {
-      // Split inputWord into an array with comma
-      let inputWordList: string[] = inputWord.split(',')
-      inputWordList = inputWordList.map((word) => {
-        return word.replace(/[\r\n\s]/g, '')
+    } else if (/,/g.test(inputValue)) {
+      // Split inputValue into an array with comma
+      let inputList: string[] = inputValue.split(',')
+      inputList = inputList.map((value) => {
+        return value.replace(/[\r\n\s]/g, '')
       }).filter(Boolean)
-      if (inputWordList.length > 0) {
-        setWords(words.concat(inputWordList))
+      if (inputList.length > 0) {
+        handleSetChips(inputList)
         setInputWord('')
       }
     }
-  }, [inputWord])
-
-  function removeWord(index: number | string) {
-    if (Number(index) >= 0) {
-      let newWords = words.filter((word, i) => {
-        return i !== Number(index)
-      })
-      setWords(newWords)
-    }
-  }
+  }, [inputValue])
 
   function handleClickTextarea(event: any): void{
     if (event.target.id == 'chip-textarea') {
@@ -50,14 +37,14 @@ const ChipTextarea = ({ game, words, setWords, children }: Props) => {
     }
   }
 
-  for (let i = 0; i < words.length; i++){
-    if (words[i]) {
+  for (let i = 0; i < chips.length; i++){
+    if (chips[i]) {
       let style = 'chip-textarea-chip'
-      if (words[i].length != game.char_count || !language.validateWord(words[i])) style += ' chip-textarea-chip-invalid'
+      if (!chips[i].isValid) style += ' chip-textarea-chip-invalid'
       chipComponents.push(
         <div className={style} key={i}>
-          {words[i]}
-          <span className='chip-textarea-chip-xmark' onClick={() => { removeWord(i) }}>
+          {chips[i].value}
+          <span className='chip-textarea-chip-xmark' onClick={() => { handleRemoveChip(i) }}>
             <FontAwesomeIcon icon={faXmark} />
           </span>
         </div>
@@ -68,7 +55,7 @@ const ChipTextarea = ({ game, words, setWords, children }: Props) => {
   return (
     <div id='chip-textarea' className='chip-textarea' onClick={(e) => { handleClickTextarea(e) }}>
       {chipComponents}
-      <input id='chip-textarea-input' className='chip-textarea-input' type='text' value={inputWord} onChange={e => { setInputWord(e.target.value) }} />
+      <input id='chip-textarea-input' className='chip-textarea-input' type='text' value={inputValue} onChange={e => { setInputWord(e.target.value) }} />
     </div>
   )
 }

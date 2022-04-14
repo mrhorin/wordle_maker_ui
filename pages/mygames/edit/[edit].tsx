@@ -1,4 +1,4 @@
-import type { UserInfo, Token, Game } from 'types/global'
+import type { UserInfo, Token, Game, Chip } from 'types/global'
 import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import { useState, useLayoutEffect, useContext, useMemo } from 'react'
@@ -58,7 +58,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 const MygamesEdit = (props: Props) => {
   const [game, setGame] = useState<Game>(defaultGame)
-  const [words, setWords] = useState<string[]>([])
+  const [chips, setChips] = useState<Chip[]>([])
   const [isChanged, setIsChanged] = useState<boolean>(false)
   const [currentTab, setCurrentTab] = useState<string>('Summary')
   const [checkedConfirmation, setCheckedConfirmation] = useState<boolean>(false)
@@ -136,14 +136,15 @@ const MygamesEdit = (props: Props) => {
   }
 
   function createWordsComponent(): JSX.Element {
+    const count = chips.map(c => c.value).join('').length
     return (
       <div className='words'>
         {createGameLinkComponent()}
         <div className='form-group'>
           <label>Words</label>
           <div className='form-countable-input-group'>
-            <ChipTextarea game={game} words={words} setWords={setWords}></ChipTextarea>
-            <div className='form-countable-input-counter'>{`${words.join('').length} / 5000`}</div>
+            <ChipTextarea chips={chips} handleSetChips={handleSetChips} handleRemoveChip={handleRemoveChip} />
+            <div className='form-countable-input-counter'>{`${count} / 5000`}</div>
           </div>
         </div>
         <button className='btn btn-default' onClick={handleClickSubmit}>Submit</button>
@@ -194,8 +195,8 @@ const MygamesEdit = (props: Props) => {
   function validateWords(): boolean{
     const language: Language = new Language(game.lang)
     let isValid: boolean = true
-    for (const w of words){
-      if (w.length != game.char_count || !language.validateWord(w)) {
+    for (const c of chips){
+      if (c.value.length != game.char_count || !language.validateWord(c.value)) {
         isValid = false
         break
       }
@@ -219,6 +220,23 @@ const MygamesEdit = (props: Props) => {
     if (game != nextGame) {
       setGame(nextGame)
       setIsChanged(true)
+    }
+  }
+
+  function handleSetChips(inputList: string[]): void{
+    const newChips = inputList.map((input) => {
+      const isValid = input.length == game.char_count && language.validateWord(input)
+      return { value: input, isValid: isValid }
+    })
+    setChips(chips.concat(newChips))
+  }
+
+  function handleRemoveChip(index: number): void{
+    if (Number(index) >= 0) {
+      let newChips = chips.filter((chip, i) => {
+        return i !== Number(index)
+      })
+      setChips(newChips)
     }
   }
 
@@ -262,6 +280,7 @@ const MygamesEdit = (props: Props) => {
   function handleClickSubmit(): void{
     if (validate.token(currentTokenContext.currentToken)) {
       if (validateWords() && game.id) {
+        const words = chips.map(c => c.value)
         const body = { words: words, game: { game_id: game.id } }
         fetch(`http://localhost:3000/api/v1/subjects/create`, {
           method: 'POST',
@@ -275,12 +294,8 @@ const MygamesEdit = (props: Props) => {
         }).then(res => res.json())
           .then(json => {
             if (json.ok) {
-              setWords([])
+              setChips([])
               alert.show(language.succeedMsg, { type: 'success' })
-            } else if (json.data.length > 0) {
-              // json.dataをinvalid-chip
-              setWords(json.data)
-              alert.show(language.getInvalidMsg(game.char_count), { type: 'error' })
             } else {
               alert.show(language.failedMsg, { type: 'error' })
             }

@@ -17,6 +17,11 @@ export type Query = {
   [key: string]: string
 }
 
+export type Chip = {
+  value: string,
+  isValid: boolean,
+}
+
 export type Game = {
   title: string,
   desc: string,
