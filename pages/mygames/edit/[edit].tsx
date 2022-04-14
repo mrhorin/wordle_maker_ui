@@ -147,7 +147,7 @@ const MygamesEdit = (props: Props) => {
             <div className='form-countable-input-counter'>{`${count} / 5000`}</div>
           </div>
         </div>
-        <button className='btn btn-default' onClick={handleClickSubmit}>Submit</button>
+        <button className='btn btn-default' disabled={!validateWords()} onClick={handleClickSubmit}>Submit</button>
       </div>
     )
   }
@@ -195,7 +195,8 @@ const MygamesEdit = (props: Props) => {
   function validateWords(): boolean{
     const language: Language = new Language(game.lang)
     let isValid: boolean = true
-    for (const c of chips){
+    if (chips.length <= 0) isValid = false
+    for (const c of chips) {
       if (c.value.length != game.char_count || !language.validateWord(c.value)) {
         isValid = false
         break
