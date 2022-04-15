@@ -108,47 +108,49 @@ const MygamesEdit = (props: Props) => {
 
   function createSummaryComponent(): JSX.Element{
     return (
-      <form id='game-form' onSubmit={e => e.preventDefault()}>
-        {/* Gmae Link */}
-        {createGameLinkComponent()}
-        {/* Title */}
-        <div className='form-group'>
-          <label>Title</label>
-          <div className='form-countable-input-group'>
-            <input type='text' id='game-title' maxLength={100} value={game.title} onChange={e => handleChangeGameForm(e)} />
-            <div className='form-countable-input-counter'>{`${game.title.length} / 100`}</div>
+      <div className='edit-summary'>
+        <form id='game-form' onSubmit={e => e.preventDefault()}>
+          {/* Gmae Link */}
+          {createGameLinkComponent()}
+          {/* Title */}
+          <div className='form-group'>
+            <label>Title</label>
+            <div className='form-countable-input-group'>
+              <input type='text' id='game-title' maxLength={100} value={game.title} onChange={e => handleChangeGameForm(e)} />
+              <div className='form-countable-input-counter'>{`${game.title.length} / 100`}</div>
+            </div>
+            <div id='game-title-invalid-feedback' className='form-group-invalid-feedback'></div>
           </div>
-          <div id='game-title-invalid-feedback' className='form-group-invalid-feedback'></div>
-        </div>
-        {/* Description */}
-        <div className='form-group'>
-          <label>Description</label>
-          <div className='form-countable-input-group'>
-            <textarea id='game-desc' rows={3} maxLength={200} value={game.desc} onChange={e => handleChangeGameForm(e)} />
-            <div className='form-countable-input-counter'>{`${game.desc.length} / 200`}</div>
+          {/* Description */}
+          <div className='form-group'>
+            <label>Description</label>
+            <div className='form-countable-input-group'>
+              <textarea id='game-desc' rows={3} maxLength={200} value={game.desc} onChange={e => handleChangeGameForm(e)} />
+              <div className='form-countable-input-counter'>{`${game.desc.length} / 200`}</div>
+            </div>
+            <div id='game-title-invalid-feedback' className='form-group-invalid-feedback'></div>
           </div>
-          <div id='game-title-invalid-feedback' className='form-group-invalid-feedback'></div>
-        </div>
-        {/* Language */}
-        <div className='form-group'>
-          <label>Language</label>
-          <input type='text' value={language.name} disabled={true} />
-        </div>
-        {/* Character count */}
-        <div className='form-group'>
-          <label>Character count</label>
-          <input type='text' value={game.char_count} disabled={true} />
-        </div>
-        {/* Submit */}
-        <button type='button' id='game-submit' className='btn btn-default' disabled={!isChanged} onClick={handleClickUpdate}>Update</button>
-      </form>
+          {/* Language */}
+          <div className='form-group'>
+            <label>Language</label>
+            <input type='text' value={language.name} disabled={true} />
+          </div>
+          {/* Character count */}
+          <div className='form-group'>
+            <label>Character count</label>
+            <input type='text' value={game.char_count} disabled={true} />
+          </div>
+          {/* Submit */}
+          <button type='button' id='game-submit' className='btn btn-default' disabled={!isChanged} onClick={handleClickUpdate}>Update</button>
+        </form>
+      </div>
     )
   }
 
   function createWordsComponent(): JSX.Element {
     const count = chips.map(c => c.value).join('').length
     return (
-      <div className='words'>
+      <div className='edit-words'>
         {createGameLinkComponent()}
         <div className='form-group'>
           <label>Add words</label>
@@ -164,7 +166,7 @@ const MygamesEdit = (props: Props) => {
 
   function createDeleteComponent(): JSX.Element{
     return (
-      <div className='edit-delte' style={{ marginTop: '1rem' }}>
+      <div className='edit-delete' style={{ marginTop: '1rem' }}>
         {createGameLinkComponent()}
         <button className='btn btn-danger' onClick={() => { setShowModal(true) }}>Delete Game</button>
       </div>

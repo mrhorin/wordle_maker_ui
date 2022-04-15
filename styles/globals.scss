@@ -648,18 +648,18 @@ label{
     .chip-textarea-chip-xmark{
       order: 2;
       margin-left: 0.5rem;
-      border-radius: 100px;
       font-size: 13px;
-      line-height: 13px;
+      line-height: 1.3rem;
       width: 13px;
       svg,i{
+        border-radius: 100px;
         width: 13px;
-        line-height: 13px;
+        height: 13px;
+        &:hover{
+          background: $font-color;
+          color: lighten($base-color1, 25%);
+        }
       }
-    }
-    .chip-textarea-chip-xmark:hover{
-      background: $font-color;
-      color: lighten($base-color1, 25%);
     }
   }
   .chip-textarea-chip-invalid{
@@ -668,9 +668,13 @@ label{
     &:hover{
       background: lighten($danger-color, 5%);
     }
-    .chip-textarea-chip-xmark:hover{
-      background: #fff;
-      color: $danger-color;
+    .chip-textarea-chip-xmark{
+      svg,i{
+        &:hover{
+          background: #fff;
+          color: $danger-color;
+        }
+      }
     }
   }
   input[type="text"].chip-textarea-input{
