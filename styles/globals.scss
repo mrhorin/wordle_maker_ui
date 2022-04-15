@@ -7,10 +7,10 @@
         4: .loading-overlay
           5: .header
 */
-$base-color1: #13171d;
+$base-color1: #23232a;
 $base-color2: lighten($base-color1, 3%);
 $base-color3: lighten($base-color1, 6%);
-$accent-color1: #3dcaa7;
+$accent-color1: #39b999;
 $accent-color2: #dfa157;
 $font-color: #dfe3e5;
 $default-color: #fafafa;
@@ -78,6 +78,13 @@ textarea:focus,
 select:focus{
   outline: none;
   border: 1px solid #0099ff;
+}
+input[type="text"]:disabled{
+  background: lighten($base-color1, 15%);
+  color: darken($font-color, 25%);
+  &:hover{
+    cursor: not-allowed;
+  }
 }
 input[type="checkbox"]{
   transform: scale(1.4);

@@ -129,6 +129,16 @@ const MygamesEdit = (props: Props) => {
           </div>
           <div id='game-title-invalid-feedback' className='form-group-invalid-feedback'></div>
         </div>
+        {/* Language */}
+        <div className='form-group'>
+          <label>Language</label>
+          <input type='text' value={language.name} disabled={true} />
+        </div>
+        {/* Character count */}
+        <div className='form-group'>
+          <label>Character count</label>
+          <input type='text' value={game.char_count} disabled={true} />
+        </div>
         {/* Submit */}
         <button type='button' id='game-submit' className='btn btn-default' disabled={!isChanged} onClick={handleClickUpdate}>Update</button>
       </form>

@@ -15,7 +15,7 @@ class Language{
 
   public get name(): string {
     if (this.lang == 'en') return 'English'
-    if (this.lang == 'ja') return '日本語(カタカナ)'
+    if (this.lang == 'ja') return '日本語（カタカナ）'
     return ''
   }
 
