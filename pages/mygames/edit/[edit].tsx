@@ -1,4 +1,4 @@
-import type { UserInfo, Token, Game, Chip } from 'types/global'
+import type { UserInfo, Token, Game, Subject, Chip } from 'types/global'
 import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import { useState, useLayoutEffect, useContext, useMemo } from 'react'
@@ -7,6 +7,8 @@ import ReactLoading from 'react-loading'
 import Link from 'next/link'
 import Head from 'next/head'
 import nookies from 'nookies'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPenToSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 
 import Sidemenu from 'components/sidemenu'
 import Modal from 'components/modal'
@@ -20,6 +22,7 @@ import validate from 'scripts/validate'
 import Language from 'scripts/language'
 
 const defaultGame: Game = { id: '', title: '', desc: '', lang: 'en', char_count: 5, }
+const tabs: string[] = ['Summary', 'Add Words', 'Edit Words','Delete Game']
 
 type Props = { token: Token, userInfo: UserInfo }
 
@@ -73,7 +76,6 @@ const MygamesEdit = (props: Props) => {
   }, [checkedConfirmation])
   const router = useRouter()
   const alert = useAlert()
-  const tabs = ['Summary', 'Words', 'Delete']
   const language: Language = new Language(game.lang)
 
   useLayoutEffect(() => {
@@ -108,7 +110,7 @@ const MygamesEdit = (props: Props) => {
 
   function createSummaryComponent(): JSX.Element{
     return (
-      <div className='edit-summary'>
+      <div className='game-edit-summary'>
         <form id='game-form' onSubmit={e => e.preventDefault()}>
           {/* Gmae Link */}
           {createGameLinkComponent()}
@@ -141,33 +143,72 @@ const MygamesEdit = (props: Props) => {
             <input type='text' value={game.char_count} disabled={true} />
           </div>
           {/* Submit */}
-          <button type='button' id='game-submit' className='btn btn-default' disabled={!isChanged} onClick={handleClickUpdate}>Update</button>
+          <button type='button' id='game-submit' className='btn btn-primary' disabled={!isChanged} onClick={handleClickUpdate}>Update</button>
         </form>
       </div>
     )
   }
 
-  function createWordsComponent(): JSX.Element {
+  function createAddComponent(): JSX.Element {
     const count = chips.map(c => c.value).join('').length
     return (
-      <div className='edit-words'>
-        {createGameLinkComponent()}
+      <div className='game-add-words'>
         <div className='form-group'>
-          <label>Add words</label>
+          <label>Words</label>
           <div className='form-countable-input-group'>
             <ChipTextarea chips={chips} handleSetChips={handleSetChips} handleRemoveChip={handleRemoveChip} handleUpdateChip={handleUpdateChip} />
             <div className='form-countable-input-counter'>{`${count} / 5000`}</div>
           </div>
         </div>
-        <button className='btn btn-default' disabled={!validateWords()} onClick={handleClickSubmit}>Submit</button>
+        <button className='btn btn-primary' disabled={!validateWords() || 0 == chips.length} onClick={handleClickSubmit}>Submit</button>
+      </div>
+    )
+  }
+
+  function createEditComponent(): JSX.Element{
+    const subjects: Subject[] = [
+      { word: 'ティラノシショウ', created_at: '2022/4/16' },
+      { word: 'アタマデカチモン', created_at: '2022/4/16' },
+      { word: 'マリンキメラモン', created_at: '2022/4/16' },
+      { word: 'トノサマゲコモン', created_at: '2022/4/16' },
+      { word: 'エンジェウーモン', created_at: '2022/4/16' },
+      { word: 'スカルグレイモン', created_at: '2022/4/16' },
+      { word: 'メタルグレイモン', created_at: '2022/4/16' },
+      { word: 'ウォーグレイモン', created_at: '2022/4/16' },
+      { word: 'サーベルレオモン', created_at: '2022/4/16' },
+      { word: 'ワルモンザエモン', created_at: '2022/4/16' },
+      { word: 'メタルガルルモン', created_at: '2022/4/16' },
+    ]
+    const subjectComponents = subjects.map((s, i) => {
+      return (
+        <tr key={i}>
+          <td className='table-td-word'>{ s.word }</td>
+          <td className='table-td-date-created'>{ s.created_at }</td>
+          <td className='table-td-edit'><button className='btn btn-mini btn-default'><FontAwesomeIcon icon={faPenToSquare} /></button></td>
+          <td className='table-td-delete'><button className='btn btn-mini btn-danger'><FontAwesomeIcon icon={faTrashCan} /></button></td>
+        </tr>
+      )
+    })
+    return (
+      <div className='game-edit-words'>
+        <table>
+          <thead>
+            <tr>
+              <th className='table-th-word'>Word</th>
+              <th className='table-th-date-created'>Date Created</th>
+              <th className='table-th-date-edit'>Edit</th>
+              <th className='table-th-date-delete'>Delete</th>
+            </tr>
+          </thead>
+          <tbody>{ subjectComponents }</tbody>
+        </table>
       </div>
     )
   }
 
   function createDeleteComponent(): JSX.Element{
     return (
-      <div className='edit-delete' style={{ marginTop: '1rem' }}>
-        {createGameLinkComponent()}
+      <div className='game-edit-delete' style={{ marginTop: '1rem' }}>
         <button className='btn btn-danger' onClick={() => { setShowModal(true) }}>Delete Game</button>
       </div>
     )
@@ -397,7 +438,7 @@ const MygamesEdit = (props: Props) => {
             </ol>
             <div>
             <input type="checkbox" id="confirmation" checked={checkedConfirmation} onChange={handleConfirmation} />
-            <label>I agree.</label>
+            <span style={{ fontWeight: '500' }}>I agree.</span>
           </div>
           </div>
           <div className='modal-window-footer'>
@@ -416,8 +457,9 @@ const MygamesEdit = (props: Props) => {
             {(() => {
               if (game && game.id) {
                 if (currentTab == tabs[0]) return createSummaryComponent()
-                if (currentTab == tabs[1]) return createWordsComponent()
-                if (currentTab == tabs[2]) return createDeleteComponent()
+                if (currentTab == tabs[1]) return createAddComponent()
+                if (currentTab == tabs[2]) return createEditComponent()
+                if (currentTab == tabs[3]) return createDeleteComponent()
               } else {
                 return <ReactLoading type={'spin'} color={'#008eff'} height={'25px'} width={'25px'} className='loading-center' />
               }

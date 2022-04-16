@@ -31,6 +31,11 @@ export type Game = {
   user_id?: number | string,
 }
 
+export type Subject = {
+  word: string,
+  created_at: string,
+}
+
 export type Word = {
   value: string,
   isValid: boolean,

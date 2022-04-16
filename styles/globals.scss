@@ -10,9 +10,12 @@
 $base-color1: #23232a;
 $base-color2: lighten($base-color1, 3%);
 $base-color3: lighten($base-color1, 6%);
-$accent-color1: #39b999;
+$accent-color1: #42c8a7;
 $accent-color2: #dfa157;
-$font-color: #dfe3e5;
+$accent-color3: #3ea6ff;
+$font-color1: #dfe3e5;
+$font-color2: darken($font-color1, 30%);
+$font-color3: darken($font-color1, 35%);
 $default-color: #fafafa;
 $danger-color: #d00101;
 
@@ -24,8 +27,8 @@ body {
   font-family: "Helvetica Neue",Arial,"Hiragino Kaku Gothic ProN","Hiragino Sans",Helvetica,Roboto,Meiryo,sans-serif;
   word-break: break-word;
   background: $base-color1;
-  color: $font-color;
-  font-size: 16px;
+  color: $font-color1;
+  font-size: 15px;
   padding: 0;
   margin: 0;
   z-index: 0;
@@ -46,8 +49,30 @@ body {
   box-sizing: border-box;
 }
 
+section{
+  margin: 5rem 0;
+}
+
+h1,h2,h3{
+  svg,i{
+    margin-right: 1rem;
+  }
+}
+h1{
+  font-size: 2rem;
+  margin: 2rem 0;
+}
+h2{
+  font-size: 1.5rem;
+  margin: 1.5rem 0;
+}
+h3{
+  font-size: 1.2rem;
+  margin: 1.2rem 0;
+}
+
 a {
-  color: $accent-color1;
+  color: $accent-color3;
   text-decoration: none;
 }
 a:hover{
@@ -62,8 +87,8 @@ select,
   font-size: 1rem;
   line-height: 1.5rem;
   padding: 0.5rem;
-  color: $font-color;
-  background: lighten($base-color1, 5%);
+  color: $font-color1;
+  background: $base-color3;
   border: 1px solid $base-color3;
   border-radius: 3px;
 }
@@ -81,7 +106,7 @@ select:focus{
 }
 input[type="text"]:disabled{
   background: lighten($base-color1, 15%);
-  color: darken($font-color, 25%);
+  color: darken($font-color1, 25%);
   &:hover{
     cursor: not-allowed;
   }
@@ -104,6 +129,7 @@ textarea::-webkit-scrollbar-thumb{
 
 label{
   font-weight: bold;
+  color: $font-color2;
 }
 
 .form-group{
@@ -178,9 +204,9 @@ label{
 .form-countable-input-counter{
   text-align: right;
   font-size: 0.8rem;
-  color: darken($font-color, 30%);
+  color: $font-color2;
   line-height: 1rem;
-  background: lighten($base-color1, 5%);
+  background: $base-color3;
   padding: 0 0.5rem 0.25rem 0.5rem;
   border: 1px solid $base-color3;
   border-top: none;
@@ -219,6 +245,48 @@ label{
   order: 3;
 }
 
+table{
+  width: 100%;
+  border-collapse: collapse;
+  thead{
+    tr{
+      background: $base-color1;
+      color: $font-color2;
+      th{
+        text-align: left;
+        white-space: nowrap;
+        border: 3px solid $base-color1;
+        padding: 0.5rem 1rem;
+      }
+      th.table-th-word{
+        width: 100%;
+      }
+      th.table-th-date-created{
+      }
+      th.table-th-btns{
+      }
+    }
+  }
+  tbody{
+    tr{
+      background: $base-color3;
+      td{
+        white-space: nowrap;
+        border: 5px solid $base-color1;
+        padding: 0.5rem 1rem;
+      }
+      td.table-td-edit,
+      td.table-td-delete{
+        text-align: center;
+      }
+    }
+  }
+  tfoot{
+    background: $base-color3;
+
+  }
+}
+
 .btn{
   font-size: 1rem;
   line-height: 1.7rem;
@@ -228,13 +296,29 @@ label{
   border-radius: 20px;
   cursor: pointer;
 }
+.btn.btn-mini{
+  font-size: 0.8rem;
+  line-height: 1.5rem;
+  padding: 0 0.5rem;
+  margin: 0;
+  border-radius: 5px;
+}
 
 .btn.btn-default{
   color: #111111;
   background-color: $default-color;
 }
-
 .btn.btn.btn-default:disabled{
+  color: #656565;
+  background-color: #c4c4c4;
+  cursor: not-allowed;
+}
+
+.btn.btn-primary{
+  color: #111111;
+  background-color: $accent-color1;
+}
+.btn.btn.btn-primary:disabled{
   color: #656565;
   background-color: #c4c4c4;
   cursor: not-allowed;
@@ -244,7 +328,6 @@ label{
   color: #fff;
   background-color: $danger-color;
 }
-
 .btn.btn-danger:disabled{
   color: #838383;
   background-color: #fa9393;
@@ -256,10 +339,11 @@ label{
   flex-direction: row;
   width: 100%;
   border-bottom: 2px solid lighten($base-color1, 5%);
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
   .tab{
-    padding: 1rem 0.5rem;
-    color: darken($font-color, 30%);
+    font-size: 1rem;
+    padding: 1rem;
+    color: $font-color2;
     font-weight: 500;
     cursor: pointer;
   }
@@ -297,7 +381,7 @@ label{
     padding: 10px;
     text-align: center;
     font-weight: bold;
-    a{ color: $font-color; }
+    a{ color: $font-color1; }
     a:hover{  text-decoration: none; }
   }
   .header-account{
@@ -319,7 +403,7 @@ label{
         order: 2;
         padding: 0 0.75rem;
         font-size: 0.8rem;
-        color: darken($font-color, 20%);
+        color: darken($font-color1, 20%);
       }
     }
     .header-account-image:hover{
@@ -342,13 +426,13 @@ label{
         line-height: 40px;
         padding: 0 0.5rem;
         text-align: left;
-        color: darken($font-color, 20%);
+        color: darken($font-color1, 20%);
         svg,i{
           margin-right: 0.5rem;
         }
       }
       li:hover{
-        background: $font-color;
+        background: $font-color1;
         color: $base-color1;
         svg,i{
           color: $base-color1;
@@ -397,7 +481,7 @@ label{
               width: 30px;
               margin-right: 0.5rem;
             }
-            color: darken($font-color, 30%);
+            color: $font-color2;
           }
           a:hover{
             color: $accent-color1;
@@ -416,7 +500,7 @@ label{
         li.sidemenu-item-title,
         li.sidemenu-item-title:hover{
           font-size: 1rem;
-          color: $font-color;
+          color: $font-color1;
           svg, i{
             width: 30px;
             margin-right: 0.5rem;
@@ -570,7 +654,7 @@ label{
           order: 1;
           display: inline-block;
           margin-right: 1rem;
-          color: darken($font-color, 20%);
+          color: darken($font-color1, 20%);
         }
         .game-index-item-attrs-item-value{
           order: 2;
@@ -586,12 +670,13 @@ label{
 
 /* ------- MygamesEdit ------- */
 .game-edit-link{
-  margin-top: 1rem;
   margin-bottom: 1rem;
   label{
-    font-size: 1rem;
-    margin-bottom: 0.2rem;
+    margin-bottom: 0.3rem;
     display: block;
+    svg,i{
+      margin-right: 0.3rem;
+    }
   }
 }
 
@@ -608,7 +693,7 @@ label{
   .chip-textarea-chip{
     align-self: flex-start;
     font-size: 0.8rem;
-    color: $font-color;
+    color: $font-color1;
     background: lighten($base-color1, 25%);
     border-radius: 100px;
     line-height: 1.3rem;
@@ -656,7 +741,7 @@ label{
         width: 13px;
         height: 13px;
         &:hover{
-          background: $font-color;
+          background: $font-color1;
           color: lighten($base-color1, 25%);
         }
       }
