@@ -1,20 +1,14 @@
-import type { Chip } from 'types/global'
-import { useState, useLayoutEffect } from 'react'
+import { useState, useLayoutEffect, useContext, useMemo } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 
-interface Props {
-  chips: Chip[]
-  handleSetChips(inputList: string[]): void
-  handleRemoveChip(index: number): void
-  handleUpdateChip(index: number, value: string): void
-}
+import ChipContext from 'contexts/chips'
 
-const ChipTextarea = ({ chips, handleSetChips, handleRemoveChip, handleUpdateChip }: Props) => {
+const ChipTextarea = () => {
   const [inputValue, setInputWord] = useState<string>('')
   const [currentEditChipIndex, setCurrentEditChipIndex] = useState<number | null>(null)
   const [currentEditChipValue, setCurrentEditChipValue] = useState<string>('')
-  const chipComponents: JSX.Element[] = []
+  const chipContext = useContext(ChipContext)
 
   useLayoutEffect(() => {
     if (inputValue == ',') {
@@ -27,7 +21,7 @@ const ChipTextarea = ({ chips, handleSetChips, handleRemoveChip, handleUpdateChi
         return value.replace(/[\r\n\s]/g, '')
       }).filter(Boolean)
       if (inputList.length > 0) {
-        handleSetChips(inputList)
+        chipContext.addChips(inputList)
         setInputWord('')
       }
     }
@@ -35,7 +29,7 @@ const ChipTextarea = ({ chips, handleSetChips, handleRemoveChip, handleUpdateChi
 
   function handleBlurCurrentEditChip(event: any): void{
     if (currentEditChipIndex != null && currentEditChipValue) {
-      handleUpdateChip(currentEditChipIndex, currentEditChipValue.replace(/[\r\n\s,]/g, ''))
+      chipContext.updateChip(currentEditChipIndex, currentEditChipValue.replace(/[\r\n\s,]/g, ''))
     }
     setCurrentEditChipIndex(null)
     setCurrentEditChipValue('')
@@ -48,12 +42,12 @@ const ChipTextarea = ({ chips, handleSetChips, handleRemoveChip, handleUpdateChi
   function handleClickChip(event: any, index: number): void{
     if (event.target.className == 'chip-textarea-chip-value') {
       setCurrentEditChipIndex(index)
-      setCurrentEditChipValue(chips[index].value)
+      setCurrentEditChipValue(chipContext.chips[index].value)
     }
   }
 
   function handleClickChipXmark(event: any, index: number): void{
-    handleRemoveChip(index)
+    chipContext.removeChip(index)
   }
 
   function handleClickTextarea(event: any): void{
@@ -63,20 +57,20 @@ const ChipTextarea = ({ chips, handleSetChips, handleRemoveChip, handleUpdateChi
     }
   }
 
-  for (let i = 0; i < chips.length; i++){
-    let value
-    if (i == currentEditChipIndex) {
-      value = <input
-        id='chip-textarea-current-edit-chip' className='chip-textarea-chip-value' type='text' size={currentEditChipValue.length * 2} autoFocus={true}
-        value={currentEditChipValue} onChange={e => { handleChangeCurrentEditChip(e) }} onBlur={e => { handleBlurCurrentEditChip(e) }}
-      />
-    } else {
-      value = <div className='chip-textarea-chip-value'>{chips[i].value}</div>
-    }
-    if (chips[i]) {
+  const chipComponents = useMemo(() => {
+    return chipContext.chips.map((c, i) => {
+      let value
+      if (i == currentEditChipIndex) {
+        value = <input
+          id='chip-textarea-current-edit-chip' className='chip-textarea-chip-value' type='text' size={currentEditChipValue.length * 2} autoFocus={true}
+          value={currentEditChipValue} onChange={e => { handleChangeCurrentEditChip(e) }} onBlur={e => { handleBlurCurrentEditChip(e) }}
+        />
+      } else {
+        value = <div className='chip-textarea-chip-value'>{c.value}</div>
+      }
       let style = 'chip-textarea-chip'
-      if (!chips[i].isValid) style += ' chip-textarea-chip-invalid'
-      chipComponents.push(
+      if (!c.isValid) style += ' chip-textarea-chip-invalid'
+      return (
         <div className={style} key={i} onClick={e => handleClickChip(e, i)}>
           {value}
           <div className='chip-textarea-chip-xmark' onClick={e => handleClickChipXmark(e, i)}>
@@ -84,8 +78,8 @@ const ChipTextarea = ({ chips, handleSetChips, handleRemoveChip, handleUpdateChi
           </div>
         </div>
       )
-    }
-  }
+    })
+  }, [chipContext.chips, currentEditChipIndex, currentEditChipValue])
 
   return (
     <div id='chip-textarea' className='chip-textarea' onClick={(e) => { handleClickTextarea(e) }}>

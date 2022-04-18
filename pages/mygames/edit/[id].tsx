@@ -17,6 +17,7 @@ import ChipTextarea from 'components/form/chip_textarea'
 
 import CurrentTokenContext from 'contexts/current_token'
 import CurrentUserInfoContext from 'contexts/current_user_info'
+import ChipsContext from 'contexts/chips'
 
 import validate from 'scripts/validate'
 import Language from 'scripts/language'
@@ -152,16 +153,18 @@ const MygamesEdit = (props: Props) => {
   function createAddComponent(): JSX.Element {
     const count = chips.map(c => c.value).join('').length
     return (
-      <div className='game-add-words'>
-        <div className='form-group'>
-          <label>Words</label>
-          <div className='form-countable-input-group'>
-            <ChipTextarea chips={chips} handleSetChips={handleSetChips} handleRemoveChip={handleRemoveChip} handleUpdateChip={handleUpdateChip} />
-            <div className='form-countable-input-counter'>{`${count} / 5000`}</div>
+      <ChipsContext.Provider value={{ chips, addChips, removeChip, updateChip }}>
+        <div className='game-add-words'>
+          <div className='form-group'>
+            <label>Words</label>
+            <div className='form-countable-input-group'>
+              <ChipTextarea />
+              <div className='form-countable-input-counter'>{`${count} / 5000`}</div>
+            </div>
           </div>
+          <button className='btn btn-primary' disabled={!validateWords() || 0 == chips.length} onClick={handleClickSubmit}>Submit</button>
         </div>
-        <button className='btn btn-primary' disabled={!validateWords() || 0 == chips.length} onClick={handleClickSubmit}>Submit</button>
-      </div>
+      </ChipsContext.Provider>
     )
   }
 
@@ -277,7 +280,7 @@ const MygamesEdit = (props: Props) => {
     }
   }
 
-  function handleSetChips(inputList: string[]): void{
+  function addChips(inputList: string[]): void{
     const newChips = inputList.map((input) => {
       const isValid = input.length == game.char_count && language.validateWord(input)
       return { value: input, isValid: isValid }
@@ -285,7 +288,7 @@ const MygamesEdit = (props: Props) => {
     setChips(chips.concat(newChips))
   }
 
-  function handleRemoveChip(index: number): void{
+  function removeChip(index: number): void{
     if (Number(index) >= 0) {
       let newChips = chips.filter((chip, i) => {
         return i !== Number(index)
@@ -294,7 +297,7 @@ const MygamesEdit = (props: Props) => {
     }
   }
 
-  function handleUpdateChip(index: number, value: string): void{
+  function updateChip(index: number, value: string): void{
     const newChips: Chip[] = chips.map((c, i) => {
       if (i == index) {
         return  {
