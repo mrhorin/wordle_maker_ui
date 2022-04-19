@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGamepad, faPlus, faPenToSquare, faGear, faUser } from '@fortawesome/free-solid-svg-icons'
 
@@ -9,9 +9,14 @@ type Props = {
 }
 
 const Sidemenu = (props: Props) => {
+  const editEl = useRef<HTMLLIElement>(null)
+  const createEl = useRef<HTMLLIElement>(null)
+  const accountEl = useRef<HTMLLIElement>(null)
+
   useEffect(() => {
-    let activeMenu = document.querySelector(`.sidemenu-item-${props.activeMenu}`)
-    activeMenu?.classList.add('sidemenu-item-active')
+    if (props.activeMenu == 'edit') editEl.current?.classList.add('sidemenu-item-active')
+    if (props.activeMenu == 'create') createEl.current?.classList.add('sidemenu-item-active')
+    if (props.activeMenu == 'account') accountEl.current?.classList.add('sidemenu-item-active')
   }, [])
 
   return (
@@ -19,17 +24,17 @@ const Sidemenu = (props: Props) => {
       <div className='sidemenu-items-container'>
         {/* My Games */}
         <ul className='sidemenu-item'>
-          <li className='sidemenu-item-title'>
+          <li>
             <FontAwesomeIcon icon={faGamepad} />My Games
           </li>
-          <li className='sidemenu-item-edit'>
+          <li ref={editEl}>
             <Link href="/mygames/edit">
               <a className='sidemenu-item sidemenu-item-mygames-edit'>
                 <FontAwesomeIcon icon={faPenToSquare} />Edit
               </a>
             </Link>
           </li>
-          <li className='sidemenu-item-create'>
+          <li ref={createEl}>
             <Link href="/mygames/create">
               <a className='sidemenu-item sidemenu-item-mygames-create'>
                 <FontAwesomeIcon icon={faPlus} />Create
@@ -39,10 +44,10 @@ const Sidemenu = (props: Props) => {
         </ul>
         {/* Settings */}
         <ul className='sidemenu-item' style={ {marginTop: '1rem'} }>
-          <li className='sidemenu-item-title'>
+          <li>
             <FontAwesomeIcon icon={faGear} />Setteings
           </li>
-          <li className='sidemenu-item-account'>
+          <li ref={accountEl}>
             <Link href="/settings/account">
               <a className='sidemenu-item sidemenu-item-settings-account'>
                 <FontAwesomeIcon icon={faUser} />Account
