@@ -26,9 +26,9 @@ export type Game = {
   title: string,
   desc: string,
   lang: string,
-  char_count: number | string,
-  id?: number |string,
-  user_id?: number | string,
+  char_count: number,
+  id?: number,
+  user_id?: number,
 }
 
 export type Subject = {

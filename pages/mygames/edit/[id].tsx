@@ -1,7 +1,7 @@
 import type { UserInfo, Token, Game, Subject, Chip } from 'types/global'
 import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
-import { useEffect, useLayoutEffect, useState, useContext, useMemo, useRef } from 'react'
+import { useEffect, useLayoutEffect, useState, useContext, useMemo, useCallback, useRef } from 'react'
 import { useAlert } from 'react-alert'
 import ReactLoading from 'react-loading'
 import Link from 'next/link'
@@ -24,16 +24,18 @@ import Language from 'scripts/language'
 
 const tabs: string[] = ['Summary', 'Add Words', 'Edit Words','Delete Game']
 
-type Props = { token: Token, userInfo: UserInfo }
+type Props = { token: Token, userInfo: UserInfo, game: Game }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const cookies = nookies.get(context)
+  // Token
   const token: Token = {
     accessToken: cookies['accessToken'],
     client: cookies['client'],
     uid: cookies['uid'],
     expiry: cookies['expiry'],
   }
+  // UserInfo
   const userInfo: UserInfo = {
     provider: cookies['provider'],
     name: cookies['name'],
@@ -41,19 +43,23 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     uid: cookies['uid'],
     image: cookies['image'],
   }
-  const props: Props = {
-    token: token,
-    userInfo: userInfo
+  // Game
+  let game: Game | null = null
+  const gameId: string = context.query.id as string
+  const res = await fetch(`http://api:3000/api/v1/games/${gameId}`)
+  if (res.status == 200) {
+    const json = await res.json()
+    if (json.ok) game = json.data as Game
   }
-
-  if (validate.token(props.token) && validate.userInfo(props.userInfo)) {
-    return { props: props }
+  // Redirect to / if Game doesn't exist or an user doesn't sign in
+  if (validate.token(token) && validate.userInfo(userInfo) && game) {
+    return { props: { token: token, userInfo: userInfo, game: game } }
   } else {
     return {
-      props: props,
+      props: { token: token, userInfo: userInfo, game: game },
       redirect: {
         statusCode: 302,
-        destination: '/signup',
+        destination: '/',
       }
     }
   }
@@ -61,27 +67,49 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 const MygamesEdit = (props: Props) => {
   /*
+   * [Common]
    * originalGame:
    *  The original value of the game.
    *  This state is initialized in useLayoutEffect function and
-   *  will be changed after updating the game by fetching API.
-   *
-   * isChanged:
-   *  The flag indicates that parameters are changed in the game form or not.
-  */
-  /********** State **********/
-  const [originalGame, setOriginalGame] = useState<Game>()
-  const [title, setTitle] = useState<string>('')
-  const [desc, setDesc] = useState<string>('')
-  const [lang, setLang] = useState<string>('en')
-  const [charCount, setCharCount] = useState<number>(5)
-  const [id, setId] = useState<number>()
-  const [chips, setChips] = useState<Chip[]>([])
-  const [isChanged, setIsChanged] = useState<boolean>(false)
+   *  will be changed after updating the game by fetching API. */
+  const [originalGame, setOriginalGame] = useState<Game>(props.game)
+  /* currentTab:
+   *  The value indicates which tab is active at the time.
+   *  It depends on tabs variable, a list of tab names. */
   const [currentTab, setCurrentTab] = useState<string>('Summary')
-  const [checkedConfirmation, setCheckedConfirmation] = useState<boolean>(false)
-  const [showModal, setShowModal] = useState<boolean>(false)
+  /* showOverLay:
+   *  The flag indicates whether LoadingOverlay component is shown or not. */
   const [showOverlay, setShowOverlay] = useState<boolean>(false)
+  /*
+   * [Summary]
+   * title:
+   * desc:
+   *  The states can be changed with input forms. */
+  const [title, setTitle] = useState<string>(props.game.title)
+  const [desc, setDesc] = useState<string>(props.game.desc)
+  /* id:
+   *  The ID of the Game and the value will be set in useLayoutEffect
+   *  after pre-rendering. */
+  const [id, setId] = useState<number>()
+  /* isChanged:
+   *  The flag indicates that parameters are changed in the game form or not. */
+  const [isChanged, setIsChanged] = useState<boolean>(false)
+  /*
+   * [Add Words]
+   * chips:
+   *  The state is used in ChipTextarea component to add new words.
+   *  Words which are added by an user is stored into this state as Chip list.
+   *  The state will be empty after submitting them to the server. */
+  const [chips, setChips] = useState<Chip[]>([])
+  /*
+   * [Delete Game]
+   * checkedConfirmation:
+   *  The flag indicates whether an user agreed to delete the game or not. */
+  const [checkedConfirmation, setCheckedConfirmation] = useState<boolean>(false)
+  /* shoModal:
+   *  The flag indicates whether a modal window to confirm deleting the game is shown or not. */
+  const [showModal, setShowModal] = useState<boolean>(false)
+
   /*********** Ref ***********/
   const inputTitleEl = useRef<HTMLInputElement>(null)
   const divTitleInvalidEl = useRef<HTMLDivElement>(null)
@@ -97,37 +125,55 @@ const MygamesEdit = (props: Props) => {
 
   const router = useRouter()
   const alert = useAlert()
-  const language: Language = new Language(lang)
+  const language = new Language(props.game.lang)
 
   useLayoutEffect(() => {
-    if (validate.token(props.token)) {
-      const gameId: string = location.pathname.split('/')[3]
-      fetchGame(props.token, gameId).then((json) => {
-        if (json.ok) {
-          setOriginalGame(json.data as Game)
-          setGame(json.data as Game)
-        }
-      })
+    if (props.game.id && validate.token(props.token)) {
+      setId(Number(props.game.id))
     } else {
       signOut()
     }
   }, [])
 
   useEffect(() => {
-    if (originalGame?.title != title || originalGame?.desc != desc) {
+    if (originalGame.title != title || originalGame.desc != desc) {
       setIsChanged(true)
     } else {
       setIsChanged(false)
     }
   }, [title, desc, originalGame])
 
-  function setGame(game: Game): void{
-    setTitle(game.title)
-    setDesc(game.desc)
-    setLang(game.lang)
-    setCharCount(Number(game.char_count))
-    if (game.id) setId(Number(game.id))
-  }
+  const addChips = useCallback((inputList: string[]): void => {
+    const newChips = inputList.map((input) => {
+      const isValid = input.length == props.game.char_count && language.validateWord(input)
+      return { value: input, isValid: isValid }
+    })
+    setChips(prevChips => prevChips.concat(newChips))
+  }, [])
+
+  const removeChip = useCallback((index: number): void => {
+    if (index >= 0) {
+      setChips(prevChips => {
+        return prevChips.filter((chip, i) => {
+          return i !== index
+        })
+      })
+    }
+  }, [])
+
+  const updateChip = useCallback((index: number, value: string): void => {
+    setChips(prevChips => {
+      return prevChips.map((c, i) => {
+        if (i == index) {
+          return  {
+            value: value,
+            isValid: props.game.char_count == value.length && language.validateWord(value)
+          }
+        }
+        return c
+      })
+    })
+  }, [])
 
   function signOut(): void{
     currentTokenContext.setCurrentToken(null)
@@ -180,7 +226,7 @@ const MygamesEdit = (props: Props) => {
           {/* Character count */}
           <div className='form-group'>
             <label>Character count</label>
-            <input type='text' value={charCount} disabled={true} />
+            <input type='text' value={props.game.char_count} disabled={true} />
           </div>
           {/* Submit */}
           <button type='button' id='game-submit' className='btn btn-primary' disabled={!isChanged} onClick={handleClickUpdate}>Update</button>
@@ -197,7 +243,7 @@ const MygamesEdit = (props: Props) => {
           <div className='form-group'>
             <label>Words</label>
             <div className='form-countable-input-group'>
-              <ChipTextarea />
+              <ChipTextarea chips={chips} addChips={addChips} removeChip={removeChip} updateChip={updateChip} />
               <div className='form-countable-input-counter'>{`${count} / 5000`}</div>
             </div>
           </div>
@@ -287,46 +333,15 @@ const MygamesEdit = (props: Props) => {
   }
 
   function validateWords(): boolean{
-    const language: Language = new Language(lang)
     let isValid: boolean = true
     if (chips.length <= 0) isValid = false
     for (const c of chips) {
-      if (c.value.length != charCount || !language.validateWord(c.value)) {
+      if (c.value.length != props.game.char_count || !language.validateWord(c.value)) {
         isValid = false
         break
       }
     }
     return isValid
-  }
-
-  function addChips(inputList: string[]): void{
-    const newChips = inputList.map((input) => {
-      const isValid = input.length == charCount && language.validateWord(input)
-      return { value: input, isValid: isValid }
-    })
-    setChips(chips.concat(newChips))
-  }
-
-  function removeChip(index: number): void{
-    if (Number(index) >= 0) {
-      let newChips = chips.filter((chip, i) => {
-        return i !== Number(index)
-      })
-      setChips(newChips)
-    }
-  }
-
-  function updateChip(index: number, value: string): void{
-    const newChips: Chip[] = chips.map((c, i) => {
-      if (i == index) {
-        return  {
-          value: value,
-          isValid: charCount == value.length && language.validateWord(value)
-        }
-      }
-      return c
-    })
-    setChips(newChips)
   }
 
   function handleClickUpdate(): void{
@@ -391,7 +406,7 @@ const MygamesEdit = (props: Props) => {
           })
           .catch(error => console.log(error))
       } else {
-        alert.show(language.getInvalidMsg(charCount), { type: 'error' })
+        alert.show(language.getInvalidMsg(props.game.char_count), { type: 'error' })
       }
     } else {
       signOut()
@@ -423,18 +438,6 @@ const MygamesEdit = (props: Props) => {
           .catch(error => { setShowOverlay(false) })
       }
     }
-  }
-
-  async function fetchGame(token: Token, gameId: string) {
-    const res = await fetch(`http://localhost:3000/api/v1/games/${gameId}`, {
-      method: 'GET',
-      headers: {
-        'access-token': token.accessToken,
-        'client': token.client,
-        'uid': token.uid
-      }
-    })
-    return await res.json()
   }
 
   return (

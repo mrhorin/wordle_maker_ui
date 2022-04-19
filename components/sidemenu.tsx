@@ -28,7 +28,7 @@ const Sidemenu = (props: Props) => {
             <FontAwesomeIcon icon={faGamepad} />My Games
           </li>
           <li ref={editEl}>
-            <Link href="/mygames/edit" shallow={true}>
+            <Link href="/mygames/edit">
               <a className='sidemenu-item sidemenu-item-mygames-edit'>
                 <FontAwesomeIcon icon={faPenToSquare} />Edit
               </a>

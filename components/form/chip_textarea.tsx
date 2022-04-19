@@ -1,15 +1,18 @@
-import { useState, useLayoutEffect, useContext, useMemo, useRef, ChangeEvent } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faXmark } from '@fortawesome/free-solid-svg-icons'
+import type { Chip } from 'types/global'
+import { useState, useLayoutEffect, useContext, useMemo, useCallback, useRef } from 'react'
 
-import ChipContext from 'contexts/chips'
+import ChipComponent from 'components/form/chip'
 
-const ChipTextarea = () => {
+interface Props {
+  chips: Chip[]
+  addChips(inputList: string[]): void
+  removeChip(index: number): void
+  updateChip(index: number, value: string): void
+}
+
+const ChipTextarea = ({ chips, addChips, removeChip, updateChip }: Props) => {
   const [inputValue, setInputWord] = useState<string>('')
-  const [currentEditChipIndex, setCurrentEditChipIndex] = useState<number | null>(null)
-  const [currentEditChipValue, setCurrentEditChipValue] = useState<string>('')
   const inputEle = useRef<HTMLInputElement>(null)
-  const chipContext = useContext(ChipContext)
 
   useLayoutEffect(() => {
     if (inputValue == ',') {
@@ -22,79 +25,30 @@ const ChipTextarea = () => {
         return value.replace(/[\r\n\s]/g, '')
       }).filter(Boolean)
       if (inputList.length > 0) {
-        chipContext.addChips(inputList)
+        addChips(inputList)
         setInputWord('')
       }
     }
   }, [inputValue])
 
-  function handleBlurCurrentEditChip(event: any): void{
-    if (currentEditChipIndex != null && currentEditChipValue) {
-      chipContext.updateChip(currentEditChipIndex, currentEditChipValue.replace(/[\r\n\s,]/g, ''))
-    }
-    setCurrentEditChipIndex(null)
-    setCurrentEditChipValue('')
-  }
-
-  function handleChangeCurrentEditChip(event: any): void{
-    setCurrentEditChipValue(event.target.value)
-  }
-
-  function handleKeyDownCurrentEditChip(event: any): void{
-    if (event.keyCode == 13) {
-      // When inputted Enter
-      if (currentEditChipIndex != null && currentEditChipValue) {
-        chipContext.updateChip(currentEditChipIndex, currentEditChipValue.replace(/[\r\n\s,]/g, ''))
-      }
-      setCurrentEditChipIndex(null)
-      setCurrentEditChipValue('')
-    }
-  }
-
-  function handleClickChip(event: any, index: number): void{
-    if (event.target.className == 'chip-textarea-chip-value') {
-      setCurrentEditChipIndex(index)
-      setCurrentEditChipValue(chipContext.chips[index].value)
-    }
-  }
-
-  function handleClickChipXmark(event: any, index: number): void{
-    chipContext.removeChip(index)
-  }
-
   function handleClickTextarea(event: any): void{
     if(inputEle.current && event.target.className == 'chip-textarea') inputEle.current.focus()
   }
 
-  const chipComponents = useMemo(() => {
-    return chipContext.chips.map((c, i) => {
-      let value
-      if (i == currentEditChipIndex) {
-        value = <input
-          id='chip-textarea-current-edit-chip' className='chip-textarea-chip-value' type='text'
-          size={currentEditChipValue.length * 2} autoFocus={true} value={currentEditChipValue}
-          onKeyDown={e => handleKeyDownCurrentEditChip(e)} onChange={e => handleChangeCurrentEditChip(e)} onBlur={e => handleBlurCurrentEditChip(e)}
-        />
-      } else {
-        value = <div className='chip-textarea-chip-value'>{c.value}</div>
-      }
-      let style = 'chip-textarea-chip'
-      if (!c.isValid) style += ' chip-textarea-chip-invalid'
-      return (
-        <div className={style} key={i} onClick={e => handleClickChip(e, i)}>
-          {value}
-          <div className='chip-textarea-chip-xmark' onClick={e => handleClickChipXmark(e, i)}>
-            <FontAwesomeIcon icon={faXmark} />
-          </div>
-        </div>
-      )
-    })
-  }, [chipContext.chips, currentEditChipIndex, currentEditChipValue])
+  const handleChangeChip = useCallback((id: number, value: string) => {
+    updateChip(id, value)
+  }, [])
+
+  const handleClickChipXmark = useCallback((id: number): void => {
+    removeChip(id)
+  }, [])
 
   return (
     <div id='chip-textarea' className='chip-textarea' onClick={(e) => { handleClickTextarea(e) }}>
-      {chipComponents}
-      <input ref={inputEle} className='chip-textarea-input' type='text' value={inputValue} onChange={e => { setInputWord(e.target.value) }} />
+      {chips.map((chip, index) => {
+        return <ChipComponent key={index} id={index} chip={chip} handleClickChipXmark={handleClickChipXmark} handleChangeChip={handleChangeChip} />
+      })}
+      <input ref={inputEle} className='chip-textarea-input' type='text' value={inputValue} onChange={e => setInputWord(e.target.value)} />
     </div>
   )
 }
