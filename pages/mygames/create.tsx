@@ -1,7 +1,7 @@
 import type { UserInfo, Token, Game } from 'types/global'
 import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
-import { useState, useContext } from 'react'
+import { useState, useContext, useRef } from 'react'
 import { useAlert } from 'react-alert'
 import nookies from 'nookies'
 import Head from 'next/head'
@@ -49,35 +49,37 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 }
 
-const defaultGame: Game = {
-  title: '',
-  desc: '',
-  lang: 'en',
-  char_count: 5,
-}
-
 const MygamesCreate = (props: Props) => {
-  const [game, setGame] = useState<Game>(defaultGame)
+  /********** State **********/
+  const [title, setTitle] = useState<string>('')
+  const [desc, setDesc] = useState<string>('')
+  const [lang, setLang] = useState<string>('en')
+  const [charCount, setCharCount] = useState<number>(5)
   const [showOverlay, setShowOverlay] = useState<boolean>(false)
+  /*********** Ref ***********/
+  const inputTitleEl = useRef<HTMLInputElement>(null)
+  const divTitleInvalidEl = useRef<HTMLDivElement>(null)
+  const selectLangEl = useRef<HTMLSelectElement>(null)
+  /********* Context *********/
   const currentTokenContext = useContext(CurrentTokenContext)
   const currentUserInfoContext = useContext(CurrentUserInfoContext)
+
   const router = useRouter()
   const alert = useAlert()
 
   function validateTitle(): boolean{
-    const titleLength: number = Number(game.title.length)
-    const titleInvalidFeedback: HTMLElement | null = document.querySelector('#game-title-invalid-feedback')
+    const titleLength: number = Number(title.length)
     if (titleLength < 1) {
-      document.querySelector('#game-title')?.classList.add('input-invalid')
-      if (titleInvalidFeedback) titleInvalidFeedback.innerHTML = '* Title is required.'
+      inputTitleEl.current?.classList.add('input-invalid')
+      if (divTitleInvalidEl.current) divTitleInvalidEl.current.innerHTML = '* Title is required.'
       return false
     } else if (titleLength > 100) {
-      document.querySelector('#game-title')?.classList.add('input-invalid')
-      if (titleInvalidFeedback?.innerHTML) titleInvalidFeedback.innerHTML = '* Title must be 100 characters or less.'
+      inputTitleEl.current?.classList.add('input-invalid')
+      if (divTitleInvalidEl.current) divTitleInvalidEl.current.innerHTML = '* Title must be 100 characters or less.'
       return false
     } else {
-      document.querySelector('#game-title')?.classList.remove('input-invalid')
-      if (titleInvalidFeedback?.innerHTML) titleInvalidFeedback.innerHTML = ''
+      inputTitleEl.current?.classList.remove('input-invalid')
+      if (divTitleInvalidEl.current) divTitleInvalidEl.current.innerHTML = ''
       return true
     }
   }
@@ -85,13 +87,12 @@ const MygamesCreate = (props: Props) => {
   function handleClickSubmit(): void{
     if (validate.token(currentTokenContext.currentToken)) {
       if (validateTitle()) {
-        const langElement: HTMLSelectElement = document.querySelector('#game-lang') as HTMLSelectElement
         const body = {
           game: {
-            'title': game.title,
-            'desc': game.desc,
-            'char_count': game.char_count,
-            'lang': langElement.value
+            'title': title,
+            'desc': desc,
+            'char_count': charCount,
+            'lang': lang
           }
         }
         setShowOverlay(true)
@@ -126,22 +127,6 @@ const MygamesCreate = (props: Props) => {
     }
   }
 
-  function handleChangeGameForm(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>): void{
-    const nextGame: Game = {
-      title: game.title,
-      desc: game.desc,
-      lang: game.lang,
-      char_count: game.char_count,
-      id: game.id,
-      user_id: game.user_id,
-    }
-    if (event.target.id == 'game-title') nextGame.title = event.target.value
-    if (event.target.id == 'game-desc') nextGame.desc = event.target.value
-    if (event.target.id == 'game-lang') nextGame.lang = event.target.value
-    if (event.target.id == 'game-charcount') nextGame.char_count = Number(event.target.value)
-    setGame(nextGame)
-  }
-
   return (
     <main id='main'>
       <Head>
@@ -163,24 +148,24 @@ const MygamesCreate = (props: Props) => {
               <div className='form-group'>
                 <label>Title</label>
                 <div className='form-countable-input-group'>
-                  <input type='text' id='game-title' maxLength={100} value={game.title} onChange={e => handleChangeGameForm(e)} />
-                  <div className='form-countable-input-counter'>{`${game.title.length} / 100`}</div>
+                  <input ref={inputTitleEl} id='game-title' type='text' maxLength={100} value={title} onChange={e => setTitle(e.target.value)} />
+                  <div className='form-countable-input-counter'>{`${title.length} / 100`}</div>
                 </div>
-                <div id='game-title-invalid-feedback' className='form-group-invalid-feedback'></div>
+                <div ref={divTitleInvalidEl} id='game-title-invalid-feedback' className='form-group-invalid-feedback'></div>
               </div>
               {/* Description */}
               <div className='form-group'>
                 <label>Description</label>
                 <div className='form-countable-input-group'>
-                  <textarea id='game-desc' rows={3} maxLength={200} value={game.desc} onChange={e => handleChangeGameForm(e)} />
-                  <div className='form-countable-input-counter'>{`${game.desc.length} / 200`}</div>
+                  <textarea id='game-desc' rows={3} maxLength={200} value={desc} onChange={e => setDesc(e.target.value)} />
+                  <div className='form-countable-input-counter'>{`${desc.length} / 200`}</div>
                 </div>
                 <div id='game-title-invalid-feedback' className='form-group-invalid-feedback'></div>
               </div>
               {/* Language */}
               <div className='form-group'>
                 <label>Language</label>
-                <select id='game-lang' value={game.lang} onChange={e => handleChangeGameForm(e)}>
+                <select ref={selectLangEl} id='game-lang' value={lang} onChange={e => setLang(e.target.value)}>
                   <option value='en'>English</option>
                   <option value='ja'>Japanese</option>
                 </select>
@@ -188,7 +173,7 @@ const MygamesCreate = (props: Props) => {
               {/* Character count */}
               <div className='form-group'>
                 <label>Character count</label>
-                <select id='game-charcount' value={game.char_count} onChange={e => handleChangeGameForm(e)}>
+                <select id='game-charcount' value={charCount} onChange={e => setCharCount(Number(e.target.value))}>
                   <option value='2'>2</option>
                   <option value='3'>3</option>
                   <option value='4'>4</option>
