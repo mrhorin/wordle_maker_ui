@@ -1,4 +1,4 @@
-import { useState, useLayoutEffect, useContext, useMemo, useRef } from 'react'
+import { useState, useLayoutEffect, useContext, useMemo, useRef, ChangeEvent } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 
@@ -40,6 +40,17 @@ const ChipTextarea = () => {
     setCurrentEditChipValue(event.target.value)
   }
 
+  function handleKeyDownCurrentEditChip(event: any): void{
+    if (event.keyCode == 13) {
+      // When inputted Enter
+      if (currentEditChipIndex != null && currentEditChipValue) {
+        chipContext.updateChip(currentEditChipIndex, currentEditChipValue.replace(/[\r\n\s,]/g, ''))
+      }
+      setCurrentEditChipIndex(null)
+      setCurrentEditChipValue('')
+    }
+  }
+
   function handleClickChip(event: any, index: number): void{
     if (event.target.className == 'chip-textarea-chip-value') {
       setCurrentEditChipIndex(index)
@@ -52,7 +63,7 @@ const ChipTextarea = () => {
   }
 
   function handleClickTextarea(event: any): void{
-    if(inputEle.current) inputEle.current.focus()
+    if(inputEle.current && event.target.className == 'chip-textarea') inputEle.current.focus()
   }
 
   const chipComponents = useMemo(() => {
@@ -60,8 +71,9 @@ const ChipTextarea = () => {
       let value
       if (i == currentEditChipIndex) {
         value = <input
-          id='chip-textarea-current-edit-chip' className='chip-textarea-chip-value' type='text' size={currentEditChipValue.length * 2} autoFocus={true}
-          value={currentEditChipValue} onChange={e => { handleChangeCurrentEditChip(e) }} onBlur={e => { handleBlurCurrentEditChip(e) }}
+          id='chip-textarea-current-edit-chip' className='chip-textarea-chip-value' type='text'
+          size={currentEditChipValue.length * 2} autoFocus={true} value={currentEditChipValue}
+          onKeyDown={e => handleKeyDownCurrentEditChip(e)} onChange={e => handleChangeCurrentEditChip(e)} onBlur={e => handleBlurCurrentEditChip(e)}
         />
       } else {
         value = <div className='chip-textarea-chip-value'>{c.value}</div>
