@@ -17,7 +17,6 @@ import ChipTextarea from 'components/form/chip_textarea'
 
 import CurrentTokenContext from 'contexts/current_token'
 import CurrentUserInfoContext from 'contexts/current_user_info'
-import ChipsContext from 'contexts/chips'
 
 import validate from 'scripts/validate'
 import Language from 'scripts/language'
@@ -238,18 +237,16 @@ const MygamesEdit = (props: Props) => {
   function createAddComponent(): JSX.Element {
     const count = chips.map(c => c.value).join('').length
     return (
-      <ChipsContext.Provider value={{ chips, addChips, removeChip, updateChip }}>
-        <div className='game-add-words'>
-          <div className='form-group'>
-            <label>Words</label>
-            <div className='form-countable-input-group'>
-              <ChipTextarea chips={chips} addChips={addChips} removeChip={removeChip} updateChip={updateChip} />
-              <div className='form-countable-input-counter'>{`${count} / 5000`}</div>
-            </div>
+      <div className='game-add-words'>
+        <div className='form-group'>
+          <label>Words</label>
+          <div className='form-countable-input-group'>
+            <ChipTextarea chips={chips} addChips={addChips} removeChip={removeChip} updateChip={updateChip} />
+            <div className='form-countable-input-counter'>{`${count} / 5000`}</div>
           </div>
-          <button className='btn btn-primary' disabled={!validateWords() || 0 == chips.length} onClick={handleClickSubmit}>Submit</button>
         </div>
-      </ChipsContext.Provider>
+        <button className='btn btn-primary' disabled={!validateWords() || 0 == chips.length} onClick={handleClickSubmit}>Submit</button>
+      </div>
     )
   }
 
