@@ -1,7 +1,7 @@
 import type { UserInfo, Token, Game, Subject, Chip } from 'types/global'
 import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
-import { useState, useLayoutEffect, useContext, useMemo } from 'react'
+import { useEffect, useLayoutEffect, useState, useContext, useMemo, useRef } from 'react'
 import { useAlert } from 'react-alert'
 import ReactLoading from 'react-loading'
 import Link from 'next/link'
@@ -22,7 +22,6 @@ import ChipsContext from 'contexts/chips'
 import validate from 'scripts/validate'
 import Language from 'scripts/language'
 
-const defaultGame: Game = { id: '', title: '', desc: '', lang: 'en', char_count: 5, }
 const tabs: string[] = ['Summary', 'Add Words', 'Edit Words','Delete Game']
 
 type Props = { token: Token, userInfo: UserInfo }
@@ -61,34 +60,74 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 }
 
 const MygamesEdit = (props: Props) => {
-  const [game, setGame] = useState<Game>(defaultGame)
+  /*
+   * originalGame:
+   *  The original value of the game.
+   *  This state is initialized in useLayoutEffect function and
+   *  will be changed after updating the game by fetching API.
+   *
+   * isChanged:
+   *  The flag indicates that parameters are changed in the game form or not.
+  */
+  /********** State **********/
+  const [originalGame, setOriginalGame] = useState<Game>()
+  const [title, setTitle] = useState<string>('')
+  const [desc, setDesc] = useState<string>('')
+  const [lang, setLang] = useState<string>('en')
+  const [charCount, setCharCount] = useState<number>(5)
+  const [id, setId] = useState<number>()
   const [chips, setChips] = useState<Chip[]>([])
   const [isChanged, setIsChanged] = useState<boolean>(false)
   const [currentTab, setCurrentTab] = useState<string>('Summary')
   const [checkedConfirmation, setCheckedConfirmation] = useState<boolean>(false)
   const [showModal, setShowModal] = useState<boolean>(false)
   const [showOverlay, setShowOverlay] = useState<boolean>(false)
+  /*********** Ref ***********/
+  const inputTitleEl = useRef<HTMLInputElement>(null)
+  const divTitleInvalidEl = useRef<HTMLDivElement>(null)
+  /********* Context *********/
   const currentTokenContext = useContext(CurrentTokenContext)
   const currentUserInfoContext = useContext(CurrentUserInfoContext)
+  /*********** Memo ***********/
   const handleConfirmation = useMemo(() => {
     return () => {
       setCheckedConfirmation(!checkedConfirmation);
     }
   }, [checkedConfirmation])
+
   const router = useRouter()
   const alert = useAlert()
-  const language: Language = new Language(game.lang)
+  const language: Language = new Language(lang)
 
   useLayoutEffect(() => {
     if (validate.token(props.token)) {
       const gameId: string = location.pathname.split('/')[3]
       fetchGame(props.token, gameId).then((json) => {
-        if (json.ok) setGame(json.data)
+        if (json.ok) {
+          setOriginalGame(json.data as Game)
+          setGame(json.data as Game)
+        }
       })
     } else {
       signOut()
     }
   }, [])
+
+  useEffect(() => {
+    if (originalGame?.title != title || originalGame?.desc != desc) {
+      setIsChanged(true)
+    } else {
+      setIsChanged(false)
+    }
+  }, [title, desc, originalGame])
+
+  function setGame(game: Game): void{
+    setTitle(game.title)
+    setDesc(game.desc)
+    setLang(game.lang)
+    setCharCount(Number(game.char_count))
+    if (game.id) setId(Number(game.id))
+  }
 
   function signOut(): void{
     currentTokenContext.setCurrentToken(null)
@@ -119,17 +158,17 @@ const MygamesEdit = (props: Props) => {
           <div className='form-group'>
             <label>Title</label>
             <div className='form-countable-input-group'>
-              <input type='text' id='game-title' maxLength={100} value={game.title} onChange={e => handleChangeGameForm(e)} />
-              <div className='form-countable-input-counter'>{`${game.title.length} / 100`}</div>
+              <input ref={inputTitleEl} type='text' id='game-title' maxLength={100} value={title} onChange={e => setTitle(e.target.value)} />
+              <div className='form-countable-input-counter'>{`${title.length} / 100`}</div>
             </div>
-            <div id='game-title-invalid-feedback' className='form-group-invalid-feedback'></div>
+            <div ref={divTitleInvalidEl} id='game-title-invalid-feedback' className='form-group-invalid-feedback'></div>
           </div>
           {/* Description */}
           <div className='form-group'>
             <label>Description</label>
             <div className='form-countable-input-group'>
-              <textarea id='game-desc' rows={3} maxLength={200} value={game.desc} onChange={e => handleChangeGameForm(e)} />
-              <div className='form-countable-input-counter'>{`${game.desc.length} / 200`}</div>
+              <textarea id='game-desc' rows={3} maxLength={200} value={desc} onChange={e => setDesc(e.target.value)} />
+              <div className='form-countable-input-counter'>{`${desc.length} / 200`}</div>
             </div>
             <div id='game-title-invalid-feedback' className='form-group-invalid-feedback'></div>
           </div>
@@ -141,7 +180,7 @@ const MygamesEdit = (props: Props) => {
           {/* Character count */}
           <div className='form-group'>
             <label>Character count</label>
-            <input type='text' value={game.char_count} disabled={true} />
+            <input type='text' value={charCount} disabled={true} />
           </div>
           {/* Submit */}
           <button type='button' id='game-submit' className='btn btn-primary' disabled={!isChanged} onClick={handleClickUpdate}>Update</button>
@@ -221,9 +260,9 @@ const MygamesEdit = (props: Props) => {
     return (
       <div className='game-edit-link'>
         <label>Game Link</label>
-        <Link href={`/games/${game.id}`}>
+        <Link href={`/games/${id}`}>
           <a className='sidemenu-item sidemenu-item-mygames-create'>
-            {`http://localhost:8000/games/${game.id}`}
+            {`http://localhost:8000/games/${id}`}
           </a>
         </Link>
       </div>
@@ -231,29 +270,28 @@ const MygamesEdit = (props: Props) => {
   }
 
   function validateTitle(): boolean{
-    const titleLength: number = Number(game.title.length)
-    const titleInvalidFeedback: HTMLElement | null = document.querySelector('#game-title-invalid-feedback')
+    const titleLength: number = Number(title.length)
     if (titleLength < 1) {
-      document.querySelector('#game-title')?.classList.add('input-invalid')
-      if (titleInvalidFeedback) titleInvalidFeedback.innerHTML = '* Title is required.'
+      inputTitleEl.current?.classList.add('input-invalid')
+      if (divTitleInvalidEl.current) divTitleInvalidEl.current.innerHTML = '* Title is required.'
       return false
     } else if (titleLength > 100) {
-      document.querySelector('#game-title')?.classList.add('input-invalid')
-      if (titleInvalidFeedback?.innerHTML) titleInvalidFeedback.innerHTML = '* Title must be 100 characters or less.'
+      inputTitleEl.current?.classList.add('input-invalid')
+      if (divTitleInvalidEl.current) divTitleInvalidEl.current.innerHTML = '* Title must be 100 characters or less.'
       return false
     } else {
-      document.querySelector('#game-title')?.classList.remove('input-invalid')
-      if (titleInvalidFeedback?.innerHTML) titleInvalidFeedback.innerHTML = ''
+      inputTitleEl.current?.classList.remove('input-invalid')
+      if (divTitleInvalidEl.current) divTitleInvalidEl.current.innerHTML = ''
       return true
     }
   }
 
   function validateWords(): boolean{
-    const language: Language = new Language(game.lang)
+    const language: Language = new Language(lang)
     let isValid: boolean = true
     if (chips.length <= 0) isValid = false
     for (const c of chips) {
-      if (c.value.length != game.char_count || !language.validateWord(c.value)) {
+      if (c.value.length != charCount || !language.validateWord(c.value)) {
         isValid = false
         break
       }
@@ -261,28 +299,9 @@ const MygamesEdit = (props: Props) => {
     return isValid
   }
 
-  function handleChangeGameForm(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>): void{
-    const nextGame: Game = {
-      title: game.title,
-      desc: game.desc,
-      lang: game.lang,
-      char_count: game.char_count,
-      id: game.id,
-      user_id: game.user_id,
-    }
-    if (event.target.id == 'game-title') nextGame.title = event.target.value
-    if (event.target.id == 'game-desc') nextGame.desc = event.target.value
-    if (event.target.id == 'game-lang') nextGame.lang = event.target.value
-    if (event.target.id == 'game-charcount') nextGame.char_count = Number(event.target.value)
-    if (game != nextGame) {
-      setGame(nextGame)
-      setIsChanged(true)
-    }
-  }
-
   function addChips(inputList: string[]): void{
     const newChips = inputList.map((input) => {
-      const isValid = input.length == game.char_count && language.validateWord(input)
+      const isValid = input.length == charCount && language.validateWord(input)
       return { value: input, isValid: isValid }
     })
     setChips(chips.concat(newChips))
@@ -302,7 +321,7 @@ const MygamesEdit = (props: Props) => {
       if (i == index) {
         return  {
           value: value,
-          isValid: game.char_count == value.length && language.validateWord(value)
+          isValid: charCount == value.length && language.validateWord(value)
         }
       }
       return c
@@ -315,13 +334,13 @@ const MygamesEdit = (props: Props) => {
       if (validateTitle()) {
         const body = {
           game: {
-            'id': game.id,
-            'title': game.title,
-            'desc': game.desc,
+            'id': id,
+            'title': title,
+            'desc': desc,
           }
         }
         setShowOverlay(true)
-        fetch(`http://localhost:3000/api/v1/games/${game.id}`, {
+        fetch(`http://localhost:3000/api/v1/games/${id}`, {
           method: 'PUT',
           headers: {
             "Content-Type": "application/json",
@@ -334,7 +353,7 @@ const MygamesEdit = (props: Props) => {
           .then(json => {
             if (json.ok) {
               alert.show('UPDATED', { type: 'success' })
-              setIsChanged(false)
+              setOriginalGame(json.data as Game)
             } else {
               alert.show('FAILED', {type: 'error'})
             }
@@ -349,9 +368,9 @@ const MygamesEdit = (props: Props) => {
 
   function handleClickSubmit(): void{
     if (validate.token(currentTokenContext.currentToken)) {
-      if (validateWords() && game.id) {
+      if (validateWords() && id) {
         const words = chips.map(c => c.value)
-        const body = { words: words, game: { game_id: game.id } }
+        const body = { words: words, game: { game_id: id } }
         fetch(`http://localhost:3000/api/v1/subjects/create`, {
           method: 'POST',
           headers: {
@@ -372,7 +391,7 @@ const MygamesEdit = (props: Props) => {
           })
           .catch(error => console.log(error))
       } else {
-        alert.show(language.getInvalidMsg(game.char_count), { type: 'error' })
+        alert.show(language.getInvalidMsg(charCount), { type: 'error' })
       }
     } else {
       signOut()
@@ -383,7 +402,7 @@ const MygamesEdit = (props: Props) => {
     if (validate.token(currentTokenContext.currentToken)) {
       if (validateTitle()) {
         setShowOverlay(true)
-        fetch(`http://localhost:3000/api/v1/games/${game.id}`, {
+        fetch(`http://localhost:3000/api/v1/games/${id}`, {
           method: 'DELETE',
           headers: {
             "Content-Type": "application/json",
@@ -421,7 +440,7 @@ const MygamesEdit = (props: Props) => {
   return (
     <main id='main'>
       <Head>
-        <title>Edit {`${game.title}`}: WORDLE MAKER APP</title>
+        <title>Edit {`${title}`}: WORDLE MAKER APP</title>
         <meta name="description" content="Generated by create next app" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -458,7 +477,7 @@ const MygamesEdit = (props: Props) => {
             <h1 className='title'>Edit games</h1>
             {createTabsComponent()}
             {(() => {
-              if (game && game.id) {
+              if (id) {
                 if (currentTab == tabs[0]) return createSummaryComponent()
                 if (currentTab == tabs[1]) return createAddComponent()
                 if (currentTab == tabs[2]) return createEditComponent()
