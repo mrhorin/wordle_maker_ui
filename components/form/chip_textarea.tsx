@@ -1,4 +1,4 @@
-import { useState, useLayoutEffect, useContext, useMemo } from 'react'
+import { useState, useLayoutEffect, useContext, useMemo, useRef } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 
@@ -8,6 +8,7 @@ const ChipTextarea = () => {
   const [inputValue, setInputWord] = useState<string>('')
   const [currentEditChipIndex, setCurrentEditChipIndex] = useState<number | null>(null)
   const [currentEditChipValue, setCurrentEditChipValue] = useState<string>('')
+  const inputEle = useRef<HTMLInputElement>(null)
   const chipContext = useContext(ChipContext)
 
   useLayoutEffect(() => {
@@ -51,10 +52,7 @@ const ChipTextarea = () => {
   }
 
   function handleClickTextarea(event: any): void{
-    if (event.target.id == 'chip-textarea') {
-      const input = document.getElementById('chip-textarea-input')
-      input?.focus()
-    }
+    if(inputEle.current) inputEle.current.focus()
   }
 
   const chipComponents = useMemo(() => {
@@ -84,7 +82,7 @@ const ChipTextarea = () => {
   return (
     <div id='chip-textarea' className='chip-textarea' onClick={(e) => { handleClickTextarea(e) }}>
       {chipComponents}
-      <input id='chip-textarea-input' className='chip-textarea-input' type='text' value={inputValue} onChange={e => { setInputWord(e.target.value) }} />
+      <input ref={inputEle} className='chip-textarea-input' type='text' value={inputValue} onChange={e => { setInputWord(e.target.value) }} />
     </div>
   )
 }
