@@ -1,7 +1,7 @@
 import type { UserInfo, Token, Game } from 'types/global'
 import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
-import { useState, useContext, useRef } from 'react'
+import { useEffect, useState, useContext, useRef } from 'react'
 import { useAlert } from 'react-alert'
 import nookies from 'nookies'
 import Head from 'next/head'
@@ -55,6 +55,7 @@ const MygamesCreate = (props: Props) => {
   const [desc, setDesc] = useState<string>('')
   const [lang, setLang] = useState<string>('en')
   const [charCount, setCharCount] = useState<number>(5)
+  const [isDisabled, setIsDisabled] = useState<boolean>(false)
   const [showOverlay, setShowOverlay] = useState<boolean>(false)
   /*********** Ref ***********/
   const inputTitleEl = useRef<HTMLInputElement>(null)
@@ -66,6 +67,10 @@ const MygamesCreate = (props: Props) => {
 
   const router = useRouter()
   const alert = useAlert()
+
+  useEffect(() => {
+    setIsDisabled(title.length < 1 || title.length > 100)
+  }, [title])
 
   function validateTitle(): boolean{
     const titleLength: number = Number(title.length)
@@ -186,7 +191,7 @@ const MygamesCreate = (props: Props) => {
                 </select>
               </div>
               {/* Submit */}
-              <button type='button' id='game-submit' className='btn btn-defalt' onClick={handleClickSubmit}>Submit</button>
+              <button type='button' id='game-submit' className='btn btn-primary' disabled={isDisabled} onClick={handleClickSubmit}>Submit</button>
             </form>
             <LoadingOverlay showOverlay={showOverlay} />
           </div>
