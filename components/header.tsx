@@ -1,7 +1,6 @@
-import type { NextPage } from 'next'
 import type { Token } from 'types/global'
 import { useRouter } from 'next/router'
-import React, { useContext } from 'react'
+import { useContext, memo } from 'react'
 import { useAlert } from 'react-alert'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCaretDown ,faGamepad, faGear, faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
@@ -15,7 +14,7 @@ import validate from 'scripts/validate'
 import Link from 'next/link'
 import Image from 'next/image'
 
-const Header: NextPage = () => {
+const Header = () => {
   const currentTokenContext = useContext(CurrentTokenContext)
   const currentUserInfoContext = useContext(CurrentUserInfoContext)
   const showAccountMenuContext = useContext(ShowAccountMenuContext)
@@ -117,4 +116,4 @@ const Header: NextPage = () => {
   )
 }
 
-export default Header
+export default memo(Header)

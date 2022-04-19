@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, memo } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGamepad, faPlus, faPenToSquare, faGear, faUser } from '@fortawesome/free-solid-svg-icons'
 
@@ -28,14 +28,14 @@ const Sidemenu = (props: Props) => {
             <FontAwesomeIcon icon={faGamepad} />My Games
           </li>
           <li ref={editEl}>
-            <Link href="/mygames/edit">
+            <Link href="/mygames/edit" shallow={true}>
               <a className='sidemenu-item sidemenu-item-mygames-edit'>
                 <FontAwesomeIcon icon={faPenToSquare} />Edit
               </a>
             </Link>
           </li>
           <li ref={createEl}>
-            <Link href="/mygames/create">
+            <Link href="/mygames/create" shallow={true}>
               <a className='sidemenu-item sidemenu-item-mygames-create'>
                 <FontAwesomeIcon icon={faPlus} />Create
               </a>
@@ -48,7 +48,7 @@ const Sidemenu = (props: Props) => {
             <FontAwesomeIcon icon={faGear} />Setteings
           </li>
           <li ref={accountEl}>
-            <Link href="/settings/account">
+            <Link href="/settings/account" shallow={true}>
               <a className='sidemenu-item sidemenu-item-settings-account'>
                 <FontAwesomeIcon icon={faUser} />Account
               </a>
@@ -60,4 +60,4 @@ const Sidemenu = (props: Props) => {
   )
 }
 
-export default Sidemenu
+export default memo(Sidemenu)

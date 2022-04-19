@@ -1,8 +1,9 @@
-import type { NextPage } from 'next'
 import Image from 'next/image'
+import { useContext, memo } from 'react'
 
-const Footer: NextPage = () => {
+import CurrentTokenContext from 'contexts/current_token'
 
+const Footer = () => {
   return (
     <footer className='footer'>
       <div className='container'>
@@ -21,4 +22,4 @@ const Footer: NextPage = () => {
   )
 }
 
-export default Footer
+export default memo(Footer)
