@@ -43,7 +43,7 @@ const Sidemenu = (props: Props) => {
           </li>
         </ul>
         {/* Settings */}
-        <ul className='sidemenu-item' style={ {marginTop: '1rem'} }>
+        <ul className='sidemenu-item' style={ {marginTop: '2rem'} }>
           <li className='sidemenu-item-title'>
             <FontAwesomeIcon icon={faGear} />Setteings
           </li>

@@ -237,23 +237,20 @@ const MygamesEdit = (props: Props) => {
     )
   }
 
-  function createAddComponent(): JSX.Element {
+  function createAddWordsComponent(): JSX.Element {
     const count = chips.map(c => c.value).join('').length
     return (
       <div className='game-add-words'>
         <div className='form-group'>
           <label>Words</label>
-          <div className='form-countable-input-group'>
-            <ChipTextarea chips={chips} addChips={addChips} removeChip={removeChip} updateChip={updateChip} />
-            <div className='form-countable-input-counter'>{`${count} / 5000`}</div>
-          </div>
+          <ChipTextarea chips={chips} addChips={addChips} removeChip={removeChip} updateChip={updateChip} maxLength={3000} />
         </div>
         <button className='btn btn-primary' disabled={!validateWords() || 0 == chips.length} onClick={handleClickSubmit}>Submit</button>
       </div>
     )
   }
 
-  function createEditComponent(): JSX.Element{
+  function createEditWordsComponent(): JSX.Element{
     const subjects: Subject[] = [
       { word: 'ティラノシショウ', created_at: '2022/4/16' },
       { word: 'アタマデカチモン', created_at: '2022/4/16' },
@@ -294,7 +291,7 @@ const MygamesEdit = (props: Props) => {
     )
   }
 
-  function createDeleteComponent(): JSX.Element{
+  function createDeleteGameComponent(): JSX.Element{
     return (
       <div className='game-edit-delete' style={{ marginTop: '1rem' }}>
         <button className='btn btn-danger' onClick={() => { setShowModal(true) }}>Delete Game</button>
@@ -307,9 +304,9 @@ const MygamesEdit = (props: Props) => {
       <div className='game-edit-link'>
         <label>Game Link</label>
         <Link href={`/games/${id}`}>
-          <a className='sidemenu-item sidemenu-item-mygames-create'>
+          <button className='btn btn-secondary'>
             {`http://localhost:8000/games/${id}`}
-          </a>
+          </button>
         </Link>
       </div>
     )
@@ -482,9 +479,9 @@ const MygamesEdit = (props: Props) => {
             {(() => {
               if (id) {
                 if (currentTab == tabs[0]) return createSummaryComponent()
-                if (currentTab == tabs[1]) return createAddComponent()
-                if (currentTab == tabs[2]) return createEditComponent()
-                if (currentTab == tabs[3]) return createDeleteComponent()
+                if (currentTab == tabs[1]) return createAddWordsComponent()
+                if (currentTab == tabs[2]) return createEditWordsComponent()
+                if (currentTab == tabs[3]) return createDeleteGameComponent()
               } else {
                 return <ReactLoading type={'spin'} color={'#008eff'} height={'25px'} width={'25px'} className='loading-center' />
               }

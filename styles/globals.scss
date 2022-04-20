@@ -7,17 +7,18 @@
         4: .loading-overlay
           5: .header
 */
-$base-color1: #23232a;
+$base-color1: #202025;
 $base-color2: lighten($base-color1, 3%);
 $base-color3: lighten($base-color1, 6%);
-$accent-color1: #42c8a7;
-$accent-color2: #dfa157;
-$accent-color3: #3ea6ff;
+$accent-color1: #42c86e;
+$accent-color2: #ea9e3a;
 $font-color1: #dfe3e5;
 $font-color2: darken($font-color1, 30%);
 $font-color3: darken($font-color1, 35%);
 $default-color: #fafafa;
+$secondary-color: #565761;
 $danger-color: #d00101;
+$info-color: #3ea6ff;
 
 $sp-break-point: 599px;
 $tablet-break-point: 1024px;
@@ -72,7 +73,7 @@ h3{
 }
 
 a {
-  color: $accent-color3;
+  color: $info-color;
   text-decoration: none;
 }
 a:hover{
@@ -164,6 +165,10 @@ label{
     }
     .form-countable-input-counter{
       order: 2;
+    }
+    .form-countable-input-counter.form-countable-input-counter-focus{
+      border: 1px solid #0099ff;
+      border-top: none;
     }
     // When focus
     input[type="text"]:focus, textarea:focus{
@@ -324,6 +329,22 @@ table{
   cursor: not-allowed;
 }
 
+.btn.btn-secondary{
+  color: #fff;
+  background: $secondary-color;
+  &:hover{
+    background: darken($secondary-color, 8%);
+  }
+}
+
+.btn.btn-info{
+  color: #fff;
+  background: $info-color;
+  &:hover{
+    background: darken($info-color, 8%);
+  }
+}
+
 .btn.btn-danger{
   color: #fff;
   background-color: $danger-color;
@@ -474,6 +495,7 @@ table{
           padding: 0.5rem;
           font-weight: 500;
           white-space: nowrap;
+          text-align: left;
           a{
             display: inline-block;
             svg, i{
@@ -771,6 +793,9 @@ table{
     outline: none;
     border: none;
   }
+}
+.chip-textarea.chip-textarea-focus{
+  border: 1px solid #0099ff;
 }
 
 /* ------- react-loading ------- */
