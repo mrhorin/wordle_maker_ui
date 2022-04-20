@@ -143,33 +143,36 @@ const MygamesEdit = (props: Props) => {
   }, [title, desc, originalGame])
 
   const addChips = useCallback((inputList: string[]): void => {
-    const newChips = inputList.map((input) => {
-      const isValid = input.length == props.game.char_count && language.validateWord(input)
-      return { value: input, isValid: isValid }
-    })
-    setChips(prevChips => prevChips.concat(newChips))
-  }, [])
-
-  const removeChip = useCallback((index: number): void => {
-    if (index >= 0) {
-      setChips(prevChips => {
-        return prevChips.filter((chip, i) => {
-          return i !== index
-        })
-      })
-    }
-  }, [])
-
-  const updateChip = useCallback((index: number, value: string): void => {
     setChips(prevChips => {
-      return prevChips.map((c, i) => {
-        if (i == index) {
-          return  {
+      const newChips = inputList.map((input, index) => {
+        // id has to be unique
+        const id = prevChips.length > 0 ? prevChips[prevChips.length - 1].id + index + 1 + index : index + 1
+        const isValid = input.length == props.game.char_count && language.validateWord(input)
+        return { id: id, value: input, isValid: isValid }
+      })
+      return prevChips.concat(newChips)
+    })
+  }, [])
+
+  const removeChip = useCallback((id: number): void => {
+    setChips(prevChips => {
+      return prevChips.filter((chip) => {
+        return chip.id !== id
+      })
+    })
+  }, [])
+
+  const updateChip = useCallback((id: number, value: string): void => {
+    setChips(prevChips => {
+      return prevChips.map((prevChip) => {
+        if (prevChip.id == id) {
+          return {
+            id: prevChip.id,
             value: value,
             isValid: props.game.char_count == value.length && language.validateWord(value)
           }
         }
-        return c
+        return prevChip
       })
     })
   }, [])

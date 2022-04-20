@@ -18,6 +18,7 @@ export type Query = {
 }
 
 export type Chip = {
+  id: number, // id has to be unique
   value: string,
   isValid: boolean,
 }

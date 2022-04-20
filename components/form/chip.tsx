@@ -5,13 +5,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 
 interface Props {
-  id: number
   chip: Chip
   handleClickChipXmark(id: number): void
   handleChangeChip(id: number, value: string): void
 }
 
-const Chip = ({ chip, id, handleClickChipXmark, handleChangeChip }: Props) => {
+const Chip = ({ chip, handleClickChipXmark, handleChangeChip }: Props) => {
   const [currentEditChipValue, setCurrentEditChipValue] = useState<string>(chip.value)
   const [isEditing, setIsEditing] = useState<boolean>(false)
 
@@ -26,7 +25,7 @@ const Chip = ({ chip, id, handleClickChipXmark, handleChangeChip }: Props) => {
     if (event.keyCode == 13) {
       // When inputted Enter
       if (currentEditChipValue) {
-        handleChangeChip(id, currentEditChipValue)
+        handleChangeChip(chip.id, currentEditChipValue)
       } else {
         setCurrentEditChipValue(chip.value)
       }
@@ -36,7 +35,7 @@ const Chip = ({ chip, id, handleClickChipXmark, handleChangeChip }: Props) => {
 
   const handleBlurCurrentEditChip = (): void => {
     if (currentEditChipValue) {
-      handleChangeChip(id, currentEditChipValue)
+      handleChangeChip(chip.id, currentEditChipValue)
     } else {
       setCurrentEditChipValue(chip.value)
     }
@@ -59,7 +58,7 @@ const Chip = ({ chip, id, handleClickChipXmark, handleChangeChip }: Props) => {
   return (
     <div className={style} onClick={e => handleClickChip(e)}>
       {value}
-      <div className='chip-textarea-chip-xmark' onClick={e => handleClickChipXmark(id)}>
+      <div className='chip-textarea-chip-xmark' onClick={e => handleClickChipXmark(chip.id)}>
         <FontAwesomeIcon icon={faXmark} />
       </div>
     </div>

@@ -45,8 +45,8 @@ const ChipTextarea = ({ chips, addChips, removeChip, updateChip }: Props) => {
 
   return (
     <div id='chip-textarea' className='chip-textarea' onClick={(e) => { handleClickTextarea(e) }}>
-      {chips.map((chip, index) => {
-        return <ChipComponent key={index} id={index} chip={chip} handleClickChipXmark={handleClickChipXmark} handleChangeChip={handleChangeChip} />
+      {chips.map((chip) => {
+        return <ChipComponent key={chip.id} chip={chip} handleClickChipXmark={handleClickChipXmark} handleChangeChip={handleChangeChip} />
       })}
       <input ref={inputEle} className='chip-textarea-input' type='text' value={inputValue} onChange={e => setInputWord(e.target.value)} />
     </div>
