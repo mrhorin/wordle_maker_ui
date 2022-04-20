@@ -24,7 +24,7 @@ const Sidemenu = (props: Props) => {
       <div className='sidemenu-items-container'>
         {/* My Games */}
         <ul className='sidemenu-item'>
-          <li>
+          <li className='sidemenu-item-title'>
             <FontAwesomeIcon icon={faGamepad} />My Games
           </li>
           <li ref={editEl}>
@@ -44,7 +44,7 @@ const Sidemenu = (props: Props) => {
         </ul>
         {/* Settings */}
         <ul className='sidemenu-item' style={ {marginTop: '1rem'} }>
-          <li>
+          <li className='sidemenu-item-title'>
             <FontAwesomeIcon icon={faGear} />Setteings
           </li>
           <li ref={accountEl}>
