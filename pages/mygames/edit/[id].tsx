@@ -7,8 +7,6 @@ import ReactLoading from 'react-loading'
 import Link from 'next/link'
 import Head from 'next/head'
 import nookies from 'nookies'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPenToSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 
 import Sidemenu from 'components/sidemenu'
 import Modal from 'components/modal'
@@ -86,10 +84,6 @@ const MygamesEdit = (props: Props) => {
    *  The states can be changed with input forms. */
   const [title, setTitle] = useState<string>(props.game.title)
   const [desc, setDesc] = useState<string>(props.game.desc)
-  /* id:
-   *  The ID of the Game and the value will be set in useLayoutEffect
-   *  after pre-rendering. */
-  const [id, setId] = useState<number>()
   /* isChanged:
    *  The flag indicates that parameters are changed in the game form or not. */
   const [isChanged, setIsChanged] = useState<boolean>(false)
@@ -100,6 +94,11 @@ const MygamesEdit = (props: Props) => {
    *  Words which are added by an user is stored into this state as Chip list.
    *  The state will be empty after submitting them to the server. */
   const [chips, setChips] = useState<Chip[]>([])
+  /*
+   * [Edit Game]
+   * subjects:
+   *  A list of subjects. */
+  const [subjects, setSubjects] = useState<Subject[]>([])
   /*
    * [Delete Game]
    * checkedConfirmation:
@@ -126,15 +125,17 @@ const MygamesEdit = (props: Props) => {
   const alert = useAlert()
   const language = new Language(props.game.lang)
 
-  useLayoutEffect(() => {
-    if (props.game.id && validate.token(props.token)) {
-      setId(Number(props.game.id))
-    } else {
-      signOut()
+  useEffect(() => {
+    // When Edit Words tab is selected at first, it fetches the first page of subjects
+    if (currentTab == 'Edit Words' && subjects.length <= 0 && validate.token(currentTokenContext.currentToken)) {
+      fetchSubjects(currentTokenContext.currentToken, 1).then(json => {
+        if (json.ok) setSubjects(json.data)
+      })
     }
-  }, [])
+  }, [currentTab])
 
   useEffect(() => {
+    // When title or desc are changed, the update button is clickable
     if (originalGame.title != title || originalGame.desc != desc) {
       setIsChanged(true)
     } else {
@@ -250,44 +251,37 @@ const MygamesEdit = (props: Props) => {
   }
 
   function createEditWordsComponent(): JSX.Element{
-    const subjects: Subject[] = [
-      { word: 'ティラノシショウ', created_at: '2022/4/16' },
-      { word: 'アタマデカチモン', created_at: '2022/4/16' },
-      { word: 'マリンキメラモン', created_at: '2022/4/16' },
-      { word: 'トノサマゲコモン', created_at: '2022/4/16' },
-      { word: 'エンジェウーモン', created_at: '2022/4/16' },
-      { word: 'スカルグレイモン', created_at: '2022/4/16' },
-      { word: 'メタルグレイモン', created_at: '2022/4/16' },
-      { word: 'ウォーグレイモン', created_at: '2022/4/16' },
-      { word: 'サーベルレオモン', created_at: '2022/4/16' },
-      { word: 'ワルモンザエモン', created_at: '2022/4/16' },
-      { word: 'メタルガルルモン', created_at: '2022/4/16' },
-    ]
-    const subjectComponents = subjects.map((s, i) => {
+    if (subjects.length <= 0) {
+      return createLoadingComponent()
+    } else {
+      const subjectComponents = subjects.map((s, i) => {
+        return (
+          <tr key={i}>
+            <td className='table-td-word'>{ s.word }</td>
+            <td className='table-td-edit'>
+              <button className='btn btn-mini btn-square btn-secondary'>Edit</button>
+            </td>
+            <td className='table-td-delete'>
+              <button className='btn btn-mini btn-square btn-danger'>Delete</button>
+            </td>
+          </tr>
+        )
+      })
       return (
-        <tr key={i}>
-          <td className='table-td-word'>{ s.word }</td>
-          <td className='table-td-date-created'>{ s.created_at }</td>
-          <td className='table-td-edit'><button className='btn btn-mini btn-default'><FontAwesomeIcon icon={faPenToSquare} /></button></td>
-          <td className='table-td-delete'><button className='btn btn-mini btn-danger'><FontAwesomeIcon icon={faTrashCan} /></button></td>
-        </tr>
+        <div className='game-edit-words'>
+          <table>
+            <thead>
+              <tr>
+                <th className='table-th-word'>Word</th>
+                <th className='table-th-date-edit'>Edit</th>
+                <th className='table-th-date-delete'>Delete</th>
+              </tr>
+            </thead>
+            <tbody>{ subjectComponents }</tbody>
+          </table>
+        </div>
       )
-    })
-    return (
-      <div className='game-edit-words'>
-        <table>
-          <thead>
-            <tr>
-              <th className='table-th-word'>Word</th>
-              <th className='table-th-date-created'>Date Created</th>
-              <th className='table-th-date-edit'>Edit</th>
-              <th className='table-th-date-delete'>Delete</th>
-            </tr>
-          </thead>
-          <tbody>{ subjectComponents }</tbody>
-        </table>
-      </div>
-    )
+    }
   }
 
   function createDeleteGameComponent(): JSX.Element{
@@ -302,13 +296,17 @@ const MygamesEdit = (props: Props) => {
     return (
       <div className='game-edit-link'>
         <label>Game Link</label>
-        <Link href={`/games/${id}`}>
+        <Link href={`/games/${props.game.id}`}>
           <button className='btn btn-secondary'>
-            {`http://localhost:8000/games/${id}`}
+            {`http://localhost:8000/games/${props.game.id}`}
           </button>
         </Link>
       </div>
     )
+  }
+
+  function createLoadingComponent(): JSX.Element{
+    return <ReactLoading type={'spin'} color={'#008eff'} height={'25px'} width={'25px'} className='loading-center' />
   }
 
   function validateTitle(): boolean{
@@ -345,13 +343,13 @@ const MygamesEdit = (props: Props) => {
       if (validateTitle()) {
         const body = {
           game: {
-            'id': id,
+            'id': props.game.id,
             'title': title,
             'desc': desc,
           }
         }
         setShowOverlay(true)
-        fetch(`http://localhost:3000/api/v1/games/${id}`, {
+        fetch(`http://localhost:3000/api/v1/games/${props.game.id}`, {
           method: 'PUT',
           headers: {
             "Content-Type": "application/json",
@@ -379,9 +377,9 @@ const MygamesEdit = (props: Props) => {
 
   function handleClickSubmit(): void{
     if (validate.token(currentTokenContext.currentToken)) {
-      if (validateWords() && id) {
+      if (validateWords() && props.game.id) {
         const words = chips.map(c => c.value)
-        const body = { words: words, game: { game_id: id } }
+        const body = { words: words, game: { game_id: props.game.id } }
         fetch(`http://localhost:3000/api/v1/subjects/create`, {
           method: 'POST',
           headers: {
@@ -413,7 +411,7 @@ const MygamesEdit = (props: Props) => {
     if (validate.token(currentTokenContext.currentToken)) {
       if (validateTitle()) {
         setShowOverlay(true)
-        fetch(`http://localhost:3000/api/v1/games/${id}`, {
+        fetch(`http://localhost:3000/api/v1/games/${props.game.id}`, {
           method: 'DELETE',
           headers: {
             "Content-Type": "application/json",
@@ -434,6 +432,18 @@ const MygamesEdit = (props: Props) => {
           .catch(error => { setShowOverlay(false) })
       }
     }
+  }
+
+  async function fetchSubjects(token: Token, page: number) {
+    const res = await fetch(`http://localhost:3000/api/v1/games/${props.game.id}/subjects?page=${page}`, {
+      method: 'GET',
+      headers: {
+        'access-token': token.accessToken,
+        'client': token.client,
+        'uid': token.uid
+      }
+    })
+    return await res.json()
   }
 
   return (
@@ -476,14 +486,10 @@ const MygamesEdit = (props: Props) => {
             <h1 className='title'>Edit games</h1>
             {createTabsComponent()}
             {(() => {
-              if (id) {
-                if (currentTab == tabs[0]) return createSummaryComponent()
-                if (currentTab == tabs[1]) return createAddWordsComponent()
-                if (currentTab == tabs[2]) return createEditWordsComponent()
-                if (currentTab == tabs[3]) return createDeleteGameComponent()
-              } else {
-                return <ReactLoading type={'spin'} color={'#008eff'} height={'25px'} width={'25px'} className='loading-center' />
-              }
+              if (currentTab == tabs[0]) return createSummaryComponent()
+              if (currentTab == tabs[1]) return createAddWordsComponent()
+              if (currentTab == tabs[2]) return createEditWordsComponent()
+              if (currentTab == tabs[3]) return createDeleteGameComponent()
             })()}
             <LoadingOverlay showOverlay={showOverlay} />
           </div>
