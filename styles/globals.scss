@@ -320,56 +320,67 @@ table{
   margin: 0.1rem;
 }
 .btn.btn-square{
-  border-radius: 0;
+  border-radius: 0px;
 }
-
 .btn.btn-default{
   color: #111111;
   background-color: $default-color;
+  &:hover{
+    background: darken($default-color, 8%);
+  }
+  &:disabled{
+    color: #656565;
+    background-color: #c4c4c4;
+    cursor: not-allowed;
+  }
 }
-.btn.btn.btn-default:disabled{
-  color: #656565;
-  background-color: #c4c4c4;
-  cursor: not-allowed;
-}
-
 .btn.btn-primary{
   color: #111111;
   background-color: $accent-color1;
+  &:hover{
+    background: darken($accent-color1, 8%);
+  }
+  &:disabled{
+    color: #656565;
+    background-color: #c4c4c4;
+    cursor: not-allowed;
+  }
 }
-.btn.btn.btn-primary:disabled{
-  color: #656565;
-  background-color: #c4c4c4;
-  cursor: not-allowed;
-}
-
 .btn.btn-secondary{
   color: #fff;
   background: $secondary-color;
   &:hover{
     background: darken($secondary-color, 8%);
   }
+  &:disabled{
+    background: lighten($secondary-color, 15%);
+    color: #c4c4c4;
+    cursor: not-allowed;
+  }
 }
-
 .btn.btn-info{
   color: #fff;
   background: $info-color;
   &:hover{
     background: darken($info-color, 8%);
   }
+  &:disabled{
+    background: lighten($info-color, 15%);
+    color: #c4c4c4;
+    cursor: not-allowed;
+  }
 }
-
 .btn.btn-danger{
   color: #fff;
   background-color: $danger-color;
   &:hover{
     background: darken($danger-color, 8%);
   }
-}
-.btn.btn-danger:disabled{
-  color: #838383;
-  background-color: #fa9393;
-  cursor: not-allowed;
+  &:disabled{
+    color: #838383;
+    background-color: #fa9393;
+    cursor: not-allowed;
+  }
 }
 
 .tabs-container{
@@ -394,6 +405,37 @@ table{
     color: $accent-color2;
     border-bottom: 2px solid $accent-color2;
     margin-bottom: -2px;
+  }
+}
+
+.pagination{
+  width: 100%;
+  margin: 1rem;
+  text-align: center;
+  button.pagination-page{
+    background: $secondary-color;
+    color: $font-color1;
+    border: none;
+    border-radius: 2px;
+    font-size: 1rem;
+    line-height: 2rem;
+    padding: 0 0.5rem;
+    margin: 0 0.25rem;
+    width: 2rem;
+    cursor: pointer;
+    &:hover{
+      background: darken($secondary-color, 10%);
+    }
+  }
+  button.pagination-page.pagination-page-current{
+    background-color: $font-color1;
+    color: $secondary-color;
+    border: none;
+    cursor: default;
+    &:hover{
+      background-color: $font-color1;
+      color: $secondary-color;
+    }
   }
 }
 

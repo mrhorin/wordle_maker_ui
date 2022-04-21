@@ -1,7 +1,7 @@
-import type { UserInfo, Token, Game, Subject, Chip } from 'types/global'
+import type { UserInfo, Token, Game, Subject, Chip, Pagination } from 'types/global'
 import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
-import { useEffect, useLayoutEffect, useState, useContext, useMemo, useCallback, useRef } from 'react'
+import { useEffect, useState, useContext, useMemo, useCallback, useRef } from 'react'
 import { useAlert } from 'react-alert'
 import ReactLoading from 'react-loading'
 import Link from 'next/link'
@@ -12,6 +12,7 @@ import Sidemenu from 'components/sidemenu'
 import Modal from 'components/modal'
 import LoadingOverlay from 'components/loading_overlay'
 import ChipTextarea from 'components/form/chip_textarea'
+import PaginationComponent from 'components/pagination'
 
 import CurrentTokenContext from 'contexts/current_token'
 import CurrentUserInfoContext from 'contexts/current_user_info'
@@ -96,9 +97,12 @@ const MygamesEdit = (props: Props) => {
   const [chips, setChips] = useState<Chip[]>([])
   /*
    * [Edit Game]
-   * subjects:
+   * currentSubjects:
    *  A list of subjects. */
-  const [subjects, setSubjects] = useState<Subject[]>([])
+  const [currentSubjects, setCurrentSubjects] = useState<Subject[]>([])
+  /* subjectsPagination:
+   *  Pagenation for subjects.  */
+  const [currentSubjectsPagination, setCurrentSubjectsPagination] = useState<Pagination>()
   /*
    * [Delete Game]
    * checkedConfirmation:
@@ -127,9 +131,12 @@ const MygamesEdit = (props: Props) => {
 
   useEffect(() => {
     // When Edit Words tab is selected at first, it fetches the first page of subjects
-    if (currentTab == 'Edit Words' && subjects.length <= 0 && validate.token(currentTokenContext.currentToken)) {
+    if (currentTab == 'Edit Words' && currentSubjects.length <= 0 && validate.token(currentTokenContext.currentToken)) {
       fetchSubjects(currentTokenContext.currentToken, 1).then(json => {
-        if (json.ok) setSubjects(json.data)
+        if (json.ok) {
+          setCurrentSubjects(json.data.subjects)
+          setCurrentSubjectsPagination(json.data.pagination)
+        }
       })
     }
   }, [currentTab])
@@ -251,10 +258,10 @@ const MygamesEdit = (props: Props) => {
   }
 
   function createEditWordsComponent(): JSX.Element{
-    if (subjects.length <= 0) {
+    if (currentSubjects.length <= 0) {
       return createLoadingComponent()
     } else {
-      const subjectComponents = subjects.map((s, i) => {
+      const subjectComponents = currentSubjects.map((s, i) => {
         return (
           <tr key={i}>
             <td className='table-td-word'>{ s.word }</td>
@@ -279,6 +286,11 @@ const MygamesEdit = (props: Props) => {
             </thead>
             <tbody>{ subjectComponents }</tbody>
           </table>
+          {(() => {
+            if (currentSubjectsPagination) {
+              return <PaginationComponent pagination={currentSubjectsPagination} handleClickPage={handleClickPage} />
+            }
+          })()}
         </div>
       )
     }
@@ -404,6 +416,19 @@ const MygamesEdit = (props: Props) => {
       }
     } else {
       signOut()
+    }
+  }
+
+  function handleClickPage(page: number): void{
+    if (validate.token(currentTokenContext.currentToken)) {
+      setShowOverlay(true)
+      fetchSubjects(currentTokenContext.currentToken, page).then(json => {
+        if (json.ok) {
+          setCurrentSubjects(json.data.subjects)
+          setCurrentSubjectsPagination(json.data.pagination)
+        }
+        setShowOverlay(false)
+      })
     }
   }
 
