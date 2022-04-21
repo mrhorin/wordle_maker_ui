@@ -106,8 +106,8 @@ select:focus{
   border: 1px solid #0099ff;
 }
 input[type="text"]:disabled{
-  background: lighten($base-color1, 15%);
-  color: darken($font-color1, 25%);
+  background: lighten($base-color1, 20%);
+  color: darken($font-color1, 30%);
   &:hover{
     cursor: not-allowed;
   }
