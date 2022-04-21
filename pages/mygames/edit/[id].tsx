@@ -243,7 +243,7 @@ const MygamesEdit = (props: Props) => {
       <div className='game-add-words'>
         <div className='form-group'>
           <label>Words</label>
-          <ChipTextarea chips={chips} addChips={addChips} removeChip={removeChip} updateChip={updateChip} maxLength={3000} />
+          <ChipTextarea chips={chips} addChips={addChips} removeChip={removeChip} updateChip={updateChip} maxLength={9} />
         </div>
         <button className='btn btn-primary' disabled={!validateWords() || 0 == chips.length} onClick={handleClickSubmit}>Submit</button>
       </div>

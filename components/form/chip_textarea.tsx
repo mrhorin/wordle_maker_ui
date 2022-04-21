@@ -1,5 +1,5 @@
 import type { Chip } from 'types/global'
-import { useState, useLayoutEffect, useCallback, useRef } from 'react'
+import { useState, useCallback, useRef, useEffect } from 'react'
 
 import ChipComponent from 'components/form/chip'
 
@@ -12,15 +12,16 @@ interface Props {
 }
 
 const ChipTextarea = ({ chips, addChips, removeChip, updateChip, maxLength }: Props) => {
-  const [inputValue, setInputWord] = useState<string>('')
+  const [inputValue, setInputValue] = useState<string>('')
+  const [chipsCount, setChipsCount] = useState<number>(0)
   const inputEle = useRef<HTMLInputElement>(null)
   const textareaEle = useRef<HTMLInputElement>(null)
   const counterEle = useRef<HTMLInputElement>(null)
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (inputValue == ',') {
       // Delete inputValue when being inputed only comma
-      setInputWord('')
+      setInputValue('')
     } else if (/,/g.test(inputValue)) {
       // Split inputValue into an array with comma
       let inputList: string[] = inputValue.split(',')
@@ -29,10 +30,22 @@ const ChipTextarea = ({ chips, addChips, removeChip, updateChip, maxLength }: Pr
       }).filter(Boolean)
       if (inputList.length > 0) {
         addChips(inputList)
-        setInputWord('')
+        setInputValue('')
       }
     }
   }, [inputValue])
+
+  useEffect(() => {
+    if (maxLength) setChipsCount(chips.map(c => c.value).join('').length)
+  }, [chips])
+
+  function getTotalCount(): number{
+    return chipsCount + inputValue.length
+  }
+
+  function isInputtable(): boolean{
+    return !maxLength || maxLength > getTotalCount()
+  }
 
   function focus(): void{
     if (inputEle.current) {
@@ -50,6 +63,19 @@ const ChipTextarea = ({ chips, addChips, removeChip, updateChip, maxLength }: Pr
   function handleBlurInput(): void{
     textareaEle.current?.classList.remove('chip-textarea-focus')
     counterEle.current?.classList.remove('form-countable-input-counter-focus')
+  }
+
+  function handleChangeInput(event: any): void{
+    let value: string = event.target.value
+    if (!maxLength || inputValue.length > event.target.value.length) {
+      // When deleted
+      setInputValue(value)
+    } else if (isInputtable()) {
+      // When inputtable
+      const inputtableCount: number = maxLength - chipsCount
+      if (inputtableCount >= 0) value = value.slice(0, inputtableCount)
+      setInputValue(value)
+    }
   }
 
   function handleClickTextarea(event: any): void{
@@ -70,16 +96,15 @@ const ChipTextarea = ({ chips, addChips, removeChip, updateChip, maxLength }: Pr
         return <ChipComponent key={chip.id} chip={chip} handleClickChipXmark={handleClickChipXmark} handleChangeChip={handleChangeChip} />
       })}
       <input ref={inputEle} className='chip-textarea-input' type='text' value={inputValue}
-        onChange={e => setInputWord(e.target.value)} onFocus={handleFocusInput} onBlur={handleBlurInput} />
+        onChange={e => handleChangeInput(e)} onFocus={handleFocusInput} onBlur={handleBlurInput} />
     </div>
   )
 
   if (maxLength) {
-    const count = chips.map(c => c.value).join('').length
     return (
       <div className='form-countable-input-group'>
         {textareComponent}
-        <div ref={counterEle} className='form-countable-input-counter'>{`${count} / ${maxLength}`}</div>
+        <div ref={counterEle} className='form-countable-input-counter'>{`${getTotalCount()} / ${maxLength}`}</div>
       </div>
     )
   } else {

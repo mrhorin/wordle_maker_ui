@@ -7,17 +7,17 @@
         4: .loading-overlay
           5: .header
 */
-$base-color1: #202025;
+$base-color1: #1d1d23;
 $base-color2: lighten($base-color1, 3%);
 $base-color3: lighten($base-color1, 6%);
-$accent-color1: #42c86e;
-$accent-color2: #ea9e3a;
+$accent-color1: #42c897;
+$accent-color2: #d79742;
 $font-color1: #dfe3e5;
 $font-color2: darken($font-color1, 30%);
 $font-color3: darken($font-color1, 35%);
 $default-color: #fafafa;
 $secondary-color: #565761;
-$danger-color: #d00101;
+$danger-color: #d93333;
 $info-color: #3ea6ff;
 
 $sp-break-point: 599px;
@@ -168,6 +168,10 @@ label{
     }
     .form-countable-input-counter.form-countable-input-counter-focus{
       border: 1px solid #0099ff;
+      border-top: none;
+    }
+    .form-countable-input-counter.form-countable-input-counter-invalid{
+      border: 1px solid #ff6600;
       border-top: none;
     }
     // When focus
@@ -796,6 +800,9 @@ table{
 }
 .chip-textarea.chip-textarea-focus{
   border: 1px solid #0099ff;
+}
+.chip-textarea.chip-textarea-invalid{
+  border: 1px solid #ff6600;
 }
 
 /* ------- react-loading ------- */
