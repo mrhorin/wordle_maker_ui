@@ -238,12 +238,11 @@ const MygamesEdit = (props: Props) => {
   }
 
   function createAddWordsComponent(): JSX.Element {
-    const count = chips.map(c => c.value).join('').length
     return (
       <div className='game-add-words'>
         <div className='form-group'>
           <label>Words</label>
-          <ChipTextarea chips={chips} addChips={addChips} removeChip={removeChip} updateChip={updateChip} maxLength={9} />
+          <ChipTextarea chips={chips} addChips={addChips} removeChip={removeChip} updateChip={updateChip} maxLength={5000} />
         </div>
         <button className='btn btn-primary' disabled={!validateWords() || 0 == chips.length} onClick={handleClickSubmit}>Submit</button>
       </div>

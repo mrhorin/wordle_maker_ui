@@ -24,10 +24,7 @@ const ChipTextarea = ({ chips, addChips, removeChip, updateChip, maxLength }: Pr
       setInputValue('')
     } else if (/,/g.test(inputValue)) {
       // Split inputValue into an array with comma
-      let inputList: string[] = inputValue.split(',')
-      inputList = inputList.map((value) => {
-        return value.replace(/[\r\n\s]/g, '')
-      }).filter(Boolean)
+      let inputList: string[] = inputValue.replace(/[\r\n\s]/g, '').split(',').filter(Boolean)
       if (inputList.length > 0) {
         addChips(inputList)
         setInputValue('')
@@ -36,7 +33,12 @@ const ChipTextarea = ({ chips, addChips, removeChip, updateChip, maxLength }: Pr
   }, [inputValue])
 
   useEffect(() => {
-    if (maxLength) setChipsCount(chips.map(c => c.value).join('').length)
+    if (maxLength) {
+      // Should include comma
+      let count = chips.map(c => c.value).join(',').length
+      if (count > 0) count += 1
+      setChipsCount(count)
+    }
   }, [chips])
 
   function getTotalCount(): number{
@@ -66,7 +68,7 @@ const ChipTextarea = ({ chips, addChips, removeChip, updateChip, maxLength }: Pr
   }
 
   function handleChangeInput(event: any): void{
-    let value: string = event.target.value
+    let value: string = event.target.value.replace(/[\r\n\s]/g, '')
     if (!maxLength || inputValue.length > event.target.value.length) {
       // When deleted
       setInputValue(value)
