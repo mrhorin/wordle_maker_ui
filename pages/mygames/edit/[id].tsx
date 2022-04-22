@@ -159,7 +159,7 @@ const MygamesEdit = (props: Props) => {
         // id has to be unique
         const id = prevChips.length > 0 ? prevChips[prevChips.length - 1].id + index + 1 + index : index + 1
         const isValid = input.length == props.game.char_count && language.validateWord(input)
-        return { id: id, value: input, isValid: isValid }
+        return { id: id, value: input.toUpperCase(), isValid: isValid }
       })
       return prevChips.concat(newChips)
     })
@@ -179,7 +179,7 @@ const MygamesEdit = (props: Props) => {
         if (prevChip.id == id) {
           return {
             id: prevChip.id,
-            value: value,
+            value: value.toUpperCase(),
             isValid: props.game.char_count == value.length && language.validateWord(value)
           }
         }
