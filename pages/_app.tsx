@@ -1,8 +1,10 @@
 import type { AppProps } from 'next/app'
 import type { UserInfo, Token, Query } from 'types/global'
-import { useState, useLayoutEffect } from 'react'
+import Router from 'next/router'
+import { useState, useLayoutEffect, useEffect } from 'react'
 import { transitions, positions, Provider as AlertProvider } from 'react-alert'
 import AlertTemplate from 'react-alert-template-basic'
+import nprogress from 'nprogress'
 import { parseCookies, setCookie, destroyCookie } from 'nookies'
 import { config } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
@@ -16,6 +18,7 @@ import validate from 'scripts/validate'
 
 import Layout from 'components/layout'
 import 'styles/globals.scss'
+import 'nprogress/nprogress.css'
 
 const cookieOptions = { maxAge: 30 * 24 * 60 * 60, path: '/' }
 const alertOptions = {
@@ -25,6 +28,11 @@ const alertOptions = {
   transition: transitions.SCALE,
   containerStyle: { textAlign: 'center', zIndex: 100 }
 }
+
+nprogress.configure({ showSpinner: false, speed: 400, minimum: 0.25 })
+Router.events.on('routeChangeStart', nprogress.start)
+Router.events.on('routeChangeError', nprogress.done)
+Router.events.on('routeChangeComplete', nprogress.done)
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const [currentToken, setCurrentToken] = useState<Token | null>(null)

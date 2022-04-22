@@ -4,6 +4,8 @@ import { useRouter } from 'next/router'
 import { useEffect, useState, useContext, useMemo, useCallback, useRef } from 'react'
 import { useAlert } from 'react-alert'
 import ReactLoading from 'react-loading'
+import nprogress from 'nprogress'
+
 import Link from 'next/link'
 import Head from 'next/head'
 import nookies from 'nookies'
@@ -132,12 +134,13 @@ const MygamesEdit = (props: Props) => {
   useEffect(() => {
     // When Edit Words tab is selected at first, it fetches the first page of subjects
     if (currentTab == 'Edit Words' && currentSubjects.length <= 0 && validate.token(currentTokenContext.currentToken)) {
+      nprogress.start()
       fetchSubjects(currentTokenContext.currentToken, 1).then(json => {
         if (json.ok) {
           setCurrentSubjects(json.data.subjects)
           setCurrentSubjectsPagination(json.data.pagination)
         }
-      })
+      }).finally(() => nprogress.done())
     }
   }, [currentTab])
 
@@ -258,7 +261,9 @@ const MygamesEdit = (props: Props) => {
   }
 
   function createEditWordsComponent(): JSX.Element{
-    if (currentSubjects.length <= 0) {
+    if (currentSubjectsPagination?.total_count == 0) {
+      return <p style={{textAlign: 'center', margin: '10rem auto'}}>Looks like you haven't created anything yet..?</p>
+    } else if (currentSubjects.length <= 0) {
       return createLoadingComponent()
     } else {
       const subjectComponents = currentSubjects.map((s, i) => {
@@ -361,6 +366,7 @@ const MygamesEdit = (props: Props) => {
           }
         }
         setShowOverlay(true)
+        nprogress.start()
         fetch(`http://localhost:3000/api/v1/games/${props.game.id}`, {
           method: 'PUT',
           headers: {
@@ -380,7 +386,10 @@ const MygamesEdit = (props: Props) => {
             }
           })
           .catch(error => console.log(error))
-          .finally(() => setShowOverlay(false))
+          .finally(() => {
+            nprogress.done()
+            setShowOverlay(false)
+          })
       }
     } else {
       signOut()
@@ -392,6 +401,8 @@ const MygamesEdit = (props: Props) => {
       if (validateWords() && props.game.id) {
         const words = chips.map(c => c.value)
         const body = { words: words, game: { game_id: props.game.id } }
+        setShowOverlay(true)
+        nprogress.start()
         fetch(`http://localhost:3000/api/v1/subjects/create`, {
           method: 'POST',
           headers: {
@@ -411,6 +422,10 @@ const MygamesEdit = (props: Props) => {
             }
           })
           .catch(error => console.log(error))
+          .finally(() => {
+            nprogress.done()
+            setShowOverlay(false)
+          })
       } else {
         alert.show(language.getInvalidMsg(props.game.char_count), { type: 'error' })
       }
@@ -421,14 +436,13 @@ const MygamesEdit = (props: Props) => {
 
   function handleClickPage(page: number): void{
     if (validate.token(currentTokenContext.currentToken)) {
-      setShowOverlay(true)
+      nprogress.start()
       fetchSubjects(currentTokenContext.currentToken, page).then(json => {
         if (json.ok) {
           setCurrentSubjects(json.data.subjects)
           setCurrentSubjectsPagination(json.data.pagination)
         }
-        setShowOverlay(false)
-      })
+      }).finally(() => nprogress.done())
     }
   }
 
@@ -436,6 +450,7 @@ const MygamesEdit = (props: Props) => {
     if (validate.token(currentTokenContext.currentToken)) {
       if (validateTitle()) {
         setShowOverlay(true)
+        nprogress.start()
         fetch(`http://localhost:3000/api/v1/games/${props.game.id}`, {
           method: 'DELETE',
           headers: {
@@ -454,7 +469,11 @@ const MygamesEdit = (props: Props) => {
               console.error(json.message)
             }
           })
-          .catch(error => { setShowOverlay(false) })
+          .catch(error => console.log(error))
+          .finally(() => {
+            nprogress.done()
+            setShowOverlay(false)
+          })
       }
     }
   }

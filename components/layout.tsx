@@ -22,7 +22,6 @@ const Layout: NextPage = ({ children }) => {
       <Footer />
     </div>
   )
-
 }
 
 export default Layout

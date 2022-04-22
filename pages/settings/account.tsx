@@ -3,11 +3,14 @@ import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import { useState, useMemo, useContext } from 'react'
 import { useAlert } from 'react-alert'
+import nprogress from 'nprogress'
 import nookies from 'nookies'
+
 import Head from 'next/head'
 
 import Sidemenu from 'components/sidemenu'
 import Modal from 'components/modal'
+import LoadingOverlay from 'components/loading_overlay'
 
 import validate from 'scripts/validate'
 
@@ -53,6 +56,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 }
 
 const Account = (props: Props) => {
+  const [showOverlay, setShowOverlay] = useState<boolean>(false)
   const currentTokenContext = useContext(CurrentTokenContext)
   const currentUserInfoContext = useContext(CurrentUserInfoContext)
   const [checkedConfirmation, setCheckedConfirmation] = useState<boolean | undefined>(false)
@@ -77,10 +81,11 @@ const Account = (props: Props) => {
     return await res.json()
   }
 
-  function handleDeleteAccount(): void{
+  function handleClickDeleteAccount(): void{
     if (validate.token(currentTokenContext.currentToken)) {
+      setShowOverlay(true)
+      nprogress.start()
       fetchDeleteAccount(currentTokenContext.currentToken).then(json => {
-        console.log(json)
         if (json.status == 'success') {
           currentTokenContext.setCurrentToken(null)
           currentTokenContext.destroyTokenCookies()
@@ -94,6 +99,9 @@ const Account = (props: Props) => {
         }
       }).catch(error => {
         console.error(error)
+      }).finally(() => {
+        nprogress.done()
+        setShowOverlay(false)
       })
     }
   }
@@ -125,11 +133,13 @@ const Account = (props: Props) => {
           </div>
           </div>
           <div className='modal-window-footer'>
-            <button className='btn btn-danger' onClick={handleDeleteAccount} disabled={!checkedConfirmation}>Delete Account</button>
+            <button className='btn btn-danger' onClick={handleClickDeleteAccount} disabled={!checkedConfirmation}>Delete Account</button>
             <button className='btn btn-default' onClick={()=>setShowModal(false)}>Close</button>
           </div>
         </div>
       </Modal>
+
+      <LoadingOverlay showOverlay={showOverlay} />
 
       <div className='container'>
         <div id='sidemenu-container'>
