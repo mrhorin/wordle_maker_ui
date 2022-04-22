@@ -1,7 +1,5 @@
 import Image from 'next/image'
-import { useContext, memo } from 'react'
-
-import CurrentTokenContext from 'contexts/current_token'
+import { memo } from 'react'
 
 const Footer = () => {
   return (
