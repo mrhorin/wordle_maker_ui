@@ -314,9 +314,11 @@ const MygamesEdit = (props: Props) => {
       <div className='game-edit-link'>
         <label>Game Link</label>
         <Link href={`/games/${props.game.id}`}>
-          <button className='btn btn-secondary'>
-            {`http://localhost:8000/games/${props.game.id}`}
-          </button>
+          <a>
+            <button className='btn btn-secondary'>
+              {`http://localhost:8000/games/${props.game.id}`}
+            </button>
+          </a>
         </Link>
       </div>
     )
