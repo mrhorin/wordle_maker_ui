@@ -14,6 +14,7 @@ import CurrentUserInfoContext from 'contexts/current_user_info'
 import validate from 'scripts/validate'
 
 import Link from 'next/link'
+import Language from 'scripts/language'
 
 type Props = {
   token: Token,
@@ -89,7 +90,7 @@ const MygamesEditIndex = (props: Props) => {
               {/* Language */}
               <div className='game-index-item-attrs-item'>
                 <div className='game-index-item-attrs-item-label'>Language:</div>
-                <div className='game-index-item-attrs-item-value'>{game.lang}</div>
+                <div className='game-index-item-attrs-item-value'>{game.lang.toUpperCase()}</div>
               </div>
               {/* Character count */}
               <div className='game-index-item-attrs-item'>
