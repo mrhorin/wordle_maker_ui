@@ -107,6 +107,7 @@ const ChipTextarea = ({ chips, addChips, removeChip, updateChip, maxLength }: Pr
       <div className='form-countable-input-group'>
         {textareComponent}
         <div ref={counterEle} className='form-countable-input-counter'>{`${getTotalCount()} / ${maxLength}`}</div>
+        <div className='form-group-desc'>Type words separated by commas.</div>
       </div>
     )
   } else {

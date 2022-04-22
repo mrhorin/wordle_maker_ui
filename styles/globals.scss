@@ -199,8 +199,15 @@ label{
       border-bottom: none;
     }
   }
-  .form-group-invalid-feedback{
+  .form-group-desc{
     order: 3;
+    color: $font-color2;
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-top: 0.3rem;
+  }
+  .form-group-invalid-feedback{
+    order: 4;
     color: #ff6600;
     font-size: 0.8rem;
     font-weight: 500;
