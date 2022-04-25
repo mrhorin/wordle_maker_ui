@@ -429,6 +429,7 @@ table{
     padding: 0 0.5rem;
     margin: 0 0.25rem;
     width: 2rem;
+    white-space: nowrap;
     cursor: pointer;
     &:hover{
       background: darken($secondary-color, 10%);

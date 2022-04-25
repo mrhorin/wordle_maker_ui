@@ -33,6 +33,7 @@ export type Game = {
 }
 
 export type Subject = {
+  id: number,
   word: string,
   created_at: string,
 }
