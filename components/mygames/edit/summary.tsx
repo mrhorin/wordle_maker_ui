@@ -81,7 +81,7 @@ const Summary = ({ game, setGame,signOut }: Props) => {
         fetch(`http://localhost:3000/api/v1/games/${game.id}`, {
           method: 'PUT',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': "application/json",
             'access-token': currentTokenContext.currentToken.accessToken,
             'client': currentTokenContext.currentToken.client,
             'uid': currentTokenContext.currentToken.uid

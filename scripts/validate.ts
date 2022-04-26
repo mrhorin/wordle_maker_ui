@@ -1,3 +1,5 @@
+import type { Game } from 'types/global'
+import Language from 'scripts/language'
 import Ajv from 'ajv'
 
 const ajv = new Ajv()
@@ -37,12 +39,31 @@ const schema = {
     required: ['provider', 'name', 'nickname', 'uid', 'image'],
     additionalProperties: false,
   },
+  subject: {
+    type: 'object',
+    properties: {
+      id: { type: 'number' },
+      word: { type: 'string' },
+      game_id: { type: 'number' },
+      created_at: { type: 'string' },
+      updated_at: { type: 'string' },
+    },
+    required: ['id', 'word'],
+    additionalProperties: false,
+  }
+}
+
+const validateWordWithGame = (word: string, game: Game) => {
+  const language = new Language(game.lang)
+  return word.length == game.char_count && language.validateWord(word)
 }
 
 const validate = {
   token: ajv.compile(schema.token),
   queryToken: ajv.compile(schema.queryToken),
-  userInfo: ajv.compile(schema.userInfo)
+  userInfo: ajv.compile(schema.userInfo),
+  subject: ajv.compile(schema.subject),
+  wordWithGame: validateWordWithGame,
 }
 
 export default validate

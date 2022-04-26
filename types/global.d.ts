@@ -35,7 +35,7 @@ export type Game = {
 export type Subject = {
   id: number,
   word: string,
-  created_at: string,
+  game_id?: number,
 }
 
 export type Word = {

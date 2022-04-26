@@ -210,6 +210,7 @@ label{
     order: 4;
     color: #ff6600;
     font-size: 0.8rem;
+    line-height: 0.8rem;
     font-weight: 500;
     position: absolute;
     bottom: -1rem;
@@ -636,23 +637,29 @@ table{
     .modal-window-container{
       display: flex;
       flex-direction: column;
+      border: 1px solid $base-color3;
+      border-radius: 5px;
+      background: $base-color2;
       .modal-window-header{
         order: 1;
         padding: 1rem;
         padding-bottom: 0;
         margin-top: auto;
-        background: $base-color2;
-        border: 1px solid $base-color3;
-        border-bottom: none;
-        border-radius: 5px 5px 0px 0px;
         font-size: 1.3rem;
       }
       .modal-window-body{
         order: 2;
         padding: 1rem;
-        background: $base-color2;
-        border-left: 1px solid $base-color3;
-        border-right: 1px solid $base-color3;
+        .form-group{
+          input[type="text"]{
+            background: lighten($base-color3, 3%);
+          }
+          .form-countable-input-group{
+            .form-countable-input-counter{
+              background: lighten($base-color3, 3%);
+            }
+          }
+        }
         li{
           line-height: 2rem;
         }
@@ -663,10 +670,6 @@ table{
         padding-top: 0;
         margin-bottom: auto;
         text-align: right;
-        background: $base-color2;
-        border: 1px solid $base-color3;
-        border-top: none;
-        border-radius: 0px 0px 5px 5px;
       }
     }
   }
