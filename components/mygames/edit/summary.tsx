@@ -93,6 +93,7 @@ const Summary = ({ game, setGame,signOut }: Props) => {
               alert.show('UPDATED', { type: 'success' })
               setGame(json.data as Game)
             } else {
+              console.error(json)
               alert.show('FAILED', {type: 'error'})
             }
           })
