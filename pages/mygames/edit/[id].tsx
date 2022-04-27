@@ -1,7 +1,7 @@
-import type { UserInfo, Token, Game } from 'types/global'
+import type { UserInfo, Token, Game, Tab } from 'types/global'
 import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 
 import Head from 'next/head'
 import nookies from 'nookies'
@@ -17,9 +17,12 @@ import CurrentUserInfoContext from 'contexts/current_user_info'
 
 import validate from 'scripts/validate'
 
-const tabs: string[] = ['Summary', 'Add Words', 'Edit Words','Delete Game']
-
-type Props = { token: Token, userInfo: UserInfo, game: Game }
+const tabs: Tab[] = [
+  { name: 'Summary', hash: 'summary' },
+  { name: 'Add Words', hash: 'add-words' },
+  { name: 'Edit Words', hash: 'edit-words' },
+  { name: 'Delete Game', hash: 'delete-game' },
+]
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const cookies = nookies.get(context)
@@ -60,22 +63,66 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 }
 
-const MygamesEdit = (props: Props) => {
+type TabComponentProps = {
+  tab: Tab,
+  isActive: boolean,
+}
+
+const TabComponent = ({ tab, isActive }: TabComponentProps) => {
+  const router = useRouter()
+
+  function handleClickTab(): void{
+    router.push(`#${tab.hash}`)
+  }
+
+  let style = 'tab'
+  if (isActive) style += ' tab-active'
+  return (
+    <div className={style} onClick={handleClickTab}>
+      { tab.name }
+    </div>
+  )
+}
+
+type MygamesEditProps = { token: Token, userInfo: UserInfo, game: Game }
+
+const MygamesEdit = (props: MygamesEditProps) => {
   /*
-   * [Common]
    * game:
    *  This state will be changed after updating the game by fetching API. */
   const [game, setGame] = useState<Game>(props.game)
-  /* currentTab:
-   *  The value indicates which tab is active at the time.
-   *  It depends on tabs variable, a list of tab names. */
-  const [currentTab, setCurrentTab] = useState<string>('Summary')
+  /* currentHash:
+   *  The value indicates which tab is active.
+   *  It depends on tabs variable, a list of tab names,
+   *  and is initialized in useEffect. */
+  const [currentHash, setCurrentHash] = useState<string>('')
 
   /********* Context *********/
   const currentTokenContext = useContext(CurrentTokenContext)
   const currentUserInfoContext = useContext(CurrentUserInfoContext)
 
   const router = useRouter()
+
+  useEffect(() => {
+    // Initialize currentHash
+    if (location.hash) {
+      setCurrentHash(location.hash.replace(/#/g, ''))
+    } else {
+      setCurrentHash(tabs[0].hash)
+      router.replace(`#${tabs[0].hash}`)
+    }
+  }, [])
+
+  useEffect(() => {
+    // Bind hashChangeStart event
+    const handleHashChangeStart = (url: string) => {
+      setCurrentHash(url.split('#')[1])
+    }
+    router.events.on('hashChangeStart', handleHashChangeStart);
+    return () => {
+      router.events.off('hashChangeStart', handleHashChangeStart)
+    }
+  }, [router.events])
 
   function signOut(): void{
     currentTokenContext.setCurrentToken(null)
@@ -85,16 +132,9 @@ const MygamesEdit = (props: Props) => {
     router.replace('/signup')
   }
 
-  function createTabsComponent(): JSX.Element{
-    const tabComponents = tabs.map((t, index) => {
-      let style = 'tab'
-      if (currentTab == t) style += ' tab-active'
-      return <div className={style} onClick={() => { setCurrentTab(t) }} key={index}>{t}</div>
-    })
-    return (
-      <div className='tabs-container'>{tabComponents}</div>
-    )
-  }
+  const tabComponents = tabs.map((t, index) => {
+    return <TabComponent key={index} tab={t} isActive={currentHash == t.hash} />
+  })
 
   return (
     <main id='main'>
@@ -109,12 +149,14 @@ const MygamesEdit = (props: Props) => {
           <Sidemenu activeMenu={'edit'}/>
           <div id='sidemenu-main'>
             <h1 className='title'>Edit games</h1>
-            {createTabsComponent()}
+            <div className='tabs-container'>
+              {tabComponents}
+            </div>
             {(() => {
-              if (currentTab == tabs[0]) return <Summary game={game} setGame={setGame} signOut={signOut} />
-              if (currentTab == tabs[1]) return <AddWords game={game} signOut={signOut} />
-              if (currentTab == tabs[2]) return <EditWords game={game} />
-              if (currentTab == tabs[3]) return <DeleteGame game={game} />
+              if (currentHash == tabs[0].hash) return <Summary game={game} setGame={setGame} signOut={signOut} />
+              if (currentHash == tabs[1].hash) return <AddWords game={game} signOut={signOut} />
+              if (currentHash == tabs[2].hash) return <EditWords game={game} />
+              if (currentHash == tabs[3].hash) return <DeleteGame game={game} />
             })()}
           </div>
         </div>

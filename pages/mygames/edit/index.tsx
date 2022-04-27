@@ -82,7 +82,7 @@ const MygamesEditIndex = (props: Props) => {
           <div className='game-index-item' key={index}>
             {/* Title */}
             <div className='game-index-item-title'>
-              <Link href={`/mygames/edit/${game.id}`}><a>{game.title}</a></Link>
+              <Link href={`/mygames/edit/${game.id}#summary`}><a>{game.title}</a></Link>
             </div>
             {/* Description */}
             <div className='game-index-item-desc'>{game.desc}</div>

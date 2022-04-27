@@ -49,3 +49,8 @@ export type Pagination = {
   total_pages: number,
   current_page: number,
 }
+
+export type Tab = {
+  name: string,
+  hash: string,
+}
