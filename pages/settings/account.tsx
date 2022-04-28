@@ -1,5 +1,4 @@
-import type { UserInfo, Token } from 'types/global'
-import { GetServerSideProps } from 'next'
+import type { Token } from 'types/global'
 import { useRouter } from 'next/router'
 import { useState, useMemo, useContext } from 'react'
 import { useAlert } from 'react-alert'
@@ -12,31 +11,11 @@ import Sidemenu from 'components/sidemenu'
 import Modal from 'components/modal'
 import LoadingOverlay from 'components/loading_overlay'
 
-import { ServerSideCookies } from 'scripts/cookie'
 import validate from 'scripts/validate'
 
 import CurrentTokenContext from 'contexts/current_token'
 
-type Props = {
-  token: Token,
-  userInfo: UserInfo,
-}
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const cookies = new ServerSideCookies(context)
-  const props: Props = { token: cookies.token, userInfo: cookies.userInfo }
-
-  if (validate.token(props.token) && validate.userInfo(props.userInfo)) {
-    return { props: props }
-  } else {
-    return {
-      props: props,
-      redirect: { statusCode: 302, destination: '/signup' }
-    }
-  }
-}
-
-const Account = (props: Props) => {
+const Account = () => {
   const [showOverlay, setShowOverlay] = useState<boolean>(false)
   const currentTokenContext = useContext(CurrentTokenContext)
   const [checkedConfirmation, setCheckedConfirmation] = useState<boolean | undefined>(false)
