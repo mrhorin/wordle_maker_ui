@@ -2,7 +2,9 @@
  *  This component should be imported from MygamesEdit component. */
 import type { Game, Chip } from 'types/global'
 import { useState, useCallback, useContext } from 'react'
+import { useRouter } from 'next/router'
 import { useAlert } from 'react-alert'
+import { useSignOut } from 'hooks/useSignOut'
 import nprogress from 'nprogress'
 
 import ChipTextarea from 'components/form/chip_textarea'
@@ -15,10 +17,9 @@ import CurrentTokenContext from 'contexts/current_token'
 
 interface Props {
   game: Game
-  signOut(): void
 }
 
-const AddWords = ({ game, signOut }: Props) => {
+const AddWords = ({ game }: Props) => {
   const [showOverlay, setShowOverlay] = useState<boolean>(false)
   /*
    * chips:
@@ -29,6 +30,8 @@ const AddWords = ({ game, signOut }: Props) => {
   /********* Context *********/
   const currentTokenContext = useContext(CurrentTokenContext)
 
+  const signOut = useSignOut()
+  const router = useRouter()
   const alert = useAlert()
   const language = new Language(game.lang)
 
@@ -114,7 +117,7 @@ const AddWords = ({ game, signOut }: Props) => {
         alert.show(language.getInvalidMsg(game.char_count), { type: 'error' })
       }
     } else {
-      signOut()
+      signOut(() => router.replace('/signup'))
     }
   }
 

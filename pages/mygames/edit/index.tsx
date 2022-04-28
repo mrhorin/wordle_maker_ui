@@ -1,16 +1,14 @@
 import type { UserInfo, Token, Game } from 'types/global'
 import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
-import { useState, useLayoutEffect, useContext } from 'react'
+import { useState, useLayoutEffect } from 'react'
+import { useSignOut } from 'hooks/useSignOut'
 import ReactLoading from 'react-loading'
 import Head from 'next/head'
 
 import Sidemenu from 'components/sidemenu'
 
-import CurrentTokenContext from 'contexts/current_token'
-import CurrentUserInfoContext from 'contexts/current_user_info'
-
-import { ServerSideCookies, ClientSideCookies} from 'scripts/cookie'
+import { ServerSideCookies } from 'scripts/cookie'
 import validate from 'scripts/validate'
 
 import Link from 'next/link'
@@ -36,9 +34,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 const MygamesEditIndex = (props: Props) => {
   const [games, setGames] = useState<Game[] | null>(null)
-  const currentTokenContext = useContext(CurrentTokenContext)
-  const currentUserInfoContext = useContext(CurrentUserInfoContext)
   const router = useRouter()
+  const signOut = useSignOut()
 
   useLayoutEffect(() => {
     if (validate.token(props.token)) {
@@ -46,12 +43,7 @@ const MygamesEditIndex = (props: Props) => {
         if (json.ok) setGames(json.data.map((item: Game) => item))
       })
     } else {
-      // Delete stored token and user info
-      currentTokenContext.setCurrentToken(null)
-      ClientSideCookies.destroyTokenCookies()
-      currentUserInfoContext.setCurrentUserInfo(null)
-      ClientSideCookies.destroyUserInfoCookies()
-      router.replace('/signup')
+      signOut(() => router.replace('/signup'))
     }
   }, [])
 

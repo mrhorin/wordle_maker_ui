@@ -3,6 +3,8 @@
 import type { Game } from 'types/global'
 import { useEffect, useState, useRef, useContext } from 'react'
 import { useAlert } from 'react-alert'
+import { useRouter } from 'next/router'
+import { useSignOut } from 'hooks/useSignOut'
 import Link from 'next/link'
 import nprogress from 'nprogress'
 
@@ -16,10 +18,9 @@ import CurrentTokenContext from 'contexts/current_token'
 interface Props {
   game: Game
   setGame(game: Game): void
-  signOut(): void
 }
 
-const Summary = ({ game, setGame,signOut }: Props) => {
+const Summary = ({ game, setGame }: Props) => {
   const [showOverlay, setShowOverlay] = useState<boolean>(false)
   /*
    * title:
@@ -37,6 +38,8 @@ const Summary = ({ game, setGame,signOut }: Props) => {
   /********* Context *********/
   const currentTokenContext = useContext(CurrentTokenContext)
 
+  const signOut = useSignOut()
+  const router = useRouter()
   const alert = useAlert()
   const language = new Language(game.lang)
 
@@ -104,7 +107,7 @@ const Summary = ({ game, setGame,signOut }: Props) => {
           })
       }
     } else {
-      signOut()
+      signOut(() => router.replace('/signup'))
     }
   }
 

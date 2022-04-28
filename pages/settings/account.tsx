@@ -3,6 +3,7 @@ import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import { useState, useMemo, useContext } from 'react'
 import { useAlert } from 'react-alert'
+import { useSignOut } from 'hooks/useSignOut'
 import nprogress from 'nprogress'
 
 import Head from 'next/head'
@@ -11,11 +12,10 @@ import Sidemenu from 'components/sidemenu'
 import Modal from 'components/modal'
 import LoadingOverlay from 'components/loading_overlay'
 
-import { ServerSideCookies, ClientSideCookies } from 'scripts/cookie'
+import { ServerSideCookies } from 'scripts/cookie'
 import validate from 'scripts/validate'
 
 import CurrentTokenContext from 'contexts/current_token'
-import CurrentUserInfoContext from 'contexts/current_user_info'
 
 type Props = {
   token: Token,
@@ -39,7 +39,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 const Account = (props: Props) => {
   const [showOverlay, setShowOverlay] = useState<boolean>(false)
   const currentTokenContext = useContext(CurrentTokenContext)
-  const currentUserInfoContext = useContext(CurrentUserInfoContext)
   const [checkedConfirmation, setCheckedConfirmation] = useState<boolean | undefined>(false)
   const [showModal, setShowModal] = useState<boolean>(false)
   const handleConfirmation = useMemo(() => {
@@ -49,6 +48,7 @@ const Account = (props: Props) => {
   }, [checkedConfirmation])
   const router = useRouter()
   const alert = useAlert()
+  const signOut = useSignOut()
 
   async function fetchDeleteAccount(token: Token) {
     const res = await fetch('http://localhost:3000/api/v1/auth/', {
@@ -68,12 +68,10 @@ const Account = (props: Props) => {
       nprogress.start()
       fetchDeleteAccount(currentTokenContext.currentToken).then(json => {
         if (json.status == 'success') {
-          currentTokenContext.setCurrentToken(null)
-          ClientSideCookies.destroyTokenCookies()
-          currentUserInfoContext.setCurrentUserInfo(null)
-          ClientSideCookies.destroyUserInfoCookies()
-          alert.show('DELETED', {type: 'success'})
-          router.replace('/')
+          signOut(() => {
+            alert.show('DELETED', {type: 'success'})
+            router.replace('/')
+          })
         } else {
           alert.show('FAILED', {type: 'error'})
           console.error('Error', json)

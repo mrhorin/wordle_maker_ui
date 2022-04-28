@@ -1,7 +1,7 @@
-import type { Token } from 'types/global'
 import { useRouter } from 'next/router'
 import { useContext, memo } from 'react'
 import { useAlert } from 'react-alert'
+import { useSignOut } from 'hooks/useSignOut'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCaretDown ,faGamepad, faGear, faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 
@@ -9,7 +9,6 @@ import CurrentTokenContext from 'contexts/current_token'
 import CurrentUserInfoContext from 'contexts/current_user_info'
 import ShowAccountMenuContext from 'contexts/show_account_menu'
 
-import { ClientSideCookies } from 'scripts/cookie'
 import validate from 'scripts/validate'
 
 import Link from 'next/link'
@@ -21,6 +20,7 @@ const Header = () => {
   const showAccountMenuContext = useContext(ShowAccountMenuContext)
   const router = useRouter()
   const alert = useAlert()
+  const signOut = useSignOut()
 
   function getAccountMenuStyle(): string{
     if (showAccountMenuContext.showAccountMenu) {
@@ -38,18 +38,6 @@ const Header = () => {
     }
   }
 
-  async function fetchSignOut(token: Token) {
-    const res = await fetch('http://localhost:3000/api/v1/auth/sign_out', {
-      method: 'DELETE',
-      headers: {
-        'access-token': token.accessToken,
-        'client': token.client,
-        'uid': token.uid
-      }
-    })
-    return await res.json()
-  }
-
   function handleMyGames(): void{
     router.push('/mygames/edit')
   }
@@ -59,29 +47,10 @@ const Header = () => {
   }
 
   function handleSignOut(): void {
-    if (validate.token(currentTokenContext.currentToken)) {
-      fetchSignOut(currentTokenContext.currentToken).then(json => {
-        if (!json.success) console.error('Error', json)
-      }).catch(error => {
-        console.error(error)
-      }).finally(() => {
-        // Delete stored token and user info
-        currentTokenContext.setCurrentToken(null)
-        ClientSideCookies.destroyTokenCookies()
-        currentUserInfoContext.setCurrentUserInfo(null)
-        ClientSideCookies.destroyUserInfoCookies()
-        alert.show('SIGNED OUT', {type: 'success'})
-        router.push('/signup')
-      })
-    } else {
-      // Delete stored token and user info
-      currentTokenContext.setCurrentToken(null)
-      ClientSideCookies.destroyTokenCookies()
-      currentUserInfoContext.setCurrentUserInfo(null)
-      ClientSideCookies.destroyUserInfoCookies()
+    signOut(() => {
       alert.show('SIGNED OUT', {type: 'success'})
       router.push('/signup')
-    }
+    })
   }
 
   function createHeaderAccountComponent(): JSX.Element {

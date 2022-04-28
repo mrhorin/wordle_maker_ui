@@ -1,7 +1,7 @@
 import type { UserInfo, Token, Game, Tab } from 'types/global'
 import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
-import { useState, useContext, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useHash } from 'hooks/useHash'
 
 import Head from 'next/head'
@@ -12,10 +12,7 @@ import AddWords from 'components/mygames/edit/add_words'
 import EditWords from 'components/mygames/edit/edit_words'
 import DeleteGame from 'components/mygames/edit/delete_game'
 
-import CurrentTokenContext from 'contexts/current_token'
-import CurrentUserInfoContext from 'contexts/current_user_info'
-
-import { ServerSideCookies, ClientSideCookies } from 'scripts/cookie'
+import { ServerSideCookies } from 'scripts/cookie'
 import validate from 'scripts/validate'
 
 const tabs: Tab[] = [
@@ -81,16 +78,12 @@ const MygamesEdit = (props: MygamesEditProps) => {
    *  This state will be changed after updating the game by fetching API. */
   const [game, setGame] = useState<Game>(props.game)
 
-  /********* Context *********/
-  const currentTokenContext = useContext(CurrentTokenContext)
-  const currentUserInfoContext = useContext(CurrentUserInfoContext)
-
-  const router = useRouter()
   /* currentHash:
    *  This value indicates which tab is active.
    *  It depends on tabs variable, a list of tab names,
    *  and is initialized in useEffect. */
   const [currentHash, setCurrentHash] = useHash()
+  const router = useRouter()
 
   useEffect(() => {
     // Initialize currentHash
@@ -101,14 +94,6 @@ const MygamesEdit = (props: MygamesEditProps) => {
       router.replace(`#${tabs[0].hash}`)
     }
   }, [])
-
-  function signOut(): void{
-    currentTokenContext.setCurrentToken(null)
-    ClientSideCookies.destroyTokenCookies()
-    currentUserInfoContext.setCurrentUserInfo(null)
-    ClientSideCookies.destroyUserInfoCookies()
-    router.replace('/signup')
-  }
 
   const tabComponents = tabs.map((t, index) => {
     return <TabComponent key={index} tab={t} isActive={currentHash == t.hash} />
@@ -131,8 +116,8 @@ const MygamesEdit = (props: MygamesEditProps) => {
               {tabComponents}
             </div>
             {(() => {
-              if (currentHash == tabs[0].hash) return <Summary game={game} setGame={setGame} signOut={signOut} />
-              if (currentHash == tabs[1].hash) return <AddWords game={game} signOut={signOut} />
+              if (currentHash == tabs[0].hash) return <Summary game={game} setGame={setGame}/>
+              if (currentHash == tabs[1].hash) return <AddWords game={game}/>
               if (currentHash == tabs[2].hash) return <EditWords game={game} />
               if (currentHash == tabs[3].hash) return <DeleteGame game={game} />
             })()}

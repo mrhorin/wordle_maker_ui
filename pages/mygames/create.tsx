@@ -1,18 +1,18 @@
-import type { UserInfo, Token, Game } from 'types/global'
+import type { UserInfo, Token } from 'types/global'
 import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
-import { useEffect, useState, useContext, useRef } from 'react'
+import { useState, useContext, useRef } from 'react'
 import { useAlert } from 'react-alert'
+import { useSignOut } from 'hooks/useSignOut'
 import Head from 'next/head'
 
 import Sidemenu from 'components/sidemenu'
 import LoadingOverlay from 'components/loading_overlay'
 
-import { ServerSideCookies, ClientSideCookies } from 'scripts/cookie'
+import { ServerSideCookies } from 'scripts/cookie'
 import validate from 'scripts/validate'
 
 import CurrentTokenContext from 'contexts/current_token'
-import CurrentUserInfoContext from 'contexts/current_user_info'
 
 type Props = {
   token: Token,
@@ -46,8 +46,8 @@ const MygamesCreate = (props: Props) => {
   const selectLangEl = useRef<HTMLSelectElement>(null)
   /********* Context *********/
   const currentTokenContext = useContext(CurrentTokenContext)
-  const currentUserInfoContext = useContext(CurrentUserInfoContext)
 
+  const signOut = useSignOut()
   const router = useRouter()
   const alert = useAlert()
 
@@ -102,12 +102,7 @@ const MygamesCreate = (props: Props) => {
           .catch(error => { setShowOverlay(false) })
       }
     } else {
-      // Delete stored token and user info
-      currentTokenContext.setCurrentToken(null)
-      ClientSideCookies.destroyTokenCookies()
-      currentUserInfoContext.setCurrentUserInfo(null)
-      ClientSideCookies.destroyUserInfoCookies()
-      router.replace('/signup')
+      signOut(() => router.replace('/signup'))
     }
   }
 
