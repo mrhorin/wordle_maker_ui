@@ -1,39 +1,18 @@
-import type { UserInfo, Token } from 'types/global'
-import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import { useState, useContext, useRef } from 'react'
 import { useAlert } from 'react-alert'
 import { useSignOut } from 'hooks/useSignOut'
 import Head from 'next/head'
+import nprogress from 'nprogress'
 
 import Sidemenu from 'components/sidemenu'
 import LoadingOverlay from 'components/loading_overlay'
 
-import { ServerSideCookies } from 'scripts/cookie'
 import validate from 'scripts/validate'
 
 import CurrentTokenContext from 'contexts/current_token'
 
-type Props = {
-  token: Token,
-  userInfo: UserInfo,
-}
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const cookies = new ServerSideCookies(context)
-  const props: Props = { token: cookies.token, userInfo: cookies.userInfo }
-
-  if (validate.token(props.token) && validate.userInfo(props.userInfo)) {
-    return { props: props }
-  } else {
-    return {
-      props: props,
-      redirect: { statusCode: 302, destination: '/signup' }
-    }
-  }
-}
-
-const MygamesCreate = (props: Props) => {
+const MygamesCreate = () => {
   /********** State **********/
   const [title, setTitle] = useState<string>('')
   const [desc, setDesc] = useState<string>('')
@@ -80,6 +59,7 @@ const MygamesCreate = (props: Props) => {
           }
         }
         setShowOverlay(true)
+        nprogress.start()
         fetch('http://localhost:3000/api/v1/games/create', {
           method: 'POST',
           headers: {
@@ -100,6 +80,10 @@ const MygamesCreate = (props: Props) => {
             }
           })
           .catch(error => { setShowOverlay(false) })
+          .finally(() => {
+            nprogress.done()
+            setShowOverlay(false)
+          })
       }
     } else {
       signOut(() => router.replace('/signup'))
