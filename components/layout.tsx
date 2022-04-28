@@ -17,8 +17,6 @@ const Layout: NextPage = ({ children }) => {
   const [currentUserInfo, setCurrentUserInfo] = useState<UserInfo | null>(null)
   const [showAccountMenu, setShowAccountMenu] = useState<boolean>(false)
 
-  const showAccountMenuContext = useContext(ShowAccountMenuContext)
-
   useEffect(() => {
     const query: Query = getQuery()
     if (validate.queryToken(query)) {
@@ -62,10 +60,32 @@ const Layout: NextPage = ({ children }) => {
     }
   }, [])
 
-  function hideAccountMenu(): void{
-    if (showAccountMenuContext.showAccountMenu) {
-      showAccountMenuContext.setShowAccountMenu(false)
+  function getQuery(): Query{
+    const url_search: string[] = location.search.slice(1).split('&')
+    let key: string[] = []
+    let query: Query = {}
+    for (let i = 0; i < url_search.length; i++){
+      key = url_search[i].split("=")
+      query[key[0]] = key[1]
     }
+    return query
+  }
+
+  function hideAccountMenu(): void{
+    if (showAccountMenu) setShowAccountMenu(false)
+  }
+
+  async function fetchCurrentUser(token: Token) {
+    const res = await fetch('http://localhost:3000/api/v1/users/current', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'access-token': token.accessToken,
+        'client': token.client,
+        'uid': token.uid
+      }
+    })
+    return await res.json()
   }
 
   return (
@@ -81,33 +101,6 @@ const Layout: NextPage = ({ children }) => {
       </CurrentUserInfoContext.Provider>
     </CurrentTokenContext.Provider>
   )
-}
-
-/*-----------------------------------------
-  functions
------------------------------------------*/
-async function fetchCurrentUser(token: Token) {
-  const res = await fetch('http://localhost:3000/api/v1/users/current', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'access-token': token.accessToken,
-      'client': token.client,
-      'uid': token.uid
-    }
-  })
-  return await res.json()
-}
-
-function getQuery(): Query{
-  const url_search: string[] = location.search.slice(1).split('&')
-	let key: string[] = []
-  let query: Query = {}
-  for (let i = 0; i < url_search.length; i++){
-		key = url_search[i].split("=")
-		query[key[0]] = key[1]
-  }
-  return query
 }
 
 export default Layout
