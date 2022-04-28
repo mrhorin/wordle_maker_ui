@@ -39,7 +39,6 @@ const MygamesCreate = (props: Props) => {
   const [desc, setDesc] = useState<string>('')
   const [lang, setLang] = useState<string>('en')
   const [charCount, setCharCount] = useState<number>(5)
-  const [isDisabled, setIsDisabled] = useState<boolean>(false)
   const [showOverlay, setShowOverlay] = useState<boolean>(false)
   /*********** Ref ***********/
   const inputTitleEl = useRef<HTMLInputElement>(null)
@@ -51,10 +50,6 @@ const MygamesCreate = (props: Props) => {
 
   const router = useRouter()
   const alert = useAlert()
-
-  useEffect(() => {
-    setIsDisabled(title.length < 1 || title.length > 100)
-  }, [title])
 
   function validateTitle(): boolean{
     const titleLength: number = Number(title.length)
@@ -175,7 +170,7 @@ const MygamesCreate = (props: Props) => {
                 </select>
               </div>
               {/* Submit */}
-              <button type='button' id='game-submit' className='btn btn-primary' disabled={isDisabled} onClick={handleClickSubmit}>Submit</button>
+              <button type='button' id='game-submit' className='btn btn-primary' disabled={title.length < 1 || title.length > 100} onClick={handleClickSubmit}>Submit</button>
             </form>
             <LoadingOverlay showOverlay={showOverlay} />
           </div>
