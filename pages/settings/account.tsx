@@ -4,7 +4,6 @@ import { useRouter } from 'next/router'
 import { useState, useMemo, useContext } from 'react'
 import { useAlert } from 'react-alert'
 import nprogress from 'nprogress'
-import nookies from 'nookies'
 
 import Head from 'next/head'
 
@@ -12,6 +11,7 @@ import Sidemenu from 'components/sidemenu'
 import Modal from 'components/modal'
 import LoadingOverlay from 'components/loading_overlay'
 
+import { ServerSideCookies } from 'scripts/cookie'
 import validate from 'scripts/validate'
 
 import CurrentTokenContext from 'contexts/current_token'
@@ -19,38 +19,19 @@ import CurrentUserInfoContext from 'contexts/current_user_info'
 
 type Props = {
   token: Token,
-  userInfo: UserInfo
+  userInfo: UserInfo,
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const cookies = nookies.get(context)
-  const token: Token = {
-    accessToken: cookies['accessToken'],
-    client: cookies['client'],
-    uid: cookies['uid'],
-    expiry: cookies['expiry'],
-  }
-  const userInfo: UserInfo = {
-    provider: cookies['provider'],
-    name: cookies['name'],
-    nickname: cookies['nickname'],
-    uid: cookies['uid'],
-    image: cookies['image'],
-  }
-  const props: Props = {
-    token: token,
-    userInfo: userInfo
-  }
+  const cookies = new ServerSideCookies(context)
+  const props: Props = { token: cookies.token, userInfo: cookies.userInfo }
 
   if (validate.token(props.token) && validate.userInfo(props.userInfo)) {
     return { props: props }
   } else {
     return {
       props: props,
-      redirect: {
-        statusCode: 302,
-        destination: '/signup',
-      }
+      redirect: { statusCode: 302, destination: '/signup' }
     }
   }
 }

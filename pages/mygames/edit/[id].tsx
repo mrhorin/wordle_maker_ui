@@ -4,7 +4,6 @@ import { useRouter } from 'next/router'
 import { useState, useContext, useEffect } from 'react'
 
 import Head from 'next/head'
-import nookies from 'nookies'
 
 import Sidemenu from 'components/sidemenu'
 import Summary from 'components/mygames/edit/summary'
@@ -15,6 +14,7 @@ import DeleteGame from 'components/mygames/edit/delete_game'
 import CurrentTokenContext from 'contexts/current_token'
 import CurrentUserInfoContext from 'contexts/current_user_info'
 
+import { ServerSideCookies } from 'scripts/cookie'
 import validate from 'scripts/validate'
 
 const tabs: Tab[] = [
@@ -24,24 +24,22 @@ const tabs: Tab[] = [
   { name: 'Delete Game', hash: 'delete-game' },
 ]
 
+type TabComponentProps = {
+  tab: Tab,
+  isActive: boolean,
+}
+
+type MygamesEditProps = {
+  token: Token,
+  userInfo: UserInfo,
+  game: Game,
+}
+
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const cookies = nookies.get(context)
-  // Token
-  const token: Token = {
-    accessToken: cookies['accessToken'],
-    client: cookies['client'],
-    uid: cookies['uid'],
-    expiry: cookies['expiry'],
-  }
-  // UserInfo
-  const userInfo: UserInfo = {
-    provider: cookies['provider'],
-    name: cookies['name'],
-    nickname: cookies['nickname'],
-    uid: cookies['uid'],
-    image: cookies['image'],
-  }
-  // Game
+  const cookies = new ServerSideCookies(context)
+  const token: Token = cookies.token
+  const userInfo: UserInfo = cookies.userInfo
+
   let game: Game | null = null
   const gameId: string = context.query.id as string
   const res = await fetch(`http://api:3000/api/v1/games/${gameId}`)
@@ -49,42 +47,32 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const json = await res.json()
     if (json.ok) game = json.data as Game
   }
-  // Redirect to / if Game doesn't exist or an user doesn't sign in
+
   if (validate.token(token) && validate.userInfo(userInfo) && game) {
     return { props: { token: token, userInfo: userInfo, game: game } }
   } else {
     return {
       props: { token: token, userInfo: userInfo, game: game },
-      redirect: {
-        statusCode: 302,
-        destination: '/',
-      }
+      redirect: { statusCode: 302, destination: '/' }
     }
   }
 }
 
-type TabComponentProps = {
-  tab: Tab,
-  isActive: boolean,
-}
-
-const TabComponent = ({ tab, isActive }: TabComponentProps) => {
+const TabComponent = (props: TabComponentProps) => {
   const router = useRouter()
 
   function handleClickTab(): void{
-    router.push(`#${tab.hash}`)
+    router.push(`#${props.tab.hash}`)
   }
 
   let style = 'tab'
-  if (isActive) style += ' tab-active'
+  if (props.isActive) style += ' tab-active'
   return (
     <div className={style} onClick={handleClickTab}>
-      { tab.name }
+      { props.tab.name }
     </div>
   )
 }
-
-type MygamesEditProps = { token: Token, userInfo: UserInfo, game: Game }
 
 const MygamesEdit = (props: MygamesEditProps) => {
   /*
