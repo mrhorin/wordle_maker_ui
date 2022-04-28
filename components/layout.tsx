@@ -2,8 +2,6 @@ import type { NextPage } from 'next'
 import type { Token, UserInfo, Query } from 'types/global'
 import React, { useState, useContext, useEffect } from 'react'
 
-import { parseCookies, setCookie, destroyCookie } from 'nookies'
-
 import Header from 'components/header'
 import Footer from 'components/footer'
 
@@ -11,9 +9,8 @@ import CurrentTokenContext from 'contexts/current_token'
 import CurrentUserInfoContext from 'contexts/current_user_info'
 import ShowAccountMenuContext from 'contexts/show_account_menu'
 
+import { ClientSideCookies } from 'scripts/cookie'
 import validate from 'scripts/validate'
-
-const cookieOptions = { maxAge: 30 * 24 * 60 * 60, path: '/' }
 
 const Layout: NextPage = ({ children }) => {
   const [currentToken, setCurrentToken] = useState<Token | null>(null)
@@ -34,7 +31,7 @@ const Layout: NextPage = ({ children }) => {
       }
       fetchCurrentUser(token).then(json => {
         if (json && json.isLoggedIn) {
-          saveToken(token)
+          ClientSideCookies.saveToken(token)
           setCurrentToken(token)
           const userInfo: UserInfo = {
             provider: json.data.provider,
@@ -43,22 +40,22 @@ const Layout: NextPage = ({ children }) => {
             uid: json.data.uid,
             image: json.data.image
           }
-          saveUserInfo(userInfo)
+          ClientSideCookies.saveUserInfo(userInfo)
           setCurrentUserInfo(userInfo)
         }
       })
     } else {
       // When query doesn't have a token
-      let prevToken: Token | null = loadToken()
-      let prevUserInfo: UserInfo | null = loadUserInfo()
+      let prevToken: Token | null = ClientSideCookies.loadToken()
+      let prevUserInfo: UserInfo | null = ClientSideCookies.loadUserInfo()
       if (validate.token(prevToken) && validate.userInfo(prevUserInfo) && new Date(Number(prevToken.expiry.padEnd(13, '0'))) > new Date()) {
         // Restore user info
         setCurrentToken(prevToken)
         setCurrentUserInfo(prevUserInfo)
       } else {
         // Delete stored token and user info
-        destroyTokenCookies()
-        destroyUserInfoCookies()
+        ClientSideCookies.destroyTokenCookies()
+        ClientSideCookies.destroyUserInfoCookies()
         setCurrentToken(null)
         setCurrentUserInfo(null)
       }
@@ -72,8 +69,8 @@ const Layout: NextPage = ({ children }) => {
   }
 
   return (
-    <CurrentTokenContext.Provider value={{ currentToken, setCurrentToken, destroyTokenCookies }}>
-      <CurrentUserInfoContext.Provider value={{ currentUserInfo, setCurrentUserInfo, destroyUserInfoCookies }}>
+    <CurrentTokenContext.Provider value={{ currentToken, setCurrentToken }}>
+      <CurrentUserInfoContext.Provider value={{ currentUserInfo, setCurrentUserInfo }}>
         <ShowAccountMenuContext.Provider value={{ showAccountMenu, setShowAccountMenu }}>
           <div className='wrap' onClick={hideAccountMenu}>
             <Header />
@@ -100,69 +97,6 @@ async function fetchCurrentUser(token: Token) {
     }
   })
   return await res.json()
-}
-
-function saveUserInfo(userInfo: UserInfo): void{
-  setCookie(null, 'provider', userInfo.provider, cookieOptions)
-  setCookie(null, 'name', userInfo.name, cookieOptions)
-  setCookie(null, 'nickname', userInfo.nickname, cookieOptions)
-  setCookie(null, 'uid', userInfo.uid, cookieOptions)
-  setCookie(null, 'image', userInfo.image, cookieOptions)
-}
-
-function destroyUserInfoCookies(): void{
-  destroyCookie(null, 'provider', cookieOptions)
-  destroyCookie(null, 'name', cookieOptions)
-  destroyCookie(null, 'nickname', cookieOptions)
-  destroyCookie(null, 'image', cookieOptions)
-  const cookies = parseCookies()
-  if (!cookies['accessToken']) destroyCookie(null, 'uid', cookieOptions)
-}
-
-function loadUserInfo(): UserInfo | null{
-  const cookies = parseCookies()
-  const userInfo = {
-    provider: cookies['provider'],
-    name: cookies['name'],
-    nickname: cookies['nickname'],
-    uid: cookies['uid'],
-    image: cookies['image'],
-  }
-  if (validate.userInfo(userInfo)) {
-    return userInfo as UserInfo
-  } else {
-    return null
-  }
-}
-
-function saveToken(token: Token): void {
-  setCookie(null, 'accessToken', token.accessToken, cookieOptions)
-  setCookie(null, 'client', token.client, cookieOptions)
-  setCookie(null, 'uid', token.uid, cookieOptions)
-  setCookie(null, 'expiry', token.expiry, cookieOptions)
-}
-
-function destroyTokenCookies(): void{
-  destroyCookie(null, 'accessToken', cookieOptions)
-  destroyCookie(null, 'client', cookieOptions)
-  destroyCookie(null, 'expiry', cookieOptions)
-  const cookies = parseCookies()
-  if (!cookies['nickname']) destroyCookie(null, 'uid', cookieOptions)
-}
-
-function loadToken(): Token | null{
-  const cookies = parseCookies()
-  const token = {
-    accessToken: cookies['accessToken'],
-    client: cookies['client'],
-    uid: cookies['uid'],
-    expiry: cookies['expiry'],
-  }
-  if (validate.token(token)) {
-    return token as Token
-  } else {
-    return null
-  }
 }
 
 function getQuery(): Query{

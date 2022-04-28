@@ -8,7 +8,7 @@ import Head from 'next/head'
 import Sidemenu from 'components/sidemenu'
 import LoadingOverlay from 'components/loading_overlay'
 
-import { ServerSideCookies } from 'scripts/cookie'
+import { ServerSideCookies, ClientSideCookies } from 'scripts/cookie'
 import validate from 'scripts/validate'
 
 import CurrentTokenContext from 'contexts/current_token'
@@ -109,9 +109,9 @@ const MygamesCreate = (props: Props) => {
     } else {
       // Delete stored token and user info
       currentTokenContext.setCurrentToken(null)
-      currentTokenContext.destroyTokenCookies()
+      ClientSideCookies.destroyTokenCookies()
       currentUserInfoContext.setCurrentUserInfo(null)
-      currentUserInfoContext.destroyUserInfoCookies()
+      ClientSideCookies.destroyUserInfoCookies()
       router.replace('/signup')
     }
   }

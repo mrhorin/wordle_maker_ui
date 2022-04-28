@@ -10,7 +10,7 @@ import Sidemenu from 'components/sidemenu'
 import CurrentTokenContext from 'contexts/current_token'
 import CurrentUserInfoContext from 'contexts/current_user_info'
 
-import { ServerSideCookies } from 'scripts/cookie'
+import { ServerSideCookies, ClientSideCookies} from 'scripts/cookie'
 import validate from 'scripts/validate'
 
 import Link from 'next/link'
@@ -48,9 +48,9 @@ const MygamesEditIndex = (props: Props) => {
     } else {
       // Delete stored token and user info
       currentTokenContext.setCurrentToken(null)
-      currentTokenContext.destroyTokenCookies()
+      ClientSideCookies.destroyTokenCookies()
       currentUserInfoContext.setCurrentUserInfo(null)
-      currentUserInfoContext.destroyUserInfoCookies()
+      ClientSideCookies.destroyUserInfoCookies()
       router.replace('/signup')
     }
   }, [])

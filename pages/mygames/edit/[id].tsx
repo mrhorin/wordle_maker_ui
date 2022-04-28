@@ -14,7 +14,7 @@ import DeleteGame from 'components/mygames/edit/delete_game'
 import CurrentTokenContext from 'contexts/current_token'
 import CurrentUserInfoContext from 'contexts/current_user_info'
 
-import { ServerSideCookies } from 'scripts/cookie'
+import { ServerSideCookies, ClientSideCookies } from 'scripts/cookie'
 import validate from 'scripts/validate'
 
 const tabs: Tab[] = [
@@ -114,9 +114,9 @@ const MygamesEdit = (props: MygamesEditProps) => {
 
   function signOut(): void{
     currentTokenContext.setCurrentToken(null)
-    currentTokenContext.destroyTokenCookies()
+    ClientSideCookies.destroyTokenCookies()
     currentUserInfoContext.setCurrentUserInfo(null)
-    currentUserInfoContext.destroyUserInfoCookies()
+    ClientSideCookies.destroyUserInfoCookies()
     router.replace('/signup')
   }
 

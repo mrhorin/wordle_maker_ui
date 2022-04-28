@@ -9,6 +9,7 @@ import CurrentTokenContext from 'contexts/current_token'
 import CurrentUserInfoContext from 'contexts/current_user_info'
 import ShowAccountMenuContext from 'contexts/show_account_menu'
 
+import { ClientSideCookies } from 'scripts/cookie'
 import validate from 'scripts/validate'
 
 import Link from 'next/link'
@@ -66,18 +67,18 @@ const Header = () => {
       }).finally(() => {
         // Delete stored token and user info
         currentTokenContext.setCurrentToken(null)
-        currentTokenContext.destroyTokenCookies()
+        ClientSideCookies.destroyTokenCookies()
         currentUserInfoContext.setCurrentUserInfo(null)
-        currentUserInfoContext.destroyUserInfoCookies()
+        ClientSideCookies.destroyUserInfoCookies()
         alert.show('SIGNED OUT', {type: 'success'})
         router.replace('/signup')
       })
     } else {
       // Delete stored token and user info
       currentTokenContext.setCurrentToken(null)
-      currentTokenContext.destroyTokenCookies()
+      ClientSideCookies.destroyTokenCookies()
       currentUserInfoContext.setCurrentUserInfo(null)
-      currentUserInfoContext.destroyUserInfoCookies()
+      ClientSideCookies.destroyUserInfoCookies()
       alert.show('SIGNED OUT', {type: 'success'})
       router.replace('/signup')
     }

@@ -11,7 +11,7 @@ import Sidemenu from 'components/sidemenu'
 import Modal from 'components/modal'
 import LoadingOverlay from 'components/loading_overlay'
 
-import { ServerSideCookies } from 'scripts/cookie'
+import { ServerSideCookies, ClientSideCookies } from 'scripts/cookie'
 import validate from 'scripts/validate'
 
 import CurrentTokenContext from 'contexts/current_token'
@@ -69,9 +69,9 @@ const Account = (props: Props) => {
       fetchDeleteAccount(currentTokenContext.currentToken).then(json => {
         if (json.status == 'success') {
           currentTokenContext.setCurrentToken(null)
-          currentTokenContext.destroyTokenCookies()
+          ClientSideCookies.destroyTokenCookies()
           currentUserInfoContext.setCurrentUserInfo(null)
-          currentUserInfoContext.destroyUserInfoCookies()
+          ClientSideCookies.destroyUserInfoCookies()
           alert.show('DELETED', {type: 'success'})
           router.replace('/')
         } else {
