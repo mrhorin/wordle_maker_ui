@@ -2,6 +2,7 @@ import type { UserInfo, Token, Game, Tab } from 'types/global'
 import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import { useState, useContext, useEffect } from 'react'
+import { useHash } from 'hooks/useHash'
 
 import Head from 'next/head'
 
@@ -79,17 +80,17 @@ const MygamesEdit = (props: MygamesEditProps) => {
    * game:
    *  This state will be changed after updating the game by fetching API. */
   const [game, setGame] = useState<Game>(props.game)
-  /* currentHash:
-   *  The value indicates which tab is active.
-   *  It depends on tabs variable, a list of tab names,
-   *  and is initialized in useEffect. */
-  const [currentHash, setCurrentHash] = useState<string>('')
 
   /********* Context *********/
   const currentTokenContext = useContext(CurrentTokenContext)
   const currentUserInfoContext = useContext(CurrentUserInfoContext)
 
   const router = useRouter()
+  /* currentHash:
+   *  This value indicates which tab is active.
+   *  It depends on tabs variable, a list of tab names,
+   *  and is initialized in useEffect. */
+  const [currentHash, setCurrentHash] = useHash()
 
   useEffect(() => {
     // Initialize currentHash
@@ -100,17 +101,6 @@ const MygamesEdit = (props: MygamesEditProps) => {
       router.replace(`#${tabs[0].hash}`)
     }
   }, [])
-
-  useEffect(() => {
-    // Bind hashChangeStart event
-    const handleHashChangeStart = (url: string) => {
-      setCurrentHash(url.split('#')[1])
-    }
-    router.events.on('hashChangeStart', handleHashChangeStart);
-    return () => {
-      router.events.off('hashChangeStart', handleHashChangeStart)
-    }
-  }, [router.events])
 
   function signOut(): void{
     currentTokenContext.setCurrentToken(null)
