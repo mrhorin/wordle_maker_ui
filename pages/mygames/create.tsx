@@ -98,7 +98,7 @@ const MygamesCreate = (props: Props) => {
           .then(json => {
             if (json.ok) {
               alert.show('CREATED', {type: 'success'})
-              router.replace(`/games/${json.data.id}`)
+              router.push(`/games/${json.data.id}`)
             } else {
               alert.show('FAILED', {type: 'error'})
               console.error(json)

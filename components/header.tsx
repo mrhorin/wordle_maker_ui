@@ -51,11 +51,11 @@ const Header = () => {
   }
 
   function handleMyGames(): void{
-    router.replace('/mygames/edit')
+    router.push('/mygames/edit')
   }
 
   function handleSettings(): void{
-    router.replace('/settings/account')
+    router.push('/settings/account')
   }
 
   function handleSignOut(): void {
@@ -71,7 +71,7 @@ const Header = () => {
         currentUserInfoContext.setCurrentUserInfo(null)
         ClientSideCookies.destroyUserInfoCookies()
         alert.show('SIGNED OUT', {type: 'success'})
-        router.replace('/signup')
+        router.push('/signup')
       })
     } else {
       // Delete stored token and user info
@@ -80,7 +80,7 @@ const Header = () => {
       currentUserInfoContext.setCurrentUserInfo(null)
       ClientSideCookies.destroyUserInfoCookies()
       alert.show('SIGNED OUT', {type: 'success'})
-      router.replace('/signup')
+      router.push('/signup')
     }
   }
 
