@@ -3,20 +3,23 @@ import Head from 'next/head'
 import { GetServerSideProps } from 'next'
 
 type Props = {
-  game?: Game,
+  game: Game,
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const gameId: string = context.query['game'] as string
+  const gameId: string = context.query['id'] as string
   const res = await fetch(`http://api:3000/api/v1/games/${gameId}`)
   if (res.status == 200) {
     const json = await res.json()
     if (json.ok) return { props: { game: json.data } }
   }
-  return { props: {} }
+  return {
+    props: {},
+    redirect: { statusCode: 302, destination: '/' }
+  }
 }
 
-const Game = (props: Props) => {
+const Games = (props: Props) => {
   return (
     <main id='main'>
       <Head>
@@ -32,4 +35,4 @@ const Game = (props: Props) => {
   )
 }
 
-export default Game
+export default Games
