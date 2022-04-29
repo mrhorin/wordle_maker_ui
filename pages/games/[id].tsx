@@ -7,16 +7,13 @@ type Props = {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const gameId: string = context.query['id'] as string
-  const res = await fetch(`http://api:3000/api/v1/games/${gameId}`)
+  const id: string = context.query['id'] as string
+  const res = await fetch(`http://api:3000/api/v1/games/${id}`)
   if (res.status == 200) {
     const json = await res.json()
     if (json.ok) return { props: { game: json.data } }
   }
-  return {
-    props: {},
-    redirect: { statusCode: 302, destination: '/' }
-  }
+  return { notFound: true }
 }
 
 const Games = (props: Props) => {
