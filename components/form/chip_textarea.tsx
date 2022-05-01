@@ -22,12 +22,21 @@ const ChipTextarea = ({ chips, addChips, removeChip, updateChip, maxLength }: Pr
     if (inputValue == ',') {
       // Delete inputValue when being inputed only comma
       setInputValue('')
-    } else if (/,/g.test(inputValue)) {
+    } else if (/,/.test(inputValue)) {
       // Split inputValue into an array with comma
-      let inputList: string[] = inputValue.replace(/[\r\n\s]/g, '').split(',').filter(Boolean)
+      const formattedValue = inputValue.replace(/[\r\n\s]/g, '')
+      const isLeft: boolean = formattedValue[formattedValue.length - 1] != ','
+      let inputList: string[] = formattedValue.split(',').filter(Boolean)
       if (inputList.length > 0) {
-        addChips(inputList)
-        setInputValue('')
+        if (isLeft) {
+          // When end with comma
+          const lastValue: string | undefined = inputList.pop()
+          lastValue ? setInputValue(lastValue) : setInputValue('')
+          addChips(inputList)
+        } else {
+          setInputValue('')
+          addChips(inputList)
+        }
       }
     }
   }, [inputValue])

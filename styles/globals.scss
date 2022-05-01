@@ -7,7 +7,7 @@
         4: .loading-overlay
           5: .header
 */
-$base-color1: #1d1d23;
+$base-color1: #1e2022;
 $base-color2: lighten($base-color1, 3%);
 $base-color3: lighten($base-color1, 6%);
 $accent-color1: #42c897;
@@ -18,7 +18,7 @@ $font-color3: darken($font-color1, 35%);
 $default-color: #fafafa;
 $secondary-color: #565761;
 $danger-color: #d93333;
-$info-color: #3ea6ff;
+$info-color: #5d9ff3;
 
 $sp-break-point: 599px;
 $tablet-break-point: 1024px;
@@ -247,6 +247,7 @@ label{
   height: 70px;
   position: fixed;
   top: 0;
+  left: 0;
   z-index: 5;
   background: $base-color1;
 }
@@ -255,7 +256,7 @@ label{
   order: 2;
   min-height: 100vh;
   padding: 0;
-  margin-top: 70px;
+  padding-top: 70px;
 }
 
 .footer {
