@@ -79,11 +79,11 @@ const MygamesCreate = () => {
               console.error(json)
             }
           })
-          .catch(error => { setShowOverlay(false) })
-          .finally(() => {
-            nprogress.done()
+          .catch(error => {
+            console.log(error)
             setShowOverlay(false)
           })
+          .finally(() => { nprogress.done() })
       }
     } else {
       signOut(() => router.replace('/signup'))

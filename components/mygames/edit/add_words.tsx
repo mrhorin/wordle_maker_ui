@@ -106,12 +106,15 @@ const AddWords = ({ game }: Props) => {
               alert.show(language.succeedMsg, { type: 'success' })
             } else {
               alert.show(language.failedMsg, { type: 'error' })
+              console.error(json)
             }
           })
-          .catch(error => console.log(error))
+          .catch(error => {
+            console.log(error)
+          })
           .finally(() => {
-            nprogress.done()
             setShowOverlay(false)
+            nprogress.done()
           })
       } else {
         alert.show(language.getInvalidMsg(game.char_count), { type: 'error' })

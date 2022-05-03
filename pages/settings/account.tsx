@@ -56,11 +56,9 @@ const Account = () => {
           console.error('Error', json)
         }
       }).catch(error => {
-        console.error(error)
-      }).finally(() => {
-        nprogress.done()
+        console.log(error)
         setShowOverlay(false)
-      })
+      }).finally(() => { nprogress.done() })
     }
   }
 

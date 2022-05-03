@@ -61,11 +61,11 @@ const DeleteGame = ({ game }: Props) => {
             console.error(json.message)
           }
         })
-        .catch(error => console.log(error))
-        .finally(() => {
-          nprogress.done()
+        .catch(error => {
+          console.log(error)
           setShowOverlay(false)
         })
+        .finally(() => { nprogress.done() })
     }
   }
 
