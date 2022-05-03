@@ -4,14 +4,18 @@ import { GetServerSideProps } from 'next'
 
 type Props = {
   game: Game,
+  words: String[],
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const id: string = context.query['id'] as string
-  const res = await fetch(`http://api:3000/api/v1/games/${id}`)
-  if (res.status == 200) {
-    const json = await res.json()
-    if (json.ok) return { props: { game: json.data } }
+  const reses = await Promise.all([
+    fetch(`http://api:3000/api/v1/games/${id}`),
+    fetch(`http://api:3000/api/v1/games/${id}/word_list`)
+  ])
+  if (reses[0].status == 200 && reses[1].status == 200) {
+    const jsons = await Promise.all([reses[0].json(), reses[1].json()])
+    if (jsons[0].ok) return { props: { game: jsons[0].data, words: jsons[1].data } }
   }
   return { notFound: true }
 }

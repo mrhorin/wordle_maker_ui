@@ -90,7 +90,7 @@ const AddWords = ({ game }: Props) => {
         const body = { words: words, game: { game_id: game.id } }
         setShowOverlay(true)
         nprogress.start()
-        fetch(`http://localhost:3000/api/v1/subjects/create`, {
+        fetch(`http://localhost:3000/api/v1/words/create`, {
           method: 'POST',
           headers: {
             "Content-Type": "application/json",

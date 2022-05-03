@@ -1,4 +1,4 @@
-import type { Token, Game, Subject, Pagination } from 'types/global'
+import type { Token, Game, Word, Pagination } from 'types/global'
 import { useEffect, useState, useRef, useContext, useCallback, memo } from 'react'
 import { useAlert } from 'react-alert'
 import ReactLoading from 'react-loading'
@@ -13,21 +13,21 @@ import CurrentTokenContext from 'contexts/current_token'
 import validate from 'scripts/validate'
 import Language from 'scripts/language'
 
-interface TrSubjectProps {
-  subject: Subject
-  handleClickEdit(subject: Subject): void
-  handleClickDelete(subject_id: number): void
+interface TrWordProps {
+  word: Word
+  handleClickEdit(word: Word): void
+  handleClickDelete(word_id: number): void
 }
 
-const TrSubjectMemo = memo(({ subject, handleClickEdit, handleClickDelete }: TrSubjectProps) => {
+const TrWordMemo = memo(({ word, handleClickEdit, handleClickDelete }: TrWordProps) => {
   return (
     <tr>
-      <td className='table-td-word'>{ subject.word }</td>
+      <td className='table-td-word'>{ word.name }</td>
       <td className='table-td-edit'>
-        <button className='btn btn-mini btn-square btn-secondary' onClick={()=> handleClickEdit(subject)}>Edit</button>
+        <button className='btn btn-mini btn-square btn-secondary' onClick={()=> handleClickEdit(word)}>Edit</button>
       </td>
       <td className='table-td-delete'>
-        <button className='btn btn-mini btn-square btn-danger' onClick={() => handleClickDelete(subject.id)}>
+        <button className='btn btn-mini btn-square btn-danger' onClick={() => handleClickDelete(word.id)}>
           Delete
         </button>
       </td>
@@ -41,9 +41,9 @@ interface EditWordsProps {
 
 const EditWords = ({ game }: EditWordsProps) => {
   /*
-   * currentSubjectList:
-   *  A list of subjects. */
-  const [currentSubjectList, setCurrentSubjectList] = useState<Subject[]>([])
+   * currentWordList:
+   *  A list of words. */
+  const [currentWordList, setCurrentWordList] = useState<Word[]>([])
   /* pagination:
    *  Pagenation infomation to render PaginationComponent.  */
   const [pagination, setPagination] = useState<Pagination | null>(null)
@@ -69,51 +69,51 @@ const EditWords = ({ game }: EditWordsProps) => {
   const language = new Language(game.lang)
 
   useEffect(() => {
-    if (validate.token(currentTokenContext.currentToken) && currentSubjectList.length <= 0) {
-      // When currentSubjectList is empty
+    if (validate.token(currentTokenContext.currentToken) && currentWordList.length <= 0) {
+      // When currentWordList is empty
       if ((pagination == null) || (pagination.total_count > 0)) {
-        // When rendered at first OR subjects exists, it fetches subjects
+        // When rendered at first OR words exists, it fetches words
         nprogress.start()
-        fetchSubjects(currentTokenContext.currentToken, 1).then(json => {
+        fetchWords(currentTokenContext.currentToken, 1).then(json => {
           if (json.ok) {
             setPagination(json.data.pagination)
-            setCurrentSubjectList(json.data.subjects)
+            setCurrentWordList(json.data.words)
           }
         }).finally(() => nprogress.done())
       }
     }
-  }, [currentSubjectList])
+  }, [currentWordList])
 
-  const updateSubject = useCallback((nextSubject: Subject) => {
-    setCurrentSubjectList(prevCuurentSubjectList => {
-      return prevCuurentSubjectList.map((prevSubject) => {
-        if (prevSubject.id == nextSubject.id) return nextSubject
-        return prevSubject
+  const updateWord = useCallback((nextWord: Word) => {
+    setCurrentWordList(prevCuurentWordList => {
+      return prevCuurentWordList.map((prevWord) => {
+        if (prevWord.id == nextWord.id) return nextWord
+        return prevWord
       })
     })
   }, [])
 
-  const removeSubject = useCallback((id: number) => {
-    setCurrentSubjectList(prevCuurentSubjectList => {
-      return prevCuurentSubjectList.filter((prevSubject) => {
-        return prevSubject.id !== id
+  const removeWord = useCallback((id: number) => {
+    setCurrentWordList(prevCuurentWordList => {
+      return prevCuurentWordList.filter((prevWord) => {
+        return prevWord.id !== id
       })
     })
   }, [])
 
-  const handleClickEdit = useCallback((subject: Subject) => {
-    setInputUpdateWord(subject.word)
-    setInputUpdateId(subject.id)
+  const handleClickEdit = useCallback((word: Word) => {
+    setInputUpdateWord(word.name)
+    setInputUpdateId(word.id)
     setShowModal(true)
   }, [])
 
-  const handleClickDelete = useCallback((subject_id: number) => {
+  const handleClickDelete = useCallback((word_id: number) => {
     if (validate.token(currentTokenContext.currentToken)) {
       setShowOverlay(true)
       nprogress.start()
-      fetchDeleteSubject(currentTokenContext.currentToken, subject_id).then(json => {
+      fetchDeleteWord(currentTokenContext.currentToken, word_id).then(json => {
         if (json.ok) {
-          removeSubject(subject_id)
+          removeWord(word_id)
           alert.show('Deleted', { type: 'success' })
         } else {
           alert.show('Failed', { type: 'error' })
@@ -126,18 +126,18 @@ const EditWords = ({ game }: EditWordsProps) => {
   }, [])
 
   function handleClickUpdate() {
-    let newSubject = { id: inputUpdateId, word: inputUpdateWord, game_id: game.id }
-    if (validate.wordWithGame(newSubject.word, game) && validate.subject(newSubject)) {
+    let newWord = { id: inputUpdateId, name: inputUpdateWord, game_id: game.id }
+    if (validate.wordWithGame(newWord.name, game) && validate.word(newWord)) {
       // Remove invalid style
       if (inputUpdateWordModalEl.current) inputUpdateWordModalEl.current.classList.remove('input-invalid')
       if (divInvalidWordModaldEl.current) divInvalidWordModaldEl.current.innerHTML = ''
-      // Update a subject
+      // Update a word
       if (validate.token(currentTokenContext.currentToken)) {
         setShowOverlay(true)
         nprogress.start()
-        fetchUpdateSubject(currentTokenContext.currentToken, newSubject as Subject).then(json => {
+        fetchUpdateWord(currentTokenContext.currentToken, newWord as Word).then(json => {
           if (json.ok) {
-            updateSubject(json.data)
+            updateWord(json.data)
             setShowModal(false)
             alert.show('Updated', { type: 'success' })
           } else {
@@ -161,17 +161,17 @@ const EditWords = ({ game }: EditWordsProps) => {
   function handleClickPage(page: number): void{
     if (validate.token(currentTokenContext.currentToken)) {
       nprogress.start()
-      fetchSubjects(currentTokenContext.currentToken, page).then(json => {
+      fetchWords(currentTokenContext.currentToken, page).then(json => {
         if (json.ok) {
-          setCurrentSubjectList(json.data.subjects)
+          setCurrentWordList(json.data.words)
           setPagination(json.data.pagination)
         }
       }).finally(() => nprogress.done())
     }
   }
 
-  async function fetchSubjects(token: Token, page: number) {
-    const res = await fetch(`http://localhost:3000/api/v1/games/${game.id}/subjects?page=${page}`, {
+  async function fetchWords(token: Token, page: number) {
+    const res = await fetch(`http://localhost:3000/api/v1/games/${game.id}/words?page=${page}`, {
       method: 'GET',
       headers: {
         'access-token': token.accessToken,
@@ -182,14 +182,14 @@ const EditWords = ({ game }: EditWordsProps) => {
     return await res.json()
   }
 
-  async function fetchUpdateSubject(token: Token, subject: Subject) {
+  async function fetchUpdateWord(token: Token, word: Word) {
     const body = {
-      subject: {
-        'id': subject.id,
-        'word': subject.word,
+      word: {
+        'id': word.id,
+        'name': word.name,
       }
     }
-    const res = await fetch(`http://localhost:3000/api/v1/subjects/${subject.id}`, {
+    const res = await fetch(`http://localhost:3000/api/v1/words/${word.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': "application/json",
@@ -202,8 +202,8 @@ const EditWords = ({ game }: EditWordsProps) => {
     return await res.json()
   }
 
-  async function fetchDeleteSubject(token: Token, subject_id: number) {
-    const res = await fetch(`http://localhost:3000/api/v1/subjects/${subject_id}`, {
+  async function fetchDeleteWord(token: Token, word_id: number) {
+    const res = await fetch(`http://localhost:3000/api/v1/words/${word_id}`, {
       method: 'DELETE',
       headers: {
         'access-token': token.accessToken,
@@ -215,15 +215,15 @@ const EditWords = ({ game }: EditWordsProps) => {
   }
 
   if (pagination?.total_count == 0) {
-    // When subjects don't exist after fetching subjects and pagination data
+    // When words don't exist after fetching words and pagination data
     return <p style={{textAlign: 'center', margin: '10rem auto'}}>Looks like you haven't created anything yet..?</p>
-  } else if (currentSubjectList.length <= 0) {
-    // When subjects don't exist before fetching subjects and pagination data
+  } else if (currentWordList.length <= 0) {
+    // When words don't exist before fetching words and pagination data
     return <ReactLoading type={'spin'} color={'#008eff'} height={'25px'} width={'25px'} className='loading-center' />
   } else {
-    // When subjects exist
-    const subjectComponents = currentSubjectList.map((s) => {
-      return <TrSubjectMemo key={s.id} subject={s} handleClickEdit={handleClickEdit} handleClickDelete={handleClickDelete} />
+    // When words exist
+    const wordComponents = currentWordList.map((s) => {
+      return <TrWordMemo key={s.id} word={s} handleClickEdit={handleClickEdit} handleClickDelete={handleClickDelete} />
     })
     return (
       <div className='game-edit-words'>
@@ -260,7 +260,7 @@ const EditWords = ({ game }: EditWordsProps) => {
               <th className='table-th-date-delete'>Delete</th>
             </tr>
           </thead>
-          <tbody>{ subjectComponents }</tbody>
+          <tbody>{ wordComponents }</tbody>
         </table>
         {(() => {
           if (pagination && pagination.total_pages > 1) {

@@ -39,16 +39,16 @@ const schema = {
     required: ['provider', 'name', 'nickname', 'uid', 'image'],
     additionalProperties: false,
   },
-  subject: {
+  word: {
     type: 'object',
     properties: {
       id: { type: 'number' },
-      word: { type: 'string' },
+      name: { type: 'string' },
       game_id: { type: 'number' },
       created_at: { type: 'string' },
       updated_at: { type: 'string' },
     },
-    required: ['id', 'word'],
+    required: ['id', 'name'],
     additionalProperties: false,
   }
 }
@@ -62,7 +62,7 @@ const validate = {
   token: ajv.compile(schema.token),
   queryToken: ajv.compile(schema.queryToken),
   userInfo: ajv.compile(schema.userInfo),
-  subject: ajv.compile(schema.subject),
+  word: ajv.compile(schema.word),
   wordWithGame: validateWordWithGame,
 }
 

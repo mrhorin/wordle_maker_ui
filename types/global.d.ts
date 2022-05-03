@@ -32,9 +32,9 @@ export type Game = {
   user_id?: number,
 }
 
-export type Subject = {
+export type Word = {
   id: number,
-  word: string,
+  name: string,
   game_id?: number,
 }
 
