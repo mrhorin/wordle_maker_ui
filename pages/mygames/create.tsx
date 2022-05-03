@@ -73,7 +73,7 @@ const MygamesCreate = () => {
           .then(json => {
             if (json.ok) {
               alert.show('CREATED', {type: 'success'})
-              router.push(`/games/${json.data.id}`)
+              router.push(`/mygames/edit/${json.data.id}#add-words`)
             } else {
               alert.show('FAILED', {type: 'error'})
               console.error(json)
