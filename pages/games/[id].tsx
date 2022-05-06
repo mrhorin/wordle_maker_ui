@@ -8,18 +8,22 @@ import Language from 'scripts/language'
 
 type Props = {
   game: Game,
-  words: String[],
+  wordList: String[],
+  wordToday: Word,
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const id: string = context.query['id'] as string
   const reses = await Promise.all([
     fetch(`http://api:3000/api/v1/games/${id}`),
-    fetch(`http://api:3000/api/v1/games/${id}/word_list`)
+    fetch(`http://api:3000/api/v1/games/${id}/word_list`),
+    fetch(`http://api:3000/api/v1/words/today/${id}`),
   ])
-  if (reses[0].status == 200 && reses[1].status == 200) {
-    const jsons = await Promise.all([reses[0].json(), reses[1].json()])
-    if (jsons[0].ok) return { props: { game: jsons[0].data, words: jsons[1].data } }
+  if (reses[0].status == 200 && reses[1].status == 200 && reses[2].status == 200) {
+    const jsons = await Promise.all([reses[0].json(), reses[1].json(), reses[2].json()])
+    if (jsons[0].ok && jsons[1].ok && jsons[2].ok) {
+      return { props: { game: jsons[0].data, wordList: jsons[1].data, wordToday: jsons[2].data } }
+    }
   }
   return { notFound: true }
 }
@@ -72,7 +76,8 @@ const Games = (props: Props) => {
       </Head>
 
       <div className='container'>
-        <h1 className='title'>{ props.game?.title }</h1>
+        <h1 className='title'>{props.game?.title}</h1>
+        <p>{props.wordToday.name}</p>
       </div>
     </main>
   )
