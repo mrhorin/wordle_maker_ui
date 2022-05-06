@@ -4,6 +4,7 @@ import { GetServerSideProps } from 'next'
 import { useState } from 'react'
 import { useKeyDown } from 'hooks/useKeyDown'
 
+import Tile from 'components/game/tile'
 import Language from 'scripts/language'
 
 type Props = {
@@ -32,7 +33,6 @@ const Games = (props: Props) => {
   const [inputtedWordList, setInputtedWordList] = useState<string[][]>([])
   const [currentWord, setCurrentWord] = useState<string[]>([])
   const language = new Language(props.game.lang)
-  const CHALENGE_COUNT = 6
 
   useKeyDown((event) => handleInputKey(event.key))
 
@@ -41,7 +41,7 @@ const Games = (props: Props) => {
       setCurrentWord(prevCurrentWord => {
         if (prevCurrentWord.length == props.game.char_count) {
           setInputtedWordList(prevInputtedWordList => {
-            if (CHALENGE_COUNT >= prevInputtedWordList.length) {
+            if (props.game.challenge_count > prevInputtedWordList.length) {
               return [...prevInputtedWordList, prevCurrentWord]
             } else {
               return prevInputtedWordList
@@ -52,7 +52,7 @@ const Games = (props: Props) => {
           return prevCurrentWord
         }
       })
-    }else if (key == 'Backspace') {
+    } else if (key == 'Backspace') {
       setCurrentWord(prevCurrentWord => {
         return prevCurrentWord.slice(0, prevCurrentWord.length - 1)
       })
@@ -67,6 +67,28 @@ const Games = (props: Props) => {
     }
   }
 
+  const wordsComponent = (
+    <div className='words'>
+      {(() => {
+        const rowComponents: JSX.Element[] = []
+        // Set rows
+        for (let i = 0; i < props.game.challenge_count; i++){
+          const tileComponents: JSX.Element[] = []
+          // Set tiles
+          for (let j = 0; j < props.game.char_count; j++){
+            // Set letter
+            let letter = ''
+            if (inputtedWordList[i] && inputtedWordList[i][j]) letter = inputtedWordList[i][j]
+            if (inputtedWordList.length == i && currentWord[j]) letter = currentWord[j]
+            tileComponents.push(<Tile key={j} letter={letter} />)
+          }
+          rowComponents.push(<div key={i} className='words-row'>{tileComponents}</div>)
+        }
+        return rowComponents
+      })()}
+    </div>
+  )
+
   return (
     <main id='main'>
       <Head>
@@ -76,6 +98,9 @@ const Games = (props: Props) => {
       </Head>
 
       <div className='container'>
+        <div className='games'>
+          {wordsComponent}
+        </div>
         <h1 className='title'>{props.game?.title}</h1>
         <p>{props.wordToday.name}</p>
       </div>

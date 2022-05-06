@@ -713,6 +713,51 @@ table{
   display: none;
 }
 
+/* --------------- Games --------------- */
+.games{
+
+}
+.words{
+  display: flex;
+  flex-direction: column;
+  .words-row{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    .words-row-tile{
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 35px;
+      font-weight: bold;
+      font-family: 'Clear Sans', 'Helvetica Neue', Arial, sans-serif;;
+      text-transform: uppercase;
+      text-align: center;
+      width: 60px;
+      margin: 3px;
+      border: 1px solid $font-color1;
+      cursor: default;
+    }
+    .words-row-tile::before{
+      content: "";
+      padding-top: 100%;
+      display: block;
+    }
+  }
+}
+@media screen and (max-width: 400px){
+  .words{
+    .words-row{
+      .words-row-tile{
+        font-size: 25px;
+      }
+    }
+  }
+}
+
 /* ---------- MygamesEditIndex ---------- */
 .game-index{
   display: flex;
