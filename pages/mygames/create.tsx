@@ -17,6 +17,7 @@ const MygamesCreate = () => {
   const [title, setTitle] = useState<string>('')
   const [desc, setDesc] = useState<string>('')
   const [lang, setLang] = useState<string>('en')
+  const [challengeCount, setChallengeCount] = useState<number>(6)
   const [charCount, setCharCount] = useState<number>(5)
   const [showOverlay, setShowOverlay] = useState<boolean>(false)
   /*********** Ref ***********/
@@ -54,6 +55,7 @@ const MygamesCreate = () => {
           game: {
             'title': title,
             'desc': desc,
+            'challenge_count': challengeCount,
             'char_count': charCount,
             'lang': lang
           }
@@ -77,10 +79,11 @@ const MygamesCreate = () => {
             } else {
               alert.show('FAILED', {type: 'error'})
               console.error(json)
+              setShowOverlay(false)
             }
           })
           .catch(error => {
-            console.log(error)
+            console.error(error)
             setShowOverlay(false)
           })
           .finally(() => { nprogress.done() })
@@ -125,12 +128,19 @@ const MygamesCreate = () => {
                 </div>
                 <div id='game-title-invalid-feedback' className='form-group-invalid-feedback'></div>
               </div>
-              {/* Language */}
+              {/* Challenge count */}
               <div className='form-group'>
-                <label>Language</label>
-                <select ref={selectLangEl} id='game-lang' value={lang} onChange={e => setLang(e.target.value)}>
-                  <option value='en'>English</option>
-                  <option value='ja'>Japanese</option>
+                <label>Challenge count</label>
+                <select id='game-challengeount' value={challengeCount} onChange={e => setChallengeCount(Number(e.target.value))}>
+                  <option value='2'>2</option>
+                  <option value='3'>3</option>
+                  <option value='4'>4</option>
+                  <option value='5'>5</option>
+                  <option value='6'>6</option>
+                  <option value='7'>7</option>
+                  <option value='8'>8</option>
+                  <option value='9'>9</option>
+                  <option value='10'>10</option>
                 </select>
               </div>
               {/* Character count */}
@@ -146,6 +156,14 @@ const MygamesCreate = () => {
                   <option value='8'>8</option>
                   <option value='9'>9</option>
                   <option value='10'>10</option>
+                </select>
+              </div>
+              {/* Language */}
+              <div className='form-group'>
+                <label>Language</label>
+                <select ref={selectLangEl} id='game-lang' value={lang} onChange={e => setLang(e.target.value)}>
+                  <option value='en'>English</option>
+                  <option value='ja'>Japanese</option>
                 </select>
               </div>
               {/* Submit */}

@@ -25,9 +25,11 @@ const Summary = ({ game, setGame }: Props) => {
   /*
    * title:
    * desc:
+   * challenge_coung:
    *  The states can be changed with input forms. */
   const [title, setTitle] = useState<string>(game.title)
   const [desc, setDesc] = useState<string>(game.desc)
+  const [challengeCount, setChallengeCount] = useState<number>(game.challenge_count)
   /* isChanged:
    *  The flag indicates that parameters are changed in the game form or not. */
   const [isChanged, setIsChanged] = useState<boolean>(false)
@@ -45,12 +47,12 @@ const Summary = ({ game, setGame }: Props) => {
 
   useEffect(() => {
     // When title or desc are changed, the update button is clickable
-    if (game.title != title || game.desc != desc) {
+    if (game.title != title || game.desc != desc || game.challenge_count != challengeCount) {
       setIsChanged(true)
     } else {
       setIsChanged(false)
     }
-  }, [title, desc, game])
+  }, [title, desc, challengeCount, game])
 
   function validateTitle(): boolean{
     const titleLength: number = Number(title.length)
@@ -77,6 +79,7 @@ const Summary = ({ game, setGame }: Props) => {
             'id': game.id,
             'title': title,
             'desc': desc,
+            'challenge_count': challengeCount,
           }
         }
         setShowOverlay(true)
@@ -100,7 +103,7 @@ const Summary = ({ game, setGame }: Props) => {
               alert.show('FAILED', {type: 'error'})
             }
           })
-          .catch(error => console.log(error))
+          .catch(error => console.error(error))
           .finally(() => {
             nprogress.done()
             setShowOverlay(false)
@@ -143,15 +146,30 @@ const Summary = ({ game, setGame }: Props) => {
           </div>
           <div id='game-title-invalid-feedback' className='form-group-invalid-feedback'></div>
         </div>
-        {/* Language */}
+        {/* Challenge count */}
         <div className='form-group'>
-          <label>Language</label>
-          <input type='text' value={language.name} disabled={true} />
+          <label>Challenge count</label>
+          <select id='game-challengeount' value={challengeCount} onChange={e => setChallengeCount(Number(e.target.value))}>
+            <option value='2'>2</option>
+            <option value='3'>3</option>
+            <option value='4'>4</option>
+            <option value='5'>5</option>
+            <option value='6'>6</option>
+            <option value='7'>7</option>
+            <option value='8'>8</option>
+            <option value='9'>9</option>
+            <option value='10'>10</option>
+          </select>
         </div>
         {/* Character count */}
         <div className='form-group'>
           <label>Character count</label>
           <input type='text' value={game.char_count} disabled={true} />
+        </div>
+        {/* Language */}
+        <div className='form-group'>
+          <label>Language</label>
+          <input type='text' value={language.name} disabled={true} />
         </div>
         {/* Submit */}
         <button type='button' id='game-submit' className='btn btn-primary' disabled={!isChanged} onClick={handleClickUpdate}>Update</button>

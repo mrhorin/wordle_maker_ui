@@ -28,6 +28,7 @@ export type Game = {
   desc: string,
   lang: string,
   char_count: number,
+  challenge_count: number,
   id?: number,
   user_id?: number,
 }
