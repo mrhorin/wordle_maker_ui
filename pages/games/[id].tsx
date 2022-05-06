@@ -1,6 +1,10 @@
-import type { Game } from 'types/global'
+import type { Game, Word } from 'types/global'
 import Head from 'next/head'
 import { GetServerSideProps } from 'next'
+import { useState } from 'react'
+import { useKeyDown } from 'hooks/useKeyDown'
+
+import Language from 'scripts/language'
 
 type Props = {
   game: Game,
@@ -21,6 +25,44 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 }
 
 const Games = (props: Props) => {
+  const [inputtedWordList, setInputtedWordList] = useState<string[][]>([])
+  const [currentWord, setCurrentWord] = useState<string[]>([])
+  const language = new Language(props.game.lang)
+  const CHALENGE_COUNT = 6
+
+  useKeyDown((event) => handleInputKey(event.key))
+
+  function handleInputKey(key: string): void{
+    if (key == 'Enter') {
+      setCurrentWord(prevCurrentWord => {
+        if (prevCurrentWord.length == props.game.char_count) {
+          setInputtedWordList(prevInputtedWordList => {
+            if (CHALENGE_COUNT >= prevInputtedWordList.length) {
+              return [...prevInputtedWordList, prevCurrentWord]
+            } else {
+              return prevInputtedWordList
+            }
+          })
+          return []
+        } else {
+          return prevCurrentWord
+        }
+      })
+    }else if (key == 'Backspace') {
+      setCurrentWord(prevCurrentWord => {
+        return prevCurrentWord.slice(0, prevCurrentWord.length - 1)
+      })
+    } else if (language.regexp?.test(key) && key.length == 1) {
+      setCurrentWord(prevCurrentWord => {
+        if (prevCurrentWord.length < props.game.char_count) {
+          return prevCurrentWord.concat(key)
+        } else {
+          return prevCurrentWord
+        }
+      })
+    }
+  }
+
   return (
     <main id='main'>
       <Head>
