@@ -10,15 +10,22 @@
 $base-color1: #1e2022;
 $base-color2: lighten($base-color1, 3%);
 $base-color3: lighten($base-color1, 6%);
+
 $accent-color1: #42c897;
-$accent-color2: #d79742;
+$accent-color2: #cf8e1d;
+
 $font-color1: #dfe3e5;
 $font-color2: darken($font-color1, 30%);
 $font-color3: darken($font-color1, 35%);
+
 $default-color: #fafafa;
 $secondary-color: #565761;
 $danger-color: #d93333;
 $info-color: #5d9ff3;
+
+$correct-color: #369c2e;
+$present-color: #cf9e2a;
+$absent-color: lighten($base-color1, 10%);
 
 $sp-break-point: 599px;
 $tablet-break-point: 1024px;
@@ -731,9 +738,9 @@ table{
       display: inline-flex;
       justify-content: center;
       align-items: center;
-      font-size: 35px;
+      font-size: 30px;
       font-weight: bold;
-      font-family: 'Clear Sans', 'Helvetica Neue', Arial, sans-serif;;
+      font-family: 'Hiragino Kaku Gothic Std W8', 'Clear Sans', 'Meiryo', 'Helvetica Neue', Arial, sans-serif;
       text-transform: uppercase;
       text-align: center;
       width: 60px;
@@ -746,13 +753,22 @@ table{
       padding-top: 100%;
       display: block;
     }
+    .words-row-tile-correct{
+      background: $correct-color;
+    }
+    .words-row-tile-present{
+      background: $present-color;
+    }
+    .words-row-tile-absent{
+      background: $absent-color;
+    }
   }
 }
 @media screen and (max-width: 400px){
   .words{
     .words-row{
       .words-row-tile{
-        font-size: 25px;
+        font-size: 20px;
       }
     }
   }

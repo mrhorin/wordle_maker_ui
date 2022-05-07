@@ -55,3 +55,10 @@ export type Tab = {
   name: string,
   hash: string,
 }
+
+export type Tile = {
+  letter: string,
+  isCorrect: boolean,
+  isPresent: boolean,
+  isAbsent: boolean,
+}

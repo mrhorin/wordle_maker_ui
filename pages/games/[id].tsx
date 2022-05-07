@@ -1,10 +1,10 @@
-import type { Game, Word } from 'types/global'
+import type { Game, Word, Tile } from 'types/global'
 import Head from 'next/head'
 import { GetServerSideProps } from 'next'
 import { useState } from 'react'
 import { useKeyDown } from 'hooks/useKeyDown'
 
-import Tile from 'components/game/tile'
+import TileComponent from 'components/game/tile'
 import Language from 'scripts/language'
 
 type Props = {
@@ -30,21 +30,41 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 }
 
 const Games = (props: Props) => {
-  const [inputtedWordList, setInputtedWordList] = useState<string[][]>([])
+  const [tilesList, setTilesList] = useState<Tile[][]>([])
   const [currentWord, setCurrentWord] = useState<string[]>([])
+  const wordToday: string[] = props.wordToday.name.toUpperCase().split('')
   const language = new Language(props.game.lang)
 
   useKeyDown((event) => handleInputKey(event.key))
 
+  function getEnterdTiles(word: string[]): Tile[] {
+    return word.map((letter, i) => {
+      const tile: Tile = { letter: letter.toUpperCase(), isCorrect: false, isPresent: false, isAbsent: false }
+      if (wordToday.indexOf(tile.letter) >= 0) {
+        if (wordToday.indexOf(tile.letter) == i) {
+          tile.isCorrect = true
+        } else {
+          tile.isPresent = true
+        }
+      } else {
+        tile.isAbsent = true
+      }
+      return tile
+    })
+  }
+
   function handleInputKey(key: string): void{
     if (key == 'Enter') {
+      // Press Enter
       setCurrentWord(prevCurrentWord => {
         if (prevCurrentWord.length == props.game.char_count) {
-          setInputtedWordList(prevInputtedWordList => {
-            if (props.game.challenge_count > prevInputtedWordList.length) {
-              return [...prevInputtedWordList, prevCurrentWord]
+          setTilesList(prevTilesList => {
+            if (props.game.challenge_count > prevTilesList.length) {
+              // When blank row exists
+              return [...prevTilesList, getEnterdTiles(prevCurrentWord)]
             } else {
-              return prevInputtedWordList
+              // When blank row doesn't exist
+              return prevTilesList
             }
           })
           return []
@@ -53,13 +73,15 @@ const Games = (props: Props) => {
         }
       })
     } else if (key == 'Backspace') {
+      // Press Backspace
       setCurrentWord(prevCurrentWord => {
         return prevCurrentWord.slice(0, prevCurrentWord.length - 1)
       })
-    } else if (language.regexp?.test(key) && key.length == 1) {
+    } else if (language.regexp?.test(key) && key.length == 1 && currentWord.length < props.game.char_count) {
+      // Press valid key
       setCurrentWord(prevCurrentWord => {
         if (prevCurrentWord.length < props.game.char_count) {
-          return prevCurrentWord.concat(key)
+          return prevCurrentWord.concat(key.toUpperCase())
         } else {
           return prevCurrentWord
         }
@@ -70,17 +92,18 @@ const Games = (props: Props) => {
   const wordsComponent = (
     <div className='words'>
       {(() => {
-        const rowComponents: JSX.Element[] = []
         // Set rows
+        const rowComponents: JSX.Element[] = []
         for (let i = 0; i < props.game.challenge_count; i++){
-          const tileComponents: JSX.Element[] = []
           // Set tiles
+          const tileComponents: JSX.Element[] = []
           for (let j = 0; j < props.game.char_count; j++){
-            // Set letter
-            let letter = ''
-            if (inputtedWordList[i] && inputtedWordList[i][j]) letter = inputtedWordList[i][j]
-            if (inputtedWordList.length == i && currentWord[j]) letter = currentWord[j]
-            tileComponents.push(<Tile key={j} letter={letter} />)
+            let tile: Tile = { letter: '', isCorrect: false, isPresent: false, isAbsent: false }
+            // When the row already exists
+            if (tilesList[i] && tilesList[i][j]) tile = tilesList[i][j]
+            // When the row is located bellow the last low
+            if (tilesList.length == i && currentWord[j]) tile.letter = currentWord[j]
+            tileComponents.push(<TileComponent key={`${i}-${j}`} tile={tile} />)
           }
           rowComponents.push(<div key={i} className='words-row'>{tileComponents}</div>)
         }
