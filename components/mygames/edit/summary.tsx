@@ -116,18 +116,18 @@ const Summary = ({ game, setGame }: Props) => {
 
   return (
     <div className='game-edit-summary'>
+      {/* Gmae Link */}
+      <div className='game-edit-link'>
+        <label>Game Link</label>
+        <Link href={`/games/${game.id}`}>
+          <a>
+            <button className='btn btn-secondary'>
+              {`http://localhost:8000/games/${game.id}`}
+            </button>
+          </a>
+        </Link>
+      </div>
       <form id='game-form' onSubmit={e => e.preventDefault()}>
-        {/* Gmae Link */}
-        <div className='game-edit-link'>
-          <label>Game Link</label>
-          <Link href={`/games/${game.id}`}>
-            <a>
-              <button className='btn btn-secondary'>
-                {`http://localhost:8000/games/${game.id}`}
-              </button>
-            </a>
-          </Link>
-        </div>
         {/* Title */}
         <div className='form-group'>
           <label>Title</label>
