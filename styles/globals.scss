@@ -25,7 +25,7 @@ $info-color: #5d9ff3;
 
 $correct-color: #369c2e;
 $present-color: #cf9e2a;
-$absent-color: lighten($base-color1, 10%);
+$absent-color: lighten($base-color1, 13%);
 
 $sp-break-point: 599px;
 $tablet-break-point: 1024px;
@@ -746,6 +746,7 @@ table{
       width: 60px;
       margin: 3px;
       border: 1px solid $font-color1;
+      user-select: none;
       cursor: default;
     }
     .words-row-tile::before{
@@ -755,12 +756,15 @@ table{
     }
     .words-row-tile-correct{
       background: $correct-color;
+      border: 1px solid $correct-color;
     }
     .words-row-tile-present{
       background: $present-color;
+      border: 1px solid $present-color;
     }
     .words-row-tile-absent{
       background: $absent-color;
+      border: 1px solid $absent-color;
     }
   }
 }

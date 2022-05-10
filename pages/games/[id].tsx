@@ -32,12 +32,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 const Games = (props: Props) => {
   const [tilesList, setTilesList] = useState<Tile[][]>([])
   const [currentWord, setCurrentWord] = useState<string[]>([])
+  const [isFinished, setIsFinished] = useState<boolean>(false)
   const wordToday: string[] = props.wordToday.name.toUpperCase().split('')
   const language = new Language(props.game.lang)
 
-  useKeyDown((event) => handleInputKey(event.key))
+  useKeyDown(event => handleInputKey(event.key), [isFinished])
 
-  function getEnterdTiles(word: string[]): Tile[] {
+  function getTiles(word: string[]): Tile[] {
     return word.map((letter, i) => {
       const tile: Tile = { letter: letter.toUpperCase(), isCorrect: false, isPresent: false, isAbsent: false }
       if (wordToday.indexOf(tile.letter) >= 0) {
@@ -53,31 +54,36 @@ const Games = (props: Props) => {
     })
   }
 
+  function finish(): void{
+    setIsFinished(true)
+  }
+
   function handleInputKey(key: string): void{
-    if (key == 'Enter') {
+    if (key == 'Enter' && !isFinished) {
       // Press Enter
       setCurrentWord(prevCurrentWord => {
         if (prevCurrentWord.length == props.game.char_count) {
           setTilesList(prevTilesList => {
             if (props.game.challenge_count > prevTilesList.length) {
               // When blank row exists
-              return [...prevTilesList, getEnterdTiles(prevCurrentWord)]
+              return [...prevTilesList, getTiles(prevCurrentWord)]
             } else {
               // When blank row doesn't exist
               return prevTilesList
             }
           })
+          if (prevCurrentWord.join('') == wordToday.join('')) finish()
           return []
         } else {
           return prevCurrentWord
         }
       })
-    } else if (key == 'Backspace') {
+    } else if (key == 'Backspace' && !isFinished) {
       // Press Backspace
       setCurrentWord(prevCurrentWord => {
         return prevCurrentWord.slice(0, prevCurrentWord.length - 1)
       })
-    } else if (language.regexp?.test(key) && key.length == 1 && currentWord.length < props.game.char_count) {
+    } else if (language.regexp?.test(key) && key.length == 1 && currentWord.length < props.game.char_count && !isFinished) {
       // Press valid key
       setCurrentWord(prevCurrentWord => {
         if (prevCurrentWord.length < props.game.char_count) {
@@ -124,8 +130,7 @@ const Games = (props: Props) => {
         <div className='games'>
           {wordsComponent}
         </div>
-        <h1 className='title'>{props.game?.title}</h1>
-        <p>{props.wordToday.name}</p>
+        <h1 className='title'>{props.game?.title} / {props.wordToday.name}</h1>
       </div>
     </main>
   )
