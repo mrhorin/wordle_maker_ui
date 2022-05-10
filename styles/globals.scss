@@ -23,7 +23,7 @@ $secondary-color: #565761;
 $danger-color: #d93333;
 $info-color: #5d9ff3;
 
-$correct-color: #369c2e;
+$correct-color: #307fe5;
 $present-color: #cf9e2a;
 $absent-color: lighten($base-color1, 13%);
 
@@ -748,11 +748,23 @@ table{
       border: 1px solid $font-color1;
       user-select: none;
       cursor: default;
+      background: $base-color1;
+      transform: rotateX(0deg);
+      &::before{
+        content: "";
+        padding-top: 100%;
+        display: block;
+      }
     }
-    .words-row-tile::before{
-      content: "";
-      padding-top: 100%;
-      display: block;
+    @keyframes transform-tile{
+      0%{ transform: rotateX(0deg); }
+      50%{ transform: rotateX(90deg); }
+      100%{ transform: rotateX(0deg); }
+    }
+    .words-row-tile-correct,
+    .words-row-tile-present,
+    .words-row-tile-absent{
+      animation: transform-tile 1s;
     }
     .words-row-tile-correct{
       background: $correct-color;

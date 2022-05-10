@@ -122,7 +122,7 @@ const Games = (props: Props) => {
             if (tilesTable[i] && tilesTable[i][j]) tile = tilesTable[i][j]
             // When the row is located bellow the last low
             if (tilesTable.length == i && currentWord[j]) tile.letter = currentWord[j]
-            tileComponents.push(<TileComponent key={`${i}-${j}`} tile={tile} />)
+            tileComponents.push(<TileComponent key={`${i}-${j}`} tile={tile} index={j} />)
           }
           rowComponents.push(<div key={i} className='words-row'>{tileComponents}</div>)
         }
