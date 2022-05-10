@@ -30,7 +30,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 }
 
 const Games = (props: Props) => {
-  const [tilesList, setTilesList] = useState<Tile[][]>([])
+  const [tilesTable, setTilesTable] = useState<Tile[][]>([])
   const [currentWord, setCurrentWord] = useState<string[]>([])
   const [isFinished, setIsFinished] = useState<boolean>(false)
   const wordToday: string[] = props.wordToday.name.toUpperCase().split('')
@@ -39,19 +39,32 @@ const Games = (props: Props) => {
   useKeyDown(event => handleInputKey(event.key), [isFinished])
 
   function getTiles(word: string[]): Tile[] {
-    return word.map((letter, i) => {
-      const tile: Tile = { letter: letter.toUpperCase(), isCorrect: false, isPresent: false, isAbsent: false }
-      if (wordToday.indexOf(tile.letter) >= 0) {
-        if (wordToday.indexOf(tile.letter) == i) {
-          tile.isCorrect = true
+    // Set letters
+    const tiles = word.map((letter, i) => {
+      return { letter: letter.toUpperCase(), isCorrect: false, isPresent: false, isAbsent: false }
+    })
+    // Set states
+    for (let i = 0; i < tiles.length; i++){
+      if (wordToday.indexOf(tiles[i].letter) >= 0) {
+        if (wordToday.indexOf(tiles[i].letter) == i) {
+          tiles[i].isCorrect = true
         } else {
-          tile.isPresent = true
+          // Searching for matching tiles except tiles already checked as correct or absent
+          for (let j = 0; j < tiles.length; j++){
+            if (!tiles[j].isCorrect && !tiles[j].isAbsent) {
+              if (wordToday[j] == tiles[j].letter) {
+                tiles[j].isCorrect = true
+              } else {
+                tiles[j].isPresent = true
+              }
+            }
+          }
         }
       } else {
-        tile.isAbsent = true
+        tiles[i].isAbsent = true
       }
-      return tile
-    })
+    }
+    return tiles
   }
 
   function finish(): void{
@@ -63,7 +76,7 @@ const Games = (props: Props) => {
       // Press Enter
       setCurrentWord(prevCurrentWord => {
         if (prevCurrentWord.length == props.game.char_count) {
-          setTilesList(prevTilesList => {
+          setTilesTable(prevTilesList => {
             if (props.game.challenge_count > prevTilesList.length) {
               // When blank row exists
               return [...prevTilesList, getTiles(prevCurrentWord)]
@@ -106,9 +119,9 @@ const Games = (props: Props) => {
           for (let j = 0; j < props.game.char_count; j++){
             let tile: Tile = { letter: '', isCorrect: false, isPresent: false, isAbsent: false }
             // When the row already exists
-            if (tilesList[i] && tilesList[i][j]) tile = tilesList[i][j]
+            if (tilesTable[i] && tilesTable[i][j]) tile = tilesTable[i][j]
             // When the row is located bellow the last low
-            if (tilesList.length == i && currentWord[j]) tile.letter = currentWord[j]
+            if (tilesTable.length == i && currentWord[j]) tile.letter = currentWord[j]
             tileComponents.push(<TileComponent key={`${i}-${j}`} tile={tile} />)
           }
           rowComponents.push(<div key={i} className='words-row'>{tileComponents}</div>)
