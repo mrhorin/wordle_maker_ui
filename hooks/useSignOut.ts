@@ -34,8 +34,8 @@ export const useSignOut = () => {
   }
 
   const destroyCookies = () => {
-    ClientSideCookies.destroyTokenCookies()
-    ClientSideCookies.destroyUserInfoCookies()
+    ClientSideCookies.destroyToken()
+    ClientSideCookies.destroyUserInfo()
   }
 
   const signOut = (callback?: () => void): void => {

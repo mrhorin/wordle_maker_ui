@@ -45,7 +45,7 @@ export class ClientSideCookies{
     setCookie(null, 'image', userInfo.image, this.cookieOptions)
   }
 
-  static destroyUserInfoCookies(): void{
+  static destroyUserInfo(): void{
     destroyCookie(null, 'provider', this.cookieOptions)
     destroyCookie(null, 'name', this.cookieOptions)
     destroyCookie(null, 'nickname', this.cookieOptions)
@@ -78,7 +78,7 @@ export class ClientSideCookies{
     setCookie(null, 'expiry', token.expiry, this.cookieOptions)
   }
 
-  static destroyTokenCookies(): void{
+  static destroyToken(): void{
     destroyCookie(null, 'accessToken', this.cookieOptions)
     destroyCookie(null, 'client', this.cookieOptions)
     destroyCookie(null, 'expiry', this.cookieOptions)

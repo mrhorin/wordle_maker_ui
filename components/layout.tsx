@@ -52,8 +52,8 @@ const Layout: NextPage = ({ children }) => {
         setCurrentUserInfo(prevUserInfo)
       } else {
         // Delete stored token and user info
-        ClientSideCookies.destroyTokenCookies()
-        ClientSideCookies.destroyUserInfoCookies()
+        ClientSideCookies.destroyToken()
+        ClientSideCookies.destroyUserInfo()
         setCurrentToken(null)
         setCurrentUserInfo(null)
       }
