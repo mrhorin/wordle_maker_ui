@@ -56,9 +56,9 @@ export type Tab = {
   hash: string,
 }
 
+export type TileStatus = 'EMPTY' |'CORRECT' | 'PRESENT' | 'ABSENT'
+
 export type Tile = {
   letter: string,
-  isCorrect: boolean,
-  isPresent: boolean,
-  isAbsent: boolean,
+  status: TileStatus
 }

@@ -78,28 +78,30 @@ const Games = (props: Props) => {
 
   function getTiles(word: string[]): Tile[] {
     // Set letters
-    const tiles = word.map((letter, i) => {
-      return { letter: letter.toUpperCase(), isCorrect: false, isPresent: false, isAbsent: false }
+    const tiles: Tile[] = word.map((letter, i) => {
+      return { letter: letter.toUpperCase(), status: 'EMPTY' } as Tile
     })
-    // Set state
+    // Set status
     for (let i = 0; i < tiles.length; i++){
       if (WORD_TODAY.indexOf(tiles[i].letter) >= 0) {
+        // When the letter exists in WORD_TODAY
         if (WORD_TODAY.indexOf(tiles[i].letter) == i) {
-          tiles[i].isCorrect = true
+          tiles[i].status = 'CORRECT'
         } else {
-          // Searching for matching tiles except tiles already checked as correct or absent
+          // Searching for matching tiles in EMPTY or PRESENT
           for (let j = 0; j < tiles.length; j++){
-            if (!tiles[j].isCorrect && !tiles[j].isAbsent) {
+            if (tiles[j].status == 'EMPTY' || tiles[j].status == 'PRESENT') {
               if (WORD_TODAY[j] == tiles[j].letter) {
-                tiles[j].isCorrect = true
+                tiles[j].status = 'CORRECT'
               } else {
-                tiles[j].isPresent = true
+                tiles[j].status = 'PRESENT'
               }
             }
           }
         }
       } else {
-        tiles[i].isAbsent = true
+        // When the letter doesn't exist in WORD_TODAY
+        tiles[i].status = 'ABSENT'
       }
     }
     return tiles
@@ -140,7 +142,9 @@ const Games = (props: Props) => {
   }
 
   function handleInputKey(key: string): void{
-    if (key == 'Enter' && gameStatus == GameStatus.Ready) {
+    if (gameStatus != GameStatus.Ready) {
+      return
+    } else if (key == 'Enter') {
       // Press Enter
       setCurrentWord(prevCurrentWord => {
         if (prevCurrentWord.length == props.game.char_count) {
@@ -164,12 +168,12 @@ const Games = (props: Props) => {
           return prevCurrentWord
         }
       })
-    } else if (key == 'Backspace' && gameStatus == GameStatus.Ready) {
+    } else if (key == 'Backspace') {
       // Press Backspace
       setCurrentWord(prevCurrentWord => {
         return prevCurrentWord.slice(0, prevCurrentWord.length - 1)
       })
-    } else if (language.regexp?.test(key) && key.length == 1 && currentWord.length < props.game.char_count && gameStatus == GameStatus.Ready) {
+    } else if (language.regexp?.test(key) && key.length == 1) {
       // Press valid key
       setCurrentWord(prevCurrentWord => {
         if (prevCurrentWord.length < props.game.char_count) {
@@ -190,10 +194,10 @@ const Games = (props: Props) => {
           // Set tiles
           const tileComponents: JSX.Element[] = []
           for (let j = 0; j < props.game.char_count; j++){
-            let tile: Tile = { letter: '', isCorrect: false, isPresent: false, isAbsent: false }
+            let tile: Tile = { letter: '', status: 'EMPTY' }
             // When the row already exists
             if (tilesTable[i] && tilesTable[i][j]) tile = tilesTable[i][j]
-            // When the row is located bellow the last low
+            // When the row is located below the last row
             if (tilesTable.length == i && currentWord[j]) tile.letter = currentWord[j]
             tileComponents.push(<TileComponent key={`${i}-${j}`} tile={tile} index={j} />)
           }
