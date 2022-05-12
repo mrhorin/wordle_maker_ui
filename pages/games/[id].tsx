@@ -2,7 +2,6 @@ import type { Game, Word, Tile } from 'types/global'
 import Head from 'next/head'
 import { GetServerSideProps } from 'next'
 import { useState, useEffect } from 'react'
-import { useKeyDown } from 'hooks/useKeyDown'
 
 import TileComponent from 'components/game/tile'
 import Language from 'scripts/language'
@@ -16,6 +15,7 @@ type Props = {
 const GameStatus = {
   Initializing: 'INITIALIZING',
   Ready: 'READY',
+  Cecking: 'CHECKING',
   Finished: 'FINISHED',
 } as const
 
@@ -53,6 +53,7 @@ const Games = (props: Props) => {
    *  This value indicates the status of the game.
    *  INITIALIZING: It doesn't allow an user to input any keys.
    *  READY: It allows an user to input keys.
+   *  CHECKING: It doesn't allow an user to input any keys.
    *  FINISHED: It showed a result modal window and doesn't allow an user to input any keys. */
   const [gameStatus, setGameStatus] = useState<GameStatus>(GameStatus.Initializing)
   const [tilesTable, setTilesTable] = useState<Tile[][]>([])
@@ -71,10 +72,12 @@ const Games = (props: Props) => {
     } else {
       destroyWordsState()
     }
-    ready()
+    setGameStatus(GameStatus.Ready)
   }, [])
 
-  useKeyDown(event => handleInputKey(event.key), [gameStatus])
+  useEffect(() => {
+    window.onkeydown = event => handleOnKeyDown(event.key)
+  }, [gameStatus])
 
   function getTiles(word: string[]): Tile[] {
     // Set letters
@@ -107,27 +110,6 @@ const Games = (props: Props) => {
     return tiles
   }
 
-  // Extract word list from tiles table
-  function extractWordsFromTable(table: Tile[][]): string[]{
-    const words: string[] = []
-    for (let row of table) {
-      let word = ''
-      for (let tile of row) {
-        word += tile.letter
-      }
-      words.push(word)
-    }
-    return words
-  }
-
-  function ready(): void{
-    setGameStatus(GameStatus.Ready)
-  }
-
-  function finish(): void{
-    setGameStatus(GameStatus.Finished)
-  }
-
   function saveWordsState(wordsState: WordsState): void{
     window.localStorage.setItem(LocalStorageKey.WordsState, JSON.stringify(wordsState))
   }
@@ -141,33 +123,13 @@ const Games = (props: Props) => {
     window.localStorage.removeItem(LocalStorageKey.WordsState)
   }
 
-  function handleInputKey(key: string): void{
-    if (gameStatus != GameStatus.Ready) {
-      return
-    } else if (key == 'Enter') {
+  function handleOnKeyDown(key: string): void{
+    if (gameStatus != GameStatus.Ready) return
+    if (key == 'Enter') {
       // Press Enter
-      setCurrentWord(prevCurrentWord => {
-        if (prevCurrentWord.length == props.game.char_count) {
-          setTilesTable(prevTilesTable => {
-            if (props.game.challenge_count > prevTilesTable.length) {
-              // When blank rows exist
-              const nextTilesTable: Tile[][] = [...prevTilesTable, getTiles(prevCurrentWord)]
-              saveWordsState({
-                words: extractWordsFromTable(nextTilesTable),
-                savedOn: Date.parse(new Date().toDateString())
-              })
-              return nextTilesTable
-            } else {
-              // When blank row doesn't exist
-              return prevTilesTable
-            }
-          })
-          if (prevCurrentWord.join('') == WORD_TODAY.join('')) finish()
-          return []
-        } else {
-          return prevCurrentWord
-        }
-      })
+      setGameStatus(GameStatus.Cecking)
+      checkAnswerPromise()
+        .then((nextGameStatus) => setGameStatus(nextGameStatus))
     } else if (key == 'Backspace') {
       // Press Backspace
       setCurrentWord(prevCurrentWord => {
@@ -183,6 +145,44 @@ const Games = (props: Props) => {
         }
       })
     }
+  }
+
+  async function checkAnswerPromise() {
+    return new Promise<GameStatus>((resolve) => {
+      let nextGameStatus: GameStatus = GameStatus.Ready
+      setCurrentWord(prevCurrentWord => {
+        if (prevCurrentWord.length == props.game.char_count) {
+          setTilesTable(prevTilesTable => {
+            if (props.game.challenge_count > prevTilesTable.length) {
+              // When blank rows exist
+              const nextTilesTable: Tile[][] = [...prevTilesTable, getTiles(prevCurrentWord)]
+              const nextWords: string[] = []
+              for (let row of nextTilesTable) {
+                let word = ''
+                for (let tile of row) {
+                  word += tile.letter
+                }
+                nextWords.push(word)
+              }
+              saveWordsState({
+                words: nextWords,
+                savedOn: Date.parse(new Date().toDateString())
+              })
+              if (nextTilesTable.length >= props.game.challenge_count) nextGameStatus = GameStatus.Finished
+              return nextTilesTable
+            } else {
+              // When blank row doesn't exist
+              return prevTilesTable
+            }
+          })
+          if (prevCurrentWord.join('') == WORD_TODAY.join('')) nextGameStatus = GameStatus.Finished
+          return []
+        } else {
+          return prevCurrentWord
+        }
+      })
+      resolve(nextGameStatus)
+    })
   }
 
   const wordsComponent = (
