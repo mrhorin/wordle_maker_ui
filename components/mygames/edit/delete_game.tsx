@@ -86,10 +86,8 @@ const DeleteGame = ({ game }: Props) => {
               <li>We can't recover it.</li>
               <li>If you send an inquiry to us about it, we can't reply to you.</li>
             </ol>
-            <div>
             <input type="checkbox" id="confirmation" checked={checkedConfirmation} onChange={handleConfirmation} />
             <span style={{ fontWeight: '500' }}>I agree.</span>
-          </div>
           </div>
           <div className='modal-window-footer'>
             <button className='btn btn-danger' disabled={!checkedConfirmation} onClick={handleClickDelete}>Delete</button>

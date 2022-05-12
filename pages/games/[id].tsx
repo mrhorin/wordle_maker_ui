@@ -4,6 +4,8 @@ import { GetServerSideProps } from 'next'
 import { useState, useEffect } from 'react'
 
 import TileComponent from 'components/game/tile'
+import Modal from 'components/modal'
+
 import Language from 'scripts/language'
 
 type Props = {
@@ -58,6 +60,7 @@ const Games = (props: Props) => {
   const [gameStatus, setGameStatus] = useState<GameStatus>(GameStatus.Initializing)
   const [tilesTable, setTilesTable] = useState<Tile[][]>([])
   const [currentWord, setCurrentWord] = useState<string[]>([])
+  const [showResultModal, setShowResultModal] = useState<boolean>(false)
   const WORD_TODAY: string[] = props.wordToday.name.toUpperCase().split('')
   const language = new Language(props.game.lang)
 
@@ -85,6 +88,7 @@ const Games = (props: Props) => {
 
   useEffect(() => {
     window.onkeydown = event => handleOnKeyDown(event.key)
+    if(gameStatus == GameStatus.Finished) setShowResultModal(true)
   }, [gameStatus])
 
   function getTiles(word: string[]): Tile[] {
@@ -136,7 +140,7 @@ const Games = (props: Props) => {
     if (key == 'Enter') {
       // Press Enter
       setGameStatus(GameStatus.Cecking)
-      checkAnswerPromise()
+      checkAnswer()
         .then((nextGameStatus) => setGameStatus(nextGameStatus))
     } else if (key == 'Backspace') {
       // Press Backspace
@@ -155,7 +159,7 @@ const Games = (props: Props) => {
     }
   }
 
-  async function checkAnswerPromise() {
+  function checkAnswer(): Promise<GameStatus> {
     return new Promise<GameStatus>((resolve) => {
       let nextGameStatus: GameStatus = GameStatus.Ready
       setCurrentWord(prevCurrentWord => {
@@ -224,10 +228,20 @@ const Games = (props: Props) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className='container'>
-        <div className='games'>
-          {wordsComponent}
+      {/* Modal */}
+      <Modal showModal={showResultModal} setShowModal={setShowResultModal}>
+        <div className='modal-window-container'>
+          <div className='modal-window-header'>Result</div>
+          <div className='modal-window-body'>
+            Next Game: 00:00:00
+          </div>
+          <div className='modal-window-footer'>
+            <button className='btn btn-default' onClick={() => setShowResultModal(false)}>Close</button>
+          </div>
         </div>
+      </Modal>
+      <div className='container'>
+        <div className='games'>{wordsComponent}</div>
         <h1 className='title'>{props.game?.title} / {props.wordToday.name}</h1>
       </div>
     </main>
