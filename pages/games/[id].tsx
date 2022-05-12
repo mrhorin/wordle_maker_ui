@@ -64,15 +64,23 @@ const Games = (props: Props) => {
   useEffect(() => {
     const prevWordsState: WordsState | null = loadWordsState()
     if (prevWordsState && prevWordsState.savedOn >= Date.parse(new Date().toDateString())) {
+      // Load tilesTable from localStorage
       setTilesTable(() => {
         return prevWordsState.words.map(word => {
           return getTiles(word.split(''))
         })
       })
+      // Load GamesStatus from localStorage
+      if ((prevWordsState.words.indexOf(WORD_TODAY.join('')) >= 0) ||
+        (prevWordsState.words.length >= props.game.challenge_count)) {
+        setGameStatus(GameStatus.Finished)
+      } else {
+        setGameStatus(GameStatus.Ready)
+      }
     } else {
       destroyWordsState()
+      setGameStatus(GameStatus.Ready)
     }
-    setGameStatus(GameStatus.Ready)
   }, [])
 
   useEffect(() => {
