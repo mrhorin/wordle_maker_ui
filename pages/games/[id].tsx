@@ -13,6 +13,18 @@ type Props = {
   wordToday: Word,
 }
 
+const GameStatus = {
+  Initializing: 'INITIALIZING',
+  Ready: 'READY',
+  Finished: 'FINISHED',
+} as const
+
+type GameStatus = typeof GameStatus[keyof typeof GameStatus]
+
+const LocalStorageKey = {
+  WordsState: 'wordsState'
+}
+
 // For localStrage data
 type WordsState = {
   words: string[],
@@ -42,7 +54,7 @@ const Games = (props: Props) => {
    *  INITIALIZING: It doesn't allow an user to input any keys.
    *  READY: It allows an user to input keys.
    *  FINISHED: It showed a result modal window and doesn't allow an user to input any keys. */
-  const [gameStatus, setGameStatus] = useState<string>('INITIALIZING')
+  const [gameStatus, setGameStatus] = useState<GameStatus>(GameStatus.Initializing)
   const [tilesTable, setTilesTable] = useState<Tile[][]>([])
   const [currentWord, setCurrentWord] = useState<string[]>([])
   const WORD_TODAY: string[] = props.wordToday.name.toUpperCase().split('')
@@ -107,28 +119,28 @@ const Games = (props: Props) => {
   }
 
   function ready(): void{
-    setGameStatus('READY')
+    setGameStatus(GameStatus.Ready)
   }
 
   function finish(): void{
-    setGameStatus('FINISHED')
+    setGameStatus(GameStatus.Finished)
   }
 
   function saveWordsState(wordsState: WordsState): void{
-    window.localStorage.setItem('wordsState', JSON.stringify(wordsState))
+    window.localStorage.setItem(LocalStorageKey.WordsState, JSON.stringify(wordsState))
   }
 
   function loadWordsState(): WordsState | null{
-    const json = window.localStorage.getItem('wordsState')
+    const json = window.localStorage.getItem(LocalStorageKey.WordsState)
     return json ? JSON.parse(json) : null
   }
 
   function destroyWordsState(): void{
-    window.localStorage.removeItem('wordsState')
+    window.localStorage.removeItem(LocalStorageKey.WordsState)
   }
 
   function handleInputKey(key: string): void{
-    if (key == 'Enter' && gameStatus == 'READY') {
+    if (key == 'Enter' && gameStatus == GameStatus.Ready) {
       // Press Enter
       setCurrentWord(prevCurrentWord => {
         if (prevCurrentWord.length == props.game.char_count) {
@@ -152,12 +164,12 @@ const Games = (props: Props) => {
           return prevCurrentWord
         }
       })
-    } else if (key == 'Backspace' && gameStatus == 'READY') {
+    } else if (key == 'Backspace' && gameStatus == GameStatus.Ready) {
       // Press Backspace
       setCurrentWord(prevCurrentWord => {
         return prevCurrentWord.slice(0, prevCurrentWord.length - 1)
       })
-    } else if (language.regexp?.test(key) && key.length == 1 && currentWord.length < props.game.char_count && gameStatus == 'READY') {
+    } else if (language.regexp?.test(key) && key.length == 1 && currentWord.length < props.game.char_count && gameStatus == GameStatus.Ready) {
       // Press valid key
       setCurrentWord(prevCurrentWord => {
         if (prevCurrentWord.length < props.game.char_count) {
