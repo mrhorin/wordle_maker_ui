@@ -77,7 +77,6 @@ const MygamesEdit = (props: MygamesEditProps) => {
    * game:
    *  This state will be changed after updating the game by fetching API. */
   const [game, setGame] = useState<Game>(props.game)
-
   /* currentHash:
    *  This value indicates which tab is active.
    *  It depends on tabs variable, a list of tab names,
