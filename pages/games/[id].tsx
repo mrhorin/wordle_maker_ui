@@ -4,6 +4,7 @@ import { GetServerSideProps } from 'next'
 import { useState, useEffect } from 'react'
 
 import TileComponent from 'components/game/tile'
+import Keyboard from 'components/keyboard/en/qwerty'
 import Modal from 'components/modal'
 
 import Language from 'scripts/language'
@@ -241,8 +242,12 @@ const Games = (props: Props) => {
         </div>
       </Modal>
       <div className='container'>
-        <div className='games'>{wordsComponent}</div>
-        <h1 className='title'>{props.game?.title} / {props.wordToday.name}</h1>
+        <div className='games'>
+          {wordsComponent}
+          <div className='keyboard'>
+            <Keyboard handleOnClick={handleOnKeyDown} />
+          </div>
+        </div>
       </div>
     </main>
   )

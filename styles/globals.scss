@@ -25,7 +25,7 @@ $info-color: #5d9ff3;
 
 $correct-color: #307fe5;
 $present-color: #cf9e2a;
-$absent-color: lighten($base-color1, 13%);
+$absent-color: lighten($base-color1, 12%);
 
 $sp-break-point: 599px;
 $tablet-break-point: 1024px;
@@ -453,6 +453,84 @@ table{
       background-color: $font-color1;
       color: $secondary-color;
     }
+  }
+}
+
+/* ------- Keyboard ------- */
+.keyboard-en-qwerty{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .row{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    width: 100%;
+    max-width: $sp-break-point;
+    .keyboard-key{
+      display: block;
+      margin: 0.5%;
+      color: $font-color1;
+      font-weight: bold;
+      text-align: center;
+      background: lighten($base-color1, 30%);
+      border-radius: 3px;
+      word-break: keep-all;
+      user-select: none;
+      cursor: pointer;
+      font-family: "Clear Sans", "Meiryo", "Helvetica Neue", Arial, sans-serif;
+      &:hover{
+        background: lighten($base-color1, 40%);
+      }
+    }
+    .keyboard-key-correct{
+      background: $correct-color;
+    }
+    .keyboard-key-present{
+      background: $present-color;
+    }
+    .keyboard-key-absent{
+      background: $absent-color;
+    }
+    .keyboard-key-character{
+      @extend .keyboard-key;
+      width: 8.5%;
+      min-width: 8.5%;
+      max-width: 8.5%;
+      line-height: 3rem;
+      padding: 0 0.5rem;
+    }
+    .keyboard-key-modifier{
+      @extend .keyboard-key;
+      background: $absent-color;
+      width: auto;
+      min-width: 8.5%;
+      max-width: none;
+      line-height: 3rem;
+      padding: 0 0.5rem;
+      &:hover{
+        background: lighten($base-color1, 20%);
+      }
+    }
+  }
+  .row-top{
+    order: 1;
+    justify-content: start;
+    padding-left: 0%;
+    padding-right: 0%;
+  }
+  .row-middle{
+    order: 2;
+    justify-content: end;
+    padding-left: 0%;
+    padding-right: 0%;
+  }
+  .row-bottom{
+    order: 3;
+    justify-content: center;
+    padding-left: 0%;
+    padding-right: 0%;
   }
 }
 

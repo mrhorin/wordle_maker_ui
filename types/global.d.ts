@@ -62,3 +62,5 @@ export type Tile = {
   letter: string,
   status: TileStatus
 }
+
+export type KeyType = 'CHARACTER' | 'MODIFIER'
