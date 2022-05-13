@@ -94,8 +94,7 @@ const Layout: NextPage = ({ children }) => {
         <ShowAccountMenuContext.Provider value={{ showAccountMenu, setShowAccountMenu }}>
           <div className='wrap' onClick={hideAccountMenu}>
             <Header />
-              {children}
-            <Footer />
+            {children}
           </div>
         </ShowAccountMenuContext.Provider>
       </CurrentUserInfoContext.Provider>

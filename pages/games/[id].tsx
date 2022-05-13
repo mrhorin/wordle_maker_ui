@@ -241,12 +241,10 @@ const Games = (props: Props) => {
           </div>
         </div>
       </Modal>
-      <div className='container'>
-        <div className='games'>
-          {wordsComponent}
-          <div className='keyboard'>
-            <Keyboard handleOnClick={handleOnKeyDown} />
-          </div>
+      <div className='games'>
+        {wordsComponent}
+        <div className='keyboard'>
+          <Keyboard handleOnClick={handleOnKeyDown} />
         </div>
       </div>
     </main>
