@@ -17,12 +17,12 @@ const Qwerty = ({ handleOnClick }: Props) => {
     return <Key key={letter} letter={letter} type={'CHARACTER'} status={'EMPTY'} handleOnClick={handleOnClick} />
   })
   row2KeyComponents.push(
-    <Key key={'Backspace'} letter={'Backspace'} type={'MODIFIER'} status={'EMPTY'} handleOnClick={handleOnClick}>
+    <Key key={'Backspace'} letter={'Backspace'} type={'MODIFIER'} status={'ABSENT'} handleOnClick={handleOnClick}>
       <FontAwesomeIcon icon={faBackspace}/>
     </Key>
   )
   row3KeyComponents.push(
-    <Key key={'Enter'} letter={'Enter'} type={'MODIFIER'} status={'EMPTY'} handleOnClick={handleOnClick} />
+    <Key key={'Enter'} letter={'Enter'} type={'MODIFIER'} status={'ABSENT'} handleOnClick={handleOnClick} />
   )
   return (
     <div className='keyboard-en-qwerty'>

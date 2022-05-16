@@ -24,10 +24,6 @@ const GameStatus = {
 
 type GameStatus = typeof GameStatus[keyof typeof GameStatus]
 
-const LocalStorageKey = {
-  WordsState: 'wordsState'
-}
-
 // For localStrage data
 type WordsState = {
   words: string[],
@@ -63,6 +59,7 @@ const Games = (props: Props) => {
   const [currentWord, setCurrentWord] = useState<string[]>([])
   const [showResultModal, setShowResultModal] = useState<boolean>(false)
   const WORD_TODAY: string[] = props.wordToday.name.toUpperCase().split('')
+  const LOCAL_STORAGE_KEY = 'wordsState'
   const language = new Language(props.game.lang)
 
   useEffect(() => {
@@ -91,6 +88,15 @@ const Games = (props: Props) => {
     window.onkeydown = event => handleOnKeyDown(event.key)
     if(gameStatus == GameStatus.Finished) setShowResultModal(true)
   }, [gameStatus])
+
+  useEffect(() => {
+    if (tilesTable.length > 0) {
+      const lastWord: string[] = tilesTable[tilesTable.length - 1].map((tile) => {
+        return tile.letter
+      })
+      if (lastWord.join('') == WORD_TODAY.join('')) setGameStatus(GameStatus.Finished)
+    }
+  }, [tilesTable])
 
   function getTiles(word: string[]): Tile[] {
     // Set letters
@@ -124,16 +130,16 @@ const Games = (props: Props) => {
   }
 
   function saveWordsState(wordsState: WordsState): void{
-    window.localStorage.setItem(LocalStorageKey.WordsState, JSON.stringify(wordsState))
+    window.localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(wordsState))
   }
 
   function loadWordsState(): WordsState | null{
-    const json = window.localStorage.getItem(LocalStorageKey.WordsState)
+    const json = window.localStorage.getItem(LOCAL_STORAGE_KEY)
     return json ? JSON.parse(json) : null
   }
 
   function destroyWordsState(): void{
-    window.localStorage.removeItem(LocalStorageKey.WordsState)
+    window.localStorage.removeItem(LOCAL_STORAGE_KEY)
   }
 
   function handleOnKeyDown(key: string): void{
@@ -162,7 +168,6 @@ const Games = (props: Props) => {
 
   function checkAnswer(): Promise<GameStatus> {
     return new Promise<GameStatus>((resolve) => {
-      let nextGameStatus: GameStatus = GameStatus.Ready
       setCurrentWord(prevCurrentWord => {
         if (prevCurrentWord.length == props.game.char_count) {
           setTilesTable(prevTilesTable => {
@@ -181,45 +186,35 @@ const Games = (props: Props) => {
                 words: nextWords,
                 savedOn: Date.parse(new Date().toDateString())
               })
-              if (nextTilesTable.length >= props.game.challenge_count) nextGameStatus = GameStatus.Finished
               return nextTilesTable
             } else {
               // When blank row doesn't exist
               return prevTilesTable
             }
           })
-          if (prevCurrentWord.join('') == WORD_TODAY.join('')) nextGameStatus = GameStatus.Finished
           return []
         } else {
           return prevCurrentWord
         }
       })
-      resolve(nextGameStatus)
+      resolve(GameStatus.Ready)
     })
   }
 
-  const wordsComponent = (
-    <div className='words'>
-      {(() => {
-        // Set rows
-        const rowComponents: JSX.Element[] = []
-        for (let i = 0; i < props.game.challenge_count; i++){
-          // Set tiles
-          const tileComponents: JSX.Element[] = []
-          for (let j = 0; j < props.game.char_count; j++){
-            let tile: Tile = { letter: '', status: 'EMPTY' }
-            // When the row already exists
-            if (tilesTable[i] && tilesTable[i][j]) tile = tilesTable[i][j]
-            // When the row is located below the last row
-            if (tilesTable.length == i && currentWord[j]) tile.letter = currentWord[j]
-            tileComponents.push(<TileComponent key={`${i}-${j}`} tile={tile} index={j} />)
-          }
-          rowComponents.push(<div key={i} className='words-row'>{tileComponents}</div>)
-        }
-        return rowComponents
-      })()}
-    </div>
-  )
+  const wordsRowComponents: JSX.Element[] = []
+  for (let i = 0; i < props.game.challenge_count; i++){
+    // Set tiles
+    const row: JSX.Element[] = []
+    for (let j = 0; j < props.game.char_count; j++){
+      let tile: Tile = { letter: '', status: 'EMPTY' }
+      // When the row already exists
+      if (tilesTable[i] && tilesTable[i][j]) tile = tilesTable[i][j]
+      // When the row is located below the last row
+      if (tilesTable.length == i && currentWord[j]) tile.letter = currentWord[j]
+      row.push(<TileComponent key={`${i}-${j}`} tile={tile} index={j} />)
+    }
+    wordsRowComponents.push(<div key={i} className='words-row'>{row}</div>)
+  }
 
   return (
     <main id='main'>
@@ -242,10 +237,8 @@ const Games = (props: Props) => {
         </div>
       </Modal>
       <div className='games'>
-        {wordsComponent}
-        <div className='keyboard'>
-          <Keyboard handleOnClick={handleOnKeyDown} />
-        </div>
+        <div className='words'>{wordsRowComponents}</div>
+        <div className='keyboard'><Keyboard handleOnClick={handleOnKeyDown} /></div>
       </div>
     </main>
   )

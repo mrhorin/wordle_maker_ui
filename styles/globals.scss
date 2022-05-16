@@ -731,7 +731,7 @@ table{
   justify-content:space-between;
   .words{
     order: 1;
-    margin: 2rem;
+    margin: 2.5rem;
   }
   .keyboard{
     order: 2;
@@ -764,7 +764,7 @@ table{
       display: inline-flex;
       justify-content: center;
       align-items: center;
-      font-size: 30px;
+      font-size: 25px;
       font-weight: bold;
       font-family: 'Hiragino Kaku Gothic Std W8', 'Clear Sans', 'Meiryo', 'Helvetica Neue', Arial, sans-serif;
       text-transform: uppercase;
@@ -780,6 +780,9 @@ table{
         content: "";
         padding-top: 100%;
         display: block;
+      }
+      @media screen and (max-width: 400px){
+        font-size: 20px;
       }
     }
     @keyframes transform-tile{
@@ -803,15 +806,6 @@ table{
     .words-row-tile-absent{
       background: $absent-color;
       border: 1px solid $absent-color;
-    }
-  }
-}
-@media screen and (max-width: 400px){
-  .words{
-    .words-row{
-      .words-row-tile{
-        font-size: 20px;
-      }
     }
   }
 }
