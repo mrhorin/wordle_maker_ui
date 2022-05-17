@@ -59,7 +59,7 @@ const Games = (props: Props) => {
   const [currentWord, setCurrentWord] = useState<string[]>([])
   const [showResultModal, setShowResultModal] = useState<boolean>(false)
   const WORD_TODAY: string[] = props.wordToday.name.toUpperCase().split('')
-  const LOCAL_STORAGE_KEY = 'wordsState'
+  const LOCAL_STORAGE_KEY = `wordsState.${props.game.id}`
   const language = new Language(props.game.lang)
 
   useEffect(() => {
