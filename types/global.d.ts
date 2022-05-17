@@ -39,11 +39,6 @@ export type Word = {
   game_id?: number,
 }
 
-export type Word = {
-  value: string,
-  isValid: boolean,
-}
-
 export type Pagination = {
   total_count: number,
   limit_value: number,
