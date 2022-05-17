@@ -290,10 +290,6 @@ table{
       th.table-th-word{
         width: 100%;
       }
-      th.table-th-date-created{
-      }
-      th.table-th-btns{
-      }
     }
   }
   tbody{
@@ -544,15 +540,6 @@ table{
       @extend .header-account-menu-hide;
       display: flex;
     }
-  }
-}
-
-/* ----------- Main ----------- */
-#main{
-}
-
-@media screen and (max-width: $sp-break-point){
-  #main{
   }
 }
 
@@ -987,8 +974,6 @@ table{
       background: rgba(0,0,0,0);
       border: none;
       overflow: hidden;
-    }
-    input[type="text"].chip-textarea-chip-value{
     }
     input[type="text"].chip-textarea-chip-value:focus{
       outline: none;

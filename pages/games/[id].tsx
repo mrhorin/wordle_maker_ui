@@ -86,7 +86,11 @@ const Games = (props: Props) => {
 
   useEffect(() => {
     window.onkeydown = event => handleOnKeyDown(event.key)
-    if(gameStatus == GameStatus.Finished) setShowResultModal(true)
+    /*
+     * Show a result modal window when GameStatus is finished.
+     * The second parameter in setTimeout depends on animation property
+     * with @keyframes transform-tile in the css file. */
+    if (gameStatus == GameStatus.Finished) setTimeout(() => { setShowResultModal(true) }, 1200)
   }, [gameStatus])
 
   useEffect(() => {
