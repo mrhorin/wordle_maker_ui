@@ -4,8 +4,9 @@ import { GetServerSideProps } from 'next'
 import { useState, useEffect } from 'react'
 
 import TileComponent from 'components/game/tile'
-import Keyboard from 'components/keyboard/en/qwerty'
 import Modal from 'components/modal'
+import EnKeyboard from 'components/keyboard/en/qwerty'
+import JaKeyboard from 'components/keyboard/ja/gozyuon'
 
 import Language from 'scripts/language'
 
@@ -220,6 +221,8 @@ const Games = (props: Props) => {
     wordsRowComponents.push(<div key={i} className='words-row'>{row}</div>)
   }
 
+  const keyboardComponent: JSX.Element = props.game.lang == 'en' ? <EnKeyboard handleOnClick={handleOnKeyDown} /> : <JaKeyboard handleOnClick={handleOnKeyDown} />
+
   return (
     <main id='main'>
       <Head>
@@ -242,7 +245,7 @@ const Games = (props: Props) => {
       </Modal>
       <div className='games'>
         <div className='words'>{wordsRowComponents}</div>
-        <div className='keyboard'><Keyboard handleOnClick={handleOnKeyDown} /></div>
+        <div className='keyboard'>{keyboardComponent}</div>
       </div>
     </main>
   )

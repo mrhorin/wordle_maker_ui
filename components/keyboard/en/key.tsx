@@ -5,10 +5,11 @@ interface Props {
   type: KeyType
   status: TileStatus
   handleOnClick(key: string): void
+  style?: { [key: string]: string }
   children?: JSX.Element
 }
 
-const Key = ({ letter, type, status, handleOnClick, children }: Props) => {
+const Key = ({ letter, type, status, handleOnClick, style, children }: Props) => {
   let classes = type == 'CHARACTER' ? 'keyboard-key-character' : 'keyboard-key-modifier'
   if (status == 'CORRECT' && type != 'MODIFIER') classes += ' keyboard-key-correct'
   if (status == 'PRESENT' && type != 'MODIFIER') classes += ' keyboard-key-present'
@@ -16,7 +17,7 @@ const Key = ({ letter, type, status, handleOnClick, children }: Props) => {
   const print: string | JSX.Element = children ? children : letter
 
   return (
-    <div className={classes} onClick={() => handleOnClick(letter)}>
+    <div className={classes} style={style} onClick={() => handleOnClick(letter)}>
       {print}
     </div>
   )
