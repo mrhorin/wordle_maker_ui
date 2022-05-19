@@ -745,17 +745,16 @@ table{
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     align-content: center;
     width: 100%;
-    max-width: 320px;
     margin: 0 auto;
     .words-row-tile{
+      width: 100%;
       display: inline-flex;
       justify-content: center;
       align-items: center;
-      font-size: 25px;
       font-weight: bold;
       font-family: 'Hiragino Kaku Gothic Std W8', 'Clear Sans', 'Meiryo', 'Helvetica Neue', Arial, sans-serif;
       text-transform: uppercase;
@@ -772,11 +771,26 @@ table{
         padding-top: 100%;
         display: block;
       }
-
     }
-    @media screen and (max-width: 400px){
-      .words-row-tile{
-        font-size: 20px;
+    // When 5 Tiles or less
+    .words-row-tile:first-child:nth-last-child(-n+5),
+    .words-row-tile:first-child:nth-last-child(-n+5) ~ .words-row-tile{
+      max-width: 60px;
+      font-size: 25px;
+    }
+    // When 6 Tiles or more
+    .words-row-tile:first-child:nth-last-child(n+6),
+    .words-row-tile:first-child:nth-last-child(n+6) ~ .words-row-tile{
+      max-width: 55px;
+      font-size: 20px;
+    }
+    // When 9 Tiles or more
+    .words-row-tile:first-child:nth-last-child(n+9),
+    .words-row-tile:first-child:nth-last-child(n+9) ~ .words-row-tile{
+      max-width: 50px;
+      font-size: 20px;
+      @media screen and (max-width: $sp-break-point){
+        font-size: 15px;
       }
     }
     @keyframes transform-tile{
