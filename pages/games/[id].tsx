@@ -80,7 +80,7 @@ const Games = (props: Props) => {
         setGameStatus(GameStatus.Ready)
       }
     } else {
-      destroyWordsState()
+      destroyALLWordsState()
       setGameStatus(GameStatus.Ready)
     }
   }, [])
@@ -145,6 +145,14 @@ const Games = (props: Props) => {
 
   function destroyWordsState(): void{
     window.localStorage.removeItem(LOCAL_STORAGE_KEY)
+  }
+
+  function destroyALLWordsState(): void{
+    for (let key in window.localStorage) {
+      if (/^wordsState\.\d+$/.test(key)) {
+        window.localStorage.removeItem(key)
+      }
+    }
   }
 
   function handleOnKeyDown(key: string): void{

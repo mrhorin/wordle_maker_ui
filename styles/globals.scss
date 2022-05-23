@@ -820,6 +820,7 @@ table{
 
 /* ---------- Key ---------- */
 .keyboard-key{
+  border-radius: 3px;
   display: block;
   color: $font-color1;
   font-weight: 500;
@@ -866,7 +867,6 @@ table{
     width: 100%;
     max-width: $sp-break-point;
     .keyboard-key{
-      border-radius: 3px;
       margin: 0.5%;
       font-family: "Clear Sans", "Meiryo", "Helvetica Neue", Arial, sans-serif;
     }
