@@ -716,24 +716,22 @@ table{
   display: flex;
   flex-direction: column;
   justify-content:space-between;
+  flex-grow: 1;
   .words{
     order: 1;
     width: 100%;
-    margin: 2.5rem auto;
+    margin: auto;
+    padding: 15px 0;
   }
   .keyboard{
     order: 2;
     padding: 0.5%;
     background: $base-color1;
+    position: sticky;
+    bottom: 0;
   }
   @media screen and (max-width: $sp-break-point){
-    flex-grow: 1;
-    .words{
-      margin: auto;
-    }
     .keyboard{
-      position: sticky;
-      bottom: 0;
       background: $base-color3;
     }
   }
