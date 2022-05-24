@@ -5,7 +5,7 @@ import { faBackspace } from '@fortawesome/free-solid-svg-icons'
 
 const KeyMode = {
   Normal: 'NORMAL',
-  DakuSmall: 'DAKU_SMALL',
+  SmallDaku: 'SMALL_DAKU',
 } as const
 
 type KeyMode = typeof KeyMode[keyof typeof KeyMode]
@@ -48,10 +48,14 @@ const Gozyuon = ({ handleOnClick }: Props) => {
     return <div key={`col-${index}`} className='col'>{keys}</div>
   })
 
+  const keyModeComponent: JSX.Element = keyMode == KeyMode.Normal ?
+    <Key key={'小字゛゜'} letter={'小字゛゜'} type={'MODIFIER'} status={'ABSENT'} handleOnClick={() => setKeyMode(KeyMode.SmallDaku)} style={{ fontSize: '0.8rem', width: '19%' }} /> :
+    <Key key={'通常'} letter={'通常'} type={'MODIFIER'} status={'ABSENT'} handleOnClick={() => setKeyMode(KeyMode.Normal)} style={{fontSize: '0.8rem', width: '19%'}}/>
+
   return (
     <div className='keyboard-ja-gozyuon'>
       <div className='modifier-keys'>
-        <Key key={'小字゛゜'} letter={'小字゛゜'} type={'MODIFIER'} status={'ABSENT'} handleOnClick={() => console.log('小字゛゜')} style={{fontSize: '0.8rem', width: '19%'}}/>
+        {keyModeComponent}
         <Key key={'Backspace'} letter={'Backspace'} type={'MODIFIER'} status={'ABSENT'} handleOnClick={handleOnClick} style={{width: '9%'}}>
           <FontAwesomeIcon icon={faBackspace}/>
         </Key>
