@@ -1,4 +1,6 @@
+import type { Tile } from 'types/global'
 import { useState } from 'react'
+import { useGetKeyStatus } from 'hooks/useGetKeyStatus'
 import Key from 'components/keyboard/en/key'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBackspace } from '@fortawesome/free-solid-svg-icons'
@@ -11,11 +13,13 @@ const KeyMode = {
 type KeyMode = typeof KeyMode[keyof typeof KeyMode]
 
 interface Props{
+  tilesTable: Tile[][]
   handleOnClick(key: string): void
 }
 
-const Gozyuon = ({ handleOnClick }: Props) => {
+const Gozyuon = ({ tilesTable, handleOnClick }: Props) => {
   const [keyMode, setKeyMode] = useState<KeyMode>(KeyMode.Normal)
+  const getKeyStatus = useGetKeyStatus()
   const NORMAL_LETTERS_TABLE: string[][] = [
     ['ア', 'イ', 'ウ', 'エ', 'オ'],
     ['カ', 'キ', 'ク', 'ケ', 'コ'],
@@ -43,7 +47,8 @@ const Gozyuon = ({ handleOnClick }: Props) => {
   const lettersTable: string[][] = keyMode == KeyMode.Normal ? NORMAL_LETTERS_TABLE : DAKU_SMALL_LETTERS_TABLE
   const lettersColComponents: JSX.Element[] = lettersTable.map((letters, index) => {
     const keys: JSX.Element[] = letters.map((l) => {
-      return <Key key={l} letter={l} type={'CHARACTER'} status={'EMPTY'} handleOnClick = { handleOnClick } />
+      const status = getKeyStatus(l, tilesTable)
+      return <Key key={l} letter={l} type={'CHARACTER'} status={status} handleOnClick = { handleOnClick } />
     })
     return <div key={`col-${index}`} className='col'>{keys}</div>
   })

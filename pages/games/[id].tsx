@@ -69,7 +69,7 @@ const Games = (props: Props) => {
       // Load tilesTable from localStorage
       setTilesTable(() => {
         return prevWordsState.words.map(word => {
-          return getTiles(word.split(''))
+          return getTilesFromWord(word.split(''))
         })
       })
       // Load GamesStatus from localStorage
@@ -103,7 +103,7 @@ const Games = (props: Props) => {
     }
   }, [tilesTable])
 
-  function getTiles(word: string[]): Tile[] {
+  function getTilesFromWord(word: string[]): Tile[] {
     // Set letters
     const tiles: Tile[] = word.map((letter, i) => {
       return { letter: letter.toUpperCase(), status: 'EMPTY' } as Tile
@@ -179,6 +179,9 @@ const Games = (props: Props) => {
     }
   }
 
+  /*
+   * Check whether currentWord matches WORD_TODAY and
+   * save currentWord on localStorage with Promise. */
   function checkAnswer(): Promise<GameStatus> {
     return new Promise<GameStatus>((resolve) => {
       setCurrentWord(prevCurrentWord => {
@@ -186,7 +189,8 @@ const Games = (props: Props) => {
           setTilesTable(prevTilesTable => {
             if (props.game.challenge_count > prevTilesTable.length) {
               // When blank rows exist
-              const nextTilesTable: Tile[][] = [...prevTilesTable, getTiles(prevCurrentWord)]
+              const nextTilesTable: Tile[][] = [...prevTilesTable, getTilesFromWord(prevCurrentWord)]
+              // Save wordsState on localStorage
               const nextWords: string[] = []
               for (let row of nextTilesTable) {
                 let word = ''
@@ -229,7 +233,8 @@ const Games = (props: Props) => {
     wordsRowComponents.push(<div key={i} className='words-row'>{row}</div>)
   }
 
-  const keyboardComponent: JSX.Element = props.game.lang == 'en' ? <EnKeyboard handleOnClick={handleOnKeyDown} /> : <JaKeyboard handleOnClick={handleOnKeyDown} />
+  const keyboardComponent: JSX.Element = props.game.lang == 'en' ?
+    <EnKeyboard tilesTable={tilesTable} handleOnClick={handleOnKeyDown} /> : <JaKeyboard tilesTable={tilesTable} handleOnClick={handleOnKeyDown} />
 
   return (
     <main id='main'>

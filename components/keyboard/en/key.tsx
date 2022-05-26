@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import type { TileStatus, KeyType } from 'types/global'
 
 interface Props {

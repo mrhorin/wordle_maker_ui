@@ -5,7 +5,6 @@ import { useSignOut } from 'hooks/useSignOut'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCaretDown ,faGamepad, faGear, faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 
-import CurrentTokenContext from 'contexts/current_token'
 import CurrentUserInfoContext from 'contexts/current_user_info'
 import ShowAccountMenuContext from 'contexts/show_account_menu'
 
@@ -15,7 +14,6 @@ import Link from 'next/link'
 import Image from 'next/image'
 
 const Header = () => {
-  const currentTokenContext = useContext(CurrentTokenContext)
   const currentUserInfoContext = useContext(CurrentUserInfoContext)
   const showAccountMenuContext = useContext(ShowAccountMenuContext)
   const router = useRouter()

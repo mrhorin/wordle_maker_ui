@@ -1,20 +1,28 @@
+import type { Tile } from 'types/global'
+import { useGetKeyStatus } from 'hooks/useGetKeyStatus'
 import Key from 'components/keyboard/en/key'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBackspace } from '@fortawesome/free-solid-svg-icons'
 
 interface Props{
+  tilesTable: Tile[][]
   handleOnClick(key: string): void
 }
 
-const Qwerty = ({ handleOnClick }: Props) => {
+const Qwerty = ({ tilesTable, handleOnClick }: Props) => {
+  const getKeyStatus = useGetKeyStatus()
+
   const row1KeyComponents = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'].map((letter) => {
-    return <Key key={letter} letter={letter} type={'CHARACTER'} status={'EMPTY'} handleOnClick = { handleOnClick } />
+    const status = getKeyStatus(letter, tilesTable)
+    return <Key key={letter} letter={letter} type={'CHARACTER'} status={status} handleOnClick = { handleOnClick } />
   })
   const row2KeyComponents = ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'].map((letter) => {
-    return <Key key={letter} letter={letter} type={'CHARACTER'} status={'EMPTY'} handleOnClick={handleOnClick} />
+    const status = getKeyStatus(letter, tilesTable)
+    return <Key key={letter} letter={letter} type={'CHARACTER'} status={status} handleOnClick={handleOnClick} />
   })
   const row3KeyComponents = ['Z', 'X', 'C', 'V', 'B', 'N', 'M'].map((letter) => {
-    return <Key key={letter} letter={letter} type={'CHARACTER'} status={'EMPTY'} handleOnClick={handleOnClick} />
+    const status = getKeyStatus(letter, tilesTable)
+    return <Key key={letter} letter={letter} type={'CHARACTER'} status={status} handleOnClick={handleOnClick} />
   })
   row2KeyComponents.push(
     <Key key={'Backspace'} letter={'Backspace'} type={'MODIFIER'} status={'ABSENT'} handleOnClick={handleOnClick}>
