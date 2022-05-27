@@ -1,9 +1,8 @@
 import type { NextPage } from 'next'
 import type { Token, UserInfo, Query } from 'types/global'
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import Header from 'components/header'
-import Footer from 'components/footer'
 
 import CurrentTokenContext from 'contexts/current_token'
 import CurrentUserInfoContext from 'contexts/current_user_info'
