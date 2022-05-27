@@ -1,7 +1,7 @@
 import type { Game, Word, Tile } from 'types/global'
 import Head from 'next/head'
 import { GetServerSideProps } from 'next'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 
 import TileComponent from 'components/game/tile'
 import Modal from 'components/modal'
@@ -155,7 +155,7 @@ const Games = (props: Props) => {
     }
   }
 
-  function handleOnKeyDown(key: string): void{
+  const handleOnKeyDown = useCallback((key: string) => {
     if (gameStatus != GameStatus.Ready) return
     if (key == 'Enter') {
       // Press Enter
@@ -177,7 +177,7 @@ const Games = (props: Props) => {
         }
       })
     }
-  }
+  }, [gameStatus])
 
   /*
    * Check whether currentWord matches WORD_TODAY and

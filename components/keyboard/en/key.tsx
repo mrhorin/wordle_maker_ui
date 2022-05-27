@@ -24,4 +24,6 @@ const Key = ({ letter, type, status, handleOnClick, style, children }: Props) =>
   )
 }
 
-export default Key
+export default memo(Key, (prevProps, nextProps) => {
+  return prevProps.status == nextProps.status && prevProps.handleOnClick == nextProps.handleOnClick
+})
