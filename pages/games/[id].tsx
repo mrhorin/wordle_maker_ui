@@ -20,19 +20,19 @@ type Props = {
 const GameStatus = {
   Initializing: 'INITIALIZING',
   Ready: 'READY',
-  Cecking: 'CHECKING',
+  Entering: 'ENTERING',
   Finished: 'FINISHED',
 } as const
 
 type GameStatus = typeof GameStatus[keyof typeof GameStatus]
 
-const ValidateWordStatus = {
+const SetCurrentWordStatus = {
+  NotInWordList: 'NOT IN WORD LIST',
   NotEnoughLetters: 'NOT ENOUGH LETTERS',
   FinishedGame: 'FINISHED GAME',
-  Resolved: 'RESOLVED'
 } as const
 
-type ValidateWordStatus = typeof ValidateWordStatus[keyof typeof ValidateWordStatus]
+type SetCurrentWordStatus = typeof SetCurrentWordStatus[keyof typeof SetCurrentWordStatus]
 
 // For localStrage data
 type WordsState = {
@@ -62,7 +62,7 @@ const Games = (props: Props) => {
    *  This value indicates the status of the game.
    *  INITIALIZING: It doesn't allow an user to input any keys.
    *  READY: It allows an user to input keys.
-   *  CHECKING: It doesn't allow an user to input any keys.
+   *  ENTERING: It doesn't allow an user to input any keys.
    *  FINISHED: It showed a result modal window and doesn't allow an user to input any keys. */
   const [gameStatus, setGameStatus] = useState<GameStatus>(GameStatus.Initializing)
   const [tilesTable, setTilesTable] = useState<Tile[][]>([])
@@ -74,49 +74,62 @@ const Games = (props: Props) => {
   const language = new Language(props.game.lang)
 
   useEffect(() => {
-    const prevWordsState: WordsState | null = loadWordsState()
-    if (prevWordsState && prevWordsState.savedOn >= Date.parse(new Date().toDateString())) {
-      // Load tilesTable from localStorage
-      setTilesTable(() => {
-        return prevWordsState.words.map(word => {
-          return getTilesFromWord(word.split(''))
-        })
-      })
-      // Load GamesStatus from localStorage
-      if ((prevWordsState.words.indexOf(WORD_TODAY.join('')) >= 0) ||
-        (prevWordsState.words.length >= props.game.challenge_count)) {
-        setGameStatus(GameStatus.Finished)
-      } else {
-        setGameStatus(GameStatus.Ready)
-      }
-    } else {
-      destroyALLWordsState()
-      setGameStatus(GameStatus.Ready)
-    }
-  }, [])
-
-  useEffect(() => {
     window.onkeydown = event => handleOnKeyDown(event.key)
     /*
-     * Show a result modal window when GameStatus is finished.
+     * Load tilesTable from localStorage when Initializing. */
+    if (gameStatus == GameStatus.Initializing) {
+      const prevWordsState: WordsState | null = loadWordsState()
+      if (!prevWordsState) {
+        setGameStatus(GameStatus.Ready)
+      } else if (prevWordsState.savedOn >= Date.parse(new Date().toDateString())) {
+        setTilesTable(() => {
+          return prevWordsState.words.map(word => {
+            return getTilesFromWord(word.split(''))
+          })
+        })
+      } else {
+        destroyALLWordsState()
+        setGameStatus(GameStatus.Ready)
+      }
+    }
+    /*
+     * Show a result modal window when Finished.
      * The second parameter in setTimeout depends on animation property
      * with @keyframes transform-tile in the css file. */
     if (gameStatus == GameStatus.Finished) setTimeout(() => { setShowResultModal(true) }, 1200)
-    if (gameStatus == GameStatus.Cecking) {
-      validateCurrentWord().catch(result => {
-        if (result == ValidateWordStatus.NotEnoughLetters) setGameStatus(GameStatus.Ready)
-        if (result == ValidateWordStatus.FinishedGame) setGameStatus(GameStatus.Finished)
-        alert.show(result, { type: 'error' })
-      })
+    /*
+     * Enter currentWord in TilesTable when Entering.
+     * When it resolves, save wordsState on localStorage.
+     * When it rejects, alert an errror. */
+    if (gameStatus == GameStatus.Entering) {
+      enterCurrentWordInTilesTable()
+        .then(nextTilesTable => {
+          const words: string[] = []
+          for (let row of nextTilesTable) {
+            let word = ''
+            for (let tile of row) word += tile.letter
+            words.push(word)
+          }
+          saveWordsState({
+            words: words,
+            savedOn: Date.parse(new Date().toDateString())
+          })
+        })
+        .catch(status => {
+          if (status == SetCurrentWordStatus.NotEnoughLetters) setGameStatus(GameStatus.Ready)
+          if (status == SetCurrentWordStatus.NotInWordList) setGameStatus(GameStatus.Ready)
+          if (status == SetCurrentWordStatus.FinishedGame) setGameStatus(GameStatus.Finished)
+          alert.show(status, { type: 'error' })
+        })
     }
   }, [gameStatus])
 
   useEffect(() => {
-    if (tilesTable.length == 0) {
-      setGameStatus(GameStatus.Ready)
-    }else if (tilesTable.length > props.game.challenge_count) {
+    if (tilesTable.length >= props.game.challenge_count) {
+      // When tilesTable is filled with Tiles
       setGameStatus(GameStatus.Finished)
-    }else if (tilesTable.length > 0) {
+    } else if (tilesTable.length > 0) {
+      // When tilesTable has Tiles but not being full
       const lastWord: string[] = tilesTable[tilesTable.length - 1].map((tile) => {
         return tile.letter
       })
@@ -168,10 +181,6 @@ const Games = (props: Props) => {
     return json ? JSON.parse(json) : null
   }
 
-  function destroyWordsState(): void{
-    window.localStorage.removeItem(LOCAL_STORAGE_KEY)
-  }
-
   function destroyALLWordsState(): void{
     for (let key in window.localStorage) {
       if (/^wordsState\.\d+$/.test(key)) {
@@ -184,7 +193,7 @@ const Games = (props: Props) => {
     if (gameStatus != GameStatus.Ready) return
     if (key == 'Enter') {
       // Press Enter
-      setGameStatus(GameStatus.Cecking)
+      setGameStatus(GameStatus.Entering)
     } else if (key == 'Backspace') {
       // Press Backspace
       setCurrentWord(prevCurrentWord => {
@@ -203,42 +212,26 @@ const Games = (props: Props) => {
   }, [gameStatus])
 
   /*
-   * Validate whether currentWord matches WORD_TODAY and save currentWord on localStorage with Promise.
-   * When it rejects, it has to set GameStatus in useEffect hook with gameStatus.
-   * When it resolve, it has to set GameStatus in useEffect hook with tilesTable after checking the answer. */
-  function validateCurrentWord(): Promise<ValidateWordStatus> {
-    return new Promise<ValidateWordStatus>((resolve, rejects) => {
+   * Set currentWord on tilesTable and then empty it out. */
+  function enterCurrentWordInTilesTable(): Promise<Tile[][]> {
+    return new Promise<Tile[][]>((resolve, reject) => {
       setCurrentWord(prevCurrentWord => {
-        if (prevCurrentWord.length == props.game.char_count) {
+        if (gameStatus == GameStatus.Finished) {
+          reject(SetCurrentWordStatus.FinishedGame)
+          return prevCurrentWord
+        } else if (prevCurrentWord.length != props.game.char_count) {
+          reject(SetCurrentWordStatus.NotEnoughLetters)
+          return prevCurrentWord
+        } else if (!props.wordList.includes(prevCurrentWord.join(''))) {
+          reject(SetCurrentWordStatus.NotInWordList)
+          return prevCurrentWord
+        } else {
           setTilesTable(prevTilesTable => {
-            if (props.game.challenge_count > prevTilesTable.length) {
-              // When blank rows exist
-              const nextTilesTable: Tile[][] = [...prevTilesTable, getTilesFromWord(prevCurrentWord)]
-              // Save wordsState on localStorage
-              const nextWords: string[] = []
-              for (let row of nextTilesTable) {
-                let word = ''
-                for (let tile of row) {
-                  word += tile.letter
-                }
-                nextWords.push(word)
-              }
-              saveWordsState({
-                words: nextWords,
-                savedOn: Date.parse(new Date().toDateString())
-              })
-              resolve(ValidateWordStatus.Resolved)
-              return nextTilesTable
-            } else {
-              // When blank row doesn't exist
-              rejects(ValidateWordStatus.FinishedGame)
-              return prevTilesTable
-            }
+            const nextTilesTable: Tile[][] = [...prevTilesTable, getTilesFromWord(prevCurrentWord)]
+            resolve(nextTilesTable)
+            return nextTilesTable
           })
           return []
-        } else {
-          rejects(ValidateWordStatus.NotEnoughLetters)
-          return prevCurrentWord
         }
       })
     })
