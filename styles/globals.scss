@@ -237,6 +237,19 @@ label{
   border-radius: 0 0 3px 3px;
 }
 
+.form-group-checkbox{
+  display: flex;
+  flex-direction: row;
+  input[type="checkbox"]{
+    order: 1;
+    margin-right: 1rem;
+  }
+  label{
+    order: 2;
+    cursor: default;
+  }
+}
+
 .container{
   width: 100%;
   max-width: 1024px;
@@ -346,7 +359,7 @@ table{
   }
   &:disabled{
     color: #656565;
-    background-color: #c4c4c4;
+    background-color: #a6a6a6;
     cursor: not-allowed;
   }
 }

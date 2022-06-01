@@ -1,7 +1,15 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
+import { useState, useMemo } from 'react'
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTwitter } from '@fortawesome/free-brands-svg-icons'
 
 const Signup: NextPage = () => {
+  const [checkedTosAgreement, setCheckedTosAgreement] = useState<boolean>(false)
+  const handleCheckedTosAgreement = useMemo(() => {
+    return () => { setCheckedTosAgreement(!checkedTosAgreement) }
+  }, [checkedTosAgreement])
 
   return (
     <main id='main'>
@@ -14,12 +22,19 @@ const Signup: NextPage = () => {
 
         <h1 className='title'>Sign up</h1>
         <form method="post" action='http://localhost:3000/api/v1/auth/twitter'>
-          <button className='btn btn-defalt'>CONTINUE WITH TWITTER</button>
+          {/* tos_agreement */}
+          <div className='form-group-checkbox' style={{ marginBottom: '1rem' }}>
+            <label onClick={handleCheckedTosAgreement}>I agree to Terms of Service.</label>
+            <input type="checkbox" id="tos_agreement" checked={checkedTosAgreement} onChange={handleCheckedTosAgreement} />
+          </div>
+          <button className='btn btn-default' disabled={!checkedTosAgreement}>
+            <FontAwesomeIcon icon={faTwitter} style={{marginRight: '1rem'}} />
+            Continue with Twitter
+          </button>
         </form>
       </div>
     </main>
   )
-
 }
 
 export default Signup
