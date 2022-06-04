@@ -81,15 +81,15 @@ const Games = (props: Props) => {
       const prevWordsState: WordsState | null = loadWordsState()
       if (!prevWordsState) {
         setGameStatus(GameStatus.Ready)
-      } else if (prevWordsState.savedOn >= Date.parse(new Date().toDateString())) {
+      } else if (isExpired(prevWordsState.savedOn)) {
+        destroyExpiredWordsState()
+        setGameStatus(GameStatus.Ready)
+      } else {
         setTilesTable(() => {
           return prevWordsState.words.map(word => {
             return getTilesFromWord(word.split(''))
           })
         })
-      } else {
-        destroyALLWordsState()
-        setGameStatus(GameStatus.Ready)
       }
     }
     /*
@@ -141,6 +141,12 @@ const Games = (props: Props) => {
     }
   }, [tilesTable])
 
+  function isExpired(savedOn: number): boolean{
+    const today: Date = new Date()
+    const date: Date = new Date(savedOn)
+    return today.getFullYear() != date.getFullYear() || today.getMonth() != date.getMonth() || today.getDay() != date.getDay()
+  }
+
   function getTilesFromWord(word: string[]): Tile[] {
     // Set letters
     const tiles: Tile[] = word.map((letter, i) => {
@@ -181,10 +187,12 @@ const Games = (props: Props) => {
     return json ? JSON.parse(json) : null
   }
 
-  function destroyALLWordsState(): void{
+  function destroyExpiredWordsState(): void{
     for (let key in window.localStorage) {
       if (/^wordsState\.\d+$/.test(key)) {
-        window.localStorage.removeItem(key)
+        const json = window.localStorage.getItem(key)
+        const wordState: WordsState | null = json ? JSON.parse(json) as WordsState : null
+        if (wordState && isExpired(wordState.savedOn)) window.localStorage.removeItem(key)
       }
     }
   }
