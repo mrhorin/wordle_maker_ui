@@ -37,10 +37,10 @@ const Gozyuon = ({ tilesTable, handleOnClick }: Props) => {
     ['ガ', 'ギ', 'グ', 'ゲ', 'ゴ'],
     ['ザ', 'ジ', 'ズ', 'ゼ', 'ゾ'],
     ['ダ', 'ヂ', 'ヅ', 'デ', 'ド'],
+    ['ッ'],
     ['バ', 'ビ', 'ブ', 'ベ', 'ボ'],
     ['パ', 'ピ', 'プ', 'ペ', 'ポ'],
     ['ャ', 'ュ', 'ョ'],
-    ['ッ'],
     ['ー'],
   ]
 
@@ -50,7 +50,8 @@ const Gozyuon = ({ tilesTable, handleOnClick }: Props) => {
       const status = getKeyStatus(l, tilesTable)
       return <Key key={l} letter={l} type={'CHARACTER'} status={status} handleOnClick = { handleOnClick } />
     })
-    return <div key={`col-${index}`} className='col'>{keys}</div>
+    const classes: string = letters.length == 1 && letters[0] == 'ッ' ? 'col col-center' : 'col'
+    return <div key={`col-${index}`} className={classes}>{keys}</div>
   })
 
   const keyModeComponent: JSX.Element = keyMode == KeyMode.Normal ?

@@ -959,6 +959,9 @@ table{
         line-height: 2rem;
       }
     }
+    .col-center{
+      justify-content: center;
+    }
   }
   @media screen and (max-width: $sp-break-point){
     .col{
