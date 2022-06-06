@@ -35,7 +35,7 @@ export class ServerSideCookies{
 }
 
 export class ClientSideCookies{
-  static readonly cookieOptions = { maxAge: 30 * 24 * 60 * 60, path: '/' }
+  static readonly cookieOptions = { maxAge: 30 * 24 * 60 * 60, path: '/', secure: process.env.NEXT_PUBLIC_CLIENT_COOKIE_SECURE }
 
   static saveUserInfo(userInfo: UserInfo): void{
     setCookie(null, 'provider', userInfo.provider, this.cookieOptions)
