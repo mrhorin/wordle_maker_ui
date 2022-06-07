@@ -15,6 +15,7 @@ type Props = {
   game: Game,
   wordList: String[],
   wordToday: Word,
+  questionNo: number,
 }
 
 const GameStatus = {
@@ -50,7 +51,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (reses[0].status == 200 && reses[1].status == 200 && reses[2].status == 200) {
     const jsons = await Promise.all([reses[0].json(), reses[1].json(), reses[2].json()])
     if (jsons[0].ok && jsons[1].ok && jsons[2].ok) {
-      return { props: { game: jsons[0].data, wordList: jsons[1].data, wordToday: jsons[2].data } }
+      return {
+        props: {
+          game: jsons[0].data,
+          wordList: jsons[1].data,
+          wordToday: jsons[2].data.word,
+          questionNo: jsons[2].data.questionNo,
+        }
+      }
     }
   }
   return { notFound: true }
