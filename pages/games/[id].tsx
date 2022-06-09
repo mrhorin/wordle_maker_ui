@@ -1,8 +1,10 @@
 import type { Game, Word, Tile } from 'types/global'
 import Head from 'next/head'
 import { GetServerSideProps } from 'next'
+import { useRouter } from 'next/router'
 import { useState, useEffect, useCallback } from 'react'
 import { useAlert } from 'react-alert'
+import useCopyToClipboard from 'hooks/useCopyToClipboard'
 
 import TileComponent from 'components/game/tile'
 import NextGameTimer from 'components/game/next_game_timer'
@@ -93,6 +95,10 @@ const Games = (props: Props) => {
    *  This state is stored letters a user inputted. */
   const [currentWord, setCurrentWord] = useState<string[]>([])
   const [showResultModal, setShowResultModal] = useState<boolean>(false)
+
+  const router = useRouter()
+  const [clipboard, copy] = useCopyToClipboard()
+
   const WORD_TODAY: string[] = props.wordToday.name.toUpperCase().split('')
   const LOCAL_STORAGE_KEY = `wordsState.${props.game.id}`
   const alert = useAlert()
@@ -184,6 +190,25 @@ const Games = (props: Props) => {
     }
   }
 
+  function getResultText(): string{
+    const url = `https://${process.env.NEXT_PUBLIC_DOMAIN}${router.asPath}`
+    let tiles: string = ''
+    for (let row of tilesTable) {
+      for (let tile of row) {
+        if (tile.status == 'CORRECT') tiles += '🟦'
+        if (tile.status == 'PRESENT') tiles += '🟨'
+        if (tile.status == 'ABSENT') tiles += '⬛'
+      }
+      tiles += '\r'
+    }
+    const guessTimes: string = isClear() ? tilesTable.length.toString() : 'X'
+    return `${props.game.title} ${props.questionNo} ${guessTimes}/${props.game.challenge_count}\r\r${tiles}\r${url}`
+  }
+
+  function isClear(): boolean{
+    return endedAt != null
+  }
+
   function isExpired(savedOn: number): boolean{
     const today: Date = new Date()
     const date: Date = new Date(savedOn)
@@ -238,6 +263,15 @@ const Games = (props: Props) => {
         if (wordState && isExpired(wordState.savedOn)) window.localStorage.removeItem(key)
       }
     }
+  }
+
+  function handleClickCopy(): void{
+    copy(getResultText())
+    alert.show('Copyed Results', {type: 'success'})
+  }
+
+  function handleClickTweet(): void{
+    window.open(`https://twitter.com/intent/tweet?text=${encodeURI(getResultText())}`, '_blank')
   }
 
   const handleOnKeyDown = useCallback((key: string) => {
@@ -351,12 +385,12 @@ const Games = (props: Props) => {
             </div>
           </div>
           <div className='modal-window-footer'>
-            {/* Share */}
+            {/* Shares */}
             <div className='shares'>
-              <div className='share-copy'>
+              <div className='share-copy' onClick={handleClickCopy}>
                 <FontAwesomeIcon icon={faCopy} style={{marginRight: '0.5rem'}} />COPY
               </div>
-              <div className='share-tweet'>
+              <div className='share-tweet' onClick={handleClickTweet}>
                 <FontAwesomeIcon icon={faTwitter} style={{marginRight: '0.5rem'}} />TWEET
               </div>
             </div>

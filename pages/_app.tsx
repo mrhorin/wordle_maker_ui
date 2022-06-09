@@ -13,7 +13,7 @@ import Layout from 'components/layout'
 
 const alertOptions = {
   position: positions.TOP_CENTER,
-  timeout: 5000,
+  timeout: 2000,
   offset: '0px',
   transition: transitions.SCALE,
   containerStyle: { textAlign: 'center', zIndex: 100 }
