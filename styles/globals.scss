@@ -10,6 +10,7 @@
 $base-color1: #1e2022;
 $base-color2: lighten($base-color1, 3%);
 $base-color3: lighten($base-color1, 6%);
+$boarder-color: lighten($base-color1, 25%);
 
 $accent-color1: #42c897;
 $accent-color2: #cf8e1d;
@@ -825,6 +826,94 @@ table{
     .words-row-tile-absent{
       background: $absent-color;
       border: 1px solid $absent-color;
+    }
+  }
+}
+
+.statistics{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 1.5rem 0;
+  .statistic{
+    display: block;
+    flex: 1;
+    text-align: center;
+    border-right: 1px solid $boarder-color;
+    &:last-child{ border-right: none; }
+    .statistic-label{
+      color: #a2a2a2;
+      font-size: 0.6rem;
+      line-height: 0.8rem;
+      font-weight: 500;
+      word-break: keep-all;
+      text-transform: uppercase;
+    }
+    .statistic-value{
+      font-size: 2rem;
+      font-weight: 500;
+    }
+  }
+}
+
+.timers{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  .timer{
+    display: block;
+    flex: 1;
+    text-align: left;
+    text-transform: uppercase;
+    .timer-label{
+      color: #a2a2a2;
+      font-weight: 500;
+      text-align: center;
+    }
+    .timer-clock{
+      text-align: center;
+      font-size: 2rem;
+      font-weight: 500;
+      font-family: "Helvetica Neue",Arial,"Hiragino Kaku Gothic ProN","Hiragino Sans",Helvetica,Roboto,Meiryo,sans-serif,monospace;
+    }
+  }
+}
+
+.shares{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  .share{
+    color: #fff;
+    width: 120px;
+    border-radius: 3px;
+    line-height: 2rem;
+    padding: 0;
+    margin: 3px 5px;
+    font-size: 1rem;
+    font-weight: 500;
+    text-align: center;
+    display: inline-block;
+    text-transform: uppercase;
+    cursor: pointer;
+    &:hover{ filter: opacity(90%); }
+  }
+  .share-copy{
+    @extend .share;
+    order: 1;
+    background: $secondary-color;
+  }
+  .share-tweet{
+    @extend .share;
+    order: 2;
+    background: #0099ff;
+  }
+  @media screen and (max-width: $sp-break-point){
+    justify-content: center;
+    .share{
+      display: block;
+      border-radius: 3px;
+      flex-grow: 1;
     }
   }
 }

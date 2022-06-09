@@ -5,11 +5,16 @@ import { useState, useEffect, useCallback } from 'react'
 import { useAlert } from 'react-alert'
 
 import TileComponent from 'components/game/tile'
+import NextGameTimer from 'components/game/next_game_timer'
 import Modal from 'components/modal'
 import EnKeyboard from 'components/keyboard/en/qwerty'
 import JaKeyboard from 'components/keyboard/ja/gozyuon'
 
 import Language from 'scripts/language'
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faXmark, faCopy } from '@fortawesome/free-solid-svg-icons'
+import { faTwitter } from '@fortawesome/free-brands-svg-icons'
 
 type Props = {
   game: Game,
@@ -38,7 +43,9 @@ type SetCurrentWordStatus = typeof SetCurrentWordStatus[keyof typeof SetCurrentW
 // For localStrage data
 type WordsState = {
   words: string[],
-  savedOn: number
+  savedOn: number,
+  startedAt: number,
+  endedAt: number | null,
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -73,7 +80,17 @@ const Games = (props: Props) => {
    *  ENTERING: It doesn't allow an user to input any keys.
    *  FINISHED: It showed a result modal window and doesn't allow an user to input any keys. */
   const [gameStatus, setGameStatus] = useState<GameStatus>(GameStatus.Initializing)
+  /* tilesTalbe:
+   *  Saved and stored as wordsState['words'] in localStorage. */
   const [tilesTable, setTilesTable] = useState<Tile[][]>([])
+  /* startedAt:
+   *  Saved and stored as wordsState['startedAt'] in localStorage. */
+  const [startedAt, setStartedAt] = useState<number>(Date.parse(new Date().toString()))
+  /* endedAt:
+   *  Saved and stored as wordsState['endedAt'] in localStorage. */
+  const [endedAt, setEndedAt] = useState<number | null>(null)
+  /* currentWord:
+   *  This state is stored letters a user inputted. */
   const [currentWord, setCurrentWord] = useState<string[]>([])
   const [showResultModal, setShowResultModal] = useState<boolean>(false)
   const WORD_TODAY: string[] = props.wordToday.name.toUpperCase().split('')
@@ -90,9 +107,11 @@ const Games = (props: Props) => {
       if (!prevWordsState) {
         setGameStatus(GameStatus.Ready)
       } else if (isExpired(prevWordsState.savedOn)) {
-        destroyExpiredWordsState()
+        destroyAllExpiredWordsState()
         setGameStatus(GameStatus.Ready)
       } else {
+        setStartedAt(prevWordsState.startedAt)
+        setEndedAt(prevWordsState.endedAt)
         setTilesTable(() => {
           return prevWordsState.words.map(word => {
             return getTilesFromWord(word.split(''))
@@ -118,9 +137,13 @@ const Games = (props: Props) => {
             for (let tile of row) word += tile.letter
             words.push(word)
           }
+          const nextEndedAt: number | null = words[words.length - 1] == WORD_TODAY.join('') ? Date.parse(new Date().toString()) : null
+          if (nextEndedAt) setEndedAt(nextEndedAt)
           saveWordsState({
             words: words,
-            savedOn: Date.parse(new Date().toDateString())
+            savedOn: Date.parse(new Date().toDateString()),
+            startedAt: startedAt,
+            endedAt: nextEndedAt,
           })
         })
         .catch(status => {
@@ -148,6 +171,18 @@ const Games = (props: Props) => {
       }
     }
   }, [tilesTable])
+
+  function getGuessTime(): string {
+    if (endedAt) {
+      const diffSec: number = (endedAt - startedAt) / 1000
+      const hour: string = ('00' + Math.floor(diffSec / 3600)).slice(-2)
+      const min: string = ('00' + Math.floor(diffSec % 3600 / 60)).slice(-2)
+      const rem: string = ('00' + diffSec % 60).slice(-2)
+      return `${hour}:${min}:${rem}`
+    } else {
+      return '00:00:00'
+    }
+  }
 
   function isExpired(savedOn: number): boolean{
     const today: Date = new Date()
@@ -195,7 +230,7 @@ const Games = (props: Props) => {
     return json ? JSON.parse(json) : null
   }
 
-  function destroyExpiredWordsState(): void{
+  function destroyAllExpiredWordsState(): void{
     for (let key in window.localStorage) {
       if (/^wordsState\.\d+$/.test(key)) {
         const json = window.localStorage.getItem(key)
@@ -282,12 +317,49 @@ const Games = (props: Props) => {
       {/* Modal */}
       <Modal showModal={showResultModal} setShowModal={setShowResultModal}>
         <div className='modal-window-container'>
-          <div className='modal-window-header'>Result</div>
+          <div className='modal-window-header' style={{position: 'relative'}}>
+            <div style={{ fontWeight: 'bold', fontSize: '1.5rem', textAlign: 'center' }}>YOU WON</div>
+            <FontAwesomeIcon icon={faXmark} style={{ position: 'absolute', top: '15px', right: '15px', cursor: 'pointer' }} onClick={() => setShowResultModal(false)} />
+          </div>
           <div className='modal-window-body'>
-            Next Game: 00:00:00
+            {/* Statistics */}
+            <div className='statistics'>
+              <div className='statistic'>
+                <div className='statistic-value'>22</div>
+                <div className='statistic-label'>Played</div>
+              </div>
+              <div className='statistic'>
+                <div className='statistic-value'>80</div>
+                <div className='statistic-label'>Win %</div>
+              </div>
+              <div className='statistic'>
+                <div className='statistic-value'>5</div>
+                <div className='statistic-label'>Current Streak</div>
+              </div>
+              <div className='statistic'>
+                <div className='statistic-value'>13</div>
+                <div className='statistic-label'>Max Streak</div>
+              </div>
+            </div>
+            {/* Timers */}
+            <div className='timers'>
+              <div className='timer'>
+                <div className='timer-label'>Guess Time</div>
+                <div className='timer-clock'>{getGuessTime()}</div>
+              </div>
+              <NextGameTimer />
+            </div>
           </div>
           <div className='modal-window-footer'>
-            <button className='btn btn-default' onClick={() => setShowResultModal(false)}>Close</button>
+            {/* Share */}
+            <div className='shares'>
+              <div className='share-copy'>
+                <FontAwesomeIcon icon={faCopy} style={{marginRight: '0.5rem'}} />COPY
+              </div>
+              <div className='share-tweet'>
+                <FontAwesomeIcon icon={faTwitter} style={{marginRight: '0.5rem'}} />TWEET
+              </div>
+            </div>
           </div>
         </div>
       </Modal>
