@@ -6,6 +6,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { useAlert } from 'react-alert'
 import useCopyToClipboard from 'hooks/useCopyToClipboard'
 
+import Confetti from 'react-confetti'
 import TileComponent from 'components/game/tile'
 import NextGameTimer from 'components/game/next_game_timer'
 import Modal from 'components/modal'
@@ -397,7 +398,11 @@ const Games = (props: Props) => {
           </div>
         </div>
       </Modal>
+
       <div className='games'>
+        {(() => {
+          if (gameStatus == GameStatus.Finished && showResultModal && isClear()) return <Confetti recycle={true} />
+        })()}
         <div className='words'>{wordsRowComponents}</div>
         <div className='keyboard'>{keyboardComponent}</div>
       </div>
