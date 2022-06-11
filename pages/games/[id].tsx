@@ -138,16 +138,19 @@ const Games = (props: Props) => {
     if (gameStatus == GameStatus.Entering) {
       enterCurrentWordInTilesTable()
         .then(nextTilesTable => {
-          const words: string[] = []
+          const nextWords: string[] = []
           for (let row of nextTilesTable) {
             let word = ''
             for (let tile of row) word += tile.letter
-            words.push(word)
+            nextWords.push(word)
           }
-          const nextEndedAt: number | null = words[words.length - 1] == WORD_TODAY.join('') ? Date.parse(new Date().toString()) : null
-          if (nextEndedAt) setEndedAt(nextEndedAt)
+          let nextEndedAt: number | null = null
+          if (nextWords[nextWords.length - 1] == WORD_TODAY.join('') || nextTilesTable.length >= props.game.challenge_count) {
+            nextEndedAt = Date.parse(new Date().toString())
+            setEndedAt(nextEndedAt)
+          }
           saveWordsState({
-            words: words,
+            words: nextWords,
             savedOn: Date.parse(new Date().toDateString()),
             startedAt: startedAt,
             endedAt: nextEndedAt,
