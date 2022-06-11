@@ -210,7 +210,8 @@ const Games = (props: Props) => {
   }
 
   function isClear(): boolean{
-    return endedAt != null
+    const lastWord: string[] = tilesTable.length > 0 ? tilesTable[tilesTable.length - 1].map((tile) => tile.letter) : []
+    return endedAt != null && lastWord.join('') == WORD_TODAY.join('')
   }
 
   function isExpired(savedOn: number): boolean{
@@ -356,7 +357,7 @@ const Games = (props: Props) => {
       <Modal showModal={showResultModal} setShowModal={setShowResultModal}>
         <div className='modal-window-container'>
           <div className='modal-window-header' style={{position: 'relative'}}>
-            <div style={{ fontWeight: 'bold', fontSize: '1.5rem', textAlign: 'center' }}>YOU WON</div>
+            <div style={{ fontWeight: 'bold', fontSize: '1.5rem', textAlign: 'center' }}>{isClear() ? 'YOU WON' : 'YOU LOSE'}</div>
             <FontAwesomeIcon icon={faXmark} style={{ position: 'absolute', top: '15px', right: '15px', cursor: 'pointer' }} onClick={() => setShowResultModal(false)} />
           </div>
           <div className='modal-window-body'>
