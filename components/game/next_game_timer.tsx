@@ -15,14 +15,15 @@ const NextGameTimer = () => {
     if (now && expiry && expiry > now) setTimeout(() => { setNow(new Date()) }, 1000)
   }, [now])
 
-  const hours = now ? ('00' + (23 - now.getHours())).slice(-2) : '00'
-  const mins = now ? ('00' + (59 - now.getMinutes())).slice(-2) : '00'
-  const secs = now ? ('00' + (59 - now.getSeconds())).slice(-2) : '00'
+  const hours: string = now ? ('00' + (23 - now.getHours())).slice(-2) : '00'
+  const mins: string = now ? ('00' + (59 - now.getMinutes())).slice(-2) : '00'
+  const secs: string = now ? ('00' + (59 - now.getSeconds())).slice(-2) : '00'
+  const clock = now?.getHours() == 0 && now?.getMinutes() == 0 && now?.getSeconds() == 0 ? '00:00:00' : `${hours}:${mins}:${secs}`
 
   return (
     <div className='timer'>
       <div className='timer-label'>Next Game</div>
-      <div className='timer-clock'>{`${hours}:${mins}:${secs}`}</div>
+      <div className='timer-clock'>{clock}</div>
     </div>
   )
 }
