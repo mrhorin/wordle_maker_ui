@@ -50,6 +50,12 @@ type WordsState = {
   startedAt: number,
   endedAt: number | null,
 }
+type Statistics = {
+  win: number,
+  lose: number,
+  currentStreak: number,
+  maxStreak: number,
+}
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const id: string = context.query['id'] as string
@@ -95,25 +101,30 @@ const Games = (props: Props) => {
   /* currentWord:
    *  This state is stored letters a user inputted. */
   const [currentWord, setCurrentWord] = useState<string[]>([])
+  const [statistics, setStatistics] = useState<Statistics>({ win: 0, lose: 0, currentStreak: 0, maxStreak: 0 })
   const [showResultModal, setShowResultModal] = useState<boolean>(false)
 
   const router = useRouter()
   const [clipboard, copy] = useCopyToClipboard()
 
   const WORD_TODAY: string[] = props.wordToday.name.toUpperCase().split('')
-  const LOCAL_STORAGE_KEY = `wordsState.${props.game.id}`
+  const LOCAL_STORAGE_WORDS_STATE_KEY = `wordsState.${props.game.id}`
+  const LOCAL_STORAGE_STATISTICS_KEY = `statistics.${props.game.id}`
+
   const alert = useAlert()
   const language = new Language(props.game.lang)
 
   useEffect(() => {
     window.onkeydown = event => handleOnKeyDown(event.key)
     /*
-     * Load tilesTable from localStorage when Initializing. */
+     * Load tilesTable & statistics from localStorage when Initializing. */
     if (gameStatus == GameStatus.Initializing) {
       const prevWordsState: WordsState | null = loadWordsState()
       if (!prevWordsState) {
+        // When access for the first time
         setGameStatus(GameStatus.Ready)
       } else if (isExpired(prevWordsState.savedOn)) {
+        // When wordState expires
         destroyAllExpiredWordsState()
         setGameStatus(GameStatus.Ready)
       } else {
@@ -125,6 +136,8 @@ const Games = (props: Props) => {
           })
         })
       }
+      const prevStatistics: Statistics | null = loadStatistics()
+      if (prevStatistics) setStatistics(prevStatistics)
     }
     /*
      * Show a result modal window when Finished.
@@ -138,16 +151,40 @@ const Games = (props: Props) => {
     if (gameStatus == GameStatus.Entering) {
       enterCurrentWordInTilesTable()
         .then(nextTilesTable => {
+          // Convert tilesTable to words in order to save wordsState
           const nextWords: string[] = []
           for (let row of nextTilesTable) {
             let word = ''
             for (let tile of row) word += tile.letter
             nextWords.push(word)
           }
+          // Check whether game is over
           let nextEndedAt: number | null = null
           if (nextWords[nextWords.length - 1] == WORD_TODAY.join('') || nextTilesTable.length >= props.game.challenge_count) {
             nextEndedAt = Date.parse(new Date().toString())
             setEndedAt(nextEndedAt)
+            // Set next stactics
+            if (nextWords[nextWords.length - 1] == WORD_TODAY.join('')) {
+              const nextCurrentStreak: number = statistics.currentStreak + 1
+              const nextMaxStreak: number = nextCurrentStreak > statistics.maxStreak ? nextCurrentStreak : statistics.maxStreak
+              const nextStatistics: Statistics = {
+                win: statistics.win + 1,
+                lose: statistics.lose,
+                currentStreak: nextCurrentStreak,
+                maxStreak: nextMaxStreak,
+              }
+              setStatistics(nextStatistics)
+              saveStatistics(nextStatistics)
+            } else {
+              const nextStatistics: Statistics = {
+                win: statistics.win,
+                lose: statistics.lose + 1,
+                currentStreak: 0,
+                maxStreak: statistics.maxStreak,
+              }
+              setStatistics(nextStatistics)
+              saveStatistics(nextStatistics)
+            }
           }
           saveWordsState({
             words: nextWords,
@@ -181,6 +218,12 @@ const Games = (props: Props) => {
       }
     }
   }, [tilesTable])
+
+  function getWinPercent(): number{
+    let winPercent: number = statistics.win / (statistics.win + statistics.lose) * 100
+    if (isNaN(winPercent) || winPercent == Infinity) winPercent = 0
+    return Math.round(winPercent)
+  }
 
   function getGuessTime(): string {
     if (endedAt) {
@@ -252,11 +295,11 @@ const Games = (props: Props) => {
   }
 
   function saveWordsState(wordsState: WordsState): void{
-    window.localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(wordsState))
+    window.localStorage.setItem(LOCAL_STORAGE_WORDS_STATE_KEY, JSON.stringify(wordsState))
   }
 
   function loadWordsState(): WordsState | null{
-    const json = window.localStorage.getItem(LOCAL_STORAGE_KEY)
+    const json = window.localStorage.getItem(LOCAL_STORAGE_WORDS_STATE_KEY)
     return json ? JSON.parse(json) : null
   }
 
@@ -268,6 +311,15 @@ const Games = (props: Props) => {
         if (wordState && isExpired(wordState.savedOn)) window.localStorage.removeItem(key)
       }
     }
+  }
+
+  function saveStatistics(statistics: Statistics): void{
+    window.localStorage.setItem(LOCAL_STORAGE_STATISTICS_KEY, JSON.stringify(statistics))
+  }
+
+  function loadStatistics(): Statistics | null{
+    const json = window.localStorage.getItem(LOCAL_STORAGE_STATISTICS_KEY)
+    return json ? JSON.parse(json) : null
   }
 
   function handleClickCopy(): void{
@@ -364,19 +416,19 @@ const Games = (props: Props) => {
             {/* Statistics */}
             <div className='statistics'>
               <div className='statistic'>
-                <div className='statistic-value'>22</div>
+                <div className='statistic-value'>{statistics.win + statistics.lose}</div>
                 <div className='statistic-label'>Played</div>
               </div>
               <div className='statistic'>
-                <div className='statistic-value'>80</div>
+                <div className='statistic-value'>{getWinPercent()}</div>
                 <div className='statistic-label'>Win %</div>
               </div>
               <div className='statistic'>
-                <div className='statistic-value'>5</div>
+                <div className='statistic-value'>{statistics.currentStreak}</div>
                 <div className='statistic-label'>Current Streak</div>
               </div>
               <div className='statistic'>
-                <div className='statistic-value'>13</div>
+                <div className='statistic-value'>{statistics.maxStreak}</div>
                 <div className='statistic-label'>Max Streak</div>
               </div>
             </div>
