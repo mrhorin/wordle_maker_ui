@@ -4,6 +4,8 @@ import { useAlert } from 'react-alert'
 import ReactLoading from 'react-loading'
 import nprogress from 'nprogress'
 
+import useLanguage from 'hooks/useLanguage'
+
 import PaginationComponent from 'components/pagination'
 import Modal from 'components/modal'
 import LoadingOverlay from 'components/loading_overlay'
@@ -11,7 +13,6 @@ import LoadingOverlay from 'components/loading_overlay'
 import CurrentTokenContext from 'contexts/current_token'
 
 import validate from 'scripts/validate'
-import Language from 'scripts/language'
 
 interface TrWordProps {
   word: Word
@@ -66,7 +67,7 @@ const EditWords = ({ game }: EditWordsProps) => {
   const currentTokenContext = useContext(CurrentTokenContext)
 
   const alert = useAlert()
-  const language = new Language(game.lang)
+  const language = useLanguage(game.lang)
 
   useEffect(() => {
     if (validate.token(currentTokenContext.currentToken) && currentWordList.length <= 0) {

@@ -1,5 +1,3 @@
-import type { Word } from 'types/global'
-
 class Language{
   public readonly lang: string
 

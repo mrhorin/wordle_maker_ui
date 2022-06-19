@@ -4,14 +4,16 @@ import type { Game, Chip } from 'types/global'
 import { useState, useCallback, useContext } from 'react'
 import { useRouter } from 'next/router'
 import { useAlert } from 'react-alert'
+
 import { useSignOut } from 'hooks/useSignOut'
+import useLanguage from 'hooks/useLanguage'
+
 import nprogress from 'nprogress'
 
 import ChipTextarea from 'components/form/chip_textarea'
 import LoadingOverlay from 'components/loading_overlay'
 
 import validate from 'scripts/validate'
-import Language from 'scripts/language'
 
 import CurrentTokenContext from 'contexts/current_token'
 
@@ -30,10 +32,11 @@ const AddWords = ({ game }: Props) => {
   /********* Context *********/
   const currentTokenContext = useContext(CurrentTokenContext)
 
-  const signOut = useSignOut()
   const router = useRouter()
   const alert = useAlert()
-  const language = new Language(game.lang)
+
+  const signOut = useSignOut()
+  const language = useLanguage(game.lang)
 
   const addChips = useCallback((inputList: string[]): void => {
     setChips(prevChips => {

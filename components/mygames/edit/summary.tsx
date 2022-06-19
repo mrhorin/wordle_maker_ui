@@ -8,10 +8,11 @@ import { useSignOut } from 'hooks/useSignOut'
 import Link from 'next/link'
 import nprogress from 'nprogress'
 
+import useLanguage from 'hooks/useLanguage'
+
 import LoadingOverlay from 'components/loading_overlay'
 
 import validate from 'scripts/validate'
-import Language from 'scripts/language'
 
 import CurrentTokenContext from 'contexts/current_token'
 
@@ -40,10 +41,11 @@ const Summary = ({ game, setGame }: Props) => {
   /********* Context *********/
   const currentTokenContext = useContext(CurrentTokenContext)
 
-  const signOut = useSignOut()
   const router = useRouter()
   const alert = useAlert()
-  const language = new Language(game.lang)
+
+  const signOut = useSignOut()
+  const language = useLanguage(game.lang)
 
   useEffect(() => {
     // When title or desc are changed, the update button is clickable

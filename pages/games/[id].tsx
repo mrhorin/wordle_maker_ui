@@ -4,7 +4,9 @@ import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import { useState, useEffect, useCallback } from 'react'
 import { useAlert } from 'react-alert'
+
 import useCopyToClipboard from 'hooks/useCopyToClipboard'
+import useLanguage from 'hooks/useLanguage'
 
 import Confetti from 'react-confetti'
 import TileComponent from 'components/game/tile'
@@ -12,8 +14,6 @@ import NextGameTimer from 'components/game/next_game_timer'
 import Modal from 'components/modal'
 import EnKeyboard from 'components/keyboard/en/qwerty'
 import JaKeyboard from 'components/keyboard/ja/gozyuon'
-
-import Language from 'scripts/language'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark, faCopy } from '@fortawesome/free-solid-svg-icons'
@@ -112,7 +112,7 @@ const Games = (props: Props) => {
   const LOCAL_STORAGE_STATISTICS_KEY = `statistics.${props.game.id}`
 
   const alert = useAlert()
-  const language = new Language(props.game.lang)
+  const language = useLanguage(props.game.lang)
 
   useEffect(() => {
     window.onkeydown = event => handleOnKeyDown(event.key)
