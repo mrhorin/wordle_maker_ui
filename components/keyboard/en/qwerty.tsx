@@ -1,5 +1,5 @@
 import type { Tile } from 'types/global'
-import { useGetKeyStatus } from 'hooks/useGetKeyStatus'
+import useGetKeyStatus from 'hooks/useGetKeyStatus'
 import Key from 'components/keyboard/en/key'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBackspace } from '@fortawesome/free-solid-svg-icons'

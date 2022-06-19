@@ -2,7 +2,7 @@ import type { UserInfo, Token, Game, Tab } from 'types/global'
 import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
-import { useHash } from 'hooks/useHash'
+import useHash from 'hooks/useHash'
 
 import Head from 'next/head'
 

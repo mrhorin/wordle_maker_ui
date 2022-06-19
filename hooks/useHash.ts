@@ -1,7 +1,8 @@
 import React, { useState, useLayoutEffect } from 'react'
 import { useRouter } from 'next/router'
 
-export const useHash = (defaultHash?: string): [string | undefined, React.Dispatch<React.SetStateAction<string | undefined>>] => {
+// useHash
+export default (defaultHash?: string): [string | undefined, React.Dispatch<React.SetStateAction<string | undefined>>] => {
   const [currentHash, setCurrentHash] = useState<string | undefined>(defaultHash)
 
   const router = useRouter()

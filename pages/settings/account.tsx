@@ -2,7 +2,9 @@ import type { Token } from 'types/global'
 import { useRouter } from 'next/router'
 import { useState, useMemo, useContext } from 'react'
 import { useAlert } from 'react-alert'
-import { useSignOut } from 'hooks/useSignOut'
+
+import useSignOut from 'hooks/useSignOut'
+
 import nprogress from 'nprogress'
 
 import Head from 'next/head'

@@ -4,7 +4,9 @@ import type { Game } from 'types/global'
 import { useEffect, useState, useRef, useContext } from 'react'
 import { useAlert } from 'react-alert'
 import { useRouter } from 'next/router'
-import { useSignOut } from 'hooks/useSignOut'
+
+import useSignOut from 'hooks/useSignOut'
+
 import Link from 'next/link'
 import nprogress from 'nprogress'
 

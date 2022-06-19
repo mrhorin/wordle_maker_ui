@@ -2,7 +2,9 @@ import type { UserInfo, Token, Game } from 'types/global'
 import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import { useState, useLayoutEffect } from 'react'
-import { useSignOut } from 'hooks/useSignOut'
+
+import useSignOut from 'hooks/useSignOut'
+
 import ReactLoading from 'react-loading'
 import Head from 'next/head'
 

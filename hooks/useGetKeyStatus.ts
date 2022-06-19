@@ -1,7 +1,7 @@
 import type { Tile, TileStatus } from 'types/global'
 
-export const useGetKeyStatus = () => {
-
+// useGetKeyStatus
+export default () => {
   const getKeyStatus = (letter: string, tilesTable: Tile[][]): TileStatus => {
     let status: TileStatus = 'EMPTY'
     for (let i = 0; i < tilesTable.length; i++){

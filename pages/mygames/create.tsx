@@ -1,7 +1,9 @@
 import { useRouter } from 'next/router'
 import { useState, useContext, useRef } from 'react'
 import { useAlert } from 'react-alert'
-import { useSignOut } from 'hooks/useSignOut'
+
+import useSignOut from 'hooks/useSignOut'
+
 import Head from 'next/head'
 import nprogress from 'nprogress'
 

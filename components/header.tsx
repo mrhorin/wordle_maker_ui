@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import { useContext, memo } from 'react'
 import { useAlert } from 'react-alert'
-import { useSignOut } from 'hooks/useSignOut'
+import useSignOut from 'hooks/useSignOut'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCaretDown ,faGamepad, faGear, faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 

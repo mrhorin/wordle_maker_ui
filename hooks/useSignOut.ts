@@ -7,7 +7,7 @@ import CurrentUserInfoContext from 'contexts/current_user_info'
 import { ClientSideCookies } from 'scripts/cookie'
 import validate from 'scripts/validate'
 
-export const useSignOut = () => {
+export default () => {
   const currentTokenContext = useContext(CurrentTokenContext)
   const currentUserInfoContext = useContext(CurrentUserInfoContext)
 

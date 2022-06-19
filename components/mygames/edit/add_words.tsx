@@ -5,7 +5,7 @@ import { useState, useCallback, useContext } from 'react'
 import { useRouter } from 'next/router'
 import { useAlert } from 'react-alert'
 
-import { useSignOut } from 'hooks/useSignOut'
+import useSignOut from 'hooks/useSignOut'
 import useLanguage from 'hooks/useLanguage'
 
 import nprogress from 'nprogress'
