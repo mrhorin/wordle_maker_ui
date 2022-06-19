@@ -4,11 +4,11 @@ import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import { useState, useEffect, useCallback } from 'react'
 import { useAlert } from 'react-alert'
+import Confetti from 'react-confetti'
 
 import useCopyToClipboard from 'hooks/useCopyToClipboard'
 import useLanguage from 'hooks/useLanguage'
 
-import Confetti from 'react-confetti'
 import TileComponent from 'components/game/tile'
 import NextGameTimer from 'components/game/next_game_timer'
 import Modal from 'components/modal'
@@ -103,6 +103,7 @@ const Games = (props: Props) => {
   const [currentWord, setCurrentWord] = useState<string[]>([])
   const [statistics, setStatistics] = useState<Statistics>({ win: 0, lose: 0, currentStreak: 0, maxStreak: 0 })
   const [showResultModal, setShowResultModal] = useState<boolean>(false)
+  const [showHowToPlayModal, setShowHowToPlayModal] = useState<boolean>(false)
 
   const router = useRouter()
   const [clipboard, copy] = useCopyToClipboard()
@@ -119,10 +120,13 @@ const Games = (props: Props) => {
     /*
      * Load tilesTable & statistics from localStorage when Initializing. */
     if (gameStatus == GameStatus.Initializing) {
+      const prevStatistics: Statistics | null = loadStatistics()
+      if (prevStatistics) setStatistics(prevStatistics)
       const prevWordsState: WordsState | null = loadWordsState()
       if (!prevWordsState) {
         // When access for the first time
         setGameStatus(GameStatus.Ready)
+        if (prevStatistics == null) setShowHowToPlayModal(true)
       } else if (isExpired(prevWordsState.savedOn)) {
         // When wordState expires
         destroyAllExpiredWordsState()
@@ -136,8 +140,7 @@ const Games = (props: Props) => {
           })
         })
       }
-      const prevStatistics: Statistics | null = loadStatistics()
-      if (prevStatistics) setStatistics(prevStatistics)
+
     }
     /*
      * Show a result modal window when Finished.
@@ -405,7 +408,49 @@ const Games = (props: Props) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {/* Modal */}
+      {/* How to Play Modal */}
+      <Modal showModal={showHowToPlayModal} setShowModal={setShowHowToPlayModal}>
+        <div className='modal-window-container'>
+          <div className='modal-window-header' style={{position: 'relative'}}>
+            <div style={{ fontWeight: 'bold', fontSize: '1.5rem', textAlign: 'center' }}>How to Play</div>
+            <FontAwesomeIcon icon={faXmark} style={{ position: 'absolute', top: '15px', right: '15px', cursor: 'pointer' }} onClick={() => setShowHowToPlayModal(false)} />
+          </div>
+          <div className='modal-window-body'>
+            <div className='howtoplay'>
+              <div className='howtoplay-title'>{props.game.title}</div>
+              <div className='howtoplay-desc'>{props.game.desc}</div>
+              <div className='howtoplay-example'>
+                <div className='example'>
+                  <div className='example-label'>Examples</div>
+                  <div className='example-body'>
+                    <div className='example-word'>
+                      <div className='example-word-tile-correct'>A</div>
+                      <div className='example-word-tile-absent'>P</div>
+                      <div className='example-word-tile-absent'>P</div>
+                      <div className='example-word-tile-absent'>L</div>
+                      <div className='example-word-tile-absent'>E</div>
+                    </div>
+                    <p>A correct letter and correct position of the letter will be blue.</p>
+                    <div className='example-word'>
+                      <div className='example-word-tile-absent'>C</div>
+                      <div className='example-word-tile-present'>A</div>
+                      <div className='example-word-tile-absent'>T</div>
+                      <div className='example-word-tile-absent'>C</div>
+                      <div className='example-word-tile-absent'>H</div>
+                    </div>
+                    <p>A correct letter but wrong position of the letter will be yellow.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className='modal-window-footer'>
+
+          </div>
+        </div>
+      </Modal>
+
+      {/* Result Modal */}
       <Modal showModal={showResultModal} setShowModal={setShowResultModal}>
         <div className='modal-window-container'>
           <div className='modal-window-header' style={{position: 'relative'}}>

@@ -830,6 +830,68 @@ table{
   }
 }
 
+.howtoplay{
+  display: flex;
+  flex-direction: column;
+  .howtoplay-block{
+    padding: 1rem 0;
+  }
+  .howtoplay-title{
+    @extend .howtoplay-block;
+    order: 1;
+    font-size: 1.5rem;
+    font-weight: 500;
+    padding: 0;
+  }
+  .howtoplay-desc{
+    @extend .howtoplay-block;
+    order: 2;
+  }
+  .howtoplay-example{
+    @extend .howtoplay-block;
+    order: 3;
+    border-top: 1px solid $boarder-color;
+  }
+}
+
+.example{
+  .example-label{
+    font-weight: 500;
+    margin-bottom: 1rem;
+  }
+  .example-body{
+    .example-word{
+      display: flex;
+      flex-direction: row;
+      .example-word-tile{
+        font-size: 18px;
+        line-height: 24px;
+        width: 24px;
+        font-weight: bold;
+        text-transform: uppercase;
+        text-align: center;
+        border: 1px solid $font-color1;
+        margin: 3px;
+      }
+      .example-word-tile-correct{
+        @extend .example-word-tile;
+        background: $correct-color;
+        border: 1px solid $correct-color;
+      }
+      .example-word-tile-present{
+        @extend .example-word-tile;
+        background: $present-color;
+        border: 1px solid $present-color;
+      }
+      .example-word-tile-absent{
+        @extend .example-word-tile;
+        background: $absent-color;
+        border: 1px solid $absent-color;
+      }
+    }
+  }
+}
+
 .statistics{
   display: flex;
   flex-direction: row;
