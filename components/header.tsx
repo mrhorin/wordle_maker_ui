@@ -3,10 +3,11 @@ import { useContext, memo } from 'react'
 import { useAlert } from 'react-alert'
 import useSignOut from 'hooks/useSignOut'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCaretDown ,faGamepad, faGear, faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
+import { faBars, faCaretDown, faGamepad, faGear, faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 
 import CurrentUserInfoContext from 'contexts/current_user_info'
 import ShowAccountMenuContext from 'contexts/show_account_menu'
+import ShowSlideoutMenuContext from 'contexts/show_slideout_menu'
 
 import validate from 'scripts/validate'
 
@@ -16,6 +17,7 @@ import Image from 'next/image'
 const Header = () => {
   const currentUserInfoContext = useContext(CurrentUserInfoContext)
   const showAccountMenuContext = useContext(ShowAccountMenuContext)
+  const showSlideoutMenuContext = useContext(ShowSlideoutMenuContext)
   const router = useRouter()
   const alert = useAlert()
   const signOut = useSignOut()
@@ -72,7 +74,11 @@ const Header = () => {
   return (
     <header className='header'>
       <div className='container'>
-        <div className='header-menu'>Menu</div>
+        <div className='header-menu'>
+          <div className='header-menu-icon' onClick={() => showSlideoutMenuContext.set(!showSlideoutMenuContext.show)}>
+            <FontAwesomeIcon icon={faBars} />
+          </div>
+        </div>
         <div className='header-home'>
           <Link href="/">HOME</Link>
         </div>

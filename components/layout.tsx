@@ -7,6 +7,7 @@ import Header from 'components/header'
 import CurrentTokenContext from 'contexts/current_token'
 import CurrentUserInfoContext from 'contexts/current_user_info'
 import ShowAccountMenuContext from 'contexts/show_account_menu'
+import ShowSlideoutMenuContext from 'contexts/show_slideout_menu'
 
 import { ClientSideCookies } from 'scripts/cookie'
 import validate from 'scripts/validate'
@@ -15,6 +16,7 @@ const Layout: NextPage = ({ children }) => {
   const [currentToken, setCurrentToken] = useState<Token | null>(null)
   const [currentUserInfo, setCurrentUserInfo] = useState<UserInfo | null>(null)
   const [showAccountMenu, setShowAccountMenu] = useState<boolean>(false)
+  const [showSlideoutMenu, setShowSlideoutMenu] = useState<boolean>(false)
 
   useEffect(() => {
     const query: Query = getQuery()
@@ -91,10 +93,12 @@ const Layout: NextPage = ({ children }) => {
     <CurrentTokenContext.Provider value={{ currentToken, setCurrentToken }}>
       <CurrentUserInfoContext.Provider value={{ currentUserInfo, setCurrentUserInfo }}>
         <ShowAccountMenuContext.Provider value={{ showAccountMenu, setShowAccountMenu }}>
-          <div className='wrap' onClick={hideAccountMenu}>
-            <Header />
-            {children}
-          </div>
+          <ShowSlideoutMenuContext.Provider value={{ show: showSlideoutMenu, set: setShowSlideoutMenu }}>
+            <div className='wrap' onClick={hideAccountMenu}>
+              <Header />
+              {children}
+            </div>
+          </ShowSlideoutMenuContext.Provider>
         </ShowAccountMenuContext.Provider>
       </CurrentUserInfoContext.Provider>
     </CurrentTokenContext.Provider>

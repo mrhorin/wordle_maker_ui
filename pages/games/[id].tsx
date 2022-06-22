@@ -2,21 +2,24 @@ import type { Game, Word, Tile } from 'types/global'
 import Head from 'next/head'
 import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useContext } from 'react'
 import { useAlert } from 'react-alert'
 import Confetti from 'react-confetti'
 
 import useCopyToClipboard from 'hooks/useCopyToClipboard'
 import useLanguage from 'hooks/useLanguage'
 
+import SlideoutMenu from 'components/slideout_menu'
 import TileComponent from 'components/game/tile'
 import NextGameTimer from 'components/game/next_game_timer'
 import Modal from 'components/modal'
 import EnKeyboard from 'components/keyboard/en/qwerty'
 import JaKeyboard from 'components/keyboard/ja/gozyuon'
 
+import ShowSlideoutMenuContext from 'contexts/show_slideout_menu'
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faXmark, faCopy } from '@fortawesome/free-solid-svg-icons'
+import { faXmark, faCopy, faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
 import { faTwitter } from '@fortawesome/free-brands-svg-icons'
 
 type Props = {
@@ -104,6 +107,8 @@ const Games = (props: Props) => {
   const [statistics, setStatistics] = useState<Statistics>({ win: 0, lose: 0, currentStreak: 0, maxStreak: 0 })
   const [showResultModal, setShowResultModal] = useState<boolean>(false)
   const [showHowToPlayModal, setShowHowToPlayModal] = useState<boolean>(false)
+
+  const showSlideoutMenuContext = useContext(ShowSlideoutMenuContext)
 
   const router = useRouter()
   const [clipboard, copy] = useCopyToClipboard()
@@ -334,6 +339,11 @@ const Games = (props: Props) => {
     window.open(`https://twitter.com/intent/tweet?text=${encodeURI(getResultText())}`, '_blank')
   }
 
+  function handleClickHowToPlay(): void{
+    showSlideoutMenuContext.set(false)
+    setShowHowToPlayModal(true)
+  }
+
   const handleOnKeyDown = useCallback((key: string) => {
     if (gameStatus != GameStatus.Ready) return
     if (key == 'Enter') {
@@ -408,6 +418,10 @@ const Games = (props: Props) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <SlideoutMenu>
+        <li onClick={handleClickHowToPlay}><FontAwesomeIcon icon={faQuestionCircle} />How to Play</li>
+      </SlideoutMenu>
+
       {/* How to Play Modal */}
       <Modal showModal={showHowToPlayModal} setShowModal={setShowHowToPlayModal}>
         <div className='modal-window-container'>
@@ -445,7 +459,6 @@ const Games = (props: Props) => {
             </div>
           </div>
           <div className='modal-window-footer'>
-
           </div>
         </div>
       </Modal>
