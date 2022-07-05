@@ -8,6 +8,7 @@ import useSignOut from 'hooks/useSignOut'
 import ReactLoading from 'react-loading'
 import Head from 'next/head'
 
+import SlideoutMenu from 'components/slideout_menu'
 import Sidemenu from 'components/sidemenu'
 
 import { ServerSideCookies } from 'scripts/cookie'
@@ -104,6 +105,7 @@ const MygamesEditIndex = (props: Props) => {
       </Head>
 
       <div className='container'>
+        <SlideoutMenu />
         <div id='sidemenu-container'>
           <Sidemenu activeMenu={'edit' }/>
 

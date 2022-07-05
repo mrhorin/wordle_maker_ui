@@ -3,7 +3,7 @@ import { useContext, memo } from 'react'
 import { useAlert } from 'react-alert'
 import useSignOut from 'hooks/useSignOut'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBars, faCaretDown, faGamepad, faGear, faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
+import { faBars, faCaretDown, faGamepad, faPlus, faGear, faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 
 import CurrentUserInfoContext from 'contexts/current_user_info'
 import ShowAccountMenuContext from 'contexts/show_account_menu'
@@ -38,11 +38,15 @@ const Header = () => {
     }
   }
 
-  function handleMyGames(): void{
+  function handleEditGames(): void{
     router.push('/mygames/edit')
   }
 
-  function handleSettings(): void{
+  function handleCreateGames(): void{
+    router.push('/mygames/create')
+  }
+
+  function handleAccount(): void{
     router.push('/settings/account')
   }
 
@@ -60,8 +64,11 @@ const Header = () => {
           <Image src={currentUserInfoContext.currentUserInfo.image} width={30} height={30} />
           <FontAwesomeIcon icon={faCaretDown} />
           <ul className={getAccountMenuStyle()}>
-            <li onClick={handleMyGames}><FontAwesomeIcon icon={faGamepad} />My Games</li>
-            <li onClick={handleSettings}><FontAwesomeIcon icon={faGear} />Settings</li>
+            <li onClick={handleEditGames}><FontAwesomeIcon icon={faGamepad} />Edit Games</li>
+            <li onClick={handleCreateGames}><FontAwesomeIcon icon={faPlus} />Create Games</li>
+            <li className='header-account-menu-hide-separater'></li>
+            <li onClick={handleAccount}><FontAwesomeIcon icon={faGear} />Account</li>
+            <li className='header-account-menu-hide-separater'></li>
             <li onClick={handleSignOut}><FontAwesomeIcon icon={faRightFromBracket} />Sign Out</li>
           </ul>
         </div>

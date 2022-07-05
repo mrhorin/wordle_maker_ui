@@ -7,6 +7,7 @@ import useSignOut from 'hooks/useSignOut'
 import Head from 'next/head'
 import nprogress from 'nprogress'
 
+import SlideoutMenu from 'components/slideout_menu'
 import Sidemenu from 'components/sidemenu'
 import LoadingOverlay from 'components/loading_overlay'
 
@@ -104,6 +105,7 @@ const MygamesCreate = () => {
       </Head>
 
       <div className='container'>
+        <SlideoutMenu />
         <div id='sidemenu-container'>
           {/* Sidemenu */}
           <Sidemenu activeMenu={'create' }/>
