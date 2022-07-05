@@ -109,9 +109,12 @@ const MygamesCreate = () => {
           <Sidemenu activeMenu={'create' }/>
           {/* Main */}
           <div id='sidemenu-main'>
-            <h1 className='title'>Create a game</h1>
+            <div className='title'>
+              <div className='title-text'>Create a game</div>
+            </div>
+
             {/* Game Form */}
-            <form id='game-form' onSubmit={e => e.preventDefault()}>
+            <form id='game-form' className='sp-padding' onSubmit={e => e.preventDefault()}>
               {/* Title */}
               <div className='form-group'>
                 <label>Title</label>

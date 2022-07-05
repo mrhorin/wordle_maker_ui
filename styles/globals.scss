@@ -438,6 +438,14 @@ table{
     border-bottom: 2px solid $accent-color2;
     margin-bottom: -2px;
   }
+  @media screen and (max-width: $sp-break-point){
+    justify-content: space-between;
+    align-items: center;
+    .tab{
+      padding: 1rem 0.5rem;
+      word-break: keep-all;
+    }
+  }
 }
 
 .pagination{
@@ -673,6 +681,7 @@ table{
         padding: 0;
         margin: 0;
         list-style: none;
+        margin-bottom: 2rem;
         li{
           cursor: default;
           padding: 0.5rem;
@@ -710,12 +719,53 @@ table{
             margin-right: 0.5rem;
           }
         }
+        &:last-child{
+          margin-bottom: 0;
+        }
       }
     }
   }
   #sidemenu-main{
     width: 100%;
+    overflow: hidden;
     padding: 0 25px;
+  }
+  @media screen and (max-width: $sp-break-point){
+    flex-direction: column;
+    #sidemenu-main{
+      order: 1;
+      padding: 0;
+      padding-bottom: 8rem;
+    }
+    #sidemenu{
+      order: 2;
+      width: 100%;
+      position: fixed;
+      bottom: 0;
+      border-top: 1px solid $boarder-color;
+      background: $base-color1;
+      .sidemenu-items-container{
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        ul.sidemenu-item{
+          display: flex;
+          flex-direction: row;
+          margin-bottom: 0;
+          li{
+            font-size: 1.3rem;
+            padding: 0.5rem 2rem 2rem 2rem;
+            .sidemenu-item-text{
+              display: none;
+            }
+          }
+          li.sidemenu-item-title{
+            display: none;
+          }
+        }
+      }
+    }
   }
 }
 
@@ -1241,6 +1291,13 @@ table{
       order: 1;
       font-size: 1.3rem;
       line-height: 2rem;
+      color: $info-color;
+      a{
+        display: block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
     }
     .game-index-item-desc{
       order: 2;
@@ -1391,4 +1448,45 @@ table{
 .loading-center{
   text-align: center;
   margin: 0 auto;
+}
+
+.title{
+  margin: 2rem 0;
+  position: relative;
+  .title-button{
+    position: absolute;
+    left: 1rem;
+    font-size: 1.8rem;
+    line-height: 2rem;
+    a{color: $font-color1;}
+  }
+  .title-text{
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 1.5rem;
+    line-height: 2rem;
+    text-align: center;
+    padding: 0 3rem;
+  }
+  @media screen and (max-width: $sp-break-point){
+    margin: 0 0 2rem 0;
+    .title-button{
+      font-size: 1.3rem;
+      line-height: 2rem;
+    }
+    .title-text{
+      font-size: 1rem;
+      line-height: 2rem;
+      text-align: center;
+      padding: 0 2.5rem;
+    }
+  }
+}
+
+.sp-padding{
+  @media screen and (max-width: $sp-break-point){
+    padding: 0 1rem;
+  }
 }

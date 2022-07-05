@@ -119,7 +119,7 @@ const Summary = ({ game, setGame }: Props) => {
   }
 
   return (
-    <div className='game-edit-summary'>
+    <div className='game-edit-summary sp-padding'>
       {/* Gmae Link */}
       <div className='game-edit-link'>
         <label>Game Link</label>
@@ -131,6 +131,7 @@ const Summary = ({ game, setGame }: Props) => {
           </a>
         </Link>
       </div>
+      {/* Game Form */}
       <form id='game-form' onSubmit={e => e.preventDefault()}>
         {/* Title */}
         <div className='form-group'>

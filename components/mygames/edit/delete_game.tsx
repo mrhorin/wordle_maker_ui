@@ -70,7 +70,7 @@ const DeleteGame = ({ game }: Props) => {
   }
 
   return (
-    <div className='game-edit-delete' style={{ marginTop: '1rem' }}>
+    <div className='game-edit-delete sp-padding' style={{ marginTop: '1rem' }}>
       <button className='btn btn-danger' onClick={() => { setShowModal(true) }}>Delete Game</button>
 
       {/* Modal */}

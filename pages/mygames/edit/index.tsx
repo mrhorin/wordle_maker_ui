@@ -108,7 +108,10 @@ const MygamesEditIndex = (props: Props) => {
           <Sidemenu activeMenu={'edit' }/>
 
           <div id='sidemenu-main'>
-            <h1 className='title'>Edit games</h1>
+            <div className='title'>
+              <div className='title-text'>Edit games</div>
+            </div>
+
             <div className='game-index'>{createGameComponents()}</div>
           </div>
         </div>

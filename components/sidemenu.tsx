@@ -25,32 +25,37 @@ const Sidemenu = (props: Props) => {
         {/* My Games */}
         <ul className='sidemenu-item'>
           <li className='sidemenu-item-title'>
-            <FontAwesomeIcon icon={faGamepad} />My Games
+            <FontAwesomeIcon icon={faGamepad} />
+            <span className='sidemenu-item-text'>My Games</span>
           </li>
           <li ref={editEl}>
             <Link href="/mygames/edit">
               <a className='sidemenu-item sidemenu-item-mygames-edit'>
-                <FontAwesomeIcon icon={faPenToSquare} />Edit
+                <FontAwesomeIcon icon={faPenToSquare} />
+                <span className='sidemenu-item-text'>Edit</span>
               </a>
             </Link>
           </li>
           <li ref={createEl}>
             <Link href="/mygames/create" shallow={true}>
               <a className='sidemenu-item sidemenu-item-mygames-create'>
-                <FontAwesomeIcon icon={faPlus} />Create
+                <FontAwesomeIcon icon={faPlus} />
+                <span className='sidemenu-item-text'>Create</span>
               </a>
             </Link>
           </li>
         </ul>
         {/* Settings */}
-        <ul className='sidemenu-item' style={ {marginTop: '2rem'} }>
+        <ul className='sidemenu-item'>
           <li className='sidemenu-item-title'>
-            <FontAwesomeIcon icon={faGear} />Setteings
+            <FontAwesomeIcon icon={faGear} />
+            <span className='sidemenu-item-text'>Setteings</span>
           </li>
           <li ref={accountEl}>
             <Link href="/settings/account" shallow={true}>
               <a className='sidemenu-item sidemenu-item-settings-account'>
-                <FontAwesomeIcon icon={faUser} />Account
+                <FontAwesomeIcon icon={faUser} />
+                <span className='sidemenu-item-text'>Account</span>
               </a>
             </Link>
           </li>

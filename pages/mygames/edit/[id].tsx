@@ -5,6 +5,10 @@ import { useState, useEffect } from 'react'
 import useHash from 'hooks/useHash'
 
 import Head from 'next/head'
+import Link from 'next/link'
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowLeft} from '@fortawesome/free-solid-svg-icons'
 
 import Sidemenu from 'components/sidemenu'
 import Summary from 'components/mygames/edit/summary'
@@ -110,7 +114,13 @@ const MygamesEdit = (props: MygamesEditProps) => {
         <div id='sidemenu-container'>
           <Sidemenu activeMenu={'edit'}/>
           <div id='sidemenu-main'>
-            <h1 className='title'>Edit games</h1>
+            <div className='title'>
+              <div className='title-button'>
+                <Link href="/mygames/edit"><a><FontAwesomeIcon icon={faArrowLeft} /></a></Link>
+              </div>
+              <div className='title-text'>{props.game.title}</div>
+            </div>
+
             <div className='tabs-container'>
               {tabComponents}
             </div>

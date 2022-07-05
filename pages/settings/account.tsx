@@ -106,8 +106,13 @@ const Account = () => {
 
           {/* Main */}
           <div id='sidemenu-main'>
-            <h1 className='title'>Account</h1>
-            <button className='btn btn-danger' onClick={() => { setShowModal(true) }}>Delete Account</button>
+            <div className='title'>
+              <div className='title-text'>Account</div>
+            </div>
+
+            <div className='sp-padding'>
+              <button className='btn btn-danger' onClick={() => { setShowModal(true) }}>Delete Account</button>
+            </div>
           </div>
         </div>
       </div>
