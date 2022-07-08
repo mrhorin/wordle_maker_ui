@@ -3,7 +3,7 @@ import { useContext, memo } from 'react'
 import { useAlert } from 'react-alert'
 import useSignOut from 'hooks/useSignOut'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBars, faCaretDown, faGamepad, faPlus, faGear, faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
+import { faBars, faCaretDown, faEdit, faPlus, faGear, faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 
 import CurrentUserInfoContext from 'contexts/current_user_info'
 import ShowAccountMenuContext from 'contexts/show_account_menu'
@@ -64,8 +64,8 @@ const Header = () => {
           <Image src={currentUserInfoContext.currentUserInfo.image} width={30} height={30} />
           <FontAwesomeIcon icon={faCaretDown} />
           <ul className={getAccountMenuStyle()}>
-            <li onClick={handleEditGames}><FontAwesomeIcon icon={faGamepad} />Edit Games</li>
-            <li onClick={handleCreateGames}><FontAwesomeIcon icon={faPlus} />Create Games</li>
+            <li onClick={handleEditGames}><FontAwesomeIcon icon={faEdit} />Edit Games</li>
+            <li onClick={handleCreateGames}><FontAwesomeIcon icon={faPlus} />Create a Game</li>
             <li className='header-account-menu-hide-separater'></li>
             <li onClick={handleAccount}><FontAwesomeIcon icon={faGear} />Account</li>
             <li className='header-account-menu-hide-separater'></li>

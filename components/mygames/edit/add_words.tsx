@@ -128,7 +128,7 @@ const AddWords = ({ game }: Props) => {
   }
 
   return (
-    <div className='game-add-words sp-padding'>
+    <div className='mygames-edit-main sp-padding'>
       <div className='form-group'>
         <label>Words</label>
         <ChipTextarea chips={chips} addChips={addChips} removeChip={removeChip} updateChip={updateChip} maxLength={5000} />

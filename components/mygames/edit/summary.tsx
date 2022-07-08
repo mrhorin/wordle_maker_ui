@@ -119,9 +119,9 @@ const Summary = ({ game, setGame }: Props) => {
   }
 
   return (
-    <div className='game-edit-summary sp-padding'>
+    <div className='mygames-edit-main sp-padding'>
       {/* Gmae Link */}
-      <div className='game-edit-link'>
+      <div className='mygames-edit-link'>
         <label>Game Link</label>
         <Link href={`/games/${game.id}`}>
           <a>

@@ -113,17 +113,17 @@ const MygamesEdit = (props: MygamesEditProps) => {
       <div className='container'>
         <div id='sidemenu-container'>
           <Sidemenu activeMenu={'edit'}/>
-          <div id='sidemenu-main'>
-            <div className='title'>
-              <div className='title-button'>
-                <Link href="/mygames/edit"><a><FontAwesomeIcon icon={faArrowLeft} /></a></Link>
+          <div id='sidemenu-main' className='mygames-edit'>
+            <div className='mygames-edit-header'>
+              <div className='title'>
+                <div className='title-button'>
+                  <Link href="/mygames/edit"><a><FontAwesomeIcon icon={faArrowLeft} /></a></Link>
+                </div>
+                <div className='title-text'>{props.game.title}</div>
               </div>
-              <div className='title-text'>{props.game.title}</div>
+              <div className='tabs-container'>{tabComponents}</div>
             </div>
 
-            <div className='tabs-container'>
-              {tabComponents}
-            </div>
             {(() => {
               if (currentHash == tabs[0].hash) return <Summary game={game} setGame={setGame}/>
               if (currentHash == tabs[1].hash) return <AddWords game={game}/>

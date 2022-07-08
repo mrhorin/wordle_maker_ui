@@ -423,7 +423,8 @@ table{
   margin-bottom: 2rem;
   .tab{
     font-size: 1rem;
-    padding: 1rem;
+    padding: 0 1rem;
+    line-height: 3rem;
     color: $font-color2;
     font-weight: 500;
     cursor: pointer;
@@ -442,7 +443,8 @@ table{
     justify-content: space-between;
     align-items: center;
     .tab{
-      padding: 1rem 0.5rem;
+      padding: 0 0.5rem;
+      line-height: 2.5rem;
       word-break: keep-all;
     }
   }
@@ -1339,7 +1341,23 @@ table{
 }
 
 /* ------- MygamesEdit ------- */
-.game-edit-link{
+.mygames-edit{
+  @media screen and (max-width: $sp-break-point){
+    .mygames-edit-header{
+      position: fixed;
+      top: 70px;
+      z-index: 5;
+      background: $base-color1;
+      .tabs-container{
+        margin-bottom: 0;
+      }
+    }
+    .mygames-edit-main{
+      padding-top: 100px;
+    }
+  }
+}
+.mygames-edit-link{
   margin-bottom: 1rem;
   label{
     margin-bottom: 0.3rem;
@@ -1476,7 +1494,7 @@ table{
     padding: 0 3rem;
   }
   @media screen and (max-width: $sp-break-point){
-    margin: 0 0 2rem 0;
+    margin: 0;
     .title-button{
       font-size: 1.3rem;
       line-height: 2rem;

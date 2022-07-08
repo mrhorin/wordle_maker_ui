@@ -227,7 +227,7 @@ const EditWords = ({ game }: EditWordsProps) => {
       return <TrWordMemo key={s.id} word={s} handleClickEdit={handleClickEdit} handleClickDelete={handleClickDelete} />
     })
     return (
-      <div className='game-edit-words'>
+      <div className='mygames-edit-main'>
         {/* Modal */}
         <Modal showModal={showModal} setShowModal={setShowModal}>
           <div className='modal-window-container'>
