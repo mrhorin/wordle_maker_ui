@@ -1,13 +1,10 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import { useContext } from 'react'
 
 import SlideoutMenu from 'components/slideout_menu'
 
-import ShowSlideoutMenuContext from 'contexts/show_slideout_menu'
 
 const Home: NextPage = () => {
-  const showSlideoutMenuContext = useContext(ShowSlideoutMenuContext)
 
   return (
     <main id='main'>

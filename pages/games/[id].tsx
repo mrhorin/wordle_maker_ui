@@ -419,7 +419,9 @@ const Games = (props: Props) => {
       </Head>
 
       <SlideoutMenu>
-        <li onClick={handleClickHowToPlay}><FontAwesomeIcon icon={faQuestionCircle} />How to Play</li>
+        <li onClick={handleClickHowToPlay}>
+          <a><FontAwesomeIcon icon={faQuestionCircle} />How to Play</a>
+        </li>
       </SlideoutMenu>
 
       {/* How to Play Modal */}
