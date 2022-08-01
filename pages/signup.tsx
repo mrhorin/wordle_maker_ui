@@ -7,6 +7,8 @@ import { faTwitter } from '@fortawesome/free-brands-svg-icons'
 
 import SlideoutMenu from 'components/slideout_menu'
 
+import Link from 'next/link'
+
 const Signup: NextPage = () => {
   const [checkedTosAgreement, setCheckedTosAgreement] = useState<boolean>(false)
   const handleCheckedTosAgreement = useMemo(() => {
@@ -25,6 +27,12 @@ const Signup: NextPage = () => {
         <SlideoutMenu />
 
         <h1 className='title'>Sign up</h1>
+        <p>
+          <Link href="/tos" shallow={true}>
+            <a target="_blank">Terms of Service</a>
+          </Link>
+        </p>
+
         <form method="post" action='http://localhost:3000/api/v1/auth/twitter'>
           {/* tos_agreement */}
           <div className='form-group-checkbox' style={{ marginBottom: '1rem' }}>
