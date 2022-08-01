@@ -2,6 +2,8 @@ import type { UserInfo, Token, Game } from 'types/global'
 import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import { useState, useLayoutEffect } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faLock } from '@fortawesome/free-solid-svg-icons'
 
 import useSignOut from 'hooks/useSignOut'
 
@@ -37,13 +39,18 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 const MygamesEditIndex = (props: Props) => {
   const [games, setGames] = useState<Game[] | null>(null)
+  const [isSuspended, setIsSuspended] = useState<boolean>(false)
   const router = useRouter()
   const signOut = useSignOut()
 
   useLayoutEffect(() => {
     if (validate.token(props.token)) {
       fetchListCurrentGames(props.token).then((json) => {
-        if (json.ok) setGames(json.data.map((item: Game) => item))
+        if (json.ok) {
+          setGames(json.data.map((item: Game) => item))
+        } else {
+          setIsSuspended(true)
+        }
       })
     } else {
       signOut(() => router.replace('/signup'))
@@ -51,13 +58,21 @@ const MygamesEditIndex = (props: Props) => {
   }, [])
 
   function createGameComponents(): JSX.Element[] | JSX.Element{
-    if (games && games.length > 0) {
+    if (isSuspended) {
+      return <p style={{textAlign: 'center', margin: '10rem auto'}}>Your account is suspended.</p>
+    } else if (games && games.length > 0) {
       const gameComponents: JSX.Element[] = games.map((game: Game, index: number) => {
         return (
           <div className='game-index-item' key={index}>
             {/* Title */}
             <div className='game-index-item-title'>
-              <Link href={`/mygames/edit/${game.id}#summary`}><a>{game.title}</a></Link>
+              {(() => {
+                if (game.is_suspended) {
+                  return <span className='game-index-item-title-lock'><FontAwesomeIcon icon={faLock} />{game.title}</span>
+                } else {
+                  return <Link href={`/mygames/edit/${game.id}#summary`}><a>{game.title}</a></Link>
+                }
+              })()}
             </div>
             {/* Description */}
             <div className='game-index-item-desc'>{game.desc}</div>
@@ -77,7 +92,7 @@ const MygamesEditIndex = (props: Props) => {
         )
       })
       return gameComponents
-    }else if(games == null){
+    } else if (games == null) {
       return <ReactLoading type={'spin'} color={'#008eff'} height={'25px'} width={'25px'} className='loading-center' />
     } else {
       return <p style={{textAlign: 'center', margin: '10rem auto'}}>Looks like you haven't created anything yet..?</p>

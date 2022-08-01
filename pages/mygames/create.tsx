@@ -80,7 +80,7 @@ const MygamesCreate = () => {
               alert.show('CREATED', {type: 'success'})
               router.push(`/mygames/edit/${json.data.id}#add-words`)
             } else {
-              alert.show('FAILED', {type: 'error'})
+              alert.show(json.message, {type: 'error'})
               console.error(json)
               setShowOverlay(false)
             }

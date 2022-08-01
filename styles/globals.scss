@@ -1310,12 +1310,19 @@ table{
       order: 1;
       font-size: 1.3rem;
       line-height: 2rem;
-      color: $info-color;
       a{
+        color: $info-color;
         display: block;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+      }
+      .game-index-item-title-lock{
+        svg, i{
+          margin-right: 0.3rem;
+        }
+        color: darken($font-color1, 20%);
+        cursor: not-allowed;
       }
     }
     .game-index-item-desc{

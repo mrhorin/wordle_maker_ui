@@ -31,6 +31,7 @@ export type Game = {
   challenge_count: number,
   id?: number,
   user_id?: number,
+  is_suspended?: boolean,
 }
 
 export type Word = {
