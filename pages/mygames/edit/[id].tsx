@@ -49,6 +49,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (res.status == 200) {
     const json = await res.json()
     if (json.ok) game = json.data as Game
+  } else if (res.status == 403 || res.status == 404) {
+    return { notFound: true }
   }
 
   if (validate.token(token) && validate.userInfo(userInfo) && game) {

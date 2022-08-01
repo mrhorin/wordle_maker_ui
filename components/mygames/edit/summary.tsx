@@ -124,7 +124,7 @@ const Summary = ({ game, setGame }: Props) => {
       <div className='mygames-edit-link'>
         <label>Game Link</label>
         <Link href={`/games/${game.id}`}>
-          <a>
+          <a target="_blank">
             <button className='btn btn-secondary'>
               {`http://localhost:8000/games/${game.id}`}
             </button>

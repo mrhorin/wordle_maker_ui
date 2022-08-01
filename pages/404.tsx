@@ -11,7 +11,7 @@ export default function Custom404(){
 
       <div className='container'>
         <h1>404 Not Found</h1>
-        <p>Oops! The game was not found or hasn't had any words yet..</p>
+        <p>Oops! This game you're looking for is not found or suspended for some reasons...</p>
       </div>
     </main>
   )
