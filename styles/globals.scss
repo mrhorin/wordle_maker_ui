@@ -150,7 +150,7 @@ textarea::-webkit-scrollbar-thumb{
 
 label{
   font-weight: bold;
-  color: $font-color2;
+  color: $font-color1;
 }
 
 .form-group{
@@ -1500,7 +1500,7 @@ table{
     left: 1rem;
     font-size: 1.8rem;
     line-height: 2rem;
-    a{color: $font-color1;}
+    a{color: $font-color2;}
   }
   .title-text{
     font-weight: bold;
