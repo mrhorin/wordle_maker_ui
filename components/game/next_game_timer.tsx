@@ -12,7 +12,12 @@ const NextGameTimer = () => {
   }, [])
 
   useEffect(() => {
-    if (now && expiry && expiry > now) setTimeout(() => { setNow(new Date()) }, 1000)
+    if (now && expiry && expiry > now) {
+    // Save intervalId to clear the interval when the component re-renders
+      const countDownInterval = setInterval(() => { setNow(new Date()) }, 1000)
+      // Clear interval on re-render to avoid memory leaks
+      return () => clearInterval(countDownInterval)
+    }
   }, [now])
 
   const hours: string = now ? ('00' + (23 - now.getHours())).slice(-2) : '00'
