@@ -119,8 +119,9 @@ const MygamesEditIndex = (props: Props) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <SlideoutMenu />
+
       <div className='container'>
-        <SlideoutMenu />
         <div id='sidemenu-container'>
           <Sidemenu activeMenu={'edit' }/>
 
