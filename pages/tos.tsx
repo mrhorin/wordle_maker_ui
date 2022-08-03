@@ -15,7 +15,7 @@ const Tos = () => {
       <SlideoutMenu />
 
       <div className='container'>
-        <div className='text' style={{ padding: '1rem' }}>
+        <div className='text'>
           <h1>利用規約</h1>
           <div style={{textAlign: 'right'}}>最終変更日: 2022年7月16日</div>
           <p>

@@ -14,8 +14,10 @@ export default function Custom404(){
       <SlideoutMenu />
 
       <div className='container'>
-        <h1>404 Not Found</h1>
-        <p>Oops! This game you're looking for is not found or suspended for some reasons...</p>
+        <div className='text'>
+          <h1>404 Not Found</h1>
+          <p>Oops! This game you're looking for is not found or suspended for some reasons...</p>
+        </div>
       </div>
     </main>
   )
