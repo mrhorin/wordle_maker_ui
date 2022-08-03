@@ -65,7 +65,7 @@ const MygamesCreate = () => {
         }
         setShowOverlay(true)
         nprogress.start()
-        fetch('http://localhost:3000/api/v1/games/create', {
+        fetch('http://localhost:3000/api/v1/games', {
           method: 'POST',
           headers: {
             "Content-Type": "application/json",
