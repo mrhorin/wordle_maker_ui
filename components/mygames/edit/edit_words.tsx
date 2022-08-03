@@ -172,7 +172,7 @@ const EditWords = ({ game }: EditWordsProps) => {
   }
 
   async function fetchWords(token: Token, page: number) {
-    const res = await fetch(`http://localhost:3000/api/v1/games/${game.id}/words?page=${page}`, {
+    const res = await fetch(`http://localhost:3000/api/v1/games/${game.id}/words/edit?page=${page}`, {
       method: 'GET',
       headers: {
         'access-token': token.accessToken,

@@ -90,7 +90,7 @@ const AddWords = ({ game }: Props) => {
     if (validate.token(currentTokenContext.currentToken)) {
       if (validateWords() && game.id) {
         const words = chips.map(c => c.value)
-        const body = { words: words, game: { game_id: game.id } }
+        const body = { words: words, game_id: game.id }
         setShowOverlay(true)
         nprogress.start()
         fetch(`http://localhost:3000/api/v1/words`, {
