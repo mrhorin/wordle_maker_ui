@@ -75,7 +75,15 @@ const MygamesEditIndex = (props: Props) => {
               })()}
             </div>
             {/* Description */}
-            <div className='game-index-item-desc'>{game.desc}</div>
+            <div className='game-index-item-desc'>
+              {(() => {
+                if (game.is_suspended) {
+                  return "This game is locked due to a violation of our terms of service."
+                } else {
+                  return game.desc
+                }
+              })()}
+            </div>
             <div className='game-index-item-attrs'>
               {/* Language */}
               <div className='game-index-item-attrs-item'>
