@@ -17,15 +17,10 @@ import AddWords from 'components/mygames/edit/add_words'
 import EditWords from 'components/mygames/edit/edit_words'
 import DeleteGame from 'components/mygames/edit/delete_game'
 
+import useLocale from 'hooks/useLocale'
+
 import { ServerSideCookies } from 'scripts/cookie'
 import validate from 'scripts/validate'
-
-const tabs: Tab[] = [
-  { name: 'Summary', hash: 'summary' },
-  { name: 'Add Words', hash: 'add-words' },
-  { name: 'Edit Words', hash: 'edit-words' },
-  { name: 'Delete Game', hash: 'delete-game' },
-]
 
 type TabComponentProps = {
   tab: Tab,
@@ -90,6 +85,14 @@ const MygamesEdit = (props: MygamesEditProps) => {
    *  and is initialized in useEffect. */
   const [currentHash, setCurrentHash] = useHash()
   const router = useRouter()
+  const { t } = useLocale()
+
+  const tabs: Tab[] = [
+    { name: t.MY_GAMES.EDIT.TABS.SUMMARY, hash: 'summary' },
+    { name: t.MY_GAMES.EDIT.TABS.ADD_WORDS, hash: 'add-words' },
+    { name: t.MY_GAMES.EDIT.TABS.EDIT_WORDS, hash: 'edit-words' },
+    { name: t.MY_GAMES.EDIT.TABS.DELETE_GAME, hash: 'delete-game' },
+  ]
 
   useEffect(() => {
     // Initialize currentHash

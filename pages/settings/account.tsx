@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { useState, useMemo, useContext } from 'react'
 import { useAlert } from 'react-alert'
 
+import useLocale from 'hooks/useLocale'
 import useSignOut from 'hooks/useSignOut'
 
 import nprogress from 'nprogress'
@@ -29,6 +30,7 @@ const Account = () => {
     }
   }, [checkedConfirmation])
   const router = useRouter()
+  const { t } = useLocale()
   const alert = useAlert()
   const signOut = useSignOut()
 
@@ -77,23 +79,24 @@ const Account = () => {
       <Modal showModal={showModal} setShowModal={setShowModal}>
         <div className='modal-window-container'>
           <div className='modal-window-header'>
-            Delete Account
+            { t.SETTINGS.ACCOUNT.DELETE_ACCOUNT.MESSAGE.SURE }
           </div>
           <div className='modal-window-body'>
-            <p>Are you sure?</p>
             <ol>
-              <li>Your account and related information will be deleted.</li>
-              <li>We can't recover your account and related information you deleted.</li>
-              <li>If you send an inquiry to us about it, We can't reply to you.</li>
+              <li>{ t.SETTINGS.ACCOUNT.DELETE_ACCOUNT.MESSAGE.WILL_BE_DELETED }</li>
+              <li>{ t.SETTINGS.ACCOUNT.DELETE_ACCOUNT.MESSAGE.CANNOT_RECOVER }</li>
+              <li>{ t.SETTINGS.ACCOUNT.DELETE_ACCOUNT.MESSAGE.CANNOT_REPlY }</li>
             </ol>
             <div>
             <input type="checkbox" id="confirmation" checked={checkedConfirmation} onChange={handleConfirmation} />
-            <label>I agree.</label>
+            <label>{ t.FORM.I_AGREE }</label>
           </div>
           </div>
           <div className='modal-window-footer'>
-            <button className='btn btn-danger' onClick={handleClickDeleteAccount} disabled={!checkedConfirmation}>Delete Account</button>
-            <button className='btn btn-default' onClick={()=>setShowModal(false)}>Close</button>
+            <button className='btn btn-danger' onClick={handleClickDeleteAccount} disabled={!checkedConfirmation}>
+              {t.SETTINGS.ACCOUNT.DELETE_ACCOUNT.BUTTON}
+            </button>
+            <button className='btn btn-default' onClick={() => setShowModal(false)}>{ t.COMMON.CLOSE }</button>
           </div>
         </div>
       </Modal>
@@ -109,11 +112,11 @@ const Account = () => {
           {/* Main */}
           <div id='sidemenu-main'>
             <div className='title'>
-              <div className='title-text'>Account</div>
+              <div className='title-text'>{ t.SIDE_MENU.ACCOUNT }</div>
             </div>
 
             <div className='sp-padding'>
-              <button className='btn btn-danger' onClick={() => { setShowModal(true) }}>Delete Account</button>
+              <button className='btn btn-danger' onClick={() => { setShowModal(true) }}>{ t.SETTINGS.ACCOUNT.DELETE_ACCOUNT.BUTTON }</button>
             </div>
           </div>
         </div>

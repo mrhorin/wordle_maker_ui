@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLock } from '@fortawesome/free-solid-svg-icons'
 
 import useSignOut from 'hooks/useSignOut'
+import useLocale from 'hooks/useLocale'
 
 import ReactLoading from 'react-loading'
 import Head from 'next/head'
@@ -41,6 +42,7 @@ const MygamesEditIndex = (props: Props) => {
   const [games, setGames] = useState<Game[] | null>(null)
   const [isSuspended, setIsSuspended] = useState<boolean>(false)
   const router = useRouter()
+  const { t } = useLocale()
   const signOut = useSignOut()
 
   useLayoutEffect(() => {
@@ -87,12 +89,12 @@ const MygamesEditIndex = (props: Props) => {
             <div className='game-index-item-attrs'>
               {/* Language */}
               <div className='game-index-item-attrs-item'>
-                <div className='game-index-item-attrs-item-label'>Language:</div>
+                <div className='game-index-item-attrs-item-label'>{ t.GAME.LANGUAGE }:</div>
                 <div className='game-index-item-attrs-item-value'>{game.lang.toUpperCase()}</div>
               </div>
               {/* Character count */}
               <div className='game-index-item-attrs-item'>
-                <div className='game-index-item-attrs-item-label'>Character count:</div>
+                <div className='game-index-item-attrs-item-label'>{ t.GAME.CHARACTER_COUNT }:</div>
                 <div className='game-index-item-attrs-item-value'>{game.char_count}</div>
               </div>
             </div>
@@ -135,7 +137,7 @@ const MygamesEditIndex = (props: Props) => {
 
           <div id='sidemenu-main'>
             <div className='title'>
-              <div className='title-text'>Edit games</div>
+              <div className='title-text'>{ t.SIDE_MENU.EDIT }</div>
             </div>
 
             <div className='game-index'>{createGameComponents()}</div>

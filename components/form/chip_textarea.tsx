@@ -1,5 +1,6 @@
 import type { Chip } from 'types/global'
 import { useState, useCallback, useRef, useEffect } from 'react'
+import useLocale from 'hooks/useLocale'
 
 import ChipComponent from 'components/form/chip'
 
@@ -17,6 +18,7 @@ const ChipTextarea = ({ chips, addChips, removeChip, updateChip, maxLength }: Pr
   const inputEle = useRef<HTMLInputElement>(null)
   const textareaEle = useRef<HTMLInputElement>(null)
   const counterEle = useRef<HTMLInputElement>(null)
+  const { t } = useLocale()
 
   useEffect(() => {
     if (inputValue == ',') {
@@ -116,7 +118,7 @@ const ChipTextarea = ({ chips, addChips, removeChip, updateChip, maxLength }: Pr
       <div className='form-countable-input-group'>
         {textareComponent}
         <div ref={counterEle} className='form-countable-input-counter'>{`${getTotalCount()} / ${maxLength}`}</div>
-        <div className='form-group-desc'>Type words separated by commas.</div>
+        <div className='form-group-desc'>{ t.FORM.CHIP_TEXTAREA.NOTE }</div>
       </div>
     )
   } else {

@@ -11,6 +11,7 @@ import Link from 'next/link'
 import nprogress from 'nprogress'
 
 import useLanguage from 'hooks/useLanguage'
+import useLocale from 'hooks/useLocale'
 
 import LoadingOverlay from 'components/loading_overlay'
 
@@ -44,6 +45,7 @@ const Summary = ({ game, setGame }: Props) => {
   const currentTokenContext = useContext(CurrentTokenContext)
 
   const router = useRouter()
+  const { t } = useLocale()
   const alert = useAlert()
 
   const signOut = useSignOut()
@@ -122,7 +124,7 @@ const Summary = ({ game, setGame }: Props) => {
     <div className='mygames-edit-main sp-padding'>
       {/* Gmae Link */}
       <div className='mygames-edit-link'>
-        <label>Game Link</label>
+        <label>{ t.MY_GAMES.EDIT.SUMMARY.GAME_LINK }</label>
         <Link href={`/games/${game.id}`}>
           <a target="_blank">
             <button className='btn btn-secondary'>
@@ -135,7 +137,7 @@ const Summary = ({ game, setGame }: Props) => {
       <form id='game-form' onSubmit={e => e.preventDefault()}>
         {/* Title */}
         <div className='form-group'>
-          <label>Title</label>
+          <label>{ t.GAME.TITLE }</label>
           <div className='form-countable-input-group'>
             <input ref={inputTitleEl} type='text' id='game-title' maxLength={100} value={title} onChange={e => setTitle(e.target.value)} />
             <div className='form-countable-input-counter'>{`${title.length} / 100`}</div>
@@ -144,7 +146,7 @@ const Summary = ({ game, setGame }: Props) => {
         </div>
         {/* Description */}
         <div className='form-group'>
-          <label>Description</label>
+          <label>{ t.GAME.DESC }</label>
           <div className='form-countable-input-group'>
             <textarea id='game-desc' rows={3} maxLength={200} value={desc} onChange={e => setDesc(e.target.value)} />
             <div className='form-countable-input-counter'>{`${desc.length} / 200`}</div>
@@ -153,7 +155,7 @@ const Summary = ({ game, setGame }: Props) => {
         </div>
         {/* Challenge count */}
         <div className='form-group'>
-          <label>Challenge count</label>
+          <label>{ t.GAME.CHALLENGE_COUNT }</label>
           <select id='game-challengeount' value={challengeCount} onChange={e => setChallengeCount(Number(e.target.value))}>
             <option value='2'>2</option>
             <option value='3'>3</option>
@@ -168,16 +170,16 @@ const Summary = ({ game, setGame }: Props) => {
         </div>
         {/* Character count */}
         <div className='form-group'>
-          <label>Character count</label>
+          <label>{ t.GAME.CHARACTER_COUNT }</label>
           <input type='text' value={game.char_count} disabled={true} />
         </div>
         {/* Language */}
         <div className='form-group'>
-          <label>Language</label>
+          <label>{ t.GAME.LANGUAGE }</label>
           <input type='text' value={language.name} disabled={true} />
         </div>
-        {/* Submit */}
-        <button type='button' id='game-submit' className='btn btn-primary' disabled={!isChanged} onClick={handleClickUpdate}>Update</button>
+        {/* Update */}
+        <button type='button' id='game-submit' className='btn btn-primary' disabled={!isChanged} onClick={handleClickUpdate}>{ t.FORM.UPDATE }</button>
       </form>
       <LoadingOverlay showOverlay={showOverlay} />
     </div>

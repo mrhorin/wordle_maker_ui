@@ -1,6 +1,7 @@
 import type { Game } from 'types/global'
 import { useRouter } from 'next/router'
 import { useState, useContext, useMemo } from 'react'
+import useLocale from 'hooks/useLocale'
 import nprogress from 'nprogress'
 import { useAlert } from 'react-alert'
 
@@ -37,6 +38,7 @@ const DeleteGame = ({ game }: Props) => {
   }, [checkedConfirmation])
 
   const router = useRouter()
+  const { t } = useLocale()
   const alert = useAlert()
 
   function handleClickDelete(): void{
@@ -71,27 +73,26 @@ const DeleteGame = ({ game }: Props) => {
 
   return (
     <div className='mygames-edit-main sp-padding' style={{ marginTop: '1rem' }}>
-      <button className='btn btn-danger' onClick={() => { setShowModal(true) }}>Delete Game</button>
+      <button className='btn btn-danger' onClick={() => { setShowModal(true) }}>{ t.MY_GAMES.EDIT.DELETE_GAME.BUTTON }</button>
 
       {/* Modal */}
       <Modal showModal={showModal} setShowModal={setShowModal}>
         <div className='modal-window-container'>
           <div className='modal-window-header'>
-            Delete Game
+            { t.MY_GAMES.EDIT.DELETE_GAME.MESSAGE.SURE }
           </div>
           <div className='modal-window-body'>
-            <p>Are you sure?</p>
             <ol>
-              <li>The game will be deleted.</li>
-              <li>We can't recover it.</li>
-              <li>If you send an inquiry to us about it, we can't reply to you.</li>
+              <li>{ t.MY_GAMES.EDIT.DELETE_GAME.MESSAGE.WILL_BE_DELETED }</li>
+              <li>{ t.MY_GAMES.EDIT.DELETE_GAME.MESSAGE.CANNOT_RECOVER }</li>
+              <li>{ t.MY_GAMES.EDIT.DELETE_GAME.MESSAGE.CANNOT_REPlY }</li>
             </ol>
             <input type="checkbox" id="confirmation" checked={checkedConfirmation} onChange={handleConfirmation} />
-            <span style={{ fontWeight: '500' }}>I agree.</span>
+            <span style={{ fontWeight: '500' }}>{ t.FORM.I_AGREE }</span>
           </div>
           <div className='modal-window-footer'>
-            <button className='btn btn-danger' disabled={!checkedConfirmation} onClick={handleClickDelete}>Delete</button>
-            <button className='btn btn-default' onClick={()=>setShowModal(false)}>Close</button>
+            <button className='btn btn-danger' disabled={!checkedConfirmation} onClick={handleClickDelete}>{ t.COMMON.DELETE }</button>
+            <button className='btn btn-default' onClick={() => setShowModal(false)}>{ t.COMMON.CLOSE }</button>
           </div>
         </div>
       </Modal>

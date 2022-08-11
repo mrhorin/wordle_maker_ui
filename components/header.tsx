@@ -2,6 +2,7 @@ import { useRouter } from 'next/router'
 import { useContext, memo } from 'react'
 import { useAlert } from 'react-alert'
 import useSignOut from 'hooks/useSignOut'
+import useLocale from 'hooks/useLocale'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars, faCaretDown, faEdit, faPlus, faGear, faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 
@@ -13,16 +14,6 @@ import validate from 'scripts/validate'
 
 import Link from 'next/link'
 import Image from 'next/image'
-
-import en from 'locales/en'
-import ja from 'locales/ja'
-
-export const useLocale = () => {
-  const { locale } = useRouter()
-  console.log(locale)
-  const t = locale === "ja" ? ja : en
-  return { locale, t };
-}
 
 const Header = () => {
   const currentUserInfoContext = useContext(CurrentUserInfoContext)

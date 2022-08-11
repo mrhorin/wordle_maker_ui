@@ -3,6 +3,7 @@ import { useState, useContext, useRef } from 'react'
 import { useAlert } from 'react-alert'
 
 import useSignOut from 'hooks/useSignOut'
+import useLocale from 'hooks/useLocale'
 
 import Head from 'next/head'
 import nprogress from 'nprogress'
@@ -32,6 +33,7 @@ const MygamesCreate = () => {
 
   const signOut = useSignOut()
   const router = useRouter()
+  const { t } = useLocale()
   const alert = useAlert()
 
   function validateTitle(): boolean{
@@ -113,14 +115,14 @@ const MygamesCreate = () => {
           {/* Main */}
           <div id='sidemenu-main'>
             <div className='title'>
-              <div className='title-text'>Create a game</div>
+              <div className='title-text'>{ t.SIDE_MENU.CREATE }</div>
             </div>
 
             {/* Game Form */}
             <form id='game-form' className='sp-padding' onSubmit={e => e.preventDefault()}>
               {/* Title */}
               <div className='form-group'>
-                <label>Title</label>
+                <label>{ t.GAME.TITLE }</label>
                 <div className='form-countable-input-group'>
                   <input ref={inputTitleEl} id='game-title' type='text' maxLength={100} value={title} onChange={e => setTitle(e.target.value)} />
                   <div className='form-countable-input-counter'>{`${title.length} / 100`}</div>
@@ -129,7 +131,7 @@ const MygamesCreate = () => {
               </div>
               {/* Description */}
               <div className='form-group'>
-                <label>Description</label>
+                <label>{ t.GAME.DESC }</label>
                 <div className='form-countable-input-group'>
                   <textarea id='game-desc' rows={3} maxLength={200} value={desc} onChange={e => setDesc(e.target.value)} />
                   <div className='form-countable-input-counter'>{`${desc.length} / 200`}</div>
@@ -138,7 +140,7 @@ const MygamesCreate = () => {
               </div>
               {/* Challenge count */}
               <div className='form-group'>
-                <label>Challenge count</label>
+                <label>{ t.GAME.CHALLENGE_COUNT }</label>
                 <select id='game-challengeount' value={challengeCount} onChange={e => setChallengeCount(Number(e.target.value))}>
                   <option value='2'>2</option>
                   <option value='3'>3</option>
@@ -153,7 +155,7 @@ const MygamesCreate = () => {
               </div>
               {/* Character count */}
               <div className='form-group'>
-                <label>Character count</label>
+                <label>{ t.GAME.CHARACTER_COUNT }</label>
                 <select id='game-charcount' value={charCount} onChange={e => setCharCount(Number(e.target.value))}>
                   <option value='2'>2</option>
                   <option value='3'>3</option>
@@ -168,14 +170,16 @@ const MygamesCreate = () => {
               </div>
               {/* Language */}
               <div className='form-group'>
-                <label>Language</label>
+                <label>{ t.GAME.LANGUAGE }</label>
                 <select ref={selectLangEl} id='game-lang' value={lang} onChange={e => setLang(e.target.value)}>
                   <option value='en'>English</option>
                   <option value='ja'>Japanese</option>
                 </select>
               </div>
               {/* Submit */}
-              <button type='button' id='game-submit' className='btn btn-primary' disabled={title.length < 1 || title.length > 100} onClick={handleClickSubmit}>Submit</button>
+              <button type='button' id='game-submit' className='btn btn-primary' disabled={title.length < 1 || title.length > 100} onClick={handleClickSubmit}>
+              { t.FORM.SUBMIT }
+              </button>
             </form>
             <LoadingOverlay showOverlay={showOverlay} />
           </div>

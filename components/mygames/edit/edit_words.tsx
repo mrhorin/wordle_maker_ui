@@ -5,6 +5,7 @@ import ReactLoading from 'react-loading'
 import nprogress from 'nprogress'
 
 import useLanguage from 'hooks/useLanguage'
+import useLocale from 'hooks/useLocale'
 
 import PaginationComponent from 'components/pagination'
 import Modal from 'components/modal'
@@ -21,15 +22,17 @@ interface TrWordProps {
 }
 
 const TrWordMemo = memo(({ word, handleClickEdit, handleClickDelete }: TrWordProps) => {
+  const { t } = useLocale()
+
   return (
     <tr>
       <td className='table-td-word'>{ word.name }</td>
       <td className='table-td-edit'>
-        <button className='btn btn-mini btn-square btn-secondary' onClick={()=> handleClickEdit(word)}>Edit</button>
+        <button className='btn btn-mini btn-square btn-secondary' onClick={() => handleClickEdit(word)}>{ t.COMMON.EDIT }</button>
       </td>
       <td className='table-td-delete'>
         <button className='btn btn-mini btn-square btn-danger' onClick={() => handleClickDelete(word.id)}>
-          Delete
+          { t.COMMON.DELETE }
         </button>
       </td>
     </tr>
@@ -66,6 +69,7 @@ const EditWords = ({ game }: EditWordsProps) => {
   /********* Context *********/
   const currentTokenContext = useContext(CurrentTokenContext)
 
+  const { t } = useLocale()
   const alert = useAlert()
   const language = useLanguage(game.lang)
 
@@ -232,11 +236,11 @@ const EditWords = ({ game }: EditWordsProps) => {
         <Modal showModal={showModal} setShowModal={setShowModal}>
           <div className='modal-window-container'>
             <div className='modal-window-header'>
-              Edit Word
+              {t.COMMON.EDIT}
             </div>
             <div className='modal-window-body'>
               <div className='form-group'>
-                <label>Word</label>
+                <label>{ t.COMMON.WORD }</label>
                 <div className='form-countable-input-group'>
                   <input ref={inputUpdateWordModalEl} value={inputUpdateWord} type='text' maxLength={game.char_count} onChange={e => setInputUpdateWord(e.target.value)} />
                   <div className='form-countable-input-counter'>{`${inputUpdateWord.length} / ${game.char_count}`}</div>
@@ -245,8 +249,8 @@ const EditWords = ({ game }: EditWordsProps) => {
               </div>
             </div>
             <div className='modal-window-footer'>
-              <button className='btn btn-primary' onClick={handleClickUpdate}>Update</button>
-              <button className='btn btn-default' onClick={() => setShowModal(false)}>Close</button>
+              <button className='btn btn-primary' onClick={handleClickUpdate}>{t.FORM.UPDATE }</button>
+              <button className='btn btn-default' onClick={() => setShowModal(false)}>{ t.COMMON.CLOSE }</button>
             </div>
           </div>
         </Modal>
@@ -256,9 +260,9 @@ const EditWords = ({ game }: EditWordsProps) => {
         <table>
           <thead>
             <tr>
-              <th className='table-th-word'>Word</th>
-              <th className='table-th-date-edit'>Edit</th>
-              <th className='table-th-date-delete'>Delete</th>
+              <th className='table-th-word'>{ t.COMMON.WORD }</th>
+              <th className='table-th-date-edit'>{ t.COMMON.EDIT }</th>
+              <th className='table-th-date-delete'>{ t.COMMON.DELETE }</th>
             </tr>
           </thead>
           <tbody>{ wordComponents }</tbody>

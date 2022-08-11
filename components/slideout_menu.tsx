@@ -3,6 +3,8 @@ import { useContext, useLayoutEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark, faSignature } from '@fortawesome/free-solid-svg-icons'
 
+import useLocale from 'hooks/useLocale'
+
 import ShowSlideoutMenuContext from 'contexts/show_slideout_menu'
 
 type Props = {
@@ -12,6 +14,7 @@ type Props = {
 const SlideoutMenu = ({ children }: Props) => {
   const showSlideoutMenuContext = useContext(ShowSlideoutMenuContext)
   const router = useRouter()
+  const { t } = useLocale()
 
   useLayoutEffect(() => {
     showSlideoutMenuContext.set(false)
@@ -34,7 +37,7 @@ const SlideoutMenu = ({ children }: Props) => {
         <ul>
           {children}
           <li onClick={handleClickTerms}>
-            <a><FontAwesomeIcon icon={faSignature} />Terms</a>
+            <a><FontAwesomeIcon icon={faSignature} />{t.SLIDEOUT_MENU.TERMS}</a>
           </li>
         </ul>
       </div>

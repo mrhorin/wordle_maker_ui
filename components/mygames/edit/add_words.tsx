@@ -7,6 +7,7 @@ import { useAlert } from 'react-alert'
 
 import useSignOut from 'hooks/useSignOut'
 import useLanguage from 'hooks/useLanguage'
+import useLocale from 'hooks/useLocale'
 
 import nprogress from 'nprogress'
 
@@ -33,6 +34,7 @@ const AddWords = ({ game }: Props) => {
   const currentTokenContext = useContext(CurrentTokenContext)
 
   const router = useRouter()
+  const { t } = useLocale()
   const alert = useAlert()
 
   const signOut = useSignOut()
@@ -130,10 +132,9 @@ const AddWords = ({ game }: Props) => {
   return (
     <div className='mygames-edit-main sp-padding'>
       <div className='form-group'>
-        <label>Words</label>
         <ChipTextarea chips={chips} addChips={addChips} removeChip={removeChip} updateChip={updateChip} maxLength={5000} />
       </div>
-      <button className='btn btn-primary' disabled={!validateWords() || 0 == chips.length} onClick={handleClickSubmit}>Submit</button>
+      <button className='btn btn-primary' disabled={!validateWords() || 0 == chips.length} onClick={handleClickSubmit}>{ t.FORM.SUBMIT }</button>
       <LoadingOverlay showOverlay={showOverlay} />
     </div>
   )
