@@ -14,11 +14,22 @@ import validate from 'scripts/validate'
 import Link from 'next/link'
 import Image from 'next/image'
 
+import en from 'locales/en'
+import ja from 'locales/ja'
+
+export const useLocale = () => {
+  const { locale } = useRouter()
+  console.log(locale)
+  const t = locale === "ja" ? ja : en
+  return { locale, t };
+}
+
 const Header = () => {
   const currentUserInfoContext = useContext(CurrentUserInfoContext)
   const showAccountMenuContext = useContext(ShowAccountMenuContext)
   const showSlideoutMenuContext = useContext(ShowSlideoutMenuContext)
   const router = useRouter()
+  const { t } = useLocale()
   const alert = useAlert()
   const signOut = useSignOut()
 
@@ -64,12 +75,12 @@ const Header = () => {
           <Image src={currentUserInfoContext.currentUserInfo.image} width={30} height={30} />
           <FontAwesomeIcon icon={faCaretDown} />
           <ul className={getAccountMenuStyle()}>
-            <li onClick={handleEditGames}><FontAwesomeIcon icon={faEdit} />Edit Games</li>
-            <li onClick={handleCreateGames}><FontAwesomeIcon icon={faPlus} />Create a Game</li>
+            <li onClick={handleCreateGames}><FontAwesomeIcon icon={faPlus} />{t.HEADER.ACCOUNT.CREATE_A_GAME}</li>
+            <li onClick={handleEditGames}><FontAwesomeIcon icon={faEdit} />{t.HEADER.ACCOUNT.EDIT_GAMES}</li>
             <li className='header-account-menu-hide-separater'></li>
-            <li onClick={handleAccount}><FontAwesomeIcon icon={faGear} />Account</li>
+            <li onClick={handleAccount}><FontAwesomeIcon icon={faGear} />{t.HEADER.ACCOUNT.ACCOUNT}</li>
             <li className='header-account-menu-hide-separater'></li>
-            <li onClick={handleSignOut}><FontAwesomeIcon icon={faRightFromBracket} />Sign Out</li>
+            <li onClick={handleSignOut}><FontAwesomeIcon icon={faRightFromBracket} />{t.HEADER.ACCOUNT.SIGN_OUT}</li>
           </ul>
         </div>
       )
