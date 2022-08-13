@@ -119,9 +119,9 @@ const EditWords = ({ game }: EditWordsProps) => {
       fetchDeleteWord(currentTokenContext.currentToken, word_id).then(json => {
         if (json.ok) {
           removeWord(word_id)
-          alert.show('Deleted', { type: 'success' })
+          alert.show(t.ALERT.DELETED, { type: 'success' })
         } else {
-          alert.show('Failed', { type: 'error' })
+          alert.show(t.ALERT.FAILED, { type: 'error' })
         }
       }).finally(() => {
         nprogress.done()
@@ -144,10 +144,10 @@ const EditWords = ({ game }: EditWordsProps) => {
           if (json.ok) {
             updateWord(json.data)
             setShowModal(false)
-            alert.show('Updated', { type: 'success' })
+            alert.show(t.ALERT.UPDATED, { type: 'success' })
           } else {
             console.error(json)
-            alert.show('Failed', { type: 'error' })
+            alert.show(t.ALERT.FAILED, { type: 'error' })
           }
         }).catch(error => {
           console.log(error)

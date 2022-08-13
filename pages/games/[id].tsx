@@ -4,6 +4,7 @@ import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import { useState, useEffect, useCallback, useContext } from 'react'
 import { useAlert } from 'react-alert'
+import useLocale from 'hooks/useLocale'
 import Confetti from 'react-confetti'
 
 import useCopyToClipboard from 'hooks/useCopyToClipboard'
@@ -111,6 +112,7 @@ const Games = (props: Props) => {
   const showSlideoutMenuContext = useContext(ShowSlideoutMenuContext)
 
   const router = useRouter()
+  const { t } = useLocale()
   const [clipboard, copy] = useCopyToClipboard()
 
   const WORD_TODAY: string[] = props.wordToday.name.toUpperCase().split('')
@@ -332,7 +334,7 @@ const Games = (props: Props) => {
 
   function handleClickCopy(): void{
     copy(getResultText())
-    alert.show('Copyed Results', {type: 'success'})
+    alert.show(t.ALERT.COPIED, { type: 'success' })
   }
 
   function handleClickTweet(): void{

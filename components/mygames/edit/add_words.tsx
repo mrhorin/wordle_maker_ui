@@ -108,9 +108,9 @@ const AddWords = ({ game }: Props) => {
           .then(json => {
             if (json.ok) {
               setChips([])
-              alert.show(language.succeedMsg, { type: 'success' })
+              alert.show(t.ALERT.SUCCESS, { type: 'success' })
             } else {
-              alert.show(language.failedMsg, { type: 'error' })
+              alert.show(t.ALERT.FAILED, { type: 'error' })
               console.error(json)
             }
           })
@@ -122,7 +122,7 @@ const AddWords = ({ game }: Props) => {
             nprogress.done()
           })
       } else {
-        alert.show(language.getInvalidMsg(game.char_count), { type: 'error' })
+        alert.show(t.ALERT.ADDED_INVALID_WORDS.replace(/\*/g, game.char_count.toString()), { type: 'error' })
       }
     } else {
       signOut(() => router.replace('/signup'))

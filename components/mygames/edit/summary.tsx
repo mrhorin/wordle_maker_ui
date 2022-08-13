@@ -102,11 +102,11 @@ const Summary = ({ game, setGame }: Props) => {
         }).then(res => res.json())
           .then(json => {
             if (json.ok) {
-              alert.show('UPDATED', { type: 'success' })
+              alert.show(t.ALERT.UPDATED, { type: 'success' })
               setGame(json.data as Game)
             } else {
               console.error(json)
-              alert.show('FAILED', {type: 'error'})
+              alert.show(t.ALERT.FAILED, {type: 'error'})
             }
           })
           .catch(error => console.error(error))

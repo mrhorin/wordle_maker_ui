@@ -6,13 +6,24 @@ export default {
     DELETE: 'Delete',
     CLOSE: 'Close',
   },
+  ALERT: {
+    SIGN_OUT: 'SIGNED OUT',
+    SUCCESS: 'SUCCESS',
+    FAILED: 'FAILED',
+    CREATED: 'CREATED',
+    UPDATED: 'UPDATED',
+    SAVED: 'SAVED',
+    DELETED: 'DELETED',
+    COPIED: 'COPIED',
+    ADDED_INVALID_WORDS: 'Must be unique and * characters in English',
+  },
   HEADER: {
     ACCOUNT: {
       EDIT_GAMES: 'Edit Games',
       CREATE_A_GAME: 'Create a Game',
       ACCOUNT: 'Account',
       SIGN_OUT: 'Sign Out'
-    }
+    },
   },
   SLIDEOUT_MENU: {
     TERMS: 'Terms'

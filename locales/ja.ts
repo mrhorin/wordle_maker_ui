@@ -6,13 +6,24 @@ export default {
     DELETE: '削除',
     CLOSE: '閉じる',
   },
+  ALERT: {
+    SIGN_OUT: 'サインアウトしました',
+    SUCCESS: '成功しました',
+    FAILED: '失敗しました',
+    CREATED: '作成しました',
+    UPDATED: '更新しました',
+    SAVED: '保存しました',
+    DELETED: '削除しました',
+    COPIED: 'コピーしました',
+    ADDED_INVALID_WORDS: 'カタカナ*文字で一意の値を入力して下さい',
+  },
   HEADER: {
     ACCOUNT: {
       EDIT_GAMES: '編集',
       CREATE_A_GAME: '新規作成',
       ACCOUNT: 'アカウント',
       SIGN_OUT: 'サインアウト'
-    }
+    },
   },
   SLIDEOUT_MENU: {
     TERMS: '利用規約'

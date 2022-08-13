@@ -17,36 +17,6 @@ class Language{
     return ''
   }
 
-  public get succeedMsg(): string{
-    if (this.lang == 'en') return 'SUCCEED'
-    if (this.lang == 'ja') return '成功しました'
-    return ''
-  }
-
-  public get failedMsg(): string{
-    if (this.lang == 'en') return 'FAILED'
-    if (this.lang == 'ja') return '失敗しました'
-    return ''
-  }
-
-  public get updatedMsg(): string{
-    if (this.lang == 'en') return 'UPDATED'
-    if (this.lang == 'ja') return '更新しました'
-    return ''
-  }
-
-  public get savedMsg(): string{
-    if (this.lang == 'en') return 'SAVED'
-    if (this.lang == 'ja') return '保存しました'
-    return ''
-  }
-
-  public getInvalidMsg(charCount: string | number): string{
-    if (this.lang == 'en') return `Must be unique and ${charCount} characters in English`
-    if (this.lang == 'ja') return `${this.name}、${charCount}文字で一意の値を入力して下さい`
-    return ''
-  }
-
   public validateWord(word: string): boolean{
     const ptn: RegExp | null = this.regexp
     if(ptn == null) return false

@@ -56,10 +56,10 @@ const DeleteGame = ({ game }: Props) => {
       }).then(res => res.json())
         .then(json => {
           if (json.ok) {
-            alert.show('DELETED', {type: 'success'})
+            alert.show(t.ALERT.DELETED, {type: 'success'})
             router.replace('/mygames/edit')
           } else {
-            alert.show('FAILED', {type: 'error'})
+            alert.show(t.ALERT.FAILED, {type: 'error'})
             console.error(json.message)
           }
         })

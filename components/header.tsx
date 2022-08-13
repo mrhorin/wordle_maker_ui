@@ -54,7 +54,7 @@ const Header = () => {
 
   function handleSignOut(): void {
     signOut(() => {
-      alert.show('SIGNED OUT', {type: 'success'})
+      alert.show(t.ALERT.SIGN_OUT, { type: 'success' })
       router.push('/signup')
     })
   }

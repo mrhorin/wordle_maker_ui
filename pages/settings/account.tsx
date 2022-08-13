@@ -53,11 +53,11 @@ const Account = () => {
       fetchDeleteAccount(currentTokenContext.currentToken).then(json => {
         if (json.status == 'success') {
           signOut(() => {
-            alert.show('DELETED', {type: 'success'})
+            alert.show(t.ALERT.DELETED, { type: 'success' })
             router.replace('/')
           })
         } else {
-          alert.show('FAILED', {type: 'error'})
+          alert.show(t.ALERT.FAILED, { type: 'error' })
           console.error('Error', json)
         }
       }).catch(error => {
