@@ -58,6 +58,10 @@ export default {
       SUMMARY: {
         GAME_LINK: 'リンク',
       },
+      ADD_WORDS: {
+        CANNOT_ADD_DUPLICATED_WORDS: "登録済みのワードと重複するワードは登録できません",
+        WILL_TURN_RED: "無効なワードを入力すると赤色で表示されます",
+      },
       DELETE_GAME: {
         BUTTON: 'このゲームを削除する',
         MESSAGE: {
@@ -121,6 +125,6 @@ export default {
   },
   LANG: {
     EN: 'English',
-    JA: 'Japanese',
+    JA: '日本語(カタカナ)',
   },
 }

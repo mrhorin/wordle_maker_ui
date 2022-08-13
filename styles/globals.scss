@@ -1393,6 +1393,27 @@ table{
   }
 }
 
+/* --------- AddWords --------- */
+.addwords-attrs{
+  display: flex;
+  flex-direction: column;
+  .addwords-attrs-item{
+    display: flex;
+    flex-direction: row;
+    .addwords-attrs-item-label{
+      order: 1;
+      display: inline-block;
+      margin-right: 1rem;
+      color: darken($font-color1, 20%);
+    }
+    .addwords-attrs-item-value{
+      order: 2;
+      display: inline-block;
+    }
+  }
+}
+
+
 /* ------- ChipTextarea ------- */
 .chip-textarea{
   display: flex;
