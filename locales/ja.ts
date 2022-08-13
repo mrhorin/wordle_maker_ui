@@ -1,4 +1,6 @@
 export default {
+  APP_NAME: 'WORDLE MAKER',
+  APP_DESC: "Wordleにインスパイアされて作った言葉当てゲームメーカーです。日本語対応で、あなたの好きなワードを登録したオリジナルゲームを作ろう！",
   COMMON: {
     WORD: 'ワード',
     WORDS: 'ワード',
@@ -36,7 +38,17 @@ export default {
     ACCOUNT: 'アカウント'
   },
   MY_GAMES: {
+    TITLE: 'マイゲーム',
+    CREATE: {
+      TITLE: '新規作成'
+    },
     EDIT: {
+      TITLE: '編集',
+      INDEX: {
+        NO_GAME: "編集するゲームはありません。",
+        SUSPENDED_ACCOUNT: "規約違反により、あなたのアカウントは現在凍結されています。",
+        SUSPENDED_GAME: "規約違反により、このゲームは現在凍結されています。",
+      },
       TABS: {
         SUMMARY: 'Summary',
         ADD_WORDS: 'Add Words',
@@ -59,6 +71,7 @@ export default {
   },
   SETTINGS: {
     ACCOUNT: {
+      TITLE: 'アカウント',
       DELETE_ACCOUNT: {
         BUTTON: 'アカウントを削除する',
         MESSAGE: {
@@ -69,6 +82,26 @@ export default {
         }
       }
     }
+  },
+  SIGN_UP: {
+    TITLE: 'サインアップ',
+    I_AGREED: '利用規約に同意しました。',
+    CONTINUE: {
+      TWITTER: 'Twitterでサインイン',
+      FACEBOOK: 'Facebookでサインイン',
+      GOOGLE: 'Googleでサインイン',
+    },
+  },
+  TOS: {
+    TITLE: '利用規約'
+  },
+  NOT_FOUND: {
+    TITLE: '404 Not Found',
+    DESC: "お探しのページは見つかりませんでした。",
+  },
+  ERROR: {
+    TITLE: 'エラーページ',
+    DESC: 'エラーが発生しました。',
   },
   FORM: {
     UPDATE: '更新',
@@ -85,5 +118,9 @@ export default {
     CHALLENGE_COUNT: 'チャレンジ回数',
     CHARACTER_COUNT: '文字数',
     LANGUAGE: '言語',
-  }
+  },
+  LANG: {
+    EN: 'English',
+    JA: 'Japanese',
+  },
 }

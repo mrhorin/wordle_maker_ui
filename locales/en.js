@@ -1,4 +1,6 @@
 export default {
+  APP_NAME: 'WORDLE MAKER',
+  APP_DESC: "Numerical word puzzle game maker insinspired by Wordle! Let's play and create original word games!",
   COMMON: {
     WORD: 'Word',
     WORDS: 'Words',
@@ -36,7 +38,17 @@ export default {
     ACCOUNT: 'Account'
   },
   MY_GAMES: {
+    TITLE: 'My Gamses',
+    CREATE: {
+      TITLE: 'Create a New Game'
+    },
     EDIT: {
+      TITLE: 'Edit Games',
+      INDEX: {
+        NO_GAME: "Looks like you haven't created anything yet..?",
+        SUSPENDED_ACCOUNT: "Your account is currently suspended due to a violation of our terms of service.",
+        SUSPENDED_GAME: "This game is currently suspended due to a violation of our terms of service.",
+      },
       TABS: {
         SUMMARY: 'Summary',
         ADD_WORDS: 'Add Words',
@@ -59,6 +71,7 @@ export default {
   },
   SETTINGS: {
     ACCOUNT: {
+      TITLE: 'Account',
       DELETE_ACCOUNT: {
         BUTTON: 'Delete Account',
         MESSAGE: {
@@ -69,6 +82,26 @@ export default {
         }
       }
     }
+  },
+  SIGN_UP: {
+    TITLE: 'Sign up',
+    I_AGREED: 'I agreed to Terms of Service.',
+    CONTINUE: {
+      TWITTER: 'Continue with Twitter',
+      FACEBOOK: 'Continue with Facebook',
+      GOOGLE: 'Continue with Google',
+    },
+  },
+  TOS: {
+    TITLE: 'Terms of Service'
+  },
+  NOT_FOUND: {
+    TITLE: '404 Not Found',
+    DESC: "Oops! This game you're looking for is not found or suspended for some reasons...",
+  },
+  ERROR: {
+    TITLE: 'Error Page',
+    DESC: 'An error occurred.',
   },
   FORM: {
     UPDATE: 'Update',
@@ -82,8 +115,12 @@ export default {
   GAME: {
     TITLE: 'Title',
     DESC: 'Description',
-    CHALLENGE_COUNT: 'Challenge count',
-    CHARACTER_COUNT: 'Character count',
+    CHALLENGE_COUNT: 'Challenge Count',
+    CHARACTER_COUNT: 'Character Count',
     LANGUAGE: 'Language',
-  }
+  },
+  LANG: {
+    EN: 'English',
+    JA: 'Japanese',
+  },
 }
