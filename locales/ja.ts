@@ -53,7 +53,7 @@ export default {
         SUMMARY: 'Summary',
         ADD_WORDS: 'Add Words',
         EDIT_WORDS: 'Edit Words',
-        DELETE_GAME: 'Delete Game',
+        DELETE_GAME: 'Settings',
       },
       SUMMARY: {
         GAME_LINK: 'リンク',

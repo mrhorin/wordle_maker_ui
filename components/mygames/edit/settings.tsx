@@ -16,7 +16,7 @@ interface Props {
   game: Game
 }
 
-const DeleteGame = ({ game }: Props) => {
+const Settings = ({ game }: Props) => {
   /*
    * checkedConfirmation:
    *  The flag indicates whether an user agreed to delete the game or not. */
@@ -102,4 +102,4 @@ const DeleteGame = ({ game }: Props) => {
   )
 }
 
-export default DeleteGame
+export default Settings
