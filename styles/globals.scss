@@ -493,17 +493,6 @@ table{
   }
 }
 
-.title-obi{
-  svg, i{
-    margin-right: 0.5rem;
-  }
-  padding: 0 1rem;
-  font-size: 1rem;
-  line-height: 3rem;
-  background: $base-color3;
-  color: $font-color1;
-}
-
 .text{
   padding: 1rem;
 }
@@ -913,6 +902,102 @@ table{
   display: none;
 }
 
+/* ---------- GameIndexItem ---------- */
+.game-index{
+  display: flex;
+  flex-direction: column;
+  .game-index-item{
+    display: flex;
+    flex-direction: column;
+    margin: 1rem;
+    list-style-type: decimal;
+    .game-index-item-title{
+      order: 1;
+      font-size: 1.3rem;
+      line-height: 2rem;
+      a{
+        color: $info-color;
+        display: block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .game-index-item-title-lock{
+        svg, i{
+          margin-right: 0.3rem;
+        }
+        color: darken($font-color1, 20%);
+        cursor: not-allowed;
+      }
+    }
+    .game-index-item-desc{
+      order: 2;
+      font-size: 1rem;
+      line-height: 1.5rem;
+    }
+    .game-index-item-attrs{
+      order: 3;
+      font-size: 1rem;
+      line-height: 1.5rem;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      .game-index-item-attrs-item{
+        display: flex;
+        flex-direction: row;
+        margin-right: 2rem;
+        .game-index-item-attrs-item-label{
+          order: 1;
+          display: inline-block;
+          margin-right: 1rem;
+          color: darken($font-color1, 20%);
+        }
+        .game-index-item-attrs-item-value{
+          order: 2;
+          display: inline-block;
+        }
+      }
+      .game-index-item-attrs-item:last-child{
+        margin-right: 0;
+      }
+    }
+  }
+}
+
+/* --------------- Index --------------- */
+.index-board{
+  background: $base-color3;
+  padding: 2rem 1rem;
+  margin-bottom: 3rem;
+  .index-board-title{
+    text-align: center;
+    font-size: 4rem;
+    padding-bottom: 1rem;
+  }
+  .index-board-desc{
+    text-align: left;
+  }
+  @media screen and (max-width: $sp-break-point){
+    .index-board-title{
+      text-align: center;
+      font-size: 2rem;
+    }
+  }
+}
+.index-title{
+  svg, i{
+    margin-right: 0.5rem;
+  }
+  padding: 0 1rem;
+  font-size: 1rem;
+  line-height: 3rem;
+  border-left: 8px solid $correct-color;
+  @media screen and (max-width: $sp-break-point){
+    background: $base-color3;
+    color: $font-color1;
+  }
+}
+
 /* --------------- Games --------------- */
 .games{
   display: flex;
@@ -1311,68 +1396,6 @@ table{
       width: 9%;
       .keyboard-key{
         padding: 0;
-      }
-    }
-  }
-}
-
-/* ---------- MygamesEditIndex ---------- */
-.game-index{
-  display: flex;
-  flex-direction: column;
-  .game-index-item{
-    display: flex;
-    flex-direction: column;
-    margin: 1rem;
-    list-style-type: decimal;
-    .game-index-item-title{
-      order: 1;
-      font-size: 1.3rem;
-      line-height: 2rem;
-      a{
-        color: $info-color;
-        display: block;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      .game-index-item-title-lock{
-        svg, i{
-          margin-right: 0.3rem;
-        }
-        color: darken($font-color1, 20%);
-        cursor: not-allowed;
-      }
-    }
-    .game-index-item-desc{
-      order: 2;
-      font-size: 1rem;
-      line-height: 1.5rem;
-    }
-    .game-index-item-attrs{
-      order: 3;
-      font-size: 1rem;
-      line-height: 1.5rem;
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-start;
-      .game-index-item-attrs-item{
-        display: flex;
-        flex-direction: row;
-        margin-right: 2rem;
-        .game-index-item-attrs-item-label{
-          order: 1;
-          display: inline-block;
-          margin-right: 1rem;
-          color: darken($font-color1, 20%);
-        }
-        .game-index-item-attrs-item-value{
-          order: 2;
-          display: inline-block;
-        }
-      }
-      .game-index-item-attrs-item:last-child{
-        margin-right: 0;
       }
     }
   }

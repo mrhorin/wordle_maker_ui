@@ -1,5 +1,5 @@
 export default {
-  APP_NAME: 'WORDLE MAKER',
+  APP_NAME: 'Wordle Maker',
   APP_DESC: "Numerical word puzzle game maker insinspired by Wordle! Let's play and create original word games!",
   COMMON: {
     WORD: 'Word',

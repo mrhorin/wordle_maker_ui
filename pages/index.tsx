@@ -32,17 +32,26 @@ const Index = (props: Props) => {
 
   return (
     <main id='main'>
+      <Head>
+        <title>{t.APP_NAME}</title>
+        <meta name="description" content={t.APP_DESC} />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <SlideoutMenu />
+
+      <div className='index-board'>
+        <div className='container'>
+          <div className='index-board-title'>
+            {t.APP_NAME}
+          </div>
+          <div className='index-board-desc'>{t.APP_DESC}</div>
+        </div>
+      </div>
+
       <div className='container'>
-        <Head>
-          <title>{t.APP_NAME}</title>
-          <meta name="description" content={t.APP_DESC} />
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
-
-        <SlideoutMenu />
-
         {/* The Latest Games */}
-        <div className='title-obi'>
+        <div className='index-title'>
           <FontAwesomeIcon icon={faGamepad} />
           {t.INDEX.LATEST_GAMES}
         </div>
