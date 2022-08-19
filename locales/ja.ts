@@ -1,6 +1,6 @@
 export default {
   APP_NAME: 'Wordle Maker',
-  APP_DESC: "Wordleにインスパイアされて作った言葉当てゲームを作れるゲームメーカーです。英語だけでなく日本語にも対応！あなたの好きなワードを登録したオリジナルゲームを作ろう！",
+  APP_DESC: "Wordleにインスパイアされて作った言葉当てゲームを作れるゲームメーカーです。好きなワードを登録してオリジナルゲームを作ろう！",
   COMMON: {
     WORD: 'ワード',
     WORDS: 'ワード',
@@ -98,7 +98,8 @@ export default {
     },
   },
   INDEX: {
-    LATEST_GAMES: '新着ゲーム'
+    CREATE_GAME: 'ゲームを作ってみる',
+    LATEST_GAMES: '新着ゲーム',
   },
   GAMES: {
     HOW_TO_PLAY: {

@@ -971,15 +971,23 @@ table{
   margin-bottom: 3rem;
   .index-board-title{
     text-align: center;
-    font-size: 4rem;
+    font-size: 3rem;
+    font-weight: bold;
     padding-bottom: 1rem;
   }
   .index-board-desc{
     text-align: left;
   }
+  .index-board-signin{
+    text-align: center;
+    padding-top: 2rem;
+    .btn{
+      font-size: 1rem;
+      line-height: 2.5rem;
+    }
+  }
   @media screen and (max-width: $sp-break-point){
     .index-board-title{
-      text-align: center;
       font-size: 2rem;
     }
   }

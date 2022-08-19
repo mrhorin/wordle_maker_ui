@@ -9,6 +9,8 @@ import { faGamepad} from '@fortawesome/free-solid-svg-icons'
 import SlideoutMenu from 'components/slideout_menu'
 import GameIndexItem from 'components/game_index_item'
 
+import Link from 'next/link'
+
 type Props = {
   games: Game[]
 }
@@ -46,6 +48,15 @@ const Index = (props: Props) => {
             {t.APP_NAME}
           </div>
           <div className='index-board-desc'>{t.APP_DESC}</div>
+          <div className='index-board-signin'>
+            <Link href="/signup">
+              <a>
+                <button type='button' className='btn btn-primary'>
+                  {t.INDEX.CREATE_GAME}
+                </button>
+              </a>
+            </Link>
+          </div>
         </div>
       </div>
 

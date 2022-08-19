@@ -89,7 +89,8 @@ export default {
     }
   },
   INDEX: {
-    LATEST_GAMES: 'The Latest Games'
+    CREATE_GAME: 'Create Game',
+    LATEST_GAMES: 'The Latest Games',
   },
   GAMES: {
     HOW_TO_PLAY: {
