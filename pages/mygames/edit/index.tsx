@@ -50,8 +50,11 @@ const MygamesEditIndex = (props: Props) => {
       fetchListCurrentGames(props.token).then((json) => {
         if (json.ok) {
           setGames(json.data.map((item: Game) => item))
-        } else {
+        } else if (json.isSuspended) {
           setIsSuspended(true)
+          setGames([])
+        } else {
+          setGames([])
         }
       })
     } else {

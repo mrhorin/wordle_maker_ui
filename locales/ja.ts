@@ -46,8 +46,8 @@ export default {
       TITLE: '編集',
       INDEX: {
         NO_GAME: "編集するゲームはありません。",
-        SUSPENDED_ACCOUNT: "規約違反により、あなたのアカウントは現在凍結されています。",
-        SUSPENDED_GAME: "規約違反により、このゲームは現在凍結されています。",
+        SUSPENDED_ACCOUNT: "このアカウントは規約違反により、現在凍結されています。",
+        SUSPENDED_GAME: "このゲームは規約違反により、現在凍結されています。",
       },
       TABS: {
         SUMMARY: 'Summary',
