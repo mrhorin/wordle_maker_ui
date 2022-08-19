@@ -28,7 +28,8 @@ export default {
     },
   },
   SLIDEOUT_MENU: {
-    TERMS: 'Terms'
+    TERMS: 'Terms',
+    HOW_TO_PLAY: 'How to Play',
   },
   SIDE_MENU: {
     MY_GAMES: 'My Games',
@@ -86,6 +87,17 @@ export default {
         }
       }
     }
+  },
+  INDEX: {
+    LATEST_GAMES: 'The Latest Games'
+  },
+  GAMES: {
+    HOW_TO_PLAY: {
+      TITLE: 'How to Play',
+      EXAMPLES: 'Examples',
+      BLUE: 'A correct letter and correct position of the letter will be blue.',
+      YELLOW: 'A correct letter but wrong position of the letter will be yellow.',
+    },
   },
   SIGN_UP: {
     TITLE: 'Sign up',

@@ -422,7 +422,7 @@ const Games = (props: Props) => {
 
       <SlideoutMenu>
         <li onClick={handleClickHowToPlay}>
-          <a><FontAwesomeIcon icon={faQuestionCircle} />How to Play</a>
+          <a><FontAwesomeIcon icon={faQuestionCircle} />{t.SLIDEOUT_MENU.HOW_TO_PLAY}</a>
         </li>
       </SlideoutMenu>
 
@@ -430,7 +430,7 @@ const Games = (props: Props) => {
       <Modal showModal={showHowToPlayModal} setShowModal={setShowHowToPlayModal}>
         <div className='modal-window-container'>
           <div className='modal-window-header' style={{position: 'relative'}}>
-            <div style={{ fontWeight: 'bold', fontSize: '1.5rem', textAlign: 'center' }}>How to Play</div>
+            <div style={{ fontWeight: 'bold', fontSize: '1rem', textAlign: 'center' }}>{t.SLIDEOUT_MENU.HOW_TO_PLAY}</div>
             <FontAwesomeIcon icon={faXmark} style={{ position: 'absolute', top: '15px', right: '15px', cursor: 'pointer' }} onClick={() => setShowHowToPlayModal(false)} />
           </div>
           <div className='modal-window-body'>
@@ -439,7 +439,7 @@ const Games = (props: Props) => {
               <div className='howtoplay-desc'>{props.game.desc}</div>
               <div className='howtoplay-example'>
                 <div className='example'>
-                  <div className='example-label'>Examples</div>
+                  <div className='example-label'>{t.GAMES.HOW_TO_PLAY.EXAMPLES}</div>
                   <div className='example-body'>
                     <div className='example-word'>
                       <div className='example-word-tile-correct'>A</div>
@@ -448,7 +448,7 @@ const Games = (props: Props) => {
                       <div className='example-word-tile-absent'>L</div>
                       <div className='example-word-tile-absent'>E</div>
                     </div>
-                    <p>A correct letter and correct position of the letter will be blue.</p>
+                    <div className='example-text'>{t.GAMES.HOW_TO_PLAY.BLUE}</div>
                     <div className='example-word'>
                       <div className='example-word-tile-absent'>C</div>
                       <div className='example-word-tile-present'>A</div>
@@ -456,7 +456,7 @@ const Games = (props: Props) => {
                       <div className='example-word-tile-absent'>C</div>
                       <div className='example-word-tile-absent'>H</div>
                     </div>
-                    <p>A correct letter but wrong position of the letter will be yellow.</p>
+                    <div className='example-text'>{t.GAMES.HOW_TO_PLAY.YELLOW}</div>
                   </div>
                 </div>
               </div>

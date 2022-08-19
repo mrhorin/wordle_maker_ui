@@ -28,7 +28,8 @@ export default {
     },
   },
   SLIDEOUT_MENU: {
-    TERMS: '利用規約'
+    TERMS: '利用規約',
+    HOW_TO_PLAY: '遊び方',
   },
   SIDE_MENU: {
     MY_GAMES: 'マイゲーム',
@@ -94,6 +95,17 @@ export default {
       TWITTER: 'Twitterでサインイン',
       FACEBOOK: 'Facebookでサインイン',
       GOOGLE: 'Googleでサインイン',
+    },
+  },
+  INDEX: {
+    LATEST_GAMES: '新着ゲーム'
+  },
+  GAMES: {
+    HOW_TO_PLAY: {
+      TITLE: '遊び方',
+      EXAMPLES: '例:',
+      BLUE: '文字と文字の位置が正しい場合は青色になります。',
+      YELLOW: '文字は合っているが、文字の位置が間違っている場合は黄色になります。',
     },
   },
   TOS: {

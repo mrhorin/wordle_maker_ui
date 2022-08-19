@@ -1,12 +1,34 @@
-import type { NextPage } from 'next'
+import type { Game } from 'types/global'
+import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import useLocale from 'hooks/useLocale'
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faGamepad} from '@fortawesome/free-solid-svg-icons'
+
 import SlideoutMenu from 'components/slideout_menu'
+import GameIndexItem from 'components/game_index_item'
 
+type Props = {
+  games: Game[]
+}
 
-const Home: NextPage = () => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const res = await fetch('http://api:3000/api/v1/games/')
+  let games: Game[] = []
+  if (res.status == 200) {
+    const json = await res.json()
+    if (json.ok) games = json.data as Game[]
+  }
+  return { props: { games: games } }
+}
+
+const Index = (props: Props) => {
   const { t } = useLocale()
+
+  const gameComponents: JSX.Element[] = props.games.map((game: Game, index: number) => {
+    return <GameIndexItem game={game} href={`/games/${game.id}`} key={index} />
+  })
 
   return (
     <main id='main'>
@@ -19,12 +41,17 @@ const Home: NextPage = () => {
 
         <SlideoutMenu />
 
-        <h1 className='title'>
-          Home
-        </h1>
+        {/* The Latest Games */}
+        <div className='title-obi'>
+          <FontAwesomeIcon icon={faGamepad} />
+          {t.INDEX.LATEST_GAMES}
+        </div>
+        <div className='game-index'>
+          {gameComponents}
+        </div>
       </div>
     </main>
   )
 }
 
-export default Home
+export default Index

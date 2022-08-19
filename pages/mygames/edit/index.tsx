@@ -2,8 +2,6 @@ import type { UserInfo, Token, Game } from 'types/global'
 import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import { useState, useLayoutEffect } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faLock } from '@fortawesome/free-solid-svg-icons'
 
 import useSignOut from 'hooks/useSignOut'
 import useLocale from 'hooks/useLocale'
@@ -13,11 +11,10 @@ import Head from 'next/head'
 
 import SlideoutMenu from 'components/slideout_menu'
 import Sidemenu from 'components/sidemenu'
+import GameIndexItem from 'components/game_index_item'
 
 import { ServerSideCookies } from 'scripts/cookie'
 import validate from 'scripts/validate'
-
-import Link from 'next/link'
 
 type Props = {
   token: Token,
@@ -67,42 +64,7 @@ const MygamesEditIndex = (props: Props) => {
       return <p style={{ textAlign: 'center', margin: '10rem auto' }}>{t.MY_GAMES.EDIT.INDEX.SUSPENDED_ACCOUNT}</p>
     } else if (games && games.length > 0) {
       const gameComponents: JSX.Element[] = games.map((game: Game, index: number) => {
-        return (
-          <div className='game-index-item' key={index}>
-            {/* Title */}
-            <div className='game-index-item-title'>
-              {(() => {
-                if (game.is_suspended) {
-                  return <span className='game-index-item-title-lock'><FontAwesomeIcon icon={faLock} />{game.title}</span>
-                } else {
-                  return <Link href={`/mygames/edit/${game.id}#summary`}><a>{game.title}</a></Link>
-                }
-              })()}
-            </div>
-            {/* Description */}
-            <div className='game-index-item-desc'>
-              {(() => {
-                if (game.is_suspended) {
-                  return t.MY_GAMES.EDIT.INDEX.SUSPENDED_GAME
-                } else {
-                  return game.desc
-                }
-              })()}
-            </div>
-            <div className='game-index-item-attrs'>
-              {/* Character count */}
-              <div className='game-index-item-attrs-item'>
-                <div className='game-index-item-attrs-item-label'>{ t.GAME.CHARACTER_COUNT }:</div>
-                <div className='game-index-item-attrs-item-value'>{game.char_count}</div>
-              </div>
-              {/* Language */}
-              <div className='game-index-item-attrs-item'>
-                <div className='game-index-item-attrs-item-label'>{ t.GAME.LANGUAGE }:</div>
-                <div className='game-index-item-attrs-item-value'>{game.lang == 'ja' ? t.LANG.JA : t.LANG.EN}</div>
-              </div>
-            </div>
-          </div>
-        )
+        return <GameIndexItem game={game} href={`/mygames/edit/${game.id}#summary`} key={index} />
       })
       return gameComponents
     } else if (games == null) {
