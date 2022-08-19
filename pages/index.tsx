@@ -48,8 +48,8 @@ const Index = (props: Props) => {
             {t.APP_NAME}
           </div>
           <div className='index-board-desc'>{t.APP_DESC}</div>
-          <div className='index-board-signin'>
-            <Link href="/signup">
+          <div className='index-board-create'>
+            <Link href="/mygames/create">
               <a>
                 <button type='button' className='btn btn-primary'>
                   {t.INDEX.CREATE_GAME}

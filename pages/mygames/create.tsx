@@ -1,3 +1,5 @@
+import type { UserInfo, Token } from 'types/global'
+import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import { useState, useContext, useRef } from 'react'
 import { useAlert } from 'react-alert'
@@ -12,11 +14,29 @@ import SlideoutMenu from 'components/slideout_menu'
 import Sidemenu from 'components/sidemenu'
 import LoadingOverlay from 'components/loading_overlay'
 
+import { ServerSideCookies } from 'scripts/cookie'
 import validate from 'scripts/validate'
 
-import CurrentTokenContext from 'contexts/current_token'
+type Props = {
+  token: Token,
+  userInfo: UserInfo,
+}
 
-const MygamesCreate = () => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const cookies = new ServerSideCookies(context)
+  const props: Props = { token: cookies.token, userInfo: cookies.userInfo }
+
+  if (validate.token(props.token) && validate.userInfo(props.userInfo)) {
+    return { props: props }
+  } else {
+    return {
+      props: props,
+      redirect: { statusCode: 302, destination: '/signup' }
+    }
+  }
+}
+
+const MygamesCreate = (props: Props) => {
   /********** State **********/
   const [title, setTitle] = useState<string>('')
   const [desc, setDesc] = useState<string>('')
@@ -28,8 +48,6 @@ const MygamesCreate = () => {
   const inputTitleEl = useRef<HTMLInputElement>(null)
   const divTitleInvalidEl = useRef<HTMLDivElement>(null)
   const selectLangEl = useRef<HTMLSelectElement>(null)
-  /********* Context *********/
-  const currentTokenContext = useContext(CurrentTokenContext)
 
   const signOut = useSignOut()
   const router = useRouter()
@@ -54,7 +72,7 @@ const MygamesCreate = () => {
   }
 
   function handleClickSubmit(): void{
-    if (validate.token(currentTokenContext.currentToken)) {
+    if (validate.token(props.token)) {
       if (validateTitle()) {
         const body = {
           game: {
@@ -71,9 +89,9 @@ const MygamesCreate = () => {
           method: 'POST',
           headers: {
             "Content-Type": "application/json",
-            'access-token': currentTokenContext.currentToken.accessToken,
-            'client': currentTokenContext.currentToken.client,
-            'uid': currentTokenContext.currentToken.uid
+            'access-token': props.token.accessToken,
+            'client': props.token.client,
+            'uid': props.token.uid
           },
           body: JSON.stringify(body)
         }).then(res => res.json())
