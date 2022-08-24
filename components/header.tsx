@@ -89,7 +89,9 @@ const Header = () => {
           </div>
         </div>
         <div className='header-home'>
-          <Link href="/">HOME</Link>
+          <Link href="/">
+            <a><Image src="/icon.png" width={20} height={20} alt="icon" /></a>
+          </Link>
         </div>
         <div className='header-account'>
           { createHeaderAccountComponent() }

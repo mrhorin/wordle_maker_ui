@@ -538,7 +538,10 @@ table{
     text-align: center;
     font-weight: bold;
     a{ color: $font-color1; }
-    a:hover{  text-decoration: none; }
+    a:hover{
+      text-decoration: none;
+      cursor: pointer;
+    }
   }
   .header-account{
     order: 3;
