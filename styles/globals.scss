@@ -348,6 +348,9 @@ table{
   }
 }
 
+button{
+  white-space: nowrap;
+}
 .btn{
   font-size: 1rem;
   line-height: 1.7rem;
@@ -527,6 +530,9 @@ table{
       display: inline-flex;
       flex-direction: column;
       color: $font-color2;
+      border: 1px solid $font-color2;
+      border-radius: 5px;
+      padding: 3px;
       svg,i{
         order: 1;
         font-size: 22px;
@@ -536,6 +542,7 @@ table{
         content: 'MENU';
         font-size: 6px;
         font-weight: 500;
+        white-space: nowrap;
       }
       &:hover{
         cursor: pointer;
@@ -561,7 +568,11 @@ table{
     padding: 10px 25px 10px 10px;
     text-align: right;
     position: relative;
-    a:hover{ text-decoration: none; }
+    a{
+      button{
+        margin: 0;
+      }
+    }
     .header-account-image{
       display: inline-flex;
       flex-direction: row;

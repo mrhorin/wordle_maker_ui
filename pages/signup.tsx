@@ -29,24 +29,26 @@ const Signup: NextPage = () => {
 
         <SlideoutMenu />
 
-        <h1 className='title'>{t.SIGN_UP.TITLE}</h1>
-        <p>
-          <Link href="/tos" shallow={true}>
-            <a target="_blank">{t.TOS.TITLE}</a>
-          </Link>
-        </p>
+        <div className='text'>
+          <h1>{t.SIGN_UP.TITLE}</h1>
+          <p>
+            <Link href="/tos" shallow={true}>
+              <a target="_blank">{t.TOS.TITLE}</a>
+            </Link>
+          </p>
 
-        <form method="post" action='http://localhost:3000/api/v1/auth/twitter'>
-          {/* tos_agreement */}
-          <div className='form-group-checkbox' style={{ marginBottom: '1rem' }}>
-            <label onClick={handleCheckedTosAgreement}>{t.SIGN_UP.I_AGREED}</label>
-            <input type="checkbox" id="tos_agreement" checked={checkedTosAgreement} onChange={handleCheckedTosAgreement} />
-          </div>
-          <button className='btn btn-default' disabled={!checkedTosAgreement}>
-            <FontAwesomeIcon icon={faTwitter} style={{marginRight: '1rem'}} />
-            {t.SIGN_UP.CONTINUE.TWITTER}
-          </button>
-        </form>
+          <form method="post" action='http://localhost:3000/api/v1/auth/twitter'>
+            {/* tos_agreement */}
+            <div className='form-group-checkbox' style={{ marginBottom: '1rem' }}>
+              <label onClick={handleCheckedTosAgreement}>{t.SIGN_UP.I_AGREED}</label>
+              <input type="checkbox" id="tos_agreement" checked={checkedTosAgreement} onChange={handleCheckedTosAgreement} />
+            </div>
+            <button className='btn btn-default' disabled={!checkedTosAgreement}>
+              <FontAwesomeIcon icon={faTwitter} style={{marginRight: '1rem'}} />
+              {t.SIGN_UP.CONTINUE.TWITTER}
+            </button>
+          </form>
+        </div>
       </div>
     </main>
   )

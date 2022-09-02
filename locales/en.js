@@ -29,6 +29,7 @@ export default {
     },
   },
   SLIDEOUT_MENU: {
+    HOME: 'Home',
     TERMS: 'Terms',
     HOW_TO_PLAY: 'How to Play',
   },

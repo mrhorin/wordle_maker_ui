@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import { useContext, useLayoutEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faXmark, faSignature } from '@fortawesome/free-solid-svg-icons'
+import { faXmark, faHome, faSignature } from '@fortawesome/free-solid-svg-icons'
 
 import useLocale from 'hooks/useLocale'
 
@@ -20,6 +20,11 @@ const SlideoutMenu = ({ children }: Props) => {
     showSlideoutMenuContext.set(false)
   }, [])
 
+  function handleClickHome(): void{
+    router.push('/')
+    showSlideoutMenuContext.set(false)
+  }
+
   function handleClickTerms(): void{
     router.push('/tos')
     showSlideoutMenuContext.set(false)
@@ -36,6 +41,9 @@ const SlideoutMenu = ({ children }: Props) => {
         </div>
         <ul>
           {children}
+          <li onClick={handleClickHome}>
+            <a><FontAwesomeIcon icon={faHome} />{t.SLIDEOUT_MENU.HOME}</a>
+          </li>
           <li onClick={handleClickTerms}>
             <a><FontAwesomeIcon icon={faSignature} />{t.SLIDEOUT_MENU.TERMS}</a>
           </li>
