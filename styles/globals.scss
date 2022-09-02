@@ -547,6 +547,7 @@ button{
       &:hover{
         cursor: pointer;
         color: $font-color1;
+        border: 1px solid $font-color1;
       }
     }
   }
