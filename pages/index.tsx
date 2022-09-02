@@ -51,7 +51,7 @@ const Index = (props: Props) => {
           <div className='index-board-create'>
             <Link href="/mygames/create">
               <a>
-                <button type='button' className='btn btn-primary'>
+                <button type='button' className='btn btn-accent1'>
                   {t.INDEX.CREATE_GAME}
                 </button>
               </a>

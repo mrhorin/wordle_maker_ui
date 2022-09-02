@@ -1,5 +1,5 @@
 export default {
-  APP_NAME: 'Wordle Maker',
+  APP_NAME: 'Makele',
   APP_DESC: "Wordleにインスパイアされて作った言葉当てゲームを作れるゲームメーカーです。好きなワードを登録してオリジナルゲームを作ろう！",
   COMMON: {
     WORD: 'ワード',
@@ -20,6 +20,7 @@ export default {
     ADDED_INVALID_WORDS: 'カタカナ*文字で一意の値を入力して下さい',
   },
   HEADER: {
+    SIGN_UP: 'Sign Up',
     ACCOUNT: {
       EDIT_GAMES: '編集',
       CREATE_A_GAME: '新規作成',

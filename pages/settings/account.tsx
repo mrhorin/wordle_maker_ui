@@ -115,7 +115,7 @@ const Account = () => {
               <div className='title-text'>{ t.SIDE_MENU.ACCOUNT }</div>
             </div>
 
-            <div className='sp-padding'>
+            <div className='sp-padding' style={{ marginTop: '1rem' }}>
               <button className='btn btn-danger' onClick={() => { setShowModal(true) }}>{ t.SETTINGS.ACCOUNT.DELETE_ACCOUNT.BUTTON }</button>
             </div>
           </div>

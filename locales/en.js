@@ -1,5 +1,5 @@
 export default {
-  APP_NAME: 'Wordle Maker',
+  APP_NAME: 'Makele',
   APP_DESC: "Numerical word puzzle game maker insinspired by Wordle! Let's play and create original word games!",
   COMMON: {
     WORD: 'Word',
@@ -20,6 +20,7 @@ export default {
     ADDED_INVALID_WORDS: 'Must be unique and * characters in English',
   },
   HEADER: {
+    SIGN_UP: 'Sign Up',
     ACCOUNT: {
       EDIT_GAMES: 'Edit Games',
       CREATE_A_GAME: 'Create a Game',

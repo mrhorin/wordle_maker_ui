@@ -76,7 +76,15 @@ const Header = () => {
         </div>
       )
     } else {
-      return <Link href="/signup"><a>Sign Up</a></Link>
+      return (
+        <Link href="/signup">
+          <a>
+            <button type='button' className='btn btn-default'>
+              {t.HEADER.SIGN_UP}
+            </button>
+          </a>
+        </Link>
+      )
     }
   }
 
@@ -90,7 +98,7 @@ const Header = () => {
         </div>
         <div className='header-home'>
           <Link href="/">
-            <a><Image src="/icon.png" width={20} height={20} alt="icon" /></a>
+            <a><Image src="/icon.png" width={20} height={20} alt="HOME" /></a>
           </Link>
         </div>
         <div className='header-account'>

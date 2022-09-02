@@ -22,12 +22,14 @@ $font-color2: darken($font-color1, 30%);
 $font-color3: darken($font-color1, 35%);
 
 $default-color: #fafafa;
+$primary-color: #307fe5;
+$warning-color: #cf9e2a;
 $secondary-color: #565761;
-$danger-color: #d93333;
+$danger-color: #eb0000;
 $info-color: #5d9ff3;
 
-$correct-color: #307fe5;
-$present-color: #cf9e2a;
+$correct-color: $primary-color;
+$present-color: $warning-color;
 $absent-color: lighten($base-color1, 12%);
 
 $sp-break-point: 599px;
@@ -378,10 +380,10 @@ table{
   }
 }
 .btn.btn-primary{
-  color: #111111;
-  background-color: $accent-color1;
+  color: #fff;
+  background-color: $primary-color;
   &:hover{
-    background: darken($accent-color1, 8%);
+    background: darken($primary-color, 8%);
   }
   &:disabled{
     color: #656565;
@@ -425,6 +427,18 @@ table{
     cursor: not-allowed;
   }
 }
+.btn.btn-accent1{
+  color: #111;
+  background-color: $accent-color1;
+  &:hover{
+    background: darken($accent-color1, 8%);
+  }
+  &:disabled{
+    color: #838383;
+    background-color: #fa9393;
+    cursor: not-allowed;
+  }
+}
 
 .tabs-container{
   display: flex;
@@ -441,13 +455,11 @@ table{
     cursor: pointer;
   }
   .tab:hover{
-    color: $accent-color1;
-    border-bottom: 2px solid $accent-color1;
-    margin-bottom: -2px;
+    background: $base-color2;
   }
   .tab-active{
-    color: $accent-color2;
-    border-bottom: 2px solid $accent-color2;
+    color: $font-color1;
+    border-bottom: 2px solid $accent-color1;
     margin-bottom: -2px;
   }
   @media screen and (max-width: $sp-break-point){
@@ -711,12 +723,12 @@ table{
         margin-bottom: 2rem;
         li{
           cursor: default;
-          padding: 0.5rem;
           font-weight: 500;
           white-space: nowrap;
           text-align: left;
           a{
-            display: inline-block;
+            display: block;
+            padding: 0.5rem;
             svg, i{
               width: 30px;
               margin-right: 0.5rem;
@@ -724,21 +736,22 @@ table{
             color: $font-color2;
           }
           a:hover{
-            color: $accent-color1;
+            background: $base-color2;
             text-decoration: none;
             cursor: pointer;
           }
         }
         li.sidemenu-item-active{
-          a{ color: $accent-color2; }
+          a{ color: $accent-color1; }
           a:hover{
-            color: $accent-color1;
+            background: $base-color2;
             text-decoration: none;
             cursor: pointer;
           }
         }
         li.sidemenu-item-title,
         li.sidemenu-item-title:hover{
+          padding: 0.5rem;
           font-size: 1rem;
           color: $font-color1;
           svg, i{
@@ -782,7 +795,7 @@ table{
           margin-bottom: 0;
           li{
             font-size: 1.3rem;
-            padding: 0.5rem 2rem 2rem 2rem;
+            padding: 0.5rem 2rem 1rem 2rem;
             .sidemenu-item-text{
               display: none;
             }
