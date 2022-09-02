@@ -98,7 +98,7 @@ const Header = () => {
         </div>
         <div className='header-home'>
           <Link href="/">
-            <a><Image src="/icon.png" width={20} height={20} alt="HOME" /></a>
+            <a><Image src="/icon.png" width={23} height={23} alt="HOME" /></a>
           </Link>
         </div>
         <div className='header-account'>
