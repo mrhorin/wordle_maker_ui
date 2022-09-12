@@ -102,6 +102,7 @@ const MygamesEdit = (props: MygamesEditProps) => {
       setCurrentHash(tabs[0].hash)
       router.replace(`#${tabs[0].hash}`)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const tabComponents = tabs.map((t, index) => {

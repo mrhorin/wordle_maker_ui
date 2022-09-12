@@ -39,6 +39,8 @@ const TrWordMemo = memo(({ word, handleClickEdit, handleClickDelete }: TrWordPro
   )
 })
 
+TrWordMemo.displayName = 'TrWordMemo'
+
 interface EditWordsProps {
   game: Game
 }
@@ -91,6 +93,7 @@ const EditWords = ({ game }: EditWordsProps) => {
         )
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentWordList])
 
   const updateWord = useCallback((nextWord: Word) => {
@@ -100,6 +103,7 @@ const EditWords = ({ game }: EditWordsProps) => {
         return prevWord
       })
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const removeWord = useCallback((id: number) => {
@@ -108,12 +112,14 @@ const EditWords = ({ game }: EditWordsProps) => {
         return prevWord.id !== id
       })
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleClickEdit = useCallback((word: Word) => {
     setInputUpdateWord(word.name)
     setInputUpdateId(word.id)
     setShowModal(true)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleClickDelete = useCallback((word_id: number) => {
@@ -134,6 +140,7 @@ const EditWords = ({ game }: EditWordsProps) => {
         setShowOverlay(false)
       })
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   function handleClickUpdate() {
@@ -231,7 +238,7 @@ const EditWords = ({ game }: EditWordsProps) => {
 
   if (pagination?.total_count == 0) {
     // When words don't exist after fetching words and pagination data
-    return <p style={{textAlign: 'center', margin: '10rem auto'}}>Looks like you haven't created anything yet..?</p>
+    return <p style={{textAlign: 'center', margin: '10rem auto'}}>Looks like you have not created anything yet..?</p>
   } else if (currentWordList.length <= 0) {
     // When words don't exist before fetching words and pagination data
     return <ReactLoading type={'spin'} color={'#008eff'} height={'25px'} width={'25px'} className='loading-center' />

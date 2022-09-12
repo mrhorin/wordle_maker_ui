@@ -41,6 +41,7 @@ const ChipTextarea = ({ chips, addChips, removeChip, updateChip, maxLength }: Pr
         }
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputValue])
 
   useEffect(() => {
@@ -50,6 +51,7 @@ const ChipTextarea = ({ chips, addChips, removeChip, updateChip, maxLength }: Pr
       if (count > 0) count += 1
       setChipsCount(count)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chips])
 
   function getTotalCount(): number{
@@ -97,10 +99,12 @@ const ChipTextarea = ({ chips, addChips, removeChip, updateChip, maxLength }: Pr
 
   const handleChangeChip = useCallback((id: number, value: string) => {
     updateChip(id, value)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleClickChipXmark = useCallback((id: number): void => {
     removeChip(id)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const textareComponent = (

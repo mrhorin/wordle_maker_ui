@@ -210,6 +210,7 @@ const Games = (props: Props) => {
           alert.show(status, { type: 'error' })
         })
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameStatus])
 
   useEffect(() => {
@@ -227,6 +228,7 @@ const Games = (props: Props) => {
         setGameStatus(GameStatus.Ready)
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tilesTable])
 
   function getWinPercent(): number{
@@ -366,6 +368,7 @@ const Games = (props: Props) => {
         }
       })
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameStatus])
 
   /*

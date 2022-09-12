@@ -50,6 +50,7 @@ const AddWords = ({ game }: Props) => {
       })
       return prevChips.concat(newChips)
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const removeChip = useCallback((id: number): void => {
@@ -58,6 +59,7 @@ const AddWords = ({ game }: Props) => {
         return chip.id !== id
       })
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const updateChip = useCallback((id: number, value: string): void => {
@@ -73,6 +75,7 @@ const AddWords = ({ game }: Props) => {
         return prevChip
       })
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
 

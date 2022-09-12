@@ -18,6 +18,7 @@ const SlideoutMenu = ({ children }: Props) => {
 
   useLayoutEffect(() => {
     showSlideoutMenuContext.set(false)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   function handleClickHome(): void{
