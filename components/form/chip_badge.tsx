@@ -10,7 +10,7 @@ interface Props {
   handleChangeChip(id: number, value: string): void
 }
 
-const Chip = ({ chip, handleClickChipXmark, handleChangeChip }: Props) => {
+const ChipBadge = ({ chip, handleClickChipXmark, handleChangeChip }: Props) => {
   const [currentEditChipValue, setCurrentEditChipValue] = useState<string>(chip.value)
   const [isEditing, setIsEditing] = useState<boolean>(false)
 
@@ -65,4 +65,4 @@ const Chip = ({ chip, handleClickChipXmark, handleChangeChip }: Props) => {
   )
 }
 
-export default memo(Chip)
+export default memo(ChipBadge)

@@ -2,7 +2,7 @@ import type { Chip } from 'types/global'
 import { useState, useCallback, useRef, useEffect } from 'react'
 import useLocale from 'hooks/useLocale'
 
-import ChipComponent from 'components/form/chip'
+import ChipBadge from 'components/form/chip_badge'
 
 interface Props {
   chips: Chip[]
@@ -106,7 +106,7 @@ const ChipTextarea = ({ chips, addChips, removeChip, updateChip, maxLength }: Pr
   const textareComponent = (
     <div ref={textareaEle} className='chip-textarea' onClick={(e) => { handleClickTextarea(e) }}>
       {chips.map((chip) => {
-        return <ChipComponent key={chip.id} chip={chip} handleClickChipXmark={handleClickChipXmark} handleChangeChip={handleChangeChip} />
+        return <ChipBadge key={chip.id} chip={chip} handleClickChipXmark={handleClickChipXmark} handleChangeChip={handleChangeChip} />
       })}
       <input ref={inputEle} className='chip-textarea-input' type='text' value={inputValue}
         onChange={e => handleChangeInput(e)} onFocus={handleFocusInput} onBlur={handleBlurInput} />
