@@ -47,7 +47,7 @@ const Layout: NextPage = ({ children }) => {
       // When query doesn't have a token
       let prevToken: Token | null = ClientSideCookies.loadToken()
       let prevUserInfo: UserInfo | null = ClientSideCookies.loadUserInfo()
-      if (validate.token(prevToken) && validate.userInfo(prevUserInfo) && new Date(Number(prevToken.expiry.padEnd(13, '0'))) > new Date()) {
+      if (validate.token(prevToken) && validate.userInfo(prevUserInfo) && prevToken && new Date(Number(prevToken.expiry.padEnd(13, '0'))) > new Date()) {
         // Restore user info
         setCurrentToken(prevToken)
         setCurrentUserInfo(prevUserInfo)

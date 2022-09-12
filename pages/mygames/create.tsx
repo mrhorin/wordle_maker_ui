@@ -74,46 +74,48 @@ const MygamesCreate = (props: Props) => {
   function handleClickSubmit(): void{
     if (validate.token(props.token)) {
       if (validateTitle()) {
-        const body = {
-          game: {
-            'title': title,
-            'desc': desc,
-            'challenge_count': challengeCount,
-            'char_count': charCount,
-            'lang': lang
-          }
-        }
         setShowOverlay(true)
         nprogress.start()
-        fetch('http://localhost:3000/api/v1/games', {
-          method: 'POST',
-          headers: {
-            "Content-Type": "application/json",
-            'access-token': props.token.accessToken,
-            'client': props.token.client,
-            'uid': props.token.uid
-          },
-          body: JSON.stringify(body)
-        }).then(res => res.json())
-          .then(json => {
-            if (json.ok) {
-              alert.show(t.ALERT.CREATED, { type: 'success' })
-              router.push(`/mygames/edit/${json.data.id}#add-words`)
-            } else {
-              alert.show(json.message, {type: 'error'})
-              console.error(json)
-              setShowOverlay(false)
-            }
-          })
-          .catch(error => {
-            console.error(error)
+        fetchCreateGame(props.token).then(json => {
+          if (json.ok) {
+            alert.show(t.ALERT.CREATED, { type: 'success' })
+            router.push(`/mygames/edit/${json.data.id}#add-words`)
+          } else {
+            alert.show(json.message, {type: 'error'})
+            console.error(json)
             setShowOverlay(false)
-          })
-          .finally(() => { nprogress.done() })
+          }
+        }).catch(error => {
+          console.error(error)
+          setShowOverlay(false)
+        }).finally(() => { nprogress.done() })
       }
     } else {
       signOut(() => router.replace('/signup'))
     }
+  }
+
+  async function fetchCreateGame(token: Token) {
+    const body = {
+      game: {
+        'title': title,
+        'desc': desc,
+        'challenge_count': challengeCount,
+        'char_count': charCount,
+        'lang': lang
+      }
+    }
+    const res = await fetch('http://localhost:3000/api/v1/games', {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+        'access-token': props.token.accessToken,
+        'client': props.token.client,
+        'uid': props.token.uid
+      },
+      body: JSON.stringify(body)
+    })
+    return await res.json()
   }
 
   return (

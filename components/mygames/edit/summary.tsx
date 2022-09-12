@@ -1,6 +1,6 @@
 /*
  *  This component should be imported from MygamesEdit component. */
-import type { Game } from 'types/global'
+import type { Game, Token } from 'types/global'
 import { useEffect, useState, useRef, useContext } from 'react'
 import { useAlert } from 'react-alert'
 import { useRouter } from 'next/router'
@@ -79,45 +79,45 @@ const Summary = ({ game, setGame }: Props) => {
 
   function handleClickUpdate(): void{
     if (validate.token(currentTokenContext.currentToken)) {
-      if (validateTitle()) {
-        const body = {
-          game: {
-            'id': game.id,
-            'title': title,
-            'desc': desc,
-            'challenge_count': challengeCount,
-          }
-        }
         setShowOverlay(true)
         nprogress.start()
-        fetch(`http://localhost:3000/api/v1/games/${game.id}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': "application/json",
-            'access-token': currentTokenContext.currentToken.accessToken,
-            'client': currentTokenContext.currentToken.client,
-            'uid': currentTokenContext.currentToken.uid
-          },
-          body: JSON.stringify(body)
-        }).then(res => res.json())
-          .then(json => {
-            if (json.ok) {
-              alert.show(t.ALERT.UPDATED, { type: 'success' })
-              setGame(json.data as Game)
-            } else {
-              console.error(json)
-              alert.show(t.ALERT.FAILED, {type: 'error'})
-            }
-          })
-          .catch(error => console.error(error))
-          .finally(() => {
-            nprogress.done()
-            setShowOverlay(false)
-          })
-      }
+        fetchUpdate(currentTokenContext.currentToken as Token).then(json => {
+          if (json.ok) {
+            alert.show(t.ALERT.UPDATED, { type: 'success' })
+            setGame(json.data as Game)
+          } else {
+            console.error(json)
+            alert.show(t.ALERT.FAILED, {type: 'error'})
+          }
+        }).catch(error => console.error(error)).finally(() => {
+          nprogress.done()
+          setShowOverlay(false)
+        })
     } else {
       signOut(() => router.replace('/signup'))
     }
+  }
+
+  async function fetchUpdate(token: Token) {
+    const body = {
+      game: {
+        'id': game.id,
+        'title': title,
+        'desc': desc,
+        'challenge_count': challengeCount,
+      }
+    }
+    const res = await fetch(`http://localhost:3000/api/v1/games/${game.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': "application/json",
+        'access-token': token.accessToken,
+        'client': token.client,
+        'uid': token.uid
+      },
+      body: JSON.stringify(body)
+    })
+    return await res.json()
   }
 
   return (

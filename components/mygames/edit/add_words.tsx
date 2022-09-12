@@ -1,6 +1,6 @@
 /*
  *  This component should be imported from MygamesEdit component. */
-import type { Game, Chip } from 'types/global'
+import type { Game, Chip, Token } from 'types/global'
 import { useState, useCallback, useContext } from 'react'
 import { useRouter } from 'next/router'
 import { useAlert } from 'react-alert'
@@ -89,44 +89,46 @@ const AddWords = ({ game }: Props) => {
   }
 
   function handleClickSubmit(): void{
-    if (validate.token(currentTokenContext.currentToken)) {
+    if (validate.token(currentTokenContext.currentToken) && currentTokenContext.currentToken) {
       if (validateWords() && game.id) {
-        const words = chips.map(c => c.value)
-        const body = { words: words, game_id: game.id }
         setShowOverlay(true)
         nprogress.start()
-        fetch(`http://localhost:3000/api/v1/words`, {
-          method: 'POST',
-          headers: {
-            "Content-Type": "application/json",
-            'access-token': currentTokenContext.currentToken.accessToken,
-            'client': currentTokenContext.currentToken.client,
-            'uid': currentTokenContext.currentToken.uid
-          },
-          body: JSON.stringify(body)
-        }).then(res => res.json())
-          .then(json => {
-            if (json.ok) {
-              setChips([])
-              alert.show(t.ALERT.SUCCESS, { type: 'success' })
-            } else {
-              alert.show(t.ALERT.FAILED, { type: 'error' })
-              console.error(json)
-            }
-          })
-          .catch(error => {
-            console.log(error)
-          })
-          .finally(() => {
-            setShowOverlay(false)
-            nprogress.done()
-          })
+        fetchAddWords(currentTokenContext.currentToken as Token).then(json => {
+          if (json.ok) {
+            setChips([])
+            alert.show(t.ALERT.SUCCESS, { type: 'success' })
+          } else {
+            alert.show(t.ALERT.FAILED, { type: 'error' })
+            console.error(json)
+          }
+        }).catch(error => {
+          console.log(error)
+        }).finally(() => {
+          setShowOverlay(false)
+          nprogress.done()
+        })
       } else {
         alert.show(t.ALERT.ADDED_INVALID_WORDS.replace(/\*/g, game.char_count.toString()), { type: 'error' })
       }
     } else {
       signOut(() => router.replace('/signup'))
     }
+  }
+
+  async function fetchAddWords(token: Token) {
+    const words = chips.map(c => c.value)
+    const body = { words: words, game_id: game.id }
+    const res = await fetch(`http://localhost:3000/api/v1/words`, {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+        'access-token': token.accessToken,
+        'client': token.client,
+        'uid': token.uid
+      },
+      body: JSON.stringify(body)
+    })
+    return await res.json()
   }
 
   return (

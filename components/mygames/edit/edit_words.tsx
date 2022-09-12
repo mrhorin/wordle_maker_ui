@@ -79,12 +79,16 @@ const EditWords = ({ game }: EditWordsProps) => {
       if ((pagination == null) || (pagination.total_count > 0)) {
         // When rendered at first OR words exists, it fetches words
         nprogress.start()
-        fetchWords(currentTokenContext.currentToken, 1).then(json => {
+        fetchWords(currentTokenContext.currentToken as Token, 1).then(json => {
           if (json.ok) {
             setPagination(json.data.pagination)
             setCurrentWordList(json.data.words)
           }
-        }).finally(() => nprogress.done())
+        }).catch(error => {
+          console.log(error)
+        }).finally(
+          () => nprogress.done()
+        )
       }
     }
   }, [currentWordList])
@@ -116,13 +120,15 @@ const EditWords = ({ game }: EditWordsProps) => {
     if (validate.token(currentTokenContext.currentToken)) {
       setShowOverlay(true)
       nprogress.start()
-      fetchDeleteWord(currentTokenContext.currentToken, word_id).then(json => {
+      fetchDeleteWord(currentTokenContext.currentToken as Token, word_id).then(json => {
         if (json.ok) {
           removeWord(word_id)
           alert.show(t.ALERT.DELETED, { type: 'success' })
         } else {
           alert.show(t.ALERT.FAILED, { type: 'error' })
         }
+      }).catch(error => {
+        console.log(error)
       }).finally(() => {
         nprogress.done()
         setShowOverlay(false)
@@ -140,7 +146,7 @@ const EditWords = ({ game }: EditWordsProps) => {
       if (validate.token(currentTokenContext.currentToken)) {
         setShowOverlay(true)
         nprogress.start()
-        fetchUpdateWord(currentTokenContext.currentToken, newWord as Word).then(json => {
+        fetchUpdateWord(currentTokenContext.currentToken as Token, newWord as Word).then(json => {
           if (json.ok) {
             updateWord(json.data)
             setShowModal(false)
@@ -166,12 +172,16 @@ const EditWords = ({ game }: EditWordsProps) => {
   function handleClickPage(page: number): void{
     if (validate.token(currentTokenContext.currentToken)) {
       nprogress.start()
-      fetchWords(currentTokenContext.currentToken, page).then(json => {
+      fetchWords(currentTokenContext.currentToken as Token, page).then(json => {
         if (json.ok) {
           setCurrentWordList(json.data.words)
           setPagination(json.data.pagination)
         }
-      }).finally(() => nprogress.done())
+      }).catch(error => {
+        console.log(error)
+      }).finally(
+        () => nprogress.done()
+      )
     }
   }
 

@@ -50,7 +50,7 @@ const Account = () => {
     if (validate.token(currentTokenContext.currentToken)) {
       setShowOverlay(true)
       nprogress.start()
-      fetchDeleteAccount(currentTokenContext.currentToken).then(json => {
+      fetchDeleteAccount(currentTokenContext.currentToken as Token).then(json => {
         if (json.status == 'success') {
           signOut(() => {
             alert.show(t.ALERT.DELETED, { type: 'success' })

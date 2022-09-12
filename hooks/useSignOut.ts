@@ -35,7 +35,7 @@ export default () => {
 
   const signOut = (callback?: () => void): void => {
     if (validate.token(currentTokenContext.currentToken)) {
-      fetchSignOut(currentTokenContext.currentToken).then(json => {
+      fetchSignOut(currentTokenContext.currentToken as Token).then(json => {
         if (!json.success) console.error(json)
       }).catch(error => {
         console.error(error)

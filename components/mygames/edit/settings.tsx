@@ -1,4 +1,4 @@
-import type { Game } from 'types/global'
+import type { Game, Token } from 'types/global'
 import { useRouter } from 'next/router'
 import { useState, useContext, useMemo } from 'react'
 import useLocale from 'hooks/useLocale'
@@ -42,33 +42,37 @@ const Settings = ({ game }: Props) => {
   const alert = useAlert()
 
   function handleClickDelete(): void{
-    if (validate.token(currentTokenContext.currentToken)) {
+    if (validate.token(currentTokenContext.currentToken) && currentTokenContext.currentToken) {
       setShowOverlay(true)
       nprogress.start()
-      fetch(`http://localhost:3000/api/v1/games/${game.id}`, {
-        method: 'DELETE',
-        headers: {
-          "Content-Type": "application/json",
-          'access-token': currentTokenContext.currentToken.accessToken,
-          'client': currentTokenContext.currentToken.client,
-          'uid': currentTokenContext.currentToken.uid
+      fetchDeleteGame(currentTokenContext.currentToken as Token).then(json => {
+        if (json.ok) {
+          alert.show(t.ALERT.DELETED, {type: 'success'})
+          router.replace('/mygames/edit')
+        } else {
+          alert.show(t.ALERT.FAILED, {type: 'error'})
+          console.error(json.message)
         }
-      }).then(res => res.json())
-        .then(json => {
-          if (json.ok) {
-            alert.show(t.ALERT.DELETED, {type: 'success'})
-            router.replace('/mygames/edit')
-          } else {
-            alert.show(t.ALERT.FAILED, {type: 'error'})
-            console.error(json.message)
-          }
-        })
-        .catch(error => {
-          console.log(error)
-          setShowOverlay(false)
-        })
-        .finally(() => { nprogress.done() })
+      })
+      .catch(error => {
+        console.log(error)
+        setShowOverlay(false)
+      })
+      .finally(() => { nprogress.done() })
     }
+  }
+
+  async function fetchDeleteGame(token: Token) {
+    const res = await fetch(`http://localhost:3000/api/v1/games/${game.id}`, {
+      method: 'DELETE',
+      headers: {
+        "Content-Type": "application/json",
+        'access-token': token.accessToken,
+        'client': token.client,
+        'uid': token.uid
+      }
+    })
+    return await res.json()
   }
 
   return (

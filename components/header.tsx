@@ -61,9 +61,10 @@ const Header = () => {
 
   function createHeaderAccountComponent(): JSX.Element {
     if (validate.userInfo(currentUserInfoContext.currentUserInfo)) {
+      const src: string = currentUserInfoContext.currentUserInfo ? currentUserInfoContext.currentUserInfo.image : ''
       return (
         <div className='header-account-image' onClick={toggleAccountMenu}>
-          <Image src={currentUserInfoContext.currentUserInfo.image} width={30} height={30} />
+          <Image src={src} width={30} height={30} />
           <FontAwesomeIcon icon={faCaretDown} />
           <ul className={getAccountMenuStyle()}>
             <li onClick={handleCreateGames}><FontAwesomeIcon icon={faPlus} />{t.HEADER.ACCOUNT.CREATE_A_GAME}</li>
