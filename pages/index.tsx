@@ -16,7 +16,7 @@ type Props = {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const res = await fetch('http://api:3000/api/v1/games/')
+  const res = await fetch(`${process.env.API_PROTOCOL}://${process.env.API_DOMAIN}/api/v1/games/`)
   let games: Game[] = []
   if (res.status == 200) {
     const json = await res.json()

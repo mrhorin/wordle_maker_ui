@@ -80,7 +80,7 @@ export default function Layout({ children }: Props) {
   }
 
   async function fetchCurrentUser(token: Token) {
-    const res = await fetch('http://localhost:3000/api/v1/users/current', {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_PROTOCOL}://${process.env.NEXT_PUBLIC_API_DOMAIN}/api/v1/users/current`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

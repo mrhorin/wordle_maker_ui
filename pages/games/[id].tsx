@@ -64,9 +64,9 @@ type Statistics = {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const id: string = context.query['id'] as string
   const reses = await Promise.all([
-    fetch(`http://api:3000/api/v1/games/${id}`),
-    fetch(`http://api:3000/api/v1/games/${id}/words`),
-    fetch(`http://api:3000/api/v1/words/today/${id}`),
+    fetch(`${process.env.API_PROTOCOL}://${process.env.API_DOMAIN}/api/v1/games/${id}`),
+    fetch(`${process.env.API_PROTOCOL}://${process.env.API_DOMAIN}/api/v1/games/${id}/words`),
+    fetch(`${process.env.API_PROTOCOL}://${process.env.API_DOMAIN}/api/v1/words/today/${id}`),
   ])
   if (reses[0].status == 200 && reses[1].status == 200 && reses[2].status == 200) {
     const jsons = await Promise.all([reses[0].json(), reses[1].json(), reses[2].json()])

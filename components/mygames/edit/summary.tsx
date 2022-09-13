@@ -107,7 +107,7 @@ const Summary = ({ game, setGame }: Props) => {
         'challenge_count': challengeCount,
       }
     }
-    const res = await fetch(`http://localhost:3000/api/v1/games/${game.id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_PROTOCOL}://${process.env.NEXT_PUBLIC_API_DOMAIN}/api/v1/games/${game.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': "application/json",
@@ -128,7 +128,7 @@ const Summary = ({ game, setGame }: Props) => {
         <Link href={`/games/${game.id}`}>
           <a target="_blank">
             <button className='btn btn-secondary'>
-              {`http://localhost:8000/games/${game.id}`}
+              {`${process.env.NEXT_PUBLIC_API_PROTOCOL}://${process.env.NEXT_PUBLIC_API_DOMAIN}/games/${game.id}`}
             </button>
           </a>
         </Link>

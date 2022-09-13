@@ -37,7 +37,7 @@ const Signup: NextPage = () => {
             </Link>
           </p>
 
-          <form method="post" action='http://localhost:3000/api/v1/auth/twitter'>
+          <form method="post" action={`${process.env.NEXT_PUBLIC_API_PROTOCOL}://${process.env.NEXT_PUBLIC_API_DOMAIN}/api/v1/auth/twitter`}>
             {/* tos_agreement */}
             <div className='form-group-checkbox' style={{ marginBottom: '1rem' }}>
               <label onClick={handleCheckedTosAgreement}>{t.SIGN_UP.I_AGREED}</label>

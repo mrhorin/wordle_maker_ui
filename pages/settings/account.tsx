@@ -35,7 +35,7 @@ const Account = () => {
   const signOut = useSignOut()
 
   async function fetchDeleteAccount(token: Token) {
-    const res = await fetch('http://localhost:3000/api/v1/auth/', {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_PROTOCOL}://${process.env.NEXT_PUBLIC_API_DOMAIN}/api/v1/auth/`, {
       method: 'DELETE',
       headers: {
         'access-token': token.accessToken,

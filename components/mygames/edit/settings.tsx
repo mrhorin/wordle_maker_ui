@@ -63,7 +63,7 @@ const Settings = ({ game }: Props) => {
   }
 
   async function fetchDeleteGame(token: Token) {
-    const res = await fetch(`http://localhost:3000/api/v1/games/${game.id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_PROTOCOL}://${process.env.NEXT_PUBLIC_API_DOMAIN}/api/v1/games/${game.id}`, {
       method: 'DELETE',
       headers: {
         "Content-Type": "application/json",

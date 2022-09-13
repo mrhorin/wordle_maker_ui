@@ -40,7 +40,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   let game: Game | null = null
   const gameId: string = context.query.id as string
-  const res = await fetch(`http://api:3000/api/v1/games/${gameId}`)
+  const res = await fetch(`${process.env.API_PROTOCOL}://${process.env.API_DOMAIN}/api/v1/games/${gameId}`)
   if (res.status == 200) {
     const json = await res.json()
     if (json.ok) game = json.data as Game

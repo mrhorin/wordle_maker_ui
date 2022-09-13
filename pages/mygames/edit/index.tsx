@@ -76,7 +76,7 @@ const MygamesEditIndex = (props: Props) => {
   }
 
   async function fetchListCurrentGames(token: Token) {
-    const res = await fetch('http://localhost:3000/api/v1/games/current_user_index', {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_PROTOCOL}://${process.env.NEXT_PUBLIC_API_DOMAIN}/api/v1/games/current_user_index`, {
       method: 'GET',
       headers: {
         'access-token': token.accessToken,

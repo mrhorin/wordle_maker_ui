@@ -121,7 +121,7 @@ const AddWords = ({ game }: Props) => {
   async function fetchAddWords(token: Token) {
     const words = chips.map(c => c.value)
     const body = { words: words, game_id: game.id }
-    const res = await fetch(`http://localhost:3000/api/v1/words`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_PROTOCOL}://${process.env.NEXT_PUBLIC_API_DOMAIN}/api/v1/words`, {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",

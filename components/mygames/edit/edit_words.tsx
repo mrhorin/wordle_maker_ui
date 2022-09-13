@@ -193,7 +193,7 @@ const EditWords = ({ game }: EditWordsProps) => {
   }
 
   async function fetchWords(token: Token, page: number) {
-    const res = await fetch(`http://localhost:3000/api/v1/games/${game.id}/words/edit?page=${page}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_PROTOCOL}://${process.env.NEXT_PUBLIC_API_DOMAIN}/api/v1/games/${game.id}/words/edit?page=${page}`, {
       method: 'GET',
       headers: {
         'access-token': token.accessToken,
@@ -211,7 +211,7 @@ const EditWords = ({ game }: EditWordsProps) => {
         'name': word.name,
       }
     }
-    const res = await fetch(`http://localhost:3000/api/v1/words/${word.id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_PROTOCOL}://${process.env.NEXT_PUBLIC_API_DOMAIN}/api/v1/words/${word.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': "application/json",
@@ -225,7 +225,7 @@ const EditWords = ({ game }: EditWordsProps) => {
   }
 
   async function fetchDeleteWord(token: Token, word_id: number) {
-    const res = await fetch(`http://localhost:3000/api/v1/words/${word_id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_PROTOCOL}://${process.env.NEXT_PUBLIC_API_DOMAIN}/api/v1/words/${word_id}`, {
       method: 'DELETE',
       headers: {
         'access-token': token.accessToken,

@@ -105,7 +105,7 @@ const MygamesCreate = (props: Props) => {
         'lang': lang
       }
     }
-    const res = await fetch('http://localhost:3000/api/v1/games', {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_PROTOCOL}://${process.env.NEXT_PUBLIC_API_DOMAIN}/api/v1/games`, {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",
