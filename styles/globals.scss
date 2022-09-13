@@ -725,6 +725,7 @@ button{
   #sidemenu{
     width: 200px;
     z-index: 1;
+    margin-top: 2rem;
     .sidemenu-items-container{
       position: sticky;
       top: 70px;
@@ -796,6 +797,7 @@ button{
       bottom: 0;
       border-top: 1px solid $boarder-color;
       background: $base-color1;
+      margin: 0;
       .sidemenu-items-container{
         width: 100%;
         display: flex;
