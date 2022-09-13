@@ -1,4 +1,3 @@
-import type { NextPage } from 'next'
 import type { Token, UserInfo, Query } from 'types/global'
 import React, { useState, useEffect } from 'react'
 
@@ -12,7 +11,11 @@ import ShowSlideoutMenuContext from 'contexts/show_slideout_menu'
 import { ClientSideCookies } from 'scripts/cookie'
 import validate from 'scripts/validate'
 
-const Layout: NextPage = ({ children }) => {
+type Props = {
+  children: JSX.Element,
+}
+
+export default function Layout({ children }: Props) {
   const [currentToken, setCurrentToken] = useState<Token | null>(null)
   const [currentUserInfo, setCurrentUserInfo] = useState<UserInfo | null>(null)
   const [showAccountMenu, setShowAccountMenu] = useState<boolean>(false)
@@ -104,5 +107,3 @@ const Layout: NextPage = ({ children }) => {
     </CurrentTokenContext.Provider>
   )
 }
-
-export default Layout
