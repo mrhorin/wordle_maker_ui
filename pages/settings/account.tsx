@@ -71,7 +71,7 @@ const Account = () => {
     <main id='main'>
       <Head>
         <title>{t.SETTINGS.ACCOUNT.TITLE} | {t.APP_NAME}</title>
-        <meta name="description" content={t.APP_DESC} />
+        <meta name="description" content={t.APP_DESC.FIRST_LINE + t.APP_DESC.SECOND_LINE} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 

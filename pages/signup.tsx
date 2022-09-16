@@ -23,7 +23,7 @@ const Signup: NextPage = () => {
       <div className='container'>
         <Head>
           <title>{t.SIGN_UP.TITLE} | {t.APP_NAME}</title>
-          <meta name="description" content={t.APP_DESC} />
+          <meta name="description" content={t.APP_DESC.FIRST_LINE + t.APP_DESC.SECOND_LINE} />
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
@@ -33,7 +33,7 @@ const Signup: NextPage = () => {
           <h1>{t.SIGN_UP.TITLE}</h1>
           <p>
             <Link href="/tos" shallow={true}>
-              <a target="_blank">{t.TOS.TITLE}</a>
+              <a>{t.TOS.TITLE}</a>
             </Link>
           </p>
 
