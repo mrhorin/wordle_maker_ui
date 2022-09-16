@@ -36,7 +36,7 @@ const Index = (props: Props) => {
     <main id='main'>
       <Head>
         <title>{t.APP_NAME}</title>
-        <meta name="description" content={t.APP_DESC} />
+        <meta name="description" content={t.APP_DESC.FIRST_LINE + t.APP_DESC.SECOND_LINE} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -47,7 +47,10 @@ const Index = (props: Props) => {
           <div className='index-board-title'>
             {t.APP_NAME}
           </div>
-          <div className='index-board-desc'>{t.APP_DESC}</div>
+          <div className='index-board-desc'>
+            <div>{t.APP_DESC.FIRST_LINE}</div>
+            <div>{t.APP_DESC.SECOND_LINE}</div>
+          </div>
           <div className='index-board-create'>
             <Link href="/mygames/create">
               <a>
