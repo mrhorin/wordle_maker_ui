@@ -419,7 +419,7 @@ const Games = (props: Props) => {
     <main id='main'>
       <Head>
         <title>{props.game?.title} | { t.APP_NAME}</title>
-        <meta name="description" content={props.game.desc ? props.game.desc : t.APP_DESC} />
+        <meta name="description" content={t.APP_DESC.FIRST_LINE + t.APP_DESC.SECOND_LINE} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
