@@ -3,9 +3,6 @@ import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import useLocale from 'hooks/useLocale'
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGamepad} from '@fortawesome/free-solid-svg-icons'
-
 import SlideoutMenu from 'components/slideout_menu'
 import GameIndexItem from 'components/game_index_item'
 
@@ -66,7 +63,6 @@ const Index = (props: Props) => {
       <div className='container'>
         {/* The Latest Games */}
         <div className='index-title'>
-          <FontAwesomeIcon icon={faGamepad} />
           {t.INDEX.LATEST_GAMES}
         </div>
         <div className='game-index'>

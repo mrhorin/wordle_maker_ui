@@ -998,7 +998,7 @@ button{
 .index-board{
   background: $base-color3;
   padding: 2rem 1rem;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
   .index-board-title{
     text-align: center;
     font-size: 3rem;
@@ -1024,17 +1024,10 @@ button{
   }
 }
 .index-title{
-  svg, i{
-    margin-right: 0.5rem;
-  }
   padding: 0 1rem;
-  font-size: 1rem;
+  font-size: 1.3rem;
   line-height: 3rem;
-  border-left: 8px solid $correct-color;
-  @media screen and (max-width: $sp-break-point){
-    background: $base-color3;
-    color: $font-color1;
-  }
+
 }
 
 /* --------------- Games --------------- */
