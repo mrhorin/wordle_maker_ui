@@ -1,8 +1,8 @@
 export default {
   APP_NAME: 'Makele β',
   APP_DESC: {
-    FIRST_LINE: "Wordleにインスパイアされて作った言葉当てゲームを作れるゲームメーカーです。",
-    SECOND_LINE: "好きなワードを登録してオリジナルゲームを作ろう！"
+    FIRST_LINE: "あなたの好きなワードでオリジナルWordleを作れるサービスです",
+    SECOND_LINE: "文字数も自由に設定可、日本語/英語にも対応！"
   },
   COMMON: {
     WORD: 'ワード',
