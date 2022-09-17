@@ -7,6 +7,7 @@ import SlideoutMenu from 'components/slideout_menu'
 import GameIndexItem from 'components/game_index_item'
 
 import Link from 'next/link'
+import Image from 'next/image'
 
 type Props = {
   games: Game[]
@@ -63,7 +64,12 @@ const Index = (props: Props) => {
       <div className='container'>
         {/* The Latest Games */}
         <div className='index-title'>
-          {t.INDEX.LATEST_GAMES}
+          <div className='index-title-icon'>
+            <Image src='/new.svg' width={40} height={25} alt={'New'} />
+          </div>
+          <div className='index-title-text'>
+            {t.INDEX.LATEST_GAMES}
+          </div>
         </div>
         <div className='game-index'>
           {gameComponents}

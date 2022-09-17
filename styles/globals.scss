@@ -1024,10 +1024,18 @@ button{
   }
 }
 .index-title{
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
   padding: 0 1rem;
   font-size: 1.3rem;
-  line-height: 3rem;
-
+  .index-title-icon{
+    order: 1;
+    margin-right: 5px;
+  }
+  .index-title-text{
+    order: 2;
+  }
 }
 
 /* --------------- Games --------------- */
