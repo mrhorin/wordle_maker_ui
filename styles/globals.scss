@@ -574,19 +574,26 @@ button{
         margin: 0;
       }
     }
-    .header-account-image{
+    .header-account-button{
       display: inline-flex;
-      flex-direction: row;
       align-items: center;
-      span,img{
+      .header-account-button-image{
         order: 1;
+        display: inline-flex;
         border-radius: 100px;
+        overflow: hidden;
+        background: $primary-color;
+        min-width: 30px;
+        min-height: 30px;
       }
-      svg,i{
+      .header-account-button-caretdown{
         order: 2;
         padding: 0 0.75rem;
         font-size: 0.8rem;
         color: darken($font-color1, 20%);
+      }
+      &:hover{
+        cursor: pointer;
       }
     }
     .header-account-image:hover{

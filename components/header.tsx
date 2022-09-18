@@ -63,9 +63,13 @@ const Header = () => {
     if (validate.userInfo(currentUserInfoContext.currentUserInfo)) {
       const src: string = currentUserInfoContext.currentUserInfo ? currentUserInfoContext.currentUserInfo.image : ''
       return (
-        <div className='header-account-image' onClick={toggleAccountMenu}>
-          <Image src={src} width={30} height={30} alt={'Avatar'} />
-          <FontAwesomeIcon icon={faCaretDown} />
+        <div className='header-account-button' onClick={toggleAccountMenu}>
+          <div className='header-account-button-image'>
+            <Image src={src} width={30} height={30} alt={'Avatar'} />
+          </div>
+          <div className='header-account-button-caretdown'>
+            <FontAwesomeIcon icon={faCaretDown} />
+          </div>
           <ul className={getAccountMenuStyle()}>
             <li onClick={handleCreateGames}><FontAwesomeIcon icon={faPlus} />{t.HEADER.ACCOUNT.CREATE_A_GAME}</li>
             <li onClick={handleEditGames}><FontAwesomeIcon icon={faEdit} />{t.HEADER.ACCOUNT.EDIT_GAMES}</li>
