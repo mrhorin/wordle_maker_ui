@@ -11,13 +11,20 @@ import Link from 'next/link'
 import Image from 'next/image'
 
 const Index = () => {
-  const [games, setGames] = useState<Game[]>([])
+  const [games, setGames] = useState<Game[] | null>(null)
   const { t } = useLocale()
 
   useEffect(() => {
     fetchGames().then(json => {
-      if (json.ok) setGames(json.data as Game[])
-    }).catch(error => console.log(error))
+      if (json.ok) {
+        setGames(json.data as Game[])
+      } else {
+        setGames([])
+      }
+    }).catch(error => {
+      console.log(error)
+      setGames([])
+    })
   }, [])
 
   function createGameComponents(): JSX.Element[] | JSX.Element{
@@ -25,8 +32,10 @@ const Index = () => {
       return games.map((game: Game, index: number) => {
         return <GameIndexItem game={game} href={`/mygames/edit/${game.id}#summary`} key={index} />
       })
-    } else {
+    } else if (games == null) {
       return <ReactLoading type={'spin'} color={'#008eff'} height={'25px'} width={'25px'} className='loading-center' />
+    } else {
+      return <p style={{ textAlign: 'center', margin: '10rem auto' }}>{t.MY_GAMES.EDIT.INDEX.NO_GAME}</p>
     }
   }
 

@@ -96,6 +96,7 @@ export default {
   INDEX: {
     CREATE_GAME: 'Create Game',
     LATEST_GAMES: 'The Latest Games',
+    NO_GAME: 'There is no Game yet.',
   },
   GAMES: {
     HOW_TO_PLAY: {

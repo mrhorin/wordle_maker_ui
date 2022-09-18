@@ -105,6 +105,7 @@ export default {
   INDEX: {
     CREATE_GAME: 'ゲームを作ってみる',
     LATEST_GAMES: '新着',
+    NO_GAME: 'ゲームがありません。',
   },
   GAMES: {
     HOW_TO_PLAY: {
