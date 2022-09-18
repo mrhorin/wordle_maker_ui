@@ -1025,13 +1025,14 @@ button{
 }
 .index-title{
   display: inline-flex;
-  flex-direction: row;
   align-items: center;
   padding: 0 1rem;
   font-size: 1.3rem;
   .index-title-icon{
     order: 1;
     margin-right: 5px;
+    display: inline-flex;
+    align-items: center;
   }
   .index-title-text{
     order: 2;

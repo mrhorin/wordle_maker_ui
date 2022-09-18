@@ -1,34 +1,39 @@
 import type { Game } from 'types/global'
-import { GetServerSideProps } from 'next'
-import Head from 'next/head'
+import { useEffect, useState } from 'react'
 import useLocale from 'hooks/useLocale'
 
+import Head from 'next/head'
+import ReactLoading from 'react-loading'
 import SlideoutMenu from 'components/slideout_menu'
 import GameIndexItem from 'components/game_index_item'
 
 import Link from 'next/link'
 import Image from 'next/image'
 
-type Props = {
-  games: Game[]
-}
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const res = await fetch(`${process.env.API_PROTOCOL}://${process.env.API_DOMAIN}/api/v1/games/`)
-  let games: Game[] = []
-  if (res.status == 200) {
-    const json = await res.json()
-    if (json.ok) games = json.data as Game[]
-  }
-  return { props: { games: games } }
-}
-
-const Index = (props: Props) => {
+const Index = () => {
+  const [games, setGames] = useState<Game[]>([])
   const { t } = useLocale()
 
-  const gameComponents: JSX.Element[] = props.games.map((game: Game, index: number) => {
-    return <GameIndexItem game={game} href={`/games/${game.id}`} key={index} />
-  })
+  useEffect(() => {
+    fetchGames().then(json => {
+      if (json.ok) setGames(json.data as Game[])
+    }).catch(error => console.log(error))
+  }, [])
+
+  function createGameComponents(): JSX.Element[] | JSX.Element{
+    if (games && games.length > 0) {
+      return games.map((game: Game, index: number) => {
+        return <GameIndexItem game={game} href={`/mygames/edit/${game.id}#summary`} key={index} />
+      })
+    } else {
+      return <ReactLoading type={'spin'} color={'#008eff'} height={'25px'} width={'25px'} className='loading-center' />
+    }
+  }
+
+  async function fetchGames() {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_PROTOCOL}://${process.env.NEXT_PUBLIC_API_DOMAIN}/api/v1/games/`)
+    return await res.json()
+  }
 
   return (
     <main id='main'>
@@ -65,14 +70,14 @@ const Index = (props: Props) => {
         {/* The Latest Games */}
         <div className='index-title'>
           <div className='index-title-icon'>
-            <Image src='/new.svg' width={40} height={25} alt={'New'} />
+            <Image src='/new.svg' width={42} height={23} alt={'New'} />
           </div>
           <div className='index-title-text'>
             {t.INDEX.LATEST_GAMES}
           </div>
         </div>
         <div className='game-index'>
-          {gameComponents}
+          {createGameComponents()}
         </div>
       </div>
     </main>

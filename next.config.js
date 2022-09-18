@@ -5,7 +5,7 @@ const nextConfig = {
     domains: ['pbs.twimg.com'],
   },
   i18n: {
-    locales: ['en', 'ja'],
+    locales: ['default','en', 'ja'],
     defaultLocale: 'en',
     localeDetection: true,
   },
