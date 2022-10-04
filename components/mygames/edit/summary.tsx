@@ -62,11 +62,11 @@ const Summary = ({ game, setGame }: Props) => {
     const titleLength: number = Number(title.length)
     if (titleLength < 1) {
       inputTitleEl.current?.classList.add('input-invalid')
-      if (divTitleInvalidEl.current) divTitleInvalidEl.current.innerHTML = '* Title is required.'
+      if (divTitleInvalidEl.current) divTitleInvalidEl.current.innerHTML = '* ' + t.VALIDATE.GAME.TITLE.REQUIRED
       return false
     } else if (titleLength > 100) {
       inputTitleEl.current?.classList.add('input-invalid')
-      if (divTitleInvalidEl.current) divTitleInvalidEl.current.innerHTML = '* Title must be 100 characters or less.'
+      if (divTitleInvalidEl.current) divTitleInvalidEl.current.innerHTML = '* ' + t.VALIDATE.GAME.TITLE.CHARS_OR_LESS
       return false
     } else {
       inputTitleEl.current?.classList.remove('input-invalid')
@@ -77,31 +77,33 @@ const Summary = ({ game, setGame }: Props) => {
 
   function handleClickUpdate(): void{
     const token: Token | null = ClientSideCookies.loadToken()
-    if (validate.token(token)) {
-      setShowOverlay(true)
-      nprogress.start()
-      const nextGame: Game = {
-        id: game.id,
-        title: title,
-        desc: desc,
-        challenge_count: challengeCount,
-        lang: game.lang,
-        char_count: game.char_count,
-      }
-      putGame(token, nextGame).then(json => {
-        if (json.ok) {
-          alert.show(t.ALERT.UPDATED, { type: 'success' })
-          setGame(json.data as Game)
-        } else {
-          console.error(json)
-          alert.show(t.ALERT.FAILED, {type: 'error'})
+    if (validateTitle()) {
+      if (validate.token(token)) {
+        setShowOverlay(true)
+        nprogress.start()
+        const nextGame: Game = {
+          id: game.id,
+          title: title,
+          desc: desc,
+          challenge_count: challengeCount,
+          lang: game.lang,
+          char_count: game.char_count,
         }
-      }).catch(error => console.error(error)).finally(() => {
-        nprogress.done()
-        setShowOverlay(false)
-      })
-    } else {
-      signOut(() => router.replace('/signup'))
+        putGame(token, nextGame).then(json => {
+          if (json.ok) {
+            alert.show(t.ALERT.UPDATED, { type: 'success' })
+            setGame(json.data as Game)
+          } else {
+            console.error(json)
+            alert.show(t.ALERT.FAILED, {type: 'error'})
+          }
+        }).catch(error => console.error(error)).finally(() => {
+          nprogress.done()
+          setShowOverlay(false)
+        })
+      } else {
+        signOut(() => router.replace('/signup'))
+      }
     }
   }
 

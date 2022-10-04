@@ -22,6 +22,14 @@ export default {
     COPIED: 'コピーしました',
     ADDED_INVALID_WORDS: 'カタカナ*文字で一意の値を入力して下さい',
   },
+  VALIDATE: {
+    GAME: {
+      TITLE: {
+        REQUIRED: '必須項目です',
+        CHARS_OR_LESS: '100文字以下にしてください',
+      }
+    }
+  },
   HEADER: {
     SIGN_UP: 'Sign Up',
     ACCOUNT: {

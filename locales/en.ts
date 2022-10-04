@@ -22,6 +22,14 @@ export default {
     COPIED: 'COPIED',
     ADDED_INVALID_WORDS: 'Must be unique and * characters in English',
   },
+  VALIDATE: {
+    GAME: {
+      TITLE: {
+        REQUIRED: 'Title is required.',
+        CHARS_OR_LESS: 'Title must be 100 characters or less.',
+      }
+    }
+  },
   HEADER: {
     SIGN_UP: 'Sign Up',
     ACCOUNT: {
