@@ -53,9 +53,9 @@ const MygamesEdit = () => {
    *  It depends on tabs variable, a list of tab names,
    *  and is initialized in useEffect. */
   const [currentHash, setCurrentHash] = useHash()
+  const { t } = useLocale()
   const router = useRouter()
   const { id } = router.query
-  const { t } = useLocale()
 
   const tabs: Tab[] = [
     { name: t.MY_GAMES.EDIT.TABS.SUMMARY, hash: 'summary' },
@@ -72,7 +72,7 @@ const MygamesEdit = () => {
       setCurrentHash(tabs[0].hash)
       router.replace(`#${tabs[0].hash}`)
     }
-    if (game == null) {
+    if (game == null && id) {
       nprogress.start()
       getGame(Number(id)).then(json => {
         if (json.ok) setGame(json.data)
@@ -83,7 +83,7 @@ const MygamesEdit = () => {
       )
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [id])
 
   function createTabComponent(): JSX.Element{
     if (game) {
