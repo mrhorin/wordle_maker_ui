@@ -1,8 +1,8 @@
+import type { Token, UserInfo, Query, HeaderStatus } from 'types/global'
 import { useRouter } from 'next/router'
-import { useContext, memo } from 'react'
+import { useState, useEffect, useContext, memo } from 'react'
 import { useAlert } from 'react-alert'
-import useSignOut from 'hooks/useSignOut'
-import useLocale from 'hooks/useLocale'
+import nprogress from 'nprogress'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars, faCaretDown, faEdit, faPlus, faGear, faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 
@@ -10,12 +10,18 @@ import CurrentUserInfoContext from 'contexts/current_user_info'
 import ShowAccountMenuContext from 'contexts/show_account_menu'
 import ShowSlideoutMenuContext from 'contexts/show_slideout_menu'
 
+import useSignOut from 'hooks/useSignOut'
+import useLocale from 'hooks/useLocale'
+
+import { ClientSideCookies } from 'scripts/cookie'
 import validate from 'scripts/validate'
+import { getCuurentUser } from 'scripts/api'
 
 import Link from 'next/link'
 import Image from 'next/image'
 
 const Header = () => {
+  const [accountStatus, setAccountStatus] = useState<HeaderStatus>('INITIALIZING')
   const currentUserInfoContext = useContext(CurrentUserInfoContext)
   const showAccountMenuContext = useContext(ShowAccountMenuContext)
   const showSlideoutMenuContext = useContext(ShowSlideoutMenuContext)
@@ -23,6 +29,63 @@ const Header = () => {
   const { t } = useLocale()
   const alert = useAlert()
   const signOut = useSignOut()
+
+  useEffect(() => {
+    const prevToken: Token | null = ClientSideCookies.loadToken()
+    const prevUserInfo: UserInfo | null = ClientSideCookies.loadUserInfo()
+    const query: Query = getQuery()
+    if (validate.token(prevToken) && validate.userInfo(prevUserInfo)) {
+      // Restore current user
+      currentUserInfoContext.setCurrentUserInfo(prevUserInfo)
+      setAccountStatus('LOGGEDIN')
+    } else if (validate.queryToken(query)) {
+      // Get current user info with the token
+      const token: Token = {
+        accessToken: query['auth_token'],
+        client: query['client_id'],
+        uid: query['uid'],
+        expiry: query['expiry']
+      }
+      ClientSideCookies.saveToken(token)
+      nprogress.start()
+      getCuurentUser(token).then(json => {
+        if (json && json.isLoggedIn) {
+          const userInfo: UserInfo = {
+            provider: json.data.provider,
+            name: json.data.name,
+            nickname: json.data.nickname,
+            uid: json.data.uid,
+            image: json.data.image
+          }
+          ClientSideCookies.saveUserInfo(userInfo)
+          currentUserInfoContext.setCurrentUserInfo(userInfo)
+          setAccountStatus('LOGGEDIN')
+        }
+      }).catch(error => {
+        console.log(error)
+        setAccountStatus('SIGNUP')
+      }).finally(() => {
+        nprogress.done()
+      })
+    } else {
+      // Delete current user and token
+      ClientSideCookies.destroyToken()
+      ClientSideCookies.destroyUserInfo()
+      currentUserInfoContext.setCurrentUserInfo(null)
+      setAccountStatus('SIGNUP')
+    }
+  }, [])
+
+  function getQuery(): Query{
+    const url_search: string[] = location.search.slice(1).split('&')
+    let key: string[] = []
+    let query: Query = {}
+    for (let i = 0; i < url_search.length; i++){
+      key = url_search[i].split("=")
+      query[key[0]] = key[1]
+    }
+    return query
+  }
 
   function getAccountMenuStyle(): string{
     if (showAccountMenuContext.showAccountMenu) {
@@ -54,13 +117,14 @@ const Header = () => {
 
   function handleSignOut(): void {
     signOut(() => {
+      setAccountStatus('SIGNUP')
       alert.show(t.ALERT.SIGN_OUT, { type: 'success' })
       router.push('/signup')
     })
   }
 
   function createHeaderAccountComponent(): JSX.Element {
-    if (validate.userInfo(currentUserInfoContext.currentUserInfo)) {
+    if (accountStatus == 'LOGGEDIN') {
       const src: string = currentUserInfoContext.currentUserInfo ? currentUserInfoContext.currentUserInfo.image : ''
       return (
         <div className='header-account-button' onClick={toggleAccountMenu}>
@@ -80,7 +144,7 @@ const Header = () => {
           </ul>
         </div>
       )
-    } else {
+    } else if(accountStatus == 'SIGNUP'){
       return (
         <Link href="/signup">
           <a>
@@ -90,6 +154,8 @@ const Header = () => {
           </a>
         </Link>
       )
+    } else {
+      return <div className='header-account-button'></div>
     }
   }
 
