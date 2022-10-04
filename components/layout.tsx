@@ -21,9 +21,14 @@ export default function Layout({ children }: Props) {
   const [showSlideoutMenu, setShowSlideoutMenu] = useState<boolean>(false)
 
   useEffect(() => {
+    const prevToken: Token | null = ClientSideCookies.loadToken()
+    const prevUserInfo: UserInfo | null = ClientSideCookies.loadUserInfo()
     const query: Query = getQuery()
-    if (validate.queryToken(query)) {
-      // When query has a token, fetch user info with the token
+    if (validate.token(prevToken) && validate.userInfo(prevUserInfo)) {
+      // Restore current user
+      setCurrentUserInfo(prevUserInfo)
+    } else if (validate.queryToken(query)) {
+      // Get current user info with the token
       const token: Token = {
         accessToken: query['auth_token'],
         client: query['client_id'],
@@ -45,18 +50,10 @@ export default function Layout({ children }: Props) {
         }
       })
     } else {
-      // When query doesn't have a token
-      let prevToken: Token | null = ClientSideCookies.loadToken()
-      let prevUserInfo: UserInfo | null = ClientSideCookies.loadUserInfo()
-      if (validate.token(prevToken) && validate.userInfo(prevUserInfo)) {
-        // Restore current user
-        setCurrentUserInfo(prevUserInfo)
-      } else {
-        // Delete current user and token
-        ClientSideCookies.destroyToken()
-        ClientSideCookies.destroyUserInfo()
-        setCurrentUserInfo(null)
-      }
+      // Delete current user and token
+      ClientSideCookies.destroyToken()
+      ClientSideCookies.destroyUserInfo()
+      setCurrentUserInfo(null)
     }
   }, [])
 
