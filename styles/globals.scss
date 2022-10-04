@@ -1627,6 +1627,7 @@ button{
     text-overflow: ellipsis;
     font-size: 1.5rem;
     line-height: 2rem;
+    min-height: 2rem;
     text-align: center;
     padding: 0 3rem;
   }
@@ -1638,7 +1639,6 @@ button{
     }
     .title-text{
       font-size: 1rem;
-      line-height: 2rem;
       text-align: center;
       padding: 0 2.5rem;
     }

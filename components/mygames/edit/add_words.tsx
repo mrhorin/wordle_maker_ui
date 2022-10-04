@@ -1,7 +1,7 @@
 /*
  *  This component should be imported from MygamesEdit component. */
 import type { Game, Chip, Token } from 'types/global'
-import { useState, useCallback, useContext } from 'react'
+import { useState, useCallback } from 'react'
 import { useRouter } from 'next/router'
 import { useAlert } from 'react-alert'
 
@@ -14,9 +14,9 @@ import nprogress from 'nprogress'
 import ChipTextarea from 'components/form/chip_textarea'
 import LoadingOverlay from 'components/loading_overlay'
 
+import { ClientSideCookies } from 'scripts/cookie'
 import validate from 'scripts/validate'
-
-import CurrentTokenContext from 'contexts/current_token'
+import { postWords } from 'scripts/api'
 
 interface Props {
   game: Game
@@ -30,8 +30,6 @@ const AddWords = ({ game }: Props) => {
    *  Words which are added by an user is stored into this state as Chip list.
    *  The state will be empty after submitting them to the server. */
   const [chips, setChips] = useState<Chip[]>([])
-  /********* Context *********/
-  const currentTokenContext = useContext(CurrentTokenContext)
 
   const router = useRouter()
   const { t } = useLocale()
@@ -92,11 +90,13 @@ const AddWords = ({ game }: Props) => {
   }
 
   function handleClickSubmit(): void{
-    if (validate.token(currentTokenContext.currentToken) && currentTokenContext.currentToken) {
+    const token: Token | null = ClientSideCookies.loadToken()
+    if (validate.token(token)) {
       if (validateWords() && game.id) {
         setShowOverlay(true)
         nprogress.start()
-        fetchAddWords(currentTokenContext.currentToken as Token).then(json => {
+        const words: string[] = chips.map(c => c.value)
+        postWords(token, game, words).then(json => {
           if (json.ok) {
             setChips([])
             alert.show(t.ALERT.SUCCESS, { type: 'success' })
@@ -116,22 +116,6 @@ const AddWords = ({ game }: Props) => {
     } else {
       signOut(() => router.replace('/signup'))
     }
-  }
-
-  async function fetchAddWords(token: Token) {
-    const words = chips.map(c => c.value)
-    const body = { words: words, game_id: game.id }
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_PROTOCOL}://${process.env.NEXT_PUBLIC_API_DOMAIN}/api/v1/words`, {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json",
-        'access-token': token.accessToken,
-        'client': token.client,
-        'uid': token.uid
-      },
-      body: JSON.stringify(body)
-    })
-    return await res.json()
   }
 
   return (

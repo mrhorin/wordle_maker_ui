@@ -3,20 +3,19 @@ import React, { useState, useEffect } from 'react'
 
 import Header from 'components/header'
 
-import CurrentTokenContext from 'contexts/current_token'
 import CurrentUserInfoContext from 'contexts/current_user_info'
 import ShowAccountMenuContext from 'contexts/show_account_menu'
 import ShowSlideoutMenuContext from 'contexts/show_slideout_menu'
 
 import { ClientSideCookies } from 'scripts/cookie'
 import validate from 'scripts/validate'
+import { getCuurentUser } from 'scripts/api'
 
 type Props = {
   children: JSX.Element,
 }
 
 export default function Layout({ children }: Props) {
-  const [currentToken, setCurrentToken] = useState<Token | null>(null)
   const [currentUserInfo, setCurrentUserInfo] = useState<UserInfo | null>(null)
   const [showAccountMenu, setShowAccountMenu] = useState<boolean>(false)
   const [showSlideoutMenu, setShowSlideoutMenu] = useState<boolean>(false)
@@ -31,10 +30,9 @@ export default function Layout({ children }: Props) {
         uid: query['uid'],
         expiry: query['expiry']
       }
-      fetchCurrentUser(token).then(json => {
+      ClientSideCookies.saveToken(token)
+      getCuurentUser(token).then(json => {
         if (json && json.isLoggedIn) {
-          ClientSideCookies.saveToken(token)
-          setCurrentToken(token)
           const userInfo: UserInfo = {
             provider: json.data.provider,
             name: json.data.name,
@@ -50,15 +48,13 @@ export default function Layout({ children }: Props) {
       // When query doesn't have a token
       let prevToken: Token | null = ClientSideCookies.loadToken()
       let prevUserInfo: UserInfo | null = ClientSideCookies.loadUserInfo()
-      if (validate.token(prevToken) && validate.userInfo(prevUserInfo) && prevToken && new Date(Number(prevToken.expiry.padEnd(13, '0'))) > new Date()) {
-        // Restore user info
-        setCurrentToken(prevToken)
+      if (validate.token(prevToken) && validate.userInfo(prevUserInfo)) {
+        // Restore current user
         setCurrentUserInfo(prevUserInfo)
       } else {
-        // Delete stored token and user info
+        // Delete current user and token
         ClientSideCookies.destroyToken()
         ClientSideCookies.destroyUserInfo()
-        setCurrentToken(null)
         setCurrentUserInfo(null)
       }
     }
@@ -79,31 +75,16 @@ export default function Layout({ children }: Props) {
     if (showAccountMenu) setShowAccountMenu(false)
   }
 
-  async function fetchCurrentUser(token: Token) {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_PROTOCOL}://${process.env.NEXT_PUBLIC_API_DOMAIN}/api/v1/users/current`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'access-token': token.accessToken,
-        'client': token.client,
-        'uid': token.uid
-      }
-    })
-    return await res.json()
-  }
-
   return (
-    <CurrentTokenContext.Provider value={{ currentToken, setCurrentToken }}>
-      <CurrentUserInfoContext.Provider value={{ currentUserInfo, setCurrentUserInfo }}>
-        <ShowAccountMenuContext.Provider value={{ showAccountMenu, setShowAccountMenu }}>
-          <ShowSlideoutMenuContext.Provider value={{ show: showSlideoutMenu, set: setShowSlideoutMenu }}>
-            <div className='wrap' onClick={hideAccountMenu}>
-              <Header />
-              {children}
-            </div>
-          </ShowSlideoutMenuContext.Provider>
-        </ShowAccountMenuContext.Provider>
-      </CurrentUserInfoContext.Provider>
-    </CurrentTokenContext.Provider>
+    <CurrentUserInfoContext.Provider value={{ currentUserInfo, setCurrentUserInfo }}>
+      <ShowAccountMenuContext.Provider value={{ showAccountMenu, setShowAccountMenu }}>
+        <ShowSlideoutMenuContext.Provider value={{ show: showSlideoutMenu, set: setShowSlideoutMenu }}>
+          <div className='wrap' onClick={hideAccountMenu}>
+            <Header />
+            {children}
+          </div>
+        </ShowSlideoutMenuContext.Provider>
+      </ShowAccountMenuContext.Provider>
+    </CurrentUserInfoContext.Provider>
   )
 }

@@ -1,11 +1,12 @@
-import type { UserInfo, Token, Game, Tab } from 'types/global'
-import { GetServerSideProps } from 'next'
+import type { Game, Tab } from 'types/global'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import useHash from 'hooks/useHash'
+import nprogress from 'nprogress'
 
 import Head from 'next/head'
 import Link from 'next/link'
+import ReactLoading from 'react-loading'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft} from '@fortawesome/free-solid-svg-icons'
@@ -19,43 +20,11 @@ import Settings from 'components/mygames/edit/settings'
 
 import useLocale from 'hooks/useLocale'
 
-import { ServerSideCookies } from 'scripts/cookie'
-import validate from 'scripts/validate'
+import { getGame } from 'scripts/api'
 
 type TabComponentProps = {
   tab: Tab,
   isActive: boolean,
-}
-
-type MygamesEditProps = {
-  token: Token,
-  userInfo: UserInfo,
-  game: Game,
-}
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const cookies = new ServerSideCookies(context)
-  const token: Token = cookies.token
-  const userInfo: UserInfo = cookies.userInfo
-
-  let game: Game | null = null
-  const gameId: string = context.query.id as string
-  const res = await fetch(`${process.env.API_PROTOCOL}://${process.env.API_DOMAIN}/api/v1/games/${gameId}`)
-  if (res.status == 200) {
-    const json = await res.json()
-    if (json.ok) game = json.data as Game
-  } else if (res.status == 403 || res.status == 404) {
-    return { notFound: true }
-  }
-
-  if (validate.token(token) && validate.userInfo(userInfo) && game) {
-    return { props: { token: token, userInfo: userInfo, game: game } }
-  } else {
-    return {
-      props: { token: token, userInfo: userInfo, game: game },
-      redirect: { statusCode: 302, destination: '/' }
-    }
-  }
 }
 
 const TabComponent = (props: TabComponentProps) => {
@@ -74,17 +43,18 @@ const TabComponent = (props: TabComponentProps) => {
   )
 }
 
-const MygamesEdit = (props: MygamesEditProps) => {
+const MygamesEdit = () => {
   /*
    * game:
    *  This state will be changed after updating the game by fetching API. */
-  const [game, setGame] = useState<Game>(props.game)
+  const [game, setGame] = useState<Game | null>(null)
   /* currentHash:
    *  This value indicates which tab is active.
    *  It depends on tabs variable, a list of tab names,
    *  and is initialized in useEffect. */
   const [currentHash, setCurrentHash] = useHash()
   const router = useRouter()
+  const { id } = router.query
   const { t } = useLocale()
 
   const tabs: Tab[] = [
@@ -102,8 +72,60 @@ const MygamesEdit = (props: MygamesEditProps) => {
       setCurrentHash(tabs[0].hash)
       router.replace(`#${tabs[0].hash}`)
     }
+    if (game == null) {
+      nprogress.start()
+      getGame(Number(id)).then(json => {
+        if (json.ok) setGame(json.data)
+      }).catch(error => {
+        console.log(error)
+      }).finally(
+        () => nprogress.done()
+      )
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  function createTabComponent(): JSX.Element{
+    if (game) {
+      return (
+        <>
+          <div className='mygames-edit-header'>
+            <div className='title'>
+              <div className='title-button'>
+                <Link href="/mygames/edit"><a><FontAwesomeIcon icon={faArrowLeft} /></a></Link>
+              </div>
+              <div className='title-text'>{game.title}</div>
+            </div>
+            <div className='tabs-container'>{tabComponents}</div>
+          </div>
+
+          {(() => {
+            if (currentHash == tabs[0].hash) return <Summary game={game} setGame={setGame}/>
+            if (currentHash == tabs[1].hash) return <AddWords game={game}/>
+            if (currentHash == tabs[2].hash) return <EditWords game={game} />
+            if (currentHash == tabs[3].hash) return <Settings game={game} />
+          })()}
+        </>
+      )
+    } else {
+      return (
+        <div className='mygames-edit-header'>
+          <div className='title'>
+            <div className='title-button'>
+              <Link href="/mygames/edit"><a><FontAwesomeIcon icon={faArrowLeft} /></a></Link>
+            </div>
+            <div className='title-text'>
+              <ReactLoading type={'spin'} color={'#008eff'} height={'25px'} width={'25px'} className='loading-center' />
+            </div>
+          </div>
+          <div className='tabs-container'>{tabComponents}</div>
+          <div style={{ marginTop: '2rem' }}>
+            <ReactLoading type={'spin'} color={'#008eff'} height={'25px'} width={'25px'} className='loading-center' />
+          </div>
+        </div>
+      )
+    }
+  }
 
   const tabComponents = tabs.map((t, index) => {
     return <TabComponent key={index} tab={t} isActive={currentHash == t.hash} />
@@ -112,7 +134,7 @@ const MygamesEdit = (props: MygamesEditProps) => {
   return (
     <main id='main'>
       <Head>
-        <title>{t.MY_GAMES.EDIT.TITLE}: {`${game.title}`} | {t.APP_NAME}</title>
+        <title>{t.MY_GAMES.EDIT.TITLE} | {t.APP_NAME}</title>
         <meta name="description" content={t.APP_DESC.FIRST_LINE + t.APP_DESC.SECOND_LINE} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -123,22 +145,7 @@ const MygamesEdit = (props: MygamesEditProps) => {
         <div id='sidemenu-container'>
           <Sidemenu activeMenu={'edit'}/>
           <div id='sidemenu-main' className='mygames-edit'>
-            <div className='mygames-edit-header'>
-              <div className='title'>
-                <div className='title-button'>
-                  <Link href="/mygames/edit"><a><FontAwesomeIcon icon={faArrowLeft} /></a></Link>
-                </div>
-                <div className='title-text'>{props.game.title}</div>
-              </div>
-              <div className='tabs-container'>{tabComponents}</div>
-            </div>
-
-            {(() => {
-              if (currentHash == tabs[0].hash) return <Summary game={game} setGame={setGame}/>
-              if (currentHash == tabs[1].hash) return <AddWords game={game}/>
-              if (currentHash == tabs[2].hash) return <EditWords game={game} />
-              if (currentHash == tabs[3].hash) return <Settings game={game} />
-            })()}
+            {createTabComponent()}
           </div>
         </div>
       </div>

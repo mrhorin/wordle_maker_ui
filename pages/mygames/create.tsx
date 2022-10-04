@@ -1,7 +1,6 @@
-import type { UserInfo, Token } from 'types/global'
-import { GetServerSideProps } from 'next'
+import type { Token, Game } from 'types/global'
 import { useRouter } from 'next/router'
-import { useState, useContext, useRef } from 'react'
+import { useState, useRef } from 'react'
 import { useAlert } from 'react-alert'
 
 import useSignOut from 'hooks/useSignOut'
@@ -14,29 +13,11 @@ import SlideoutMenu from 'components/slideout_menu'
 import Sidemenu from 'components/sidemenu'
 import LoadingOverlay from 'components/loading_overlay'
 
-import { ServerSideCookies } from 'scripts/cookie'
+import { ClientSideCookies } from 'scripts/cookie'
+import { postGame } from 'scripts/api'
 import validate from 'scripts/validate'
 
-type Props = {
-  token: Token,
-  userInfo: UserInfo,
-}
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const cookies = new ServerSideCookies(context)
-  const props: Props = { token: cookies.token, userInfo: cookies.userInfo }
-
-  if (validate.token(props.token) && validate.userInfo(props.userInfo)) {
-    return { props: props }
-  } else {
-    return {
-      props: props,
-      redirect: { statusCode: 302, destination: '/signup' }
-    }
-  }
-}
-
-const MygamesCreate = (props: Props) => {
+const MygamesCreate = () => {
   /********** State **********/
   const [title, setTitle] = useState<string>('')
   const [desc, setDesc] = useState<string>('')
@@ -72,11 +53,19 @@ const MygamesCreate = (props: Props) => {
   }
 
   function handleClickSubmit(): void{
-    if (validate.token(props.token)) {
+    const token: Token | null = ClientSideCookies.loadToken()
+    if (validate.token(token)) {
       if (validateTitle()) {
         setShowOverlay(true)
         nprogress.start()
-        fetchCreateGame(props.token).then(json => {
+        const nextGame: Game = {
+          title: title,
+          desc: desc,
+          lang: lang,
+          char_count: charCount,
+          challenge_count: challengeCount,
+        }
+        postGame(token, nextGame).then(json => {
           if (json.ok) {
             alert.show(t.ALERT.CREATED, { type: 'success' })
             router.push(`/mygames/edit/${json.data.id}#add-words`)
@@ -93,29 +82,6 @@ const MygamesCreate = (props: Props) => {
     } else {
       signOut(() => router.replace('/signup'))
     }
-  }
-
-  async function fetchCreateGame(token: Token) {
-    const body = {
-      game: {
-        'title': title,
-        'desc': desc,
-        'challenge_count': challengeCount,
-        'char_count': charCount,
-        'lang': lang
-      }
-    }
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_PROTOCOL}://${process.env.NEXT_PUBLIC_API_DOMAIN}/api/v1/games`, {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json",
-        'access-token': props.token.accessToken,
-        'client': props.token.client,
-        'uid': props.token.uid
-      },
-      body: JSON.stringify(body)
-    })
-    return await res.json()
   }
 
   return (

@@ -1,15 +1,17 @@
 import type { Game, Token } from 'types/global'
 import { useRouter } from 'next/router'
-import { useState, useContext, useMemo } from 'react'
+import { useState, useMemo } from 'react'
 import useLocale from 'hooks/useLocale'
+import useSignOut from 'hooks/useSignOut'
+
 import nprogress from 'nprogress'
 import { useAlert } from 'react-alert'
 
 import Modal from 'components/modal'
 import LoadingOverlay from 'components/loading_overlay'
 
-import CurrentTokenContext from 'contexts/current_token'
-
+import { ClientSideCookies } from 'scripts/cookie'
+import { deleteGame } from 'scripts/api'
 import validate from 'scripts/validate'
 
 interface Props {
@@ -28,8 +30,6 @@ const Settings = ({ game }: Props) => {
    *  The flag indicates whether LoadingOverlay component is shown or not. */
   const [showOverlay, setShowOverlay] = useState<boolean>(false)
 
-  /********* Context *********/
-  const currentTokenContext = useContext(CurrentTokenContext)
   /*********** Memo ***********/
   const handleConfirmation = useMemo(() => {
     return () => {
@@ -39,13 +39,15 @@ const Settings = ({ game }: Props) => {
 
   const router = useRouter()
   const { t } = useLocale()
+  const signOut = useSignOut()
   const alert = useAlert()
 
   function handleClickDelete(): void{
-    if (validate.token(currentTokenContext.currentToken) && currentTokenContext.currentToken) {
+    const token: Token | null = ClientSideCookies.loadToken()
+    if (validate.token(token)) {
       setShowOverlay(true)
       nprogress.start()
-      fetchDeleteGame(currentTokenContext.currentToken as Token).then(json => {
+      deleteGame(token, game).then(json => {
         if (json.ok) {
           alert.show(t.ALERT.DELETED, {type: 'success'})
           router.replace('/mygames/edit')
@@ -59,20 +61,9 @@ const Settings = ({ game }: Props) => {
         setShowOverlay(false)
       })
       .finally(() => { nprogress.done() })
+    } else {
+      signOut(() => router.replace('/signup'))
     }
-  }
-
-  async function fetchDeleteGame(token: Token) {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_PROTOCOL}://${process.env.NEXT_PUBLIC_API_DOMAIN}/api/v1/games/${game.id}`, {
-      method: 'DELETE',
-      headers: {
-        "Content-Type": "application/json",
-        'access-token': token.accessToken,
-        'client': token.client,
-        'uid': token.uid
-      }
-    })
-    return await res.json()
   }
 
   return (

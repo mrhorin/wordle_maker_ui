@@ -1,7 +1,7 @@
 /*
  *  This component should be imported from MygamesEdit component. */
 import type { Game, Token } from 'types/global'
-import { useEffect, useState, useRef, useContext } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useAlert } from 'react-alert'
 import { useRouter } from 'next/router'
 
@@ -16,8 +16,8 @@ import useLocale from 'hooks/useLocale'
 import LoadingOverlay from 'components/loading_overlay'
 
 import validate from 'scripts/validate'
-
-import CurrentTokenContext from 'contexts/current_token'
+import { putGame } from 'scripts/api'
+import { ClientSideCookies } from 'scripts/cookie'
 
 interface Props {
   game: Game
@@ -41,8 +41,6 @@ const Summary = ({ game, setGame }: Props) => {
   /*********** Ref ***********/
   const inputTitleEl = useRef<HTMLInputElement>(null)
   const divTitleInvalidEl = useRef<HTMLDivElement>(null)
-  /********* Context *********/
-  const currentTokenContext = useContext(CurrentTokenContext)
 
   const router = useRouter()
   const { t } = useLocale()
@@ -78,46 +76,33 @@ const Summary = ({ game, setGame }: Props) => {
   }
 
   function handleClickUpdate(): void{
-    if (validate.token(currentTokenContext.currentToken)) {
-        setShowOverlay(true)
-        nprogress.start()
-        fetchUpdate(currentTokenContext.currentToken as Token).then(json => {
-          if (json.ok) {
-            alert.show(t.ALERT.UPDATED, { type: 'success' })
-            setGame(json.data as Game)
-          } else {
-            console.error(json)
-            alert.show(t.ALERT.FAILED, {type: 'error'})
-          }
-        }).catch(error => console.error(error)).finally(() => {
-          nprogress.done()
-          setShowOverlay(false)
-        })
+    const token: Token | null = ClientSideCookies.loadToken()
+    if (validate.token(token)) {
+      setShowOverlay(true)
+      nprogress.start()
+      const nextGame: Game = {
+        id: game.id,
+        title: title,
+        desc: desc,
+        challenge_count: challengeCount,
+        lang: game.lang,
+        char_count: game.char_count,
+      }
+      putGame(token, nextGame).then(json => {
+        if (json.ok) {
+          alert.show(t.ALERT.UPDATED, { type: 'success' })
+          setGame(json.data as Game)
+        } else {
+          console.error(json)
+          alert.show(t.ALERT.FAILED, {type: 'error'})
+        }
+      }).catch(error => console.error(error)).finally(() => {
+        nprogress.done()
+        setShowOverlay(false)
+      })
     } else {
       signOut(() => router.replace('/signup'))
     }
-  }
-
-  async function fetchUpdate(token: Token) {
-    const body = {
-      game: {
-        'id': game.id,
-        'title': title,
-        'desc': desc,
-        'challenge_count': challengeCount,
-      }
-    }
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_PROTOCOL}://${process.env.NEXT_PUBLIC_API_DOMAIN}/api/v1/games/${game.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': "application/json",
-        'access-token': token.accessToken,
-        'client': token.client,
-        'uid': token.uid
-      },
-      body: JSON.stringify(body)
-    })
-    return await res.json()
   }
 
   return (

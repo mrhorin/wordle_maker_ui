@@ -8,10 +8,10 @@ const schema = {
   token: {
     type: 'object',
     properties: {
-      accessToken: { type: 'string' },
-      client: { type: 'string' },
-      uid: { type: 'string' },
-      expiry: { type: 'string' },
+      accessToken: { type: 'string', minLength: 1 },
+      client: { type: 'string', minLength: 1 },
+      uid: { type: 'string', minLength: 1 },
+      expiry: { type: 'string', minLength: 1 },
     },
     required: ['accessToken', 'client', 'uid', 'expiry'],
     additionalProperties: false,
@@ -19,10 +19,10 @@ const schema = {
   queryToken: {
     type: 'object',
     properties: {
-      auth_token: { type: 'string' },
-      client_id: { type: 'string' },
-      uid: { type: 'string' },
-      expiry: { type: 'string' },
+      auth_token: { type: 'string', minLength: 1 },
+      client_id: { type: 'string', minLength: 1 },
+      uid: { type: 'string', minLength: 1 },
+      expiry: { type: 'string', minLength: 1 },
     },
     required: ['auth_token', 'client_id', 'uid', 'expiry'],
     additionalProperties: true,
@@ -30,11 +30,11 @@ const schema = {
   userInfo: {
     type: 'object',
     properties: {
-      provider: { type: 'string' },
-      name: { type: 'string' },
-      nickname: { type: 'string' },
-      uid: { type: 'string' },
-      image: { type: 'string' },
+      provider: { type: 'string', minLength: 1 },
+      name: { type: 'string', minLength: 1 },
+      nickname: { type: 'string', minLength: 1 },
+      uid: { type: 'string', minLength: 1 },
+      image: { type: 'string', minLength: 1 },
     },
     required: ['provider', 'name', 'nickname', 'uid', 'image'],
     additionalProperties: false,
@@ -43,7 +43,7 @@ const schema = {
     type: 'object',
     properties: {
       id: { type: 'number' },
-      name: { type: 'string' },
+      name: { type: 'string', minLength: 1 },
       game_id: { type: 'number' },
       created_at: { type: 'string' },
       updated_at: { type: 'string' },

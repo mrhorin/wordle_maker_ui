@@ -1,6 +1,6 @@
 import type { Token } from 'types/global'
 import { useRouter } from 'next/router'
-import { useState, useMemo, useContext } from 'react'
+import { useState, useMemo } from 'react'
 import { useAlert } from 'react-alert'
 
 import useLocale from 'hooks/useLocale'
@@ -16,12 +16,11 @@ import Modal from 'components/modal'
 import LoadingOverlay from 'components/loading_overlay'
 
 import validate from 'scripts/validate'
-
-import CurrentTokenContext from 'contexts/current_token'
+import { ClientSideCookies } from 'scripts/cookie'
+import { deleteCurrentUser } from 'scripts/api'
 
 const Account = () => {
   const [showOverlay, setShowOverlay] = useState<boolean>(false)
-  const currentTokenContext = useContext(CurrentTokenContext)
   const [checkedConfirmation, setCheckedConfirmation] = useState<boolean | undefined>(false)
   const [showModal, setShowModal] = useState<boolean>(false)
   const handleConfirmation = useMemo(() => {
@@ -34,23 +33,12 @@ const Account = () => {
   const alert = useAlert()
   const signOut = useSignOut()
 
-  async function fetchDeleteAccount(token: Token) {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_PROTOCOL}://${process.env.NEXT_PUBLIC_API_DOMAIN}/api/v1/auth/`, {
-      method: 'DELETE',
-      headers: {
-        'access-token': token.accessToken,
-        'client': token.client,
-        'uid': token.uid
-      }
-    })
-    return await res.json()
-  }
-
   function handleClickDeleteAccount(): void{
-    if (validate.token(currentTokenContext.currentToken)) {
+    const token: Token | null = ClientSideCookies.loadToken()
+    if (validate.token(token)) {
       setShowOverlay(true)
       nprogress.start()
-      fetchDeleteAccount(currentTokenContext.currentToken as Token).then(json => {
+      deleteCurrentUser(token as Token).then(json => {
         if (json.status == 'success') {
           signOut(() => {
             alert.show(t.ALERT.DELETED, { type: 'success' })
@@ -64,6 +52,8 @@ const Account = () => {
         console.log(error)
         setShowOverlay(false)
       }).finally(() => { nprogress.done() })
+    } else {
+      signOut(() => router.replace('/signup'))
     }
   }
 

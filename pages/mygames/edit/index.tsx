@@ -1,7 +1,6 @@
-import type { UserInfo, Token, Game } from 'types/global'
-import { GetServerSideProps } from 'next'
+import type { Token, Game } from 'types/global'
 import { useRouter } from 'next/router'
-import { useState, useLayoutEffect } from 'react'
+import { useState, useEffect } from 'react'
 
 import useSignOut from 'hooks/useSignOut'
 import useLocale from 'hooks/useLocale'
@@ -13,38 +12,21 @@ import SlideoutMenu from 'components/slideout_menu'
 import Sidemenu from 'components/sidemenu'
 import GameIndexItem from 'components/game_index_item'
 
-import { ServerSideCookies } from 'scripts/cookie'
+import { ClientSideCookies } from 'scripts/cookie'
+import { getCurrentGames } from 'scripts/api'
 import validate from 'scripts/validate'
 
-type Props = {
-  token: Token,
-  userInfo: UserInfo,
-}
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const cookies = new ServerSideCookies(context)
-  const props: Props = { token: cookies.token, userInfo: cookies.userInfo }
-
-  if (validate.token(props.token) && validate.userInfo(props.userInfo)) {
-    return { props: props }
-  } else {
-    return {
-      props: props,
-      redirect: { statusCode: 302, destination: '/signup' }
-    }
-  }
-}
-
-const MygamesEditIndex = (props: Props) => {
+const MygamesEditIndex = () => {
   const [games, setGames] = useState<Game[] | null>(null)
   const [isSuspended, setIsSuspended] = useState<boolean>(false)
   const router = useRouter()
   const { t } = useLocale()
   const signOut = useSignOut()
 
-  useLayoutEffect(() => {
-    if (validate.token(props.token)) {
-      fetchListCurrentGames(props.token).then((json) => {
+  useEffect(() => {
+    const token: Token | null = ClientSideCookies.loadToken()
+    if (validate.token(token)) {
+      getCurrentGames(token).then((json) => {
         if (json.ok) {
           setGames(json.data.map((item: Game) => item))
         } else if (json.isSuspended) {
@@ -73,18 +55,6 @@ const MygamesEditIndex = (props: Props) => {
     } else {
       return <p style={{ textAlign: 'center', margin: '10rem auto' }}>{t.MY_GAMES.EDIT.INDEX.NO_GAME}</p>
     }
-  }
-
-  async function fetchListCurrentGames(token: Token) {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_PROTOCOL}://${process.env.NEXT_PUBLIC_API_DOMAIN}/api/v1/games/current_user_index`, {
-      method: 'GET',
-      headers: {
-        'access-token': token.accessToken,
-        'client': token.client,
-        'uid': token.uid
-      }
-    })
-    return await res.json()
   }
 
   return (

@@ -10,12 +10,14 @@ import GameIndexItem from 'components/game_index_item'
 import Link from 'next/link'
 import Image from 'next/image'
 
+import { getGames } from 'scripts/api'
+
 const Index = () => {
   const [games, setGames] = useState<Game[] | null>(null)
   const { t } = useLocale()
 
   useEffect(() => {
-    fetchGames().then(json => {
+    getGames().then(json => {
       if (json.ok) {
         setGames(json.data as Game[])
       } else {
@@ -37,11 +39,6 @@ const Index = () => {
     } else {
       return <p style={{ textAlign: 'center', margin: '10rem auto' }}>{t.INDEX.NO_GAME}</p>
     }
-  }
-
-  async function fetchGames() {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_PROTOCOL}://${process.env.NEXT_PUBLIC_API_DOMAIN}/api/v1/games/`)
-    return await res.json()
   }
 
   return (

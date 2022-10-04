@@ -1,19 +1,21 @@
 import type { Token, Game, Word, Pagination } from 'types/global'
-import { useEffect, useState, useRef, useContext, useCallback, memo } from 'react'
+import { useEffect, useState, useRef, useCallback, memo } from 'react'
+import { useRouter } from 'next/router'
 import { useAlert } from 'react-alert'
 import ReactLoading from 'react-loading'
 import nprogress from 'nprogress'
 
 import useLanguage from 'hooks/useLanguage'
 import useLocale from 'hooks/useLocale'
+import useSignOut from 'hooks/useSignOut'
 
 import PaginationComponent from 'components/pagination'
 import Modal from 'components/modal'
 import LoadingOverlay from 'components/loading_overlay'
 
-import CurrentTokenContext from 'contexts/current_token'
-
+import { ClientSideCookies } from 'scripts/cookie'
 import validate from 'scripts/validate'
+import { getCurrentWords, putWord, deleteWord } from 'scripts/api'
 
 interface TrWordProps {
   word: Word
@@ -68,20 +70,21 @@ const EditWords = ({ game }: EditWordsProps) => {
   /*********** Ref ***********/
   const inputUpdateWordModalEl = useRef<HTMLInputElement>(null)
   const divInvalidWordModaldEl = useRef<HTMLDivElement>(null)
-  /********* Context *********/
-  const currentTokenContext = useContext(CurrentTokenContext)
 
+  const router = useRouter()
   const { t } = useLocale()
+  const signOut = useSignOut()
   const alert = useAlert()
   const language = useLanguage(game.lang)
 
   useEffect(() => {
-    if (validate.token(currentTokenContext.currentToken) && currentWordList.length <= 0) {
+    const token: Token | null = ClientSideCookies.loadToken()
+    if (validate.token(token) && currentWordList.length <= 0) {
       // When currentWordList is empty
       if ((pagination == null) || (pagination.total_count > 0)) {
         // When rendered at first OR words exists, it fetches words
         nprogress.start()
-        fetchWords(currentTokenContext.currentToken as Token, 1).then(json => {
+        getCurrentWords(token, game, 1).then(json => {
           if (json.ok) {
             setPagination(json.data.pagination)
             setCurrentWordList(json.data.words)
@@ -123,10 +126,11 @@ const EditWords = ({ game }: EditWordsProps) => {
   }, [])
 
   const handleClickDelete = useCallback((word_id: number) => {
-    if (validate.token(currentTokenContext.currentToken)) {
+    const token: Token | null = ClientSideCookies.loadToken()
+    if (validate.token(token)) {
       setShowOverlay(true)
       nprogress.start()
-      fetchDeleteWord(currentTokenContext.currentToken as Token, word_id).then(json => {
+      deleteWord(token, word_id).then(json => {
         if (json.ok) {
           removeWord(word_id)
           alert.show(t.ALERT.DELETED, { type: 'success' })
@@ -139,21 +143,24 @@ const EditWords = ({ game }: EditWordsProps) => {
         nprogress.done()
         setShowOverlay(false)
       })
+    } else {
+      signOut(() => router.replace('/signup'))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   function handleClickUpdate() {
-    let newWord = { id: inputUpdateId, name: inputUpdateWord, game_id: game.id }
-    if (validate.wordWithGame(newWord.name, game) && validate.word(newWord)) {
+    let nextWord = { id: inputUpdateId, name: inputUpdateWord, game_id: game.id }
+    const token: Token | null = ClientSideCookies.loadToken()
+    if (validate.wordWithGame(nextWord.name, game) && validate.word(nextWord)) {
       // Remove invalid style
       if (inputUpdateWordModalEl.current) inputUpdateWordModalEl.current.classList.remove('input-invalid')
       if (divInvalidWordModaldEl.current) divInvalidWordModaldEl.current.innerHTML = ''
       // Update a word
-      if (validate.token(currentTokenContext.currentToken)) {
+      if (validate.token(token)) {
         setShowOverlay(true)
         nprogress.start()
-        fetchUpdateWord(currentTokenContext.currentToken as Token, newWord as Word).then(json => {
+        putWord(token, nextWord as Word).then(json => {
           if (json.ok) {
             updateWord(json.data)
             setShowModal(false)
@@ -168,6 +175,8 @@ const EditWords = ({ game }: EditWordsProps) => {
           nprogress.done()
           setShowOverlay(false)
         })
+      } else {
+        signOut(() => router.replace('/signup'))
       }
     } else if (inputUpdateWordModalEl.current && divInvalidWordModaldEl.current) {
       // Add invalid style
@@ -177,9 +186,10 @@ const EditWords = ({ game }: EditWordsProps) => {
   }
 
   function handleClickPage(page: number): void{
-    if (validate.token(currentTokenContext.currentToken)) {
+    const token: Token | null = ClientSideCookies.loadToken()
+    if (validate.token(token)) {
       nprogress.start()
-      fetchWords(currentTokenContext.currentToken as Token, page).then(json => {
+      getCurrentWords(token, game, page).then(json => {
         if (json.ok) {
           setCurrentWordList(json.data.words)
           setPagination(json.data.pagination)
@@ -189,51 +199,9 @@ const EditWords = ({ game }: EditWordsProps) => {
       }).finally(
         () => nprogress.done()
       )
+    } else {
+      signOut(() => router.replace('/signup'))
     }
-  }
-
-  async function fetchWords(token: Token, page: number) {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_PROTOCOL}://${process.env.NEXT_PUBLIC_API_DOMAIN}/api/v1/games/${game.id}/words/edit?page=${page}`, {
-      method: 'GET',
-      headers: {
-        'access-token': token.accessToken,
-        'client': token.client,
-        'uid': token.uid
-      }
-    })
-    return await res.json()
-  }
-
-  async function fetchUpdateWord(token: Token, word: Word) {
-    const body = {
-      word: {
-        'id': word.id,
-        'name': word.name,
-      }
-    }
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_PROTOCOL}://${process.env.NEXT_PUBLIC_API_DOMAIN}/api/v1/words/${word.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': "application/json",
-        'access-token': token.accessToken,
-        'client': token.client,
-        'uid': token.uid
-      },
-      body: JSON.stringify(body)
-    })
-    return await res.json()
-  }
-
-  async function fetchDeleteWord(token: Token, word_id: number) {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_PROTOCOL}://${process.env.NEXT_PUBLIC_API_DOMAIN}/api/v1/words/${word_id}`, {
-      method: 'DELETE',
-      headers: {
-        'access-token': token.accessToken,
-        'client': token.client,
-        'uid': token.uid
-      }
-    })
-    return await res.json()
   }
 
   if (pagination?.total_count == 0) {
