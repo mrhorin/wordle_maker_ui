@@ -32,7 +32,7 @@ const Index = () => {
   function createGameComponents(): JSX.Element[] | JSX.Element{
     if (games && games.length > 0) {
       return games.map((game: Game, index: number) => {
-        return <GameIndexItem game={game} href={`/games/${game.id}#summary`} key={index} />
+        return <GameIndexItem game={game} href={`/games/${game.id}`} key={index} />
       })
     } else if (games == null) {
       return <ReactLoading type={'spin'} color={'#008eff'} height={'25px'} width={'25px'} className='loading-center' />
