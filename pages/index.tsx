@@ -46,6 +46,7 @@ const Index = () => {
       <Head>
         <title>{t.APP_NAME}</title>
         <meta name="description" content={t.APP_DESC.FIRST_LINE + t.APP_DESC.SECOND_LINE} />
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 

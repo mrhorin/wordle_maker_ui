@@ -11,6 +11,7 @@ export default function Custom404() {
       <Head>
         <title>{ t.NOT_FOUND.TITLE } | { t.APP_NAME }</title>
         <meta name="description" content={t.NOT_FOUND.DESC} />
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
