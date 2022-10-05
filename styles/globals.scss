@@ -860,6 +860,7 @@ button{
 
 /* ---------- Modal ---------- */
 .modal{
+  $modal-border-color: darken($boarder-color, 5%);
   .modal-overlay{
     position: fixed;
     top: 0;
@@ -880,7 +881,7 @@ button{
     .modal-window-container{
       display: flex;
       flex-direction: column;
-      border: 1px solid $boarder-color;
+      border: 1px solid $modal-border-color;
       border-radius: 5px;
       background: $base-color2;
       .modal-window-header{
@@ -889,7 +890,7 @@ button{
         margin-top: auto;
         font-size: 1rem;
         text-align: center;
-        border-bottom: 1px solid $boarder-color;
+        border-bottom: 1px solid $modal-border-color;
       }
       .modal-window-body{
         order: 2;
@@ -916,7 +917,7 @@ button{
         padding: 1rem;
         margin-bottom: auto;
         text-align: right;
-        border-top: 1px solid $boarder-color;
+        border-top: 1px solid $modal-border-color;
       }
     }
   }
