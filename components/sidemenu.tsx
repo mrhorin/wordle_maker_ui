@@ -33,6 +33,7 @@ const Sidemenu = (props: Props) => {
             <FontAwesomeIcon icon={faGamepad} />
             <span className='sidemenu-item-text'>{ t.SIDE_MENU.MY_GAMES }</span>
           </li>
+          {/* Create */}
           <li ref={createEl}>
             <Link href="/mygames/create" shallow={true}>
               <a className='sidemenu-item sidemenu-item-mygames-create'>
@@ -41,6 +42,7 @@ const Sidemenu = (props: Props) => {
               </a>
             </Link>
           </li>
+          {/* Edit */}
           <li ref={editEl}>
             <Link href="/mygames/edit">
               <a className='sidemenu-item sidemenu-item-mygames-edit'>
@@ -56,6 +58,7 @@ const Sidemenu = (props: Props) => {
             <FontAwesomeIcon icon={faGear} />
             <span className='sidemenu-item-text'>{ t.SIDE_MENU.SETTINGS }</span>
           </li>
+          {/* Account */}
           <li ref={accountEl}>
             <Link href="/settings/account" shallow={true}>
               <a className='sidemenu-item sidemenu-item-settings-account'>

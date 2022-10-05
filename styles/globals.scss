@@ -447,7 +447,7 @@ button{
   display: flex;
   flex-direction: row;
   width: 100%;
-  border-bottom: 2px solid lighten($base-color1, 5%);
+  border-bottom: 2px solid lighten($base-color1, 10%);
   margin-bottom: 2rem;
   .tab{
     font-size: 1rem;
@@ -749,6 +749,7 @@ button{
           a{
             display: block;
             padding: 0.5rem;
+            color: $font-color2;
             svg, i{
               width: 30px;
               margin-right: 0.5rem;
@@ -762,11 +763,13 @@ button{
           }
         }
         li.sidemenu-item-active{
-          a{ color: $accent-color1; }
-          a:hover{
-            background: $base-color2;
-            text-decoration: none;
-            cursor: pointer;
+          a{
+            color: $accent-color1;
+            &:hover{
+              background: $base-color2;
+              text-decoration: none;
+              cursor: pointer;
+            }
           }
         }
         li.sidemenu-item-title,
@@ -803,7 +806,7 @@ button{
       position: fixed;
       bottom: 0;
       border-top: 1px solid $boarder-color;
-      background: $base-color1;
+      background: $base-color2;
       margin: 0;
       .sidemenu-items-container{
         width: 100%;
@@ -814,11 +817,22 @@ button{
           display: flex;
           flex-direction: row;
           margin-bottom: 0;
-          li{
+          li>a{
+            color: $font-color2;
             font-size: 1.3rem;
             padding: 0.5rem 2rem 1rem 2rem;
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            svg,i{
+              order: 1;
+              margin: 0;
+              margin: auto;
+            }
             .sidemenu-item-text{
-              display: none;
+              order: 2;
+              font-size: 0.3rem;
+              margin: auto;
             }
           }
           li.sidemenu-item-title{
