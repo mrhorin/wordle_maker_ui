@@ -4,6 +4,8 @@ import type { Game, Token } from 'types/global'
 import { useEffect, useState, useRef } from 'react'
 import { useAlert } from 'react-alert'
 import { useRouter } from 'next/router'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCopy } from '@fortawesome/free-regular-svg-icons'
 
 import useSignOut from 'hooks/useSignOut'
 
@@ -12,6 +14,7 @@ import nprogress from 'nprogress'
 
 import useLanguage from 'hooks/useLanguage'
 import useLocale from 'hooks/useLocale'
+import useCopyToClipboard from 'hooks/useCopyToClipboard'
 
 import LoadingOverlay from 'components/loading_overlay'
 
@@ -48,6 +51,7 @@ const Summary = ({ game, setGame }: Props) => {
 
   const signOut = useSignOut()
   const language = useLanguage(game.lang)
+  const [clipboard, copy] = useCopyToClipboard()
 
   useEffect(() => {
     // When title or desc are changed, the update button is clickable
@@ -107,18 +111,28 @@ const Summary = ({ game, setGame }: Props) => {
     }
   }
 
+  function handleClickCopy(): void{
+    copy(`${process.env.NEXT_PUBLIC_API_PROTOCOL}://${process.env.NEXT_PUBLIC_API_DOMAIN}/games/${game.id}`)
+    alert.show(t.ALERT.COPIED, { type: 'success' })
+  }
+
   return (
     <div className='mygames-edit-main sp-padding'>
       {/* Gmae Link */}
-      <div className='mygames-edit-link'>
+      <div className='form-group'>
         <label>{ t.MY_GAMES.EDIT.SUMMARY.GAME_LINK }</label>
-        <Link href={`/games/${game.id}`}>
-          <a target="_blank">
-            <button className='btn btn-secondary'>
-              {`${process.env.NEXT_PUBLIC_API_PROTOCOL}://${process.env.NEXT_PUBLIC_API_DOMAIN}/games/${game.id}`}
-            </button>
-          </a>
-        </Link>
+        <div className='form-group-input mygames-edit-link'>
+          <div className='mygames-edit-link-text'>
+            <Link href={`/games/${game.id}`}>
+              <a>
+                {`${process.env.NEXT_PUBLIC_API_PROTOCOL}://${process.env.NEXT_PUBLIC_API_DOMAIN}/games/${game.id}`}
+              </a>
+            </Link>
+          </div>
+          <div className='mygames-edit-link-copy' onClick={handleClickCopy}>
+            <FontAwesomeIcon icon={faCopy} style={{marginLeft: '0.5rem'}} />
+          </div>
+        </div>
       </div>
       {/* Game Form */}
       <form id='game-form' onSubmit={e => e.preventDefault()}>
@@ -135,7 +149,7 @@ const Summary = ({ game, setGame }: Props) => {
         <div className='form-group'>
           <label>{ t.GAME.DESC }</label>
           <div className='form-countable-input-group'>
-            <textarea id='game-desc' rows={3} maxLength={200} value={desc} onChange={e => setDesc(e.target.value)} />
+            <textarea id='game-desc' rows={5} maxLength={200} value={desc} onChange={e => setDesc(e.target.value)} />
             <div className='form-countable-input-counter'>{`${desc.length} / 200`}</div>
           </div>
           <div id='game-title-invalid-feedback' className='form-group-invalid-feedback'></div>

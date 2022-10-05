@@ -168,6 +168,9 @@ label{
     display: block;
     margin-bottom: 0.2rem;
   }
+  .form-group-input{
+    order: 2;
+  }
   input,textarea,select{
     order: 2;
     display: block;
@@ -1503,15 +1506,50 @@ button{
   }
 }
 .mygames-edit-link{
-  margin-bottom: 1rem;
-  label{
-    margin-bottom: 0.3rem;
-    display: block;
-    svg,i{
-      margin-right: 0.3rem;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  .mygames-edit-link-btn{
+    line-height: 2rem;
+    padding: 0 1rem 0 0.5rem;
+    background: $base-color3;
+    color:#fff;
+    &:hover{
+      background: darken($base-color3, 5%);
+      cursor: pointer;
     }
   }
+  .mygames-edit-link-text{
+    order: 1;
+    border: 1px solid $boarder-color;
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+    box-sizing: border-box;
+    background: $secondary-color;
+    &:hover{
+      background: darken($secondary-color, 5%);
+    }
+    a{
+      display: inline-flex;
+      line-height: 2rem;
+      padding: 0 1rem;
+      color: #fff;
+      &:hover{
+        text-decoration: none;
+      }
+    }
+  }
+  .mygames-edit-link-copy{
+    @extend .mygames-edit-link-btn;
+    order: 2;
+    border: 1px solid $boarder-color;
+    margin-left: -1px;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+  }
 }
+
 
 /* --------- AddWords --------- */
 .addwords-attrs{
