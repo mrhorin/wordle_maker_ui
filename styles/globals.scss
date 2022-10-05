@@ -110,6 +110,7 @@ select,
   font-size: 1rem;
   line-height: 1.5rem;
   padding: 0.5rem;
+  margin-bottom: 0;
   color: $font-color1;
   background: $base-color3;
   border: 1px solid $base-color3;
@@ -831,7 +832,7 @@ button{
             }
             .sidemenu-item-text{
               order: 2;
-              font-size: 0.3rem;
+              font-size: 10px;
               margin: auto;
             }
           }
