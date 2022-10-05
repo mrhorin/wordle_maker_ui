@@ -3,10 +3,11 @@
 0: body
   1: #sidemenu
     2:.modal-overlay
-      3: .modal-window
+      3:
         4: .loading-overlay
           5: .header
             6: #slideout-menu-overlay
+            6: .modal-window
               7: #slideout-menu-main
 */
 $base-color1: #1e2022;
@@ -353,7 +354,7 @@ button{
   white-space: nowrap;
 }
 .btn{
-  font-size: 1rem;
+  font-size: 0.8rem;
   line-height: 1.7rem;
   padding: 0 1rem;
   margin: 0.25rem;
@@ -875,24 +876,27 @@ button{
     transform: translate(-50%, -50%);
     width: 70%;
     max-width: $sp-break-point;
-    z-index: 3;
+    z-index: 6;
     .modal-window-container{
       display: flex;
       flex-direction: column;
-      border: 1px solid $base-color3;
+      border: 1px solid $boarder-color;
       border-radius: 5px;
       background: $base-color2;
       .modal-window-header{
         order: 1;
         padding: 1rem;
-        padding-bottom: 0;
         margin-top: auto;
-        font-size: 1.3rem;
+        font-size: 1rem;
         text-align: center;
+        border-bottom: 1px solid $boarder-color;
       }
       .modal-window-body{
         order: 2;
         padding: 1rem;
+        overflow: auto;
+        height: auto;
+        max-height: 65vh;
         .form-group{
           input[type="text"]{
             background: lighten($base-color3, 3%);
@@ -909,10 +913,10 @@ button{
       }
       .modal-window-footer{
         order: 3;
-        padding: 1rem;
-        padding-top: 0;
+        padding: 0.5rem 1rem;
         margin-bottom: auto;
         text-align: right;
+        border-top: 1px solid $boarder-color;
       }
     }
   }
@@ -926,10 +930,7 @@ button{
   .modal{
     .modal-window{
       width: 95%;
-      margin-top: 60px;
-      .modal-window-body{
-        overflow-y: scroll;
-      }
+      // margin-top: 70px;
     }
   }
 }
@@ -1186,6 +1187,7 @@ button{
     @extend .howtoplay-block;
     order: 2;
     padding-top: 0.5rem;
+    white-space: pre-wrap;
   }
   .howtoplay-example{
     @extend .howtoplay-block;

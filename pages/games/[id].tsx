@@ -467,6 +467,7 @@ const Games = (props: Props) => {
             </div>
           </div>
           <div className='modal-window-footer'>
+          <button className='btn btn-default' onClick={() => setShowHowToPlayModal(false)}>{ t.COMMON.CLOSE }</button>
           </div>
         </div>
       </Modal>
