@@ -1344,12 +1344,21 @@ button{
 }
 .keyboard-key-correct{
   background: $correct-color;
+  &:hover{
+    background: $correct-color;
+  }
 }
 .keyboard-key-present{
   background: $present-color;
+  &:hover{
+    background: $present-color;
+  }
 }
 .keyboard-key-absent{
   background: $absent-color;
+  &:hover{
+    background: $absent-color;
+  }
 }
 .keyboard-key-character{
   @extend .keyboard-key;
