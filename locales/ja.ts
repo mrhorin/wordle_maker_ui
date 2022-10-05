@@ -1,8 +1,8 @@
 export default {
   APP_NAME: 'Makele β',
   APP_DESC: {
-    FIRST_LINE: "好きなワードでオリジナルWordleが作れる！",
-    SECOND_LINE: "文字数も自由に設定可、日本語/英語にも対応！"
+    FIRST_LINE: "好きなワードでオレオレWordleを作りたい",
+    SECOND_LINE: "日本語/英語にも対応、文字数も自由に設定可"
   },
   COMMON: {
     WORD: 'ワード',
@@ -111,7 +111,7 @@ export default {
     },
   },
   INDEX: {
-    CREATE_GAME: 'ゲームを作ってみる',
+    CREATE_GAME: '作ってみる',
     LATEST_GAMES: '新着',
     NO_GAME: 'ゲームがありません。',
   },
