@@ -20,7 +20,9 @@ const GameIndexItem = (props: Props) => {
       <div className='game-index-item-title'>
         {(() => {
           if (props.game.is_suspended) {
-            return <span className='game-index-item-title-lock'><FontAwesomeIcon icon={faLock} />{props.game.title}</span>
+            return (
+              <span className='game-index-item-title-lock'>🔒 {props.game.title}</span>
+            )
           } else {
             return <Link href={props.href}><a>{props.game.title}</a></Link>
           }
