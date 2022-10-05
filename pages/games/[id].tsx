@@ -434,8 +434,8 @@ const Games = (props: Props) => {
       <Modal showModal={showHowToPlayModal} setShowModal={setShowHowToPlayModal}>
         <div className='modal-window-container'>
           <div className='modal-window-header' style={{position: 'relative'}}>
-            <div style={{ fontWeight: 'bold', fontSize: '1rem', textAlign: 'center' }}>{t.SLIDEOUT_MENU.HOW_TO_PLAY}</div>
-            <FontAwesomeIcon icon={faXmark} style={{ position: 'absolute', top: '15px', right: '15px', cursor: 'pointer' }} onClick={() => setShowHowToPlayModal(false)} />
+            <div style={{ fontWeight: 'bold', fontSize: '1.5rem', textAlign: 'center' }}>{t.SLIDEOUT_MENU.HOW_TO_PLAY}</div>
+            <FontAwesomeIcon icon={faXmark} className='xmark' style={{ position: 'absolute', top: '15px', right: '15px'}} onClick={() => setShowHowToPlayModal(false)} />
           </div>
           <div className='modal-window-body'>
             <div className='howtoplay'>
@@ -477,7 +477,7 @@ const Games = (props: Props) => {
         <div className='modal-window-container'>
           <div className='modal-window-header' style={{position: 'relative'}}>
             <div style={{ fontWeight: 'bold', fontSize: '1.5rem', textAlign: 'center' }}>{isClear() ? 'YOU WON' : 'YOU LOSE'}</div>
-            <FontAwesomeIcon icon={faXmark} style={{ position: 'absolute', top: '15px', right: '15px', cursor: 'pointer' }} onClick={() => setShowResultModal(false)} />
+            <FontAwesomeIcon icon={faXmark} className='xmark' style={{ position: 'absolute', top: '15px', right: '15px'}} onClick={() => setShowResultModal(false)} />
           </div>
           <div className='modal-window-body'>
             {/* Statistics */}
