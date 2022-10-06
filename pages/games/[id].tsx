@@ -20,7 +20,9 @@ import JaKeyboard from 'components/keyboard/ja/gozyuon'
 import ShowSlideoutMenuContext from 'contexts/show_slideout_menu'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faXmark, faCopy, faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
+import { faXmark, faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
+import { faCopy } from '@fortawesome/free-regular-svg-icons'
+
 import { faTwitter } from '@fortawesome/free-brands-svg-icons'
 
 type Props = {
@@ -484,25 +486,25 @@ const Games = (props: Props) => {
             <div className='statistics'>
               <div className='statistic'>
                 <div className='statistic-value'>{statistics.win + statistics.lose}</div>
-                <div className='statistic-label'>Played</div>
+                <div className='statistic-label'>{t.GAMES.RESULT.PLAYED}</div>
               </div>
               <div className='statistic'>
                 <div className='statistic-value'>{getWinPercent()}</div>
-                <div className='statistic-label'>Win %</div>
+                <div className='statistic-label'>{t.GAMES.RESULT.WIN}</div>
               </div>
               <div className='statistic'>
                 <div className='statistic-value'>{statistics.currentStreak}</div>
-                <div className='statistic-label'>Current Streak</div>
+                <div className='statistic-label'>{t.GAMES.RESULT.CURRENT_STREAK}</div>
               </div>
               <div className='statistic'>
                 <div className='statistic-value'>{statistics.maxStreak}</div>
-                <div className='statistic-label'>Max Streak</div>
+                <div className='statistic-label'>{t.GAMES.RESULT.MAX_STREAK}</div>
               </div>
             </div>
             {/* Timers */}
             <div className='timers'>
               <div className='timer'>
-                <div className='timer-label'>Guess Time</div>
+                <div className='timer-label'>{t.GAMES.RESULT.GAME_TIME}</div>
                 <div className='timer-clock'>{getGuessTime()}</div>
               </div>
               <NextGameTimer />
@@ -512,10 +514,10 @@ const Games = (props: Props) => {
             {/* Shares */}
             <div className='shares'>
               <div className='share-copy' onClick={handleClickCopy}>
-                <FontAwesomeIcon icon={faCopy} style={{marginRight: '0.5rem'}} />COPY
+                <FontAwesomeIcon icon={faCopy} />{t.COMMON.COPY}
               </div>
               <div className='share-tweet' onClick={handleClickTweet}>
-                <FontAwesomeIcon icon={faTwitter} style={{marginRight: '0.5rem'}} />TWEET
+                <FontAwesomeIcon icon={faTwitter} />TWEET
               </div>
             </div>
           </div>

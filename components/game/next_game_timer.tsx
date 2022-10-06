@@ -1,8 +1,12 @@
 import { useState, useEffect } from 'react'
 
+import useLocale from 'hooks/useLocale'
+
 const NextGameTimer = () => {
   const [now, setNow] = useState<Date>()
   const [expiry, setExpiry] = useState<Date>()
+
+  const { t } = useLocale()
 
   // Prevent 'Text content did not match' error
   useEffect(() => {
@@ -28,7 +32,7 @@ const NextGameTimer = () => {
 
   return (
     <div className='timer'>
-      <div className='timer-label'>Next Game</div>
+      <div className='timer-label'>{t.GAMES.RESULT.NEXT_GAME}</div>
       <div className='timer-clock'>{clock}</div>
     </div>
   )

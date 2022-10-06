@@ -5,6 +5,7 @@ export default {
     SECOND_LINE: "Let's play and create your original word games!"
   },
   COMMON: {
+    COPY: 'Copy',
     WORD: 'Word',
     WORDS: 'Words',
     EDIT: 'Edit',
@@ -113,6 +114,14 @@ export default {
       BLUE: 'A correct letter and correct position of the letter will be blue.',
       YELLOW: 'A correct letter but wrong position of the letter will be yellow.',
     },
+    RESULT: {
+      PLAYED: 'Played',
+      WIN: 'Win %',
+      CURRENT_STREAK: 'Current Streak',
+      MAX_STREAK: 'Max Streak',
+      GAME_TIME: 'Game Time',
+      NEXT_GAME: 'Next Game',
+    }
   },
   SIGN_UP: {
     TITLE: 'Sign up',

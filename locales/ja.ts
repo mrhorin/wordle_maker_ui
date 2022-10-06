@@ -5,6 +5,7 @@ export default {
     SECOND_LINE: "日本語/英語にも対応、文字数も自由に設定可"
   },
   COMMON: {
+    COPY: 'コピー',
     WORD: 'ワード',
     WORDS: 'ワード',
     EDIT: '編集',
@@ -101,15 +102,6 @@ export default {
       }
     }
   },
-  SIGN_UP: {
-    TITLE: 'サインアップ',
-    I_AGREED: '利用規約に同意しました。',
-    CONTINUE: {
-      TWITTER: 'Twitterでサインイン',
-      FACEBOOK: 'Facebookでサインイン',
-      GOOGLE: 'Googleでサインイン',
-    },
-  },
   INDEX: {
     CREATE_GAME: '作ってみる',
     LATEST_GAMES: '新着',
@@ -121,6 +113,23 @@ export default {
       EXAMPLES: '例:',
       BLUE: '文字と、文字の位置の両方が正しい場合は青色になります。',
       YELLOW: '文字は合っていても、文字の位置が間違っている場合は黄色になります。',
+    },
+    RESULT: {
+      PLAYED: 'プレイ回数',
+      WIN: '勝率 %',
+      CURRENT_STREAK: '連勝中',
+      MAX_STREAK: '連勝記録',
+      GAME_TIME: '思考時間',
+      NEXT_GAME: '次のゲームまで',
+    }
+  },
+  SIGN_UP: {
+    TITLE: 'サインアップ',
+    I_AGREED: '利用規約に同意しました。',
+    CONTINUE: {
+      TWITTER: 'Twitterでサインイン',
+      FACEBOOK: 'Facebookでサインイン',
+      GOOGLE: 'Googleでサインイン',
     },
   },
   TOS: {

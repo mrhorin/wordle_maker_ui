@@ -1258,8 +1258,8 @@ button{
     &:last-child{ border-right: none; }
     .statistic-label{
       color: #a2a2a2;
-      font-size: 0.6rem;
-      line-height: 0.8rem;
+      font-size: 0.8rem;
+      line-height: 1rem;
       font-weight: 500;
       word-break: keep-all;
       text-transform: uppercase;
@@ -1267,6 +1267,7 @@ button{
     .statistic-value{
       font-size: 2rem;
       font-weight: 500;
+      word-break: keep-all;
     }
   }
 }
@@ -1282,7 +1283,11 @@ button{
     text-transform: uppercase;
     .timer-label{
       color: #a2a2a2;
+      font-size: 0.8rem;
+      line-height: 1rem;
       font-weight: 500;
+      word-break: keep-all;
+      text-transform: uppercase;
       text-align: center;
     }
     .timer-clock{
@@ -1290,6 +1295,7 @@ button{
       font-size: 2rem;
       font-weight: 500;
       font-family: "Helvetica Neue",Arial,"Hiragino Kaku Gothic ProN","Hiragino Sans",Helvetica,Roboto,Meiryo,sans-serif,monospace;
+      word-break: keep-all;
     }
   }
 }
@@ -1305,13 +1311,18 @@ button{
     line-height: 2.4rem;
     padding: 0;
     margin: 3px 5px;
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 500;
     text-align: center;
     display: inline-block;
     text-transform: uppercase;
+    word-break: keep-all;
     cursor: pointer;
+    font-family: "Helvetica Neue",Arial,"Hiragino Kaku Gothic ProN","Hiragino Sans",Helvetica,Roboto,Meiryo,sans-serif,monospace;
     &:hover{ filter: opacity(90%); }
+    svg,i{
+      margin-right: 0.25rem;
+    }
   }
   .share-copy{
     @extend .share;
@@ -1321,7 +1332,7 @@ button{
   .share-tweet{
     @extend .share;
     order: 2;
-    background: #0099ff;
+    background: #1e9bf0;
   }
   @media screen and (max-width: $sp-break-point){
     justify-content: center;
