@@ -478,7 +478,7 @@ const Games = (props: Props) => {
       <Modal showModal={showResultModal} setShowModal={setShowResultModal}>
         <div className='modal-window-container'>
           <div className='modal-window-header' style={{position: 'relative'}}>
-            <div style={{ fontWeight: 'bold', fontSize: '1.5rem', textAlign: 'center' }}>{isClear() ? 'YOU WON' : 'YOU LOSE'}</div>
+            <div style={{ fontWeight: 'bold', fontSize: '1.5rem', textAlign: 'center' }}>{isClear() ? '👑 YOU WON 👑' : 'YOU LOSE'}</div>
             <FontAwesomeIcon icon={faXmark} className='xmark' style={{ position: 'absolute', top: '15px', right: '15px'}} onClick={() => setShowResultModal(false)} />
           </div>
           <div className='modal-window-body'>
