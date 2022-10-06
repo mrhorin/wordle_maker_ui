@@ -132,6 +132,9 @@ export default {
       GOOGLE: 'Continue with Google',
     },
   },
+  GAME_IDEX: {
+    WORD_COUNT: 'Words',
+  },
   TOS: {
     TITLE: 'Terms of Service'
   },
@@ -155,8 +158,8 @@ export default {
   GAME: {
     TITLE: 'Title',
     DESC: 'Description',
-    CHALLENGE_COUNT: 'Challenge Count',
-    CHARACTER_COUNT: 'Character Count',
+    CHALLENGE_COUNT: 'Challenge',
+    CHARACTER_COUNT: 'Chars',
     LANGUAGE: 'Language',
   },
   LANG: {

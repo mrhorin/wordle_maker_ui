@@ -460,6 +460,9 @@ button{
     line-height: 3rem;
     color: $font-color2;
     font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     cursor: pointer;
   }
   .tab:hover{
@@ -975,12 +978,9 @@ button{
     .game-index-item-title{
       order: 1;
       font-size: 1.3rem;
-      line-height: 2rem;
+      line-height: 1.8rem;
       a{
         color: $info-color;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
       }
       .game-index-item-title-lock{
         svg, i{
@@ -1005,24 +1005,30 @@ button{
       line-height: 1.5rem;
       display: flex;
       flex-direction: row;
+      flex-wrap: wrap;
       justify-content: flex-start;
+      align-items: flex-end;
       .game-index-item-attrs-item{
-        display: flex;
-        flex-direction: row;
-        margin-right: 2rem;
+        display: inline-flex;
+        align-items: baseline;
+        margin-right: 1rem;
         .game-index-item-attrs-item-label{
           order: 1;
-          display: inline-block;
-          margin-right: 1rem;
-          color: darken($font-color1, 20%);
+          font-size: 0.8rem;
+          margin-right: 0.2rem;
+          word-break: keep-all;
+          color: $font-color3;
+          &::after{
+            content: ':';
+          }
         }
         .game-index-item-attrs-item-value{
           order: 2;
-          display: inline-block;
+          font-size: 1rem;
         }
-      }
-      .game-index-item-attrs-item:last-child{
-        margin-right: 0;
+        &:last-child{
+          margin-right: 0;
+        }
       }
     }
   }
@@ -1058,10 +1064,11 @@ button{
   }
 }
 .index-title{
-  display: inline-flex;
+  display: flex;
   align-items: center;
   padding: 0 1rem;
   font-size: 1.3rem;
+  line-height: 1.8rem;;
   .index-title-icon{
     order: 1;
     margin-right: 5px;
@@ -1538,14 +1545,20 @@ button{
     border-bottom-left-radius: 30px;
     box-sizing: border-box;
     background: $secondary-color;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     &:hover{
       background: darken($secondary-color, 5%);
     }
     a{
-      display: inline-flex;
+      display: block;
       line-height: 2rem;
       padding: 0 1rem;
       color: #fff;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
       &:hover{
         text-decoration: none;
       }

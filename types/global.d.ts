@@ -32,6 +32,7 @@ export type Game = {
   id?: number,
   user_id?: number,
   is_suspended?: boolean,
+  words_count?: number,
 }
 
 export type Word = {

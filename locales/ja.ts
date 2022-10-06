@@ -132,6 +132,9 @@ export default {
       GOOGLE: 'Googleでサインイン',
     },
   },
+  GAME_IDEX: {
+    WORD_COUNT: '単語数',
+  },
   TOS: {
     TITLE: '利用規約'
   },
@@ -155,12 +158,12 @@ export default {
   GAME: {
     TITLE: 'タイトル',
     DESC: '説明',
-    CHALLENGE_COUNT: 'チャレンジ回数',
+    CHALLENGE_COUNT: '最大回数',
     CHARACTER_COUNT: '文字数',
     LANGUAGE: '言語',
   },
   LANG: {
     EN: 'English',
-    JA: '日本語(カタカナ)',
+    JA: '日本語',
   },
 }
