@@ -1,6 +1,4 @@
 import type { Game } from 'types/global'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faLock } from '@fortawesome/free-solid-svg-icons'
 
 import useLocale from 'hooks/useLocale'
 
