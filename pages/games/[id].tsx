@@ -282,27 +282,21 @@ const Games = (props: Props) => {
     const tiles: Tile[] = word.map((letter, i) => {
       return { letter: letter.toUpperCase(), status: 'EMPTY' } as Tile
     })
-    // Set status
-    for (let i = 0; i < tiles.length; i++){
-      if (WORD_TODAY.indexOf(tiles[i].letter) >= 0) {
-        // When the letter exists in WORD_TODAY
-        if (WORD_TODAY.indexOf(tiles[i].letter) == i) {
-          tiles[i].status = 'CORRECT'
+    // Set CORRECT status
+    for (let i = 0; i < tiles.length; i++) {
+      if (WORD_TODAY[i] == tiles[i].letter) tiles[i].status = 'CORRECT'
+    }
+    const word_today_without_correct: string[] = tiles.map((tile, index) => {
+      return tile.status == 'CORRECT' ? '' : WORD_TODAY[index]
+    })
+    // Set PRESENT and ABSENT status
+    for (let i = 0; i < tiles.length; i++) {
+      if (tiles[i].status != 'CORRECT') {
+        if (word_today_without_correct.indexOf(tiles[i].letter) >= 0) {
+          tiles[i].status = 'PRESENT'
         } else {
-          // Searching for matching tiles in EMPTY or PRESENT
-          for (let j = 0; j < tiles.length; j++){
-            if (tiles[j].status == 'EMPTY' || tiles[j].status == 'PRESENT') {
-              if (WORD_TODAY[j] == tiles[j].letter) {
-                tiles[j].status = 'CORRECT'
-              } else {
-                tiles[j].status = 'PRESENT'
-              }
-            }
-          }
+          tiles[i].status = 'ABSENT'
         }
-      } else {
-        // When the letter doesn't exist in WORD_TODAY
-        tiles[i].status = 'ABSENT'
       }
     }
     return tiles
