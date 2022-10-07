@@ -517,7 +517,7 @@ const Games = (props: Props) => {
                 <FontAwesomeIcon icon={faCopy} />{t.COMMON.COPY}
               </div>
               <div className='share-tweet' onClick={handleClickTweet}>
-                <FontAwesomeIcon icon={faTwitter} />TWEET
+                <FontAwesomeIcon icon={faTwitter} />Tweet
               </div>
             </div>
           </div>

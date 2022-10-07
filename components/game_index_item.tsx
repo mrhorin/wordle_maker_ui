@@ -41,7 +41,7 @@ const GameIndexItem = (props: Props) => {
       <div className='game-index-item-attrs'>
         {/* Language */}
         <div className='game-index-item-attrs-item'>
-          <div className='game-index-item-attrs-item-label'>{ t.GAME.LANGUAGE }</div>
+          <div className='game-index-item-attrs-item-label'>{ t.GAME_IDEX.LANGUAGE }</div>
           <div className='game-index-item-attrs-item-value'>{props.game.lang == 'ja' ? t.LANG.JA : t.LANG.EN}</div>
         </div>
         {/* Words count */}
@@ -51,7 +51,7 @@ const GameIndexItem = (props: Props) => {
         </div>
         {/* Character count */}
         <div className='game-index-item-attrs-item'>
-          <div className='game-index-item-attrs-item-label'>{ t.GAME.CHARACTER_COUNT }</div>
+          <div className='game-index-item-attrs-item-label'>{ t.GAME_IDEX.CHARACTER_COUNT }</div>
           <div className='game-index-item-attrs-item-value'>{props.game.char_count}</div>
         </div>
         {/* Challenge count */}

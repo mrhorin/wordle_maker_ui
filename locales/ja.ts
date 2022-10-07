@@ -133,7 +133,10 @@ export default {
     },
   },
   GAME_IDEX: {
+    LANGUAGE: '言語',
     WORD_COUNT: '単語数',
+    CHARACTER_COUNT: '文字数',
+    CHALLENGE_COUNT: '最大回数',
   },
   TOS: {
     TITLE: '利用規約'

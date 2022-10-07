@@ -55,7 +55,7 @@ export default {
   MY_GAMES: {
     TITLE: 'My Gamses',
     CREATE: {
-      TITLE: 'Create a New Game'
+      TITLE: 'Create a Game'
     },
     EDIT: {
       TITLE: 'Edit Games',
@@ -133,7 +133,10 @@ export default {
     },
   },
   GAME_IDEX: {
+    LANGUAGE: 'Lang',
     WORD_COUNT: 'Words',
+    CHARACTER_COUNT: 'Chars',
+    CHALLENGE_COUNT: 'Challenge',
   },
   TOS: {
     TITLE: 'Terms of Service'
