@@ -5,7 +5,6 @@ import { useRouter } from 'next/router'
 import { useState, useEffect, useCallback, useContext } from 'react'
 import { useAlert } from 'react-alert'
 import useLocale from 'hooks/useLocale'
-import Confetti from 'react-confetti'
 
 import useCopyToClipboard from 'hooks/useCopyToClipboard'
 import useLanguage from 'hooks/useLanguage'
@@ -520,9 +519,6 @@ const Games = (props: Props) => {
       </Modal>
 
       <div className='games'>
-        {(() => {
-          if (gameStatus == GameStatus.Finished && showResultModal && isClear()) return <Confetti />
-        })()}
         <div className='words'>{wordsRowComponents}</div>
         <div className='keyboard'>{keyboardComponent}</div>
       </div>
