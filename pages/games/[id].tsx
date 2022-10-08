@@ -341,6 +341,7 @@ const Games = (props: Props) => {
 
   function handleClickHowToPlay(): void{
     showSlideoutMenuContext.set(false)
+    setShowResultModal(false)
     setShowHowToPlayModal(true)
   }
 
@@ -520,7 +521,7 @@ const Games = (props: Props) => {
 
       <div className='games'>
         {(() => {
-          if (gameStatus == GameStatus.Finished && showResultModal && isClear()) return <Confetti recycle={true} />
+          if (gameStatus == GameStatus.Finished && showResultModal && isClear()) return <Confetti />
         })()}
         <div className='words'>{wordsRowComponents}</div>
         <div className='keyboard'>{keyboardComponent}</div>
