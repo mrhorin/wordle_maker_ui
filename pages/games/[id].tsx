@@ -438,10 +438,8 @@ const Games = (props: Props) => {
   return (
     <main id='main'>
       <Head>
-        <title>{props.game?.title} | { t.APP_NAME}</title>
-        <meta name="description" content={t.APP_DESC.FIRST_LINE + t.APP_DESC.SECOND_LINE} />
-        <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />
-        <link rel="icon" href="/favicon.ico" />
+        <title>{props.game.title} | { t.APP_NAME}</title>
+        <meta name="description" content={props.game.desc ? props.game.desc : t.APP_DESC.FIRST_LINE + t.APP_DESC.SECOND_LINE} />
       </Head>
 
       <SlideoutMenu>

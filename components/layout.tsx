@@ -1,5 +1,8 @@
 import type { UserInfo } from 'types/global'
+import Head from 'next/head'
 import React, { useState } from 'react'
+import { useRouter } from 'next/router'
+import useLocale from 'hooks/useLocale'
 
 import Header from 'components/header'
 
@@ -15,6 +18,8 @@ export default function Layout({ children }: Props) {
   const [currentUserInfo, setCurrentUserInfo] = useState<UserInfo | null>(null)
   const [showAccountMenu, setShowAccountMenu] = useState<boolean>(false)
   const [showSlideoutMenu, setShowSlideoutMenu] = useState<boolean>(false)
+  const router = useRouter()
+  const { t } = useLocale()
 
   function hideAccountMenu(): void{
     if (showAccountMenu) setShowAccountMenu(false)
@@ -24,6 +29,16 @@ export default function Layout({ children }: Props) {
     <CurrentUserInfoContext.Provider value={{ currentUserInfo, setCurrentUserInfo }}>
       <ShowAccountMenuContext.Provider value={{ showAccountMenu, setShowAccountMenu }}>
         <ShowSlideoutMenuContext.Provider value={{ show: showSlideoutMenu, set: setShowSlideoutMenu }}>
+          <Head>
+            <title>{t.APP_NAME}</title>
+            <meta name="description" content={t.APP_DESC.FIRST_LINE + t.APP_DESC.SECOND_LINE} />
+            <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />
+            <link rel="icon" href="/favicon.ico" />
+            <link rel="alternate" href={`${process.env.NEXT_PUBLIC_PROTOCOL}://${process.env.NEXT_PUBLIC_DOMAIN}${router.asPath}`} hrefLang="x-default" />
+            <link rel="alternate" href={`${process.env.NEXT_PUBLIC_PROTOCOL}://${process.env.NEXT_PUBLIC_DOMAIN}${router.asPath}`} hrefLang="en" />
+            <link rel="alternate" href={`${process.env.NEXT_PUBLIC_PROTOCOL}://${process.env.NEXT_PUBLIC_DOMAIN}/ja${router.asPath}`} hrefLang="ja" />
+          </Head>
+
           <div className='wrap' onClick={hideAccountMenu}>
             <Header />
             {children}
