@@ -22,6 +22,9 @@ export default {
     DELETED: '削除しました',
     COPIED: 'コピーしました',
     ADDED_INVALID_WORDS: 'カタカナ*文字で一意の値を入力して下さい',
+    NOT_IN_WORD_LIST: '登録されていないワード',
+    NOT_ENOUGH_LETTERS: '文字数がたりません',
+    FJINISHED_GAME: 'ゲームは終了しています',
   },
   VALIDATE: {
     GAME: {
@@ -122,7 +125,7 @@ export default {
       MAX_STREAK: '連勝記録',
       GAME_TIME: '思考時間',
       NEXT_GAME: '次のゲームまで',
-    }
+    },
   },
   SIGN_UP: {
     TITLE: 'サインアップ',

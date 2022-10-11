@@ -16,7 +16,7 @@ const alertOptions = {
   timeout: 2000,
   offset: '0px',
   transition: transitions.SCALE,
-  containerStyle: { textAlign: 'center', zIndex: 100 }
+  containerStyle: { textAlign: 'center', zIndex: 100 },
 }
 
 nprogress.configure({ showSpinner: false, speed: 400, minimum: 0.25 })

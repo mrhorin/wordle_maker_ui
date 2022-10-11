@@ -207,11 +207,17 @@ const Games = (props: Props) => {
           })
         })
         .catch(status => {
-          if (status == SetCurrentWordStatus.NotEnoughLetters) setGameStatus(GameStatus.Ready)
-          if (status == SetCurrentWordStatus.NotInWordList) setGameStatus(GameStatus.Ready)
-          if (status == SetCurrentWordStatus.FinishedGame) setGameStatus(GameStatus.Finished)
           alert.removeAll()
-          alert.show(status, { type: 'error' })
+          if (status == SetCurrentWordStatus.NotEnoughLetters) {
+            setGameStatus(GameStatus.Ready)
+            alert.show(t.ALERT.NOT_ENOUGH_LETTERS, { type: 'error' })
+          } else if (status == SetCurrentWordStatus.NotInWordList) {
+            setGameStatus(GameStatus.Ready)
+            alert.show(t.ALERT.NOT_IN_WORD_LIST, { type: 'error' })
+          } else if (status == SetCurrentWordStatus.FinishedGame) {
+            setGameStatus(GameStatus.Finished)
+            alert.show(t.ALERT.FJINISHED_GAME, { type: 'error' })
+          }
         })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
