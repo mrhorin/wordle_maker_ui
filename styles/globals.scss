@@ -1252,6 +1252,26 @@ button{
   }
 }
 
+.answer{
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  .answer-label{
+    order: 1;
+    color: #a2a2a2;
+    font-size: 0.8rem;
+    line-height: 1rem;
+    font-weight: 500;
+    word-break: keep-all;
+    text-transform: uppercase;
+  }
+  .answer-value{
+    order: 2;
+    font-size: 2rem;
+    font-weight: 500;
+  }
+}
+
 .statistics{
   display: flex;
   flex-direction: row;
@@ -1262,6 +1282,7 @@ button{
     flex: 1;
     text-align: center;
     border-right: 1px solid $boarder-color;
+    padding: 0 5px;
     &:last-child{ border-right: none; }
     .statistic-label{
       color: #a2a2a2;

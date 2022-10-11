@@ -115,6 +115,7 @@ export default {
       YELLOW: 'A correct letter but wrong position of the letter will be yellow.',
     },
     RESULT: {
+      ANSWER: "Today's Answer",
       PLAYED: 'Played',
       WIN: 'Win %',
       CURRENT_STREAK: 'Current Streak',

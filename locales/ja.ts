@@ -115,6 +115,7 @@ export default {
       YELLOW: '文字は合っていても、文字の位置が間違っている場合は黄色になります。',
     },
     RESULT: {
+      ANSWER: '今日の答え',
       PLAYED: 'プレイ回数',
       WIN: '勝率 %',
       CURRENT_STREAK: '連勝中',

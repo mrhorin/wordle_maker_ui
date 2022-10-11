@@ -498,6 +498,17 @@ const Games = (props: Props) => {
             <FontAwesomeIcon icon={faXmark} className='xmark' style={{ position: 'absolute', top: '15px', right: '15px'}} onClick={() => setShowResultModal(false)} />
           </div>
           <div className='modal-window-body'>
+            {/* Answer */}
+            {(() => {
+              if (!isClear()) {
+                return (
+                  <div className='answer'>
+                    <div className='answer-label'>{t.GAMES.RESULT.ANSWER}</div>
+                    <div className='answer-value'>{WORD_TODAY.join('')}</div>
+                  </div>
+                )
+              }
+            })()}
             {/* Statistics */}
             <div className='statistics'>
               <div className='statistic'>
