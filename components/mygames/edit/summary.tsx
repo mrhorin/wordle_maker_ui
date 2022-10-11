@@ -151,7 +151,7 @@ const Summary = ({ game, setGame }: Props) => {
         <div className='form-group'>
           <label>{ t.GAME.DESC }</label>
           <div className='form-countable-input-group'>
-            <textarea id='game-desc' rows={5} maxLength={200} value={desc} onChange={e => setDesc(e.target.value)} />
+            <textarea id='game-desc' rows={8} maxLength={200} value={desc} onChange={e => setDesc(e.target.value)} />
             <div className='form-countable-input-counter'>{`${desc.length} / 200`}</div>
           </div>
           <div id='game-title-invalid-feedback' className='form-group-invalid-feedback'></div>
