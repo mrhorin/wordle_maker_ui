@@ -413,7 +413,7 @@ const Games = (props: Props) => {
     })
   }
 
-  function createTilesTableRowComponents(): JSX.Element[]{
+  function createTilesTableComponent(): JSX.Element{
     const rowComponents: JSX.Element[] = []
     for (let i = 0; i < props.game.challenge_count; i++){
       // Set tiles
@@ -428,7 +428,7 @@ const Games = (props: Props) => {
       }
       rowComponents.push(<div key={i} className='tiles-table-row'>{row}</div>)
     }
-    return rowComponents
+    return <div className='tiles-table'>{rowComponents}</div>
   }
 
   function createKeyboardComponent(): JSX.Element{
@@ -541,8 +541,8 @@ const Games = (props: Props) => {
       </Modal>
 
       <div className='games'>
-        <div className='tiles-table'>{createTilesTableRowComponents()}</div>
-        <div className='keyboard'>{createKeyboardComponent()}</div>
+        <div className='games-main'>{createTilesTableComponent()}</div>
+        <div className='games-keyboard'>{createKeyboardComponent()}</div>
       </div>
     </main>
   )
