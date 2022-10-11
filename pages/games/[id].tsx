@@ -148,13 +148,15 @@ const Games = (props: Props) => {
           })
         })
       }
-
     }
     /*
      * Show a result modal window when Finished.
      * The second parameter in setTimeout depends on animation property
      * with @keyframes transform-tile in the css file. */
-    if (gameStatus == GameStatus.Finished) setTimeout(() => { setShowResultModal(true) }, 1200)
+    if (gameStatus == GameStatus.Finished) {
+      addWillChange()
+      setTimeout(() => { setShowResultModal(true) }, 1200)
+    }
     /*
      * Enter currentWord in TilesTable when Entering.
      * When it resolves, save wordsState on localStorage.
@@ -169,7 +171,7 @@ const Games = (props: Props) => {
             for (let tile of row) word += tile.letter
             nextWords.push(word)
           }
-          // Check whether game is over
+          // Check whether game is over or not
           let nextEndedAt: number | null = null
           if (nextWords[nextWords.length - 1] == WORD_TODAY.join('') || nextTilesTable.length >= props.game.challenge_count) {
             nextEndedAt = Date.parse(new Date().toString())
@@ -231,6 +233,24 @@ const Games = (props: Props) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tilesTable])
+
+  useEffect(() => {
+    if (showResultModal) {
+      setTimeout(() => {
+        removeWillChange()
+      }, 500)
+    }
+  }, [showResultModal])
+
+  function addWillChange(): void {
+    const tilesTableElement: HTMLElement = document.getElementsByClassName('tiles-table')[0] as HTMLElement
+    tilesTableElement.style.willChange = 'transform'
+  }
+
+  function removeWillChange(): void{
+    const tilesTableElement: HTMLElement = document.getElementsByClassName('tiles-table')[0] as HTMLElement
+    tilesTableElement.style.willChange = 'auto'
+  }
 
   function getWinPercent(): number{
     let winPercent: number = statistics.win / (statistics.win + statistics.lose) * 100
@@ -393,23 +413,27 @@ const Games = (props: Props) => {
     })
   }
 
-  const wordsRowComponents: JSX.Element[] = []
-  for (let i = 0; i < props.game.challenge_count; i++){
-    // Set tiles
-    const row: JSX.Element[] = []
-    for (let j = 0; j < props.game.char_count; j++){
-      let tile: Tile = { letter: '', status: 'EMPTY' }
-      // When the row already exists
-      if (tilesTable[i] && tilesTable[i][j]) tile = tilesTable[i][j]
-      // When the row is located below the last row
-      if (tilesTable.length == i && currentWord[j]) tile.letter = currentWord[j]
-      row.push(<TileComponent key={`${i}-${j}`} tile={tile} index={j} />)
+  function createTilesTableRowComponents(): JSX.Element[]{
+    const rowComponents: JSX.Element[] = []
+    for (let i = 0; i < props.game.challenge_count; i++){
+      // Set tiles
+      const row: JSX.Element[] = []
+      for (let j = 0; j < props.game.char_count; j++){
+        let tile: Tile = { letter: '', status: 'EMPTY' }
+        // When the row already exists
+        if (tilesTable[i] && tilesTable[i][j]) tile = tilesTable[i][j]
+        // When the row is located below the last row
+        if (tilesTable.length == i && currentWord[j]) tile.letter = currentWord[j]
+        row.push(<TileComponent key={`${i}-${j}`} tile={tile} index={j} />)
+      }
+      rowComponents.push(<div key={i} className='tiles-table-row'>{row}</div>)
     }
-    wordsRowComponents.push(<div key={i} className='words-row'>{row}</div>)
+    return rowComponents
   }
 
-  const keyboardComponent: JSX.Element = props.game.lang == 'en' ?
-    <EnKeyboard tilesTable={tilesTable} handleOnClick={handleOnKeyDown} /> : <JaKeyboard tilesTable={tilesTable} handleOnClick={handleOnKeyDown} />
+  function createKeyboardComponent(): JSX.Element{
+    return props.game.lang == 'en' ? <EnKeyboard tilesTable={tilesTable} handleOnClick={handleOnKeyDown} /> : <JaKeyboard tilesTable={tilesTable} handleOnClick={handleOnKeyDown} />
+  }
 
   return (
     <main id='main'>
@@ -519,8 +543,8 @@ const Games = (props: Props) => {
       </Modal>
 
       <div className='games'>
-        <div className='words'>{wordsRowComponents}</div>
-        <div className='keyboard'>{keyboardComponent}</div>
+        <div className='tiles-table'>{createTilesTableRowComponents()}</div>
+        <div className='keyboard'>{createKeyboardComponent()}</div>
       </div>
     </main>
   )

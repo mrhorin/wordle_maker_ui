@@ -1085,7 +1085,7 @@ button{
   flex-direction: column;
   justify-content:space-between;
   flex-grow: 1;
-  .words{
+  .tiles-table{
     order: 1;
     width: 100%;
     margin: auto;
@@ -1104,10 +1104,10 @@ button{
     }
   }
 }
-.words{
+.tiles-table{
   display: flex;
   flex-direction: column;
-  .words-row{
+  .tiles-table-row{
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -1116,7 +1116,7 @@ button{
     align-content: center;
     width: 100%;
     margin: 0 auto;
-    .words-row-tile{
+    .tiles-table-row-tile{
       width: 100%;
       display: inline-flex;
       justify-content: center;
@@ -1139,20 +1139,20 @@ button{
       }
     }
     // When 5 Tiles or less
-    .words-row-tile:first-child:nth-last-child(-n+5),
-    .words-row-tile:first-child:nth-last-child(-n+5) ~ .words-row-tile{
+    .tiles-table-row-tile:first-child:nth-last-child(-n+5),
+    .tiles-table-row-tile:first-child:nth-last-child(-n+5) ~ .tiles-table-row-tile{
       max-width: 60px;
       font-size: 25px;
     }
     // When 6 Tiles or more
-    .words-row-tile:first-child:nth-last-child(n+6),
-    .words-row-tile:first-child:nth-last-child(n+6) ~ .words-row-tile{
+    .tiles-table-row-tile:first-child:nth-last-child(n+6),
+    .tiles-table-row-tile:first-child:nth-last-child(n+6) ~ .tiles-table-row-tile{
       max-width: 55px;
       font-size: 20px;
     }
     // When 9 Tiles or more
-    .words-row-tile:first-child:nth-last-child(n+9),
-    .words-row-tile:first-child:nth-last-child(n+9) ~ .words-row-tile{
+    .tiles-table-row-tile:first-child:nth-last-child(n+9),
+    .tiles-table-row-tile:first-child:nth-last-child(n+9) ~ .tiles-table-row-tile{
       max-width: 50px;
       font-size: 20px;
       @media screen and (max-width: $sp-break-point){
@@ -1164,20 +1164,20 @@ button{
       50%{ transform: rotateX(90deg); }
       100%{ transform: rotateX(0deg); }
     }
-    .words-row-tile-correct,
-    .words-row-tile-present,
-    .words-row-tile-absent{
-      // animation: transform-tile 1s;
+    .tiles-table-row-tile-correct,
+    .tiles-table-row-tile-present,
+    .tiles-table-row-tile-absent{
+      animation: transform-tile 1s;
     }
-    .words-row-tile-correct{
+    .tiles-table-row-tile-correct{
       background: $correct-color;
       border: 1px solid $correct-color;
     }
-    .words-row-tile-present{
+    .tiles-table-row-tile-present{
       background: $present-color;
       border: 1px solid $present-color;
     }
-    .words-row-tile-absent{
+    .tiles-table-row-tile-absent{
       background: $absent-color;
       border: 1px solid $absent-color;
     }
