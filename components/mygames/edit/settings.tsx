@@ -68,7 +68,7 @@ const Settings = ({ game }: Props) => {
   }
 
   return (
-    <div className='mygames-edit-main sp-padding' style={{ marginTop: '1rem' }}>
+    <div className='mygames-edit-main sp-padding'>
       <button className='btn btn-danger' onClick={() => { setShowModal(true) }}>{ t.MY_GAMES.EDIT.DELETE_GAME.BUTTON }</button>
 
       {/* Modal */}

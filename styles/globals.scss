@@ -161,7 +161,7 @@ label{
 .form-group{
   display: flex;
   flex-direction: column;
-  margin: 1.5rem 0;
+  margin-bottom: 1.5rem;
   position: relative;
   label{
     order: 1;
@@ -312,8 +312,8 @@ table{
   border-collapse: collapse;
   thead{
     tr{
-      background: $base-color1;
-      color: $font-color2;
+      background: $base-color2;
+      color: $font-color3;
       th{
         font-size: 0.8rem;
         text-align: left;
@@ -1526,20 +1526,23 @@ button{
 
 /* ------- MygamesEdit ------- */
 .mygames-edit{
+  display: flex;
+  flex-direction: column;
+  .mygames-edit-header{
+    order: 1;
+  }
+  .mygames-edit-main{
+    order: 2;
+  }
   @media screen and (max-width: $sp-break-point){
     .mygames-edit-header{
-      position: fixed;
-      top: 69px;
-      z-index: 5;
-      background: $base-color1;
-      width: 100%;
       .tabs-container{
         margin-bottom: 0;
         justify-content: space-around;
       }
     }
     .mygames-edit-main{
-      padding-top: 100px;
+      margin-top: 1.5rem;
     }
   }
 }

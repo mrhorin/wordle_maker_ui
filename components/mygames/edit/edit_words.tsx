@@ -208,10 +208,18 @@ const EditWords = ({ game }: EditWordsProps) => {
 
   if (pagination?.total_count == 0) {
     // When words don't exist after fetching words and pagination data
-    return <p style={{textAlign: 'center', margin: '10rem auto'}}>Looks like you have not created anything yet..?</p>
+    return (
+      <div className='mygames-edit-main'>
+        <p style={{textAlign: 'center', margin: '10rem auto'}}>Looks like you have not created anything yet..?</p>
+      </div>
+    )
   } else if (currentWordList.length <= 0) {
     // When words don't exist before fetching words and pagination data
-    return <ReactLoading type={'spin'} color={'#008eff'} height={'25px'} width={'25px'} className='loading-center' />
+    return (
+      <div className='mygames-edit-main'>
+        <ReactLoading type={'spin'} color={'#008eff'} height={'25px'} width={'25px'} className='loading-center' />
+      </div>
+    )
   } else {
     // When words exist
     const wordComponents = currentWordList.map((s) => {
