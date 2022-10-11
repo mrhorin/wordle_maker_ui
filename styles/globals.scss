@@ -454,7 +454,6 @@ button{
   flex-direction: row;
   width: 100%;
   border-bottom: 2px solid lighten($base-color1, 10%);
-  margin-bottom: 2rem;
   .tab{
     font-size: 1rem;
     padding: 0 1rem;
@@ -1533,6 +1532,7 @@ button{
     position: sticky;
     top: 70px;
     background: $base-color1;
+    margin-bottom: 2rem;
     z-index: 4;
   }
   .mygames-edit-main{
@@ -1541,12 +1541,8 @@ button{
   @media screen and (max-width: $sp-break-point){
     .mygames-edit-header{
       .tabs-container{
-        margin-bottom: 0;
         justify-content: space-around;
       }
-    }
-    .mygames-edit-main{
-      margin-top: 1.5rem;
     }
   }
 }
