@@ -210,6 +210,7 @@ const Games = (props: Props) => {
           if (status == SetCurrentWordStatus.NotEnoughLetters) setGameStatus(GameStatus.Ready)
           if (status == SetCurrentWordStatus.NotInWordList) setGameStatus(GameStatus.Ready)
           if (status == SetCurrentWordStatus.FinishedGame) setGameStatus(GameStatus.Finished)
+          alert.removeAll()
           alert.show(status, { type: 'error' })
         })
     }
@@ -351,6 +352,7 @@ const Games = (props: Props) => {
 
   function handleClickCopy(): void{
     copy(getResultText())
+    alert.removeAll()
     alert.show(t.ALERT.COPIED, { type: 'success' })
   }
 

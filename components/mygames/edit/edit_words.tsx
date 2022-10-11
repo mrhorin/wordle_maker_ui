@@ -131,6 +131,7 @@ const EditWords = ({ game }: EditWordsProps) => {
       setShowOverlay(true)
       nprogress.start()
       deleteWord(token, word_id).then(json => {
+        alert.removeAll()
         if (json.ok) {
           removeWord(word_id)
           alert.show(t.ALERT.DELETED, { type: 'success' })
@@ -161,6 +162,7 @@ const EditWords = ({ game }: EditWordsProps) => {
         setShowOverlay(true)
         nprogress.start()
         putWord(token, nextWord as Word).then(json => {
+          alert.removeAll()
           if (json.ok) {
             updateWord(json.data)
             setShowModal(false)

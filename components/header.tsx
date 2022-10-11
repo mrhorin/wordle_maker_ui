@@ -118,6 +118,7 @@ const Header = () => {
   function handleSignOut(): void {
     signOut(() => {
       setAccountStatus('SIGNUP')
+      alert.removeAll()
       alert.show(t.ALERT.SIGN_OUT, { type: 'success' })
       router.push('/signup')
     })

@@ -94,6 +94,7 @@ const Summary = ({ game, setGame }: Props) => {
           char_count: game.char_count,
         }
         putGame(token, nextGame).then(json => {
+          alert.removeAll()
           if (json.ok) {
             alert.show(t.ALERT.UPDATED, { type: 'success' })
             setGame(json.data as Game)
@@ -113,6 +114,7 @@ const Summary = ({ game, setGame }: Props) => {
 
   function handleClickCopy(): void{
     copy(`${process.env.NEXT_PUBLIC_API_PROTOCOL}://${process.env.NEXT_PUBLIC_API_DOMAIN}/games/${game.id}`)
+    alert.removeAll()
     alert.show(t.ALERT.COPIED, { type: 'success' })
   }
 

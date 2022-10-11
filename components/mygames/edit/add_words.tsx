@@ -92,6 +92,7 @@ const AddWords = ({ game }: Props) => {
   function handleClickSubmit(): void{
     const token: Token | null = ClientSideCookies.loadToken()
     if (validate.token(token)) {
+      alert.removeAll()
       if (validateWords() && game.id) {
         setShowOverlay(true)
         nprogress.start()

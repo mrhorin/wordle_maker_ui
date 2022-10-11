@@ -39,6 +39,7 @@ const Account = () => {
       setShowOverlay(true)
       nprogress.start()
       deleteCurrentUser(token as Token).then(json => {
+        alert.removeAll()
         if (json.status == 'success') {
           signOut(() => {
             alert.show(t.ALERT.DELETED, { type: 'success' })

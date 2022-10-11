@@ -48,6 +48,7 @@ const Settings = ({ game }: Props) => {
       setShowOverlay(true)
       nprogress.start()
       deleteGame(token, game).then(json => {
+        alert.removeAll()
         if (json.ok) {
           alert.show(t.ALERT.DELETED, {type: 'success'})
           router.replace('/mygames/edit')

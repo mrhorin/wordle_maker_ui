@@ -66,6 +66,7 @@ const MygamesCreate = () => {
           challenge_count: challengeCount,
         }
         postGame(token, nextGame).then(json => {
+          alert.removeAll()
           if (json.ok) {
             alert.show(t.ALERT.CREATED, { type: 'success' })
             router.push(`/mygames/edit/${json.data.id}#add-words`)
