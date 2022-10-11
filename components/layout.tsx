@@ -1,6 +1,6 @@
 import type { UserInfo } from 'types/global'
 import Head from 'next/head'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import useLocale from 'hooks/useLocale'
 
@@ -21,6 +21,17 @@ export default function Layout({ children }: Props) {
   const router = useRouter()
   const { t } = useLocale()
 
+  useEffect(() => {
+    window.addEventListener('resize', setMinHeight)
+    setMinHeight()
+    return (() => removeEventListener('resize', setMinHeight))
+  }, [])
+
+  function setMinHeight(): void{
+    const wrapElement: HTMLElement | null = document.getElementById('wrap')
+    if (wrapElement) wrapElement.style.minHeight = `${window.innerHeight}px`
+  }
+
   function hideAccountMenu(): void{
     if (showAccountMenu) setShowAccountMenu(false)
   }
@@ -39,7 +50,7 @@ export default function Layout({ children }: Props) {
             <link rel="alternate" href={`${process.env.NEXT_PUBLIC_PROTOCOL}://${process.env.NEXT_PUBLIC_DOMAIN}/ja${router.asPath}`} hrefLang="ja" />
           </Head>
 
-          <div className='wrap' onClick={hideAccountMenu}>
+          <div id='wrap' onClick={hideAccountMenu}>
             <Header />
             {children}
           </div>
