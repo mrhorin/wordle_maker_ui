@@ -133,11 +133,6 @@ const AddWords = ({ game }: Props) => {
           <div className='addwords-attrs-item-value'>{game.char_count.toString()}</div>
         </div>
       </div>
-      <ul style={{ paddingLeft: '1rem' }}>
-        <li>{t.FORM.CHIP_TEXTAREA.NOTE}</li>
-        <li>{t.MY_GAMES.EDIT.ADD_WORDS.CANNOT_ADD_DUPLICATED_WORDS}</li>
-        <li>{t.MY_GAMES.EDIT.ADD_WORDS.WILL_TURN_RED}</li>
-      </ul>
       <div className='form-group'>
         <ChipTextarea chips={chips} addChips={addChips} removeChip={removeChip} updateChip={updateChip} maxLength={5000} />
       </div>

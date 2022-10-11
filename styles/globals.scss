@@ -1602,14 +1602,16 @@ button{
 .addwords-attrs{
   display: flex;
   flex-direction: column;
+  margin-bottom: 1rem;
   .addwords-attrs-item{
     display: flex;
+    align-items: baseline;
     flex-direction: row;
     .addwords-attrs-item-label{
       order: 1;
-      display: inline-block;
+;
       margin-right: 1rem;
-      color: darken($font-color1, 20%);
+      color: $font-color3;
     }
     .addwords-attrs-item-value{
       order: 2;
