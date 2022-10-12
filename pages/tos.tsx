@@ -6,9 +6,7 @@ import Link from 'next/link'
 import SlideoutMenu from 'components/slideout_menu'
 
 const Tos = () => {
-  const { t, locale } = useLocale()
-  const localePath = !locale || locale == 'en' ? '' : `/${locale}`
-  const accountDeleteURL = `${process.env.NEXT_PUBLIC_PROTOCOL}://${process.env.NEXT_PUBLIC_DOMAIN}${localePath}/settings/account`
+  const { t } = useLocale()
 
   return (
     <main id='main'>
@@ -155,8 +153,8 @@ const Tos = () => {
           <h2>第8条（退会）</h2>
           <p>ユーザーは、管理者の定める以下の退会手続により、本サービスから退会できるものとします。</p>
           <ol>
-            <li>アカウント認証をする</li>
-            <li><Link href={accountDeleteURL}><a>アカウント</a></Link>ページを開く</li>
+            <li><Link href={'/signup'}><a>サインアップ</a></Link>ページを開いてアカウント認証をする</li>
+            <li><Link href={'/settings/account'}><a>アカウント</a></Link>ページを開く</li>
             <li>「アカウントを削除する」ボタンを押す</li>
             <li>注意事項を確認の上、チェックボックスにチェックを入れて「アカウントを削除する」ボタンを押す</li>
           </ol>
@@ -196,7 +194,6 @@ const Tos = () => {
       </div>
     </main>
   )
-
 }
 
 export default Tos
