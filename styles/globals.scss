@@ -3,13 +3,13 @@
 0: body
   1: #sidemenu
   1: .mygames-edit-header
-    2:.modal-overlay
-      3:
-        4: .loading-overlay
+    2: .loading-overlay
+      3: .modal-overlay
+        4: .modal-window
           5: .header
-            6: #slideout-menu-overlay
-            6: .modal-window
-              7: #slideout-menu-main
+          5: ul.header-account-menu
+            6: .slideout-menu-overlay
+              7: .slideout-menu-main
 */
 $base-color1: #1e2022;
 $base-color2: lighten($base-color1, 3%);
@@ -285,13 +285,13 @@ label{
 }
 
 .header{
+  z-index: 5;
   order: 1;
   width: 100%;
   height: 70px;
   position: sticky;
   top: 0;
   left: 0;
-  z-index: 5;
   padding: 0;
   background: $base-color1;
 }
@@ -607,11 +607,11 @@ button{
     .header-account-image:hover{
       cursor: pointer;
     }
-    ul.header-account-menu-hide{
+    ul.header-account-menu{
+      z-index: 5;
       position: absolute;
       right: 15px;
       top: 50px;
-      display: none;
       flex-direction: column;
       margin: 0;
       padding: 0;
@@ -642,8 +642,12 @@ button{
         }
       }
     }
+    ul.header-account-menu-hide{
+      @extend .header-account-menu;
+      display: none;
+    }
     ul.header-account-menu-show{
-      @extend .header-account-menu-hide;
+      @extend .header-account-menu;
       display: flex;
     }
   }
@@ -662,6 +666,7 @@ button{
     display: none;
   }
   .slideout-menu-main{
+    z-index: 7;
     position: fixed;
     top: 0;
     width: 80%;
@@ -669,7 +674,6 @@ button{
     min-height: 100%;
     background: $base-color2;
     border-right: 1px solid $boarder-color;
-    z-index: 7;
     left: -100%;
     display: none;
     .slideout-menu-main-xmark{
@@ -745,8 +749,8 @@ button{
   display: flex;
   flex-direction: row;
   #sidemenu{
-    width: 200px;
     z-index: 1;
+    width: 200px;
     margin-top: 30px;
     .sidemenu-items-container{
       position: sticky;
@@ -874,22 +878,22 @@ button{
 .modal{
   $modal-border-color: darken($boarder-color, 5%);
   .modal-overlay{
+    z-index: 3;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    height: 100vh;
+    height: 200vh;
     background: rgba(0,0,0, 0.5);
-    z-index: 2;
   }
   .modal-window{
+    z-index: 4;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 70%;
     max-width: $sp-break-point;
-    z-index: 6;
     overscroll-behavior: contain;
     .modal-window-container{
       display: flex;
@@ -951,13 +955,13 @@ button{
 
 /* ---------- LoadingOverlay ---------- */
 .loading-overlay{
+  z-index: 2;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100vh;
   background: rgba(0,0,0, 0.3);
-  z-index: 4;
   .loading-overlay-spin-center{
     text-align: center;
     position: fixed;
@@ -1555,7 +1559,7 @@ button{
     top: 70px;
     background: $base-color1;
     margin-bottom: 2rem;
-    z-index: 2;
+    z-index: 1;
   }
   .mygames-edit-main{
     order: 2;
