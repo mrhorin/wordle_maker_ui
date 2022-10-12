@@ -1,3 +1,4 @@
+import { Locale } from 'types/global'
 import { useRouter } from 'next/router'
 
 import en from 'locales/en'
@@ -8,7 +9,7 @@ export default () => {
   const { locale, pathname, asPath, query } = useRouter()
   const t = locale === "ja" ? ja : en
 
-  const switchLocale = (nextLocale: string) => {
+  const switchLocale = (nextLocale: Locale) => {
     router.push({ pathname, query }, asPath, { locale: nextLocale })
   }
 

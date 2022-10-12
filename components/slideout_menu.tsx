@@ -5,6 +5,8 @@ import { faXmark, faHome, faSignature, faGlobe } from '@fortawesome/free-solid-s
 
 import useLocale from 'hooks/useLocale'
 
+import cookie from 'scripts/cookie'
+
 import ShowSlideoutMenuContext from 'contexts/show_slideout_menu'
 
 type Props = {
@@ -32,7 +34,10 @@ const SlideoutMenu = ({ children }: Props) => {
   }
 
   function handleChangeLang(event: ChangeEvent<HTMLSelectElement>): void{
-    switchLocale(event.target.value)
+    if (event.target.value == 'en' || event.target.value == 'ja') {
+      cookie.client.saveLocale(event.target.value)
+      switchLocale(event.target.value)
+    }
     showSlideoutMenuContext.set(false)
   }
 

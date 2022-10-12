@@ -63,3 +63,5 @@ export type Tile = {
 }
 
 export type KeyType = 'CHARACTER' | 'MODIFIER'
+
+type Locale = 'en' | 'ja'
