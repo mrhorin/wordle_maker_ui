@@ -46,7 +46,7 @@ const Summary = ({ game, setGame }: Props) => {
   const divTitleInvalidEl = useRef<HTMLDivElement>(null)
 
   const router = useRouter()
-  const { t } = useLocale()
+  const { t, locale } = useLocale()
   const alert = useAlert()
 
   const signOut = useSignOut()
@@ -113,7 +113,8 @@ const Summary = ({ game, setGame }: Props) => {
   }
 
   function handleClickCopy(): void{
-    copy(`${process.env.NEXT_PUBLIC_API_PROTOCOL}://${process.env.NEXT_PUBLIC_API_DOMAIN}/games/${game.id}`)
+    const localePath = !locale || locale == 'en' ? '' : `/${locale}`
+    copy(`${process.env.NEXT_PUBLIC_PROTOCOL}://${process.env.NEXT_PUBLIC_DOMAIN}${localePath}${router.asPath}`)
     alert.removeAll()
     alert.show(t.ALERT.COPIED, { type: 'success' })
   }

@@ -113,7 +113,7 @@ const Games = (props: Props) => {
   const showSlideoutMenuContext = useContext(ShowSlideoutMenuContext)
 
   const router = useRouter()
-  const { t } = useLocale()
+  const { t, locale } = useLocale()
   const [clipboard, copy] = useCopyToClipboard()
 
   const WORD_TODAY: string[] = props.wordToday.name.toUpperCase().split('')
@@ -278,7 +278,8 @@ const Games = (props: Props) => {
   }
 
   function getResultText(): string{
-    const url = `https://${process.env.NEXT_PUBLIC_DOMAIN}${router.asPath}`
+    const localePath = !locale || locale == 'en' ? '' : `/${locale}`
+    const url = `${process.env.NEXT_PUBLIC_PROTOCOL}://${process.env.NEXT_PUBLIC_DOMAIN}${localePath}${router.asPath}`
     let tiles: string = ''
     for (let row of tilesTable) {
       for (let tile of row) {
