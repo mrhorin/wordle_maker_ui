@@ -2,10 +2,10 @@
 [z-index]
 0: body
   1: #sidemenu
+  1: .mygames-edit-header
     2:.modal-overlay
       3:
         4: .loading-overlay
-        4: .mygames-edit-header
           5: .header
             6: #slideout-menu-overlay
             6: .modal-window
@@ -1533,7 +1533,7 @@ button{
     top: 70px;
     background: $base-color1;
     margin-bottom: 2rem;
-    z-index: 4;
+    z-index: 2;
   }
   .mygames-edit-main{
     order: 2;
