@@ -290,7 +290,8 @@ const Games = (props: Props) => {
       tiles += '\r'
     }
     const guessTimes: string = isClear() ? tilesTable.length.toString() : 'X'
-    return `${props.game.title} ${props.questionNo} ${guessTimes}/${props.game.challenge_count}\r\r${tiles}\r${url}`
+    const no: string = locale == 'ja' ? `第${props.questionNo}回` : props.questionNo.toString()
+    return `${props.game.title} ${no} ${guessTimes}/${props.game.challenge_count}\r\r${tiles}\r${url}`
   }
 
   function isClear(): boolean{
