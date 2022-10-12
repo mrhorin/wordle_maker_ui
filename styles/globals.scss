@@ -712,17 +712,22 @@ button{
   }
 }
 
-@keyframes transform-slideout-menu-main-show{
-  0%{ left: -100%; }
-  100%{ left: 0%; }
-}
 .slideout-menu-show{
+  @keyframes transform-slideout-menu-main-show{
+    0%{ left: -100%; }
+    100%{ left: 0%; }
+  }
   .slideout-menu-main{
-    animation: transform-slideout-menu-main-show 0.1s;
+    animation: transform-slideout-menu-main-show 0.2s;
     display: block;
     left: 0%;
   }
+  @keyframes transform-slideout-menu-overlay-show{
+    0%{ opacity: 0; }
+    100%{ opacity: 0.5; }
+  }
   .slideout-menu-overlay{
+    animation: transform-slideout-menu-overlay-show 0.2s;
     display: block;
   }
 }
