@@ -4,10 +4,10 @@
   1: #sidemenu
   1: .mygames-edit-header
     2: .loading-overlay
-      3: .modal-overlay
-        4: .modal-window
-          5: .header
-          5: ul.header-account-menu
+      3: .header
+      3: ul.header-account-menu
+        4: .modal-overlay
+          5: .modal-window
             6: .slideout-menu-overlay
               7: .slideout-menu-main
 */
@@ -285,7 +285,7 @@ label{
 }
 
 .header{
-  z-index: 5;
+  z-index: 3;
   order: 1;
   width: 100%;
   height: 70px;
@@ -608,7 +608,7 @@ button{
       cursor: pointer;
     }
     ul.header-account-menu{
-      z-index: 5;
+      z-index: 3;
       position: absolute;
       right: 15px;
       top: 50px;
@@ -895,7 +895,7 @@ button{
 .modal{
   $modal-border-color: darken($boarder-color, 5%);
   .modal-overlay{
-    z-index: 3;
+    z-index: 4;
     position: fixed;
     top: 0;
     left: 0;
@@ -904,7 +904,7 @@ button{
     background: rgba(0,0,0, 0.5);
   }
   .modal-window{
-    z-index: 4;
+    z-index: 5;
     position: fixed;
     top: 50%;
     left: 50%;
