@@ -452,8 +452,15 @@ const Games = (props: Props) => {
       </Head>
 
       <SlideoutMenu>
-        <li onClick={handleClickHowToPlay}>
-          <a><FontAwesomeIcon icon={faQuestionCircle} />{t.SLIDEOUT_MENU.HOW_TO_PLAY}</a>
+        <li onClick={handleClickHowToPlay} style={{marginBottom: '3.6rem'}}>
+          <a className='slideout-menu-main-item'>
+            <div className='slideout-menu-main-item-icon'>
+              <FontAwesomeIcon icon={faQuestionCircle} />
+            </div>
+            <div className='slideout-menu-main-item-text'>
+              {t.SLIDEOUT_MENU.HOW_TO_PLAY}
+            </div>
+          </a>
         </li>
       </SlideoutMenu>
 

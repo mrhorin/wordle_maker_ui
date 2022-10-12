@@ -47,6 +47,7 @@ export default {
     HOME: 'ホーム',
     TERMS: '利用規約',
     HOW_TO_PLAY: '遊び方',
+    LANGUAGE: '言語',
   },
   SIDE_MENU: {
     MY_GAMES: 'マイゲーム',

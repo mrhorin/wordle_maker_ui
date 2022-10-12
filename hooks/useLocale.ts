@@ -4,7 +4,13 @@ import en from 'locales/en'
 import ja from 'locales/ja'
 
 export default () => {
-  const { locale } = useRouter()
+  const router = useRouter()
+  const { locale, pathname, asPath, query } = useRouter()
   const t = locale === "ja" ? ja : en
-  return { locale, t }
+
+  const switchLocale = (nextLocale: string) => {
+    router.push({ pathname, query }, asPath, { locale: nextLocale })
+  }
+
+  return {switchLocale, t, locale}
 }

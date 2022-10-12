@@ -692,21 +692,38 @@ button{
       list-style: none;
       margin: 0;
       padding: 0 0 2rem 0;
-      li>a{
-        color: $font-color1;
-        font-size: 1rem;
-        padding: 0 1rem;
-        line-height: 3.6rem;
-        min-width: 100%;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        svg, i{
-          font-size: 1.2rem;
-          width: 2rem;
-          margin-right: 1rem;
+      li{
+        .slideout-menu-main-item{
+          color: $font-color1;
+          font-size: 1rem;
+          padding: 0 1rem;
+          line-height: 3.6rem;
+          min-width: 100%;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          .slideout-menu-main-item-icon{
+            order: 1;
+            svg, i{
+              font-size: 1.2rem;
+              width: 2rem;
+              margin-right: 1rem;
+            }
+          }
+          .slideout-menu-main-item-text{
+            order: 2;
+            flex-grow: 1;
+            select{
+              background: $base-color1;
+              color: $font-color1;
+              font-size: 1rem;
+              padding: 0.5rem;
+              margin: 0;
+              min-width: 50%;
+            }
+          }
         }
-        &:hover{
+        a.slideout-menu-main-item:hover{
           text-decoration: none;
           cursor: pointer;
           background: $base-color3;

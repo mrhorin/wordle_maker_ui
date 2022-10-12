@@ -47,6 +47,7 @@ export default {
     HOME: 'Home',
     TERMS: 'Terms',
     HOW_TO_PLAY: 'How to Play',
+    LANGUAGE: 'Language',
   },
   SIDE_MENU: {
     MY_GAMES: 'My Games',
@@ -171,6 +172,6 @@ export default {
   },
   LANG: {
     EN: 'English',
-    JA: 'Japanese',
+    JA: '日本語',
   },
 }
