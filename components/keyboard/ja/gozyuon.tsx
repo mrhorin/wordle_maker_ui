@@ -55,17 +55,26 @@ const Gozyuon = ({ tilesTable, handleOnClick }: Props) => {
   })
 
   const keyModeComponent: JSX.Element = keyMode == KeyMode.Normal ?
-    <Key key={'小字゛゜'} letter={'小字゛゜'} type={'MODIFIER'} status={'ABSENT'} handleOnClick={() => setKeyMode(KeyMode.SmallDaku)} style={{ fontSize: '0.8rem', width: '19%' }} /> :
-    <Key key={'通常'} letter={'通常'} type={'MODIFIER'} status={'ABSENT'} handleOnClick={() => setKeyMode(KeyMode.Normal)} style={{fontSize: '0.8rem', width: '19%'}}/>
+    <Key key={'小字゛゜'} letter={'小字゛゜'} type={'MODIFIER'} status={'ABSENT'} handleOnClick={() => setKeyMode(KeyMode.SmallDaku)} style={{ fontSize: '0.8rem', width: '38%' }} /> :
+    <Key key={'通常'} letter={'通常'} type={'MODIFIER'} status={'ABSENT'} handleOnClick={() => setKeyMode(KeyMode.Normal)} style={{fontSize: '0.8rem', width: '38%'}}/>
 
   return (
     <div className='keyboard-ja-gozyuon'>
       <div className='modifier-keys'>
-        {keyModeComponent}
+        {/* {keyModeComponent}
         <Key key={'Backspace'} letter={'Backspace'} type={'MODIFIER'} status={'ABSENT'} handleOnClick={handleOnClick} style={{width: '9%'}}>
           <FontAwesomeIcon icon={faBackspace}/>
         </Key>
-        <Key key={'Enter'} letter={'Enter'} type={'MODIFIER'} status={'ABSENT'} handleOnClick={handleOnClick} style={{width: '19%'}}/>
+        <Key key={'Enter'} letter={'Enter'} type={'MODIFIER'} status={'ABSENT'} handleOnClick={handleOnClick} style={{width: '19%'}}/> */}
+        <div className='modifier-keys-left'>
+          {keyModeComponent}
+        </div>
+        <div className='modifier-keys-right'>
+          <Key key={'Backspace'} letter={'Backspace'} type={'MODIFIER'} status={'ABSENT'} handleOnClick={handleOnClick} style={{width: '18%', marginLeft: 'auto'}}>
+            <FontAwesomeIcon icon={faBackspace}/>
+          </Key>
+          <Key key={'Enter'} letter={'Enter'} type={'MODIFIER'} status={'ABSENT'} handleOnClick={handleOnClick} style={{width: '38%'}}/>
+        </div>
       </div>
       <div className='character-keys'>
         {lettersColComponents}
