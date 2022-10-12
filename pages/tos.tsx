@@ -1,10 +1,14 @@
 import Head from 'next/head'
 import useLocale from 'hooks/useLocale'
 
+import Link from 'next/link'
+
 import SlideoutMenu from 'components/slideout_menu'
 
 const Tos = () => {
-  const { t } = useLocale()
+  const { t, locale } = useLocale()
+  const localePath = !locale || locale == 'en' ? '' : `/${locale}`
+  const accountDeleteURL = `${process.env.NEXT_PUBLIC_PROTOCOL}://${process.env.NEXT_PUBLIC_DOMAIN}${localePath}/settings/account`
 
   return (
     <main id='main'>
@@ -17,7 +21,7 @@ const Tos = () => {
       <div className='container'>
         <div className='text'>
           <h1>{t.TOS.TITLE}</h1>
-          <div style={{textAlign: 'right'}}>最終変更日: 2022年7月16日</div>
+          <div style={{textAlign: 'right'}}>最終変更日: 2022年10月13日</div>
           <p>
             この利用規約（以下、「本規約」という。）は、このウェブサイトの管理者（以下、「管理者」という。）がこのウェブサイト上で提供するサービス（以下、「本サービス」という。）の利用条件を定めるものです。
             ユーザーの皆さまには、本規約に従って、本サービスをご利用いただきます。
@@ -149,7 +153,13 @@ const Tos = () => {
           </ol>
 
           <h2>第8条（退会）</h2>
-          <p>ユーザーは、管理者の定める退会手続により、本サービスから退会できるものとします。</p>
+          <p>ユーザーは、管理者の定める以下の退会手続により、本サービスから退会できるものとします。</p>
+          <ol>
+            <li>アカウント認証をする</li>
+            <li><Link href={accountDeleteURL}><a>アカウント</a></Link>ページを開く</li>
+            <li>「アカウントを削除する」ボタンを押す</li>
+            <li>注意事項を確認の上、チェックボックスにチェックを入れて「アカウントを削除する」ボタンを押す</li>
+          </ol>
 
           <h2>第9条（保証の否認及び免責事項）</h2>
           <ol>
@@ -163,7 +173,7 @@ const Tos = () => {
           </ol>
 
           <h2>第10条（サービス内容の変更等）</h2>
-          <p>管理者は、ユーザーへの事前の告知をもって、本サービスの内容を変更、追加または廃止することがあり、ユーザーはこれを承諾するものとします。</p>
+          <p>管理者は、ユーザーへの事前の告知することなく、本サービスの内容を変更、追加または廃止することがあり、ユーザーはこれを承諾するものとします。</p>
 
           <h2>第11条（利用規約の変更）</h2>
           <ol>
