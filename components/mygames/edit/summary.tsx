@@ -114,7 +114,7 @@ const Summary = ({ game, setGame }: Props) => {
 
   function handleClickCopy(): void{
     const localePath = !locale || locale == 'en' ? '' : `/${locale}`
-    copy(`${process.env.NEXT_PUBLIC_PROTOCOL}://${process.env.NEXT_PUBLIC_DOMAIN}${localePath}${router.asPath}`)
+    copy(`${process.env.NEXT_PUBLIC_PROTOCOL}://${process.env.NEXT_PUBLIC_DOMAIN}${localePath}/games/${game.id}`)
     alert.removeAll()
     alert.show(t.ALERT.COPIED, { type: 'success' })
   }
