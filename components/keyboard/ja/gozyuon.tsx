@@ -70,7 +70,7 @@ const Gozyuon = ({ tilesTable, handleOnClick }: Props) => {
           {keyModeComponent}
         </div>
         <div className='modifier-keys-right'>
-          <Key key={'Backspace'} letter={'Backspace'} type={'MODIFIER'} status={'ABSENT'} handleOnClick={handleOnClick} style={{width: '18%', marginLeft: 'auto'}}>
+          <Key key={'Backspace'} letter={'Backspace'} type={'MODIFIER'} status={'ABSENT'} handleOnClick={handleOnClick} style={{width: '38%', marginLeft: 'auto'}}>
             <FontAwesomeIcon icon={faBackspace}/>
           </Key>
           <Key key={'Enter'} letter={'Enter'} type={'MODIFIER'} status={'ABSENT'} handleOnClick={handleOnClick} style={{width: '38%'}}/>
