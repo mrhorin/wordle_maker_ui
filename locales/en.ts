@@ -1,8 +1,8 @@
 export default {
   APP_NAME: 'Makele β',
   APP_DESC: {
-    FIRST_LINE: "Numerical word puzzle game maker inspired by Wordle",
-    SECOND_LINE: "Let's play and create your original word games!"
+    FIRST_LINE: "Daily Word Puzzle Game Maker inspired by Wordle",
+    SECOND_LINE: "Let's Play and Create your original Games!"
   },
   COMMON: {
     COPY: 'Copy',
