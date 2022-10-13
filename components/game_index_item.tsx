@@ -2,11 +2,9 @@ import type { Game } from 'types/global'
 
 import useLocale from 'hooks/useLocale'
 
-import Link from 'next/link'
-
 type Props = {
   game: Game,
-  href: string
+  titleElement: JSX.Element,
 }
 
 const GameIndexItem = (props: Props) => {
@@ -22,7 +20,7 @@ const GameIndexItem = (props: Props) => {
               <span className='game-index-item-title-lock'>🔒 {props.game.title}</span>
             )
           } else {
-            return <Link href={props.href}><a>{props.game.title}</a></Link>
+            return props.titleElement
           }
         })()}
       </div>

@@ -24,7 +24,10 @@ export default function Layout({ children }: Props) {
   const { t, switchLocale } = useLocale()
 
   useEffect(() => {
-    setLocale()
+    if (router.isReady) setLocale()
+  }, [router.isReady])
+
+  useEffect(() => {
     window.addEventListener('resize', setMinHeight)
     setMinHeight()
     return (() => removeEventListener('resize', setMinHeight))

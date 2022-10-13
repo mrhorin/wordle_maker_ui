@@ -7,6 +7,7 @@ import useLocale from 'hooks/useLocale'
 
 import ReactLoading from 'react-loading'
 import Head from 'next/head'
+import Link from 'next/link'
 
 import SlideoutMenu from 'components/slideout_menu'
 import Sidemenu from 'components/sidemenu'
@@ -47,7 +48,11 @@ const MygamesEditIndex = () => {
       return <p style={{ textAlign: 'center', margin: '10rem auto' }}>{t.MY_GAMES.EDIT.INDEX.SUSPENDED_ACCOUNT}</p>
     } else if (games && games.length > 0) {
       const gameComponents: JSX.Element[] = games.map((game: Game, index: number) => {
-        return <GameIndexItem game={game} href={`/mygames/edit/${game.id}#settings`} key={index} />
+        const titleElement: JSX.Element = <Link href={{
+          pathname: '/mygames/edit/[id]',
+          query: { id: game.id }
+        }}><a>{ game.title }</a></Link>
+        return <GameIndexItem game={game} key={index} titleElement={titleElement} />
       })
       return gameComponents
     } else if (games == null) {

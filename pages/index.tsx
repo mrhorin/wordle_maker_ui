@@ -29,10 +29,14 @@ const Index = () => {
     })
   }, [])
 
-  function createGameComponents(): JSX.Element[] | JSX.Element{
+  function createGameIndexComponents(): JSX.Element[] | JSX.Element{
     if (games && games.length > 0) {
       return games.map((game: Game, index: number) => {
-        return <GameIndexItem game={game} href={`/games/${game.id}`} key={index} />
+        const titleElement: JSX.Element = <Link href={{
+          pathname: '/games/[id]',
+          query: { id: game.id }
+        }}><a>{ game.title }</a></Link>
+        return <GameIndexItem game={game} key={index} titleElement={titleElement} />
       })
     } else if (games == null) {
       return <ReactLoading type={'spin'} color={'#008eff'} height={'25px'} width={'25px'} className='loading-center' />
@@ -77,7 +81,7 @@ const Index = () => {
           </div>
         </div>
         <div className='game-index'>
-          {createGameComponents()}
+          {createGameIndexComponents()}
         </div>
       </div>
     </main>
