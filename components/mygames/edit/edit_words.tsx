@@ -226,7 +226,7 @@ const EditWords = ({ game }: EditWordsProps) => {
       return <TrWordMemo key={s.id} word={s} handleClickEdit={handleClickEdit} handleClickDelete={handleClickDelete} />
     })
     return (
-      <div className='mygames-edit-main'>
+      <>
         {/* Modal */}
         <Modal showModal={showModal} setShowModal={setShowModal}>
           <div className='modal-window-container'>
@@ -267,7 +267,7 @@ const EditWords = ({ game }: EditWordsProps) => {
             return <PaginationComponent pagination={pagination} handleClickPage={handleClickPage} />
           }
         })()}
-      </div>
+      </>
     )
   }
 }
