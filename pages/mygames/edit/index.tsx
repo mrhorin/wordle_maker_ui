@@ -47,7 +47,7 @@ const MygamesEditIndex = () => {
       return <p style={{ textAlign: 'center', margin: '10rem auto' }}>{t.MY_GAMES.EDIT.INDEX.SUSPENDED_ACCOUNT}</p>
     } else if (games && games.length > 0) {
       const gameComponents: JSX.Element[] = games.map((game: Game, index: number) => {
-        return <GameIndexItem game={game} href={`/mygames/edit/${game.id}#summary`} key={index} />
+        return <GameIndexItem game={game} href={`/mygames/edit/${game.id}#settings`} key={index} />
       })
       return gameComponents
     } else if (games == null) {

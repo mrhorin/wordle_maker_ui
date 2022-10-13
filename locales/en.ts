@@ -69,12 +69,12 @@ export default {
         SUSPENDED_GAME: "This game is currently suspended due to a violation of our terms of service.",
       },
       TABS: {
-        SUMMARY: 'Summary',
+        SETTINGS: 'Settings',
         ADD_WORDS: 'Add Words',
         EDIT_WORDS: 'Edit Words',
         DELETE_GAME: 'Delete Game',
       },
-      SUMMARY: {
+      SETTINGS: {
         GAME_LINK: 'Game Link',
       },
       ADD_WORDS: {

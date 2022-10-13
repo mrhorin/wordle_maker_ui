@@ -27,7 +27,7 @@ interface Props {
   setGame(game: Game): void
 }
 
-const Summary = ({ game, setGame }: Props) => {
+const Settings = ({ game, setGame }: Props) => {
   const [showOverlay, setShowOverlay] = useState<boolean>(false)
   /*
    * title:
@@ -123,7 +123,7 @@ const Summary = ({ game, setGame }: Props) => {
     <div className='mygames-edit-main sp-padding'>
       {/* Gmae Link */}
       <div className='form-group'>
-        <label>{ t.MY_GAMES.EDIT.SUMMARY.GAME_LINK }</label>
+        <label>{ t.MY_GAMES.EDIT.SETTINGS.GAME_LINK }</label>
         <div className='form-group-input mygames-edit-link'>
           <div className='mygames-edit-link-text'>
             <Link href={`/games/${game.id}`}>
@@ -190,4 +190,4 @@ const Summary = ({ game, setGame }: Props) => {
   )
 }
 
-export default Summary
+export default Settings

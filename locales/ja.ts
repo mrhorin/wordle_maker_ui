@@ -69,12 +69,12 @@ export default {
         SUSPENDED_GAME: "このゲームは現在凍結されています。",
       },
       TABS: {
-        SUMMARY: 'Summary',
+        SETTINGS: '設定',
         ADD_WORDS: 'ワード追加',
         EDIT_WORDS: 'ワード一覧',
         DELETE_GAME: 'ゲーム削除',
       },
-      SUMMARY: {
+      SETTINGS: {
         GAME_LINK: 'リンク',
       },
       ADD_WORDS: {
