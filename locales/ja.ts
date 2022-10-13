@@ -70,9 +70,9 @@ export default {
       },
       TABS: {
         SUMMARY: 'Summary',
-        ADD_WORDS: 'Add Words',
-        EDIT_WORDS: 'Edit Words',
-        DELETE_GAME: 'Settings',
+        ADD_WORDS: 'ワード追加',
+        EDIT_WORDS: 'ワード一覧',
+        DELETE_GAME: 'ゲーム削除',
       },
       SUMMARY: {
         GAME_LINK: 'リンク',

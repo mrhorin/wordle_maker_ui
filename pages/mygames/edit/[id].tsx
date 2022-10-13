@@ -16,7 +16,7 @@ import Sidemenu from 'components/sidemenu'
 import Summary from 'components/mygames/edit/summary'
 import AddWords from 'components/mygames/edit/add_words'
 import EditWords from 'components/mygames/edit/edit_words'
-import Settings from 'components/mygames/edit/settings'
+import DeleteGame from 'components/mygames/edit/delete_game'
 
 import useLocale from 'hooks/useLocale'
 
@@ -61,7 +61,7 @@ const MygamesEdit = () => {
     { name: t.MY_GAMES.EDIT.TABS.SUMMARY, hash: 'summary' },
     { name: t.MY_GAMES.EDIT.TABS.ADD_WORDS, hash: 'add-words' },
     { name: t.MY_GAMES.EDIT.TABS.EDIT_WORDS, hash: 'edit-words' },
-    { name: t.MY_GAMES.EDIT.TABS.DELETE_GAME, hash: 'settings' },
+    { name: t.MY_GAMES.EDIT.TABS.DELETE_GAME, hash: 'delete-game' },
   ]
 
   useEffect(() => {
@@ -103,7 +103,7 @@ const MygamesEdit = () => {
             if (currentHash == tabs[0].hash) return <Summary game={game} setGame={setGame}/>
             if (currentHash == tabs[1].hash) return <AddWords game={game}/>
             if (currentHash == tabs[2].hash) return <EditWords game={game} />
-            if (currentHash == tabs[3].hash) return <Settings game={game} />
+            if (currentHash == tabs[3].hash) return <DeleteGame game={game} />
           })()}
         </>
       )

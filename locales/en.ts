@@ -72,7 +72,7 @@ export default {
         SUMMARY: 'Summary',
         ADD_WORDS: 'Add Words',
         EDIT_WORDS: 'Edit Words',
-        DELETE_GAME: 'Settings',
+        DELETE_GAME: 'Delete Game',
       },
       SUMMARY: {
         GAME_LINK: 'Game Link',
