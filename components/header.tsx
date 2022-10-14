@@ -149,7 +149,7 @@ const Header = () => {
       return (
         <Link href="/signup">
           <a>
-            <button type='button' className='btn btn-default'>
+            <button type='button' className='btn btn-primary'>
               {t.HEADER.SIGN_UP}
             </button>
           </a>

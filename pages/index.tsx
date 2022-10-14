@@ -1,8 +1,8 @@
 import type { Game } from 'types/global'
-import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
+import { useEffect, useState, useContext } from 'react'
 import useLocale from 'hooks/useLocale'
 
-import Head from 'next/head'
 import ReactLoading from 'react-loading'
 import SlideoutMenu from 'components/slideout_menu'
 import GameIndexItem from 'components/game_index_item'
@@ -10,10 +10,14 @@ import GameIndexItem from 'components/game_index_item'
 import Link from 'next/link'
 import Image from 'next/image'
 
+import CurrentUserInfoContext from 'contexts/current_user_info'
+
 import { getGames } from 'scripts/api'
 
 const Index = () => {
   const [games, setGames] = useState<Game[] | null>(null)
+  const currentUserInfoContext = useContext(CurrentUserInfoContext)
+  const router = useRouter()
   const { t } = useLocale()
 
   useEffect(() => {
@@ -45,27 +49,36 @@ const Index = () => {
     }
   }
 
+  function handleClickCreateGameBtn(): void{
+    if (currentUserInfoContext.currentUserInfo) {
+      router.push("/mygames/create")
+    } else {
+      router.push("/signup")
+    }
+  }
+
   return (
     <main id='main'>
       <SlideoutMenu />
 
       <div className='index-board'>
         <div className='container'>
+          {/* App Name */}
           <div className='index-board-title'>
             {t.APP_NAME}
           </div>
+          {/* App Desc */}
           <div className='index-board-desc'>
             <div>{t.APP_DESC.FIRST_LINE}</div>
             <div>{t.APP_DESC.SECOND_LINE}</div>
           </div>
+          {/* Create Game */}
           <div className='index-board-create'>
-            <Link href="/mygames/create">
-              <a>
-                <button type='button' className='btn btn-accent1'>
-                  {t.INDEX.CREATE_GAME}
-                </button>
-              </a>
-            </Link>
+            <div className='btn-grad1' >
+              <div className='btn-grad2' onClick={handleClickCreateGameBtn}>
+                {t.INDEX.CREATE_GAME}
+              </div>
+            </div>
           </div>
         </div>
       </div>
