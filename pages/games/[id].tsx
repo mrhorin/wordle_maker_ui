@@ -375,6 +375,7 @@ const Games = (props: Props) => {
   }
 
   const handleOnKeyDown = useCallback((key: string) => {
+    if (key == 'Info') handleClickHowToPlay()
     if (gameStatus != GameStatus.Ready) return
     if (key == 'Enter') {
       // Press Enter
@@ -384,8 +385,6 @@ const Games = (props: Props) => {
       setCurrentWord(prevCurrentWord => {
         return prevCurrentWord.slice(0, prevCurrentWord.length - 1)
       })
-    } else if (key == 'Info') {
-      setShowHowToPlayModal(true)
     } else if (language.regexp?.test(key) && key.length == 1) {
       // Press valid key
       setCurrentWord(prevCurrentWord => {
