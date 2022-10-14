@@ -1587,6 +1587,7 @@ button{
   }
   @media screen and (max-width: $sp-break-point){
     .mygames-edit-header{
+      background: $header-color;
       .tabs-container{
         justify-content: space-around;
       }

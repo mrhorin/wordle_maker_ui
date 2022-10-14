@@ -76,7 +76,7 @@ const MygamesEdit = () => {
           <Sidemenu activeMenu={'edit'} />
           {/* Sidemenu Main */}
           <div id='sidemenu-main' className='mygames-edit'>
-            {/* Header */}
+            {/* Mygames Edit Header */}
             <div className='mygames-edit-header'>
               {/* Title */}
               <div className='title'>
