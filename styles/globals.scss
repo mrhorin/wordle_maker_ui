@@ -471,7 +471,7 @@ button{
     font-size: 1rem;
     padding: 0 1rem;
     line-height: 3rem;
-    color: $font-color2;
+    color: $font-color3;
     font-weight: 500;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -800,12 +800,11 @@ button{
           a{
             display: block;
             padding: 0.5rem;
-            color: $font-color2;
+            color: $font-color3;
             svg, i{
               width: 30px;
               margin-right: 0.5rem;
             }
-            color: $font-color2;
           }
           a:hover{
             background: $base-color2;
