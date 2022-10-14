@@ -928,6 +928,7 @@ button{
     width: 70%;
     max-width: $sp-break-point;
     overscroll-behavior: contain;
+    color: $font-color1;
     .modal-window-container{
       display: flex;
       flex-direction: column;
