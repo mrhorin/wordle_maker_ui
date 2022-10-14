@@ -23,6 +23,7 @@ $accent-color2: #cf8e1d;
 $font-color1: #dfe3e5;
 $font-color2: darken($font-color1, 30%);
 $font-color3: darken($font-color1, 35%);
+$font-color4: darken($font-color1, 10%);
 
 $default-color: #fafafa;
 $primary-color: #307fe5;
@@ -35,6 +36,8 @@ $correct-color: $primary-color;
 $present-color: $warning-color;
 $absent-color: lighten($base-color1, 12%);
 
+$font-link-color: $info-color;
+
 $sp-break-point: 599px;
 $tablet-break-point: 1024px;
 
@@ -42,7 +45,7 @@ html,
 body {
   word-break: break-word;
   background: $base-color1;
-  color: $font-color1;
+  color: $font-color4;
   font-size: 15px;
   padding: 0;
   margin: 0;
@@ -96,7 +99,7 @@ h3{
 }
 
 a {
-  color: $info-color;
+  color: $font-link-color;
   text-decoration: none;
 }
 a:hover{
@@ -165,7 +168,7 @@ textarea::-webkit-scrollbar-thumb{
 label{
   font-size: 0.8rem;
   font-weight: bold;
-  color: $font-color1;
+  color: $font-color4;
 }
 
 .form-group{
@@ -646,7 +649,7 @@ button{
         line-height: 3.5rem;
         padding: 0 1rem;
         text-align: left;
-        color: darken($font-color1, 20%);
+        color: $font-color4;
         svg,i{
           margin-right: 0.5rem;
         }
@@ -1015,10 +1018,10 @@ button{
     list-style-type: decimal;
     .game-index-item-title{
       order: 1;
-      font-size: 1.3rem;
-      line-height: 1.8rem;
+      font-size: 1.2rem;
+      line-height: 1.5rem;
       a{
-        color: $info-color;
+        font-weight: 500;
       }
       .game-index-item-title-lock{
         svg, i{
@@ -1078,6 +1081,7 @@ button{
   padding: 2rem 1rem;
   margin-bottom: 2rem;
   .index-board-title{
+    color: $font-color1;
     text-align: center;
     font-size: 3rem;
     font-weight: bold;
@@ -1241,6 +1245,7 @@ button{
 }
 
 .example-text{
+  color: $font-color4;
   margin-bottom: 25px;
   .example-text-number{
     display: inline-flex;
@@ -1611,7 +1616,6 @@ button{
     line-height: 2rem;
     padding: 0 1rem 0 0.5rem;
     background: $base-color3;
-    color:#fff;
     &:hover{
       background: darken($base-color3, 5%);
       cursor: pointer;
@@ -1634,7 +1638,7 @@ button{
       display: block;
       line-height: 2rem;
       padding: 0 1rem;
-      color: #fff;
+      color: $font-color1;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -1670,6 +1674,7 @@ button{
     }
     .addwords-attrs-item-value{
       order: 2;
+      color: $font-color4;
       display: inline-block;
     }
   }
@@ -1797,6 +1802,7 @@ button{
     }
   }
   .title-text{
+    color: $font-color4;
     font-weight: bold;
     white-space: nowrap;
     overflow: hidden;
