@@ -4,6 +4,7 @@ import useGetKeyStatus from 'hooks/useGetKeyStatus'
 import Key from 'components/keyboard/en/key'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBackspace } from '@fortawesome/free-solid-svg-icons'
+import { faLightbulb } from '@fortawesome/free-regular-svg-icons'
 
 const KeyMode = {
   Normal: 'NORMAL',
@@ -61,18 +62,20 @@ const Gozyuon = ({ tilesTable, handleOnClick }: Props) => {
   return (
     <div className='keyboard-ja-gozyuon'>
       <div className='modifier-keys'>
-        {/* {keyModeComponent}
-        <Key key={'Backspace'} letter={'Backspace'} type={'MODIFIER'} status={'ABSENT'} handleOnClick={handleOnClick} style={{width: '9%'}}>
-          <FontAwesomeIcon icon={faBackspace}/>
-        </Key>
-        <Key key={'Enter'} letter={'Enter'} type={'MODIFIER'} status={'ABSENT'} handleOnClick={handleOnClick} style={{width: '19%'}}/> */}
         <div className='modifier-keys-left'>
+          {/* 小字゛゜/通常 */}
           {keyModeComponent}
+          {/* Info */}
+          <Key key='Info' letter='Info' type='MODIFIER' status='ABSENT' handleOnClick={handleOnClick} style={{ width: '19%' }}>
+            <FontAwesomeIcon icon={faLightbulb}/>
+          </Key>
         </div>
         <div className='modifier-keys-right'>
+          {/* Backspace */}
           <Key key={'Backspace'} letter={'Backspace'} type={'MODIFIER'} status={'ABSENT'} handleOnClick={handleOnClick} style={{width: '38%', marginLeft: 'auto'}}>
             <FontAwesomeIcon icon={faBackspace}/>
           </Key>
+          {/* Enter */}
           <Key key={'Enter'} letter={'Enter'} type={'MODIFIER'} status={'ABSENT'} handleOnClick={handleOnClick} style={{width: '38%'}}/>
         </div>
       </div>

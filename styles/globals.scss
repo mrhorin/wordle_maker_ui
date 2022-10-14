@@ -1139,7 +1139,7 @@ button{
   }
   @media screen and (max-width: $sp-break-point){
     .games-keyboard{
-      background: $base-color3;
+      background: $header-color;
     }
   }
 }
@@ -1520,6 +1520,8 @@ button{
     .modifier-keys-left{
       order: 1;
       width: 50%;
+      display: flex;
+      flex-direction: row;
       .keyboard-key-modifier{
         margin: 1%;
         font-size: 1rem;

@@ -384,6 +384,8 @@ const Games = (props: Props) => {
       setCurrentWord(prevCurrentWord => {
         return prevCurrentWord.slice(0, prevCurrentWord.length - 1)
       })
+    } else if (key == 'Info') {
+      setShowHowToPlayModal(true)
     } else if (language.regexp?.test(key) && key.length == 1) {
       // Press valid key
       setCurrentWord(prevCurrentWord => {
@@ -452,18 +454,7 @@ const Games = (props: Props) => {
         <meta name="description" content={props.game.desc ? props.game.desc : t.APP_DESC.FIRST_LINE + t.APP_DESC.SECOND_LINE} />
       </Head>
 
-      <SlideoutMenu>
-        <li onClick={handleClickHowToPlay} style={{marginBottom: '3.6rem'}}>
-          <a className='slideout-menu-main-item'>
-            <div className='slideout-menu-main-item-icon'>
-              <FontAwesomeIcon icon={faQuestionCircle} />
-            </div>
-            <div className='slideout-menu-main-item-text'>
-              {t.SLIDEOUT_MENU.HOW_TO_PLAY}
-            </div>
-          </a>
-        </li>
-      </SlideoutMenu>
+      <SlideoutMenu />
 
       {/* How to Play Modal */}
       <Modal showModal={showHowToPlayModal} setShowModal={setShowHowToPlayModal}>

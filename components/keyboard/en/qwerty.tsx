@@ -3,6 +3,7 @@ import useGetKeyStatus from 'hooks/useGetKeyStatus'
 import Key from 'components/keyboard/en/key'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBackspace } from '@fortawesome/free-solid-svg-icons'
+import { faLightbulb } from '@fortawesome/free-regular-svg-icons'
 
 interface Props{
   tilesTable: Tile[][]
@@ -12,15 +13,15 @@ interface Props{
 const Qwerty = ({ tilesTable, handleOnClick }: Props) => {
   const getKeyStatus = useGetKeyStatus()
 
-  const row1KeyComponents = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'].map((letter) => {
+  const row1KeyComponents: JSX.Element[] = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'].map((letter) => {
     const status = getKeyStatus(letter, tilesTable)
     return <Key key={letter} letter={letter} type={'CHARACTER'} status={status} handleOnClick = { handleOnClick } />
   })
-  const row2KeyComponents = ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'].map((letter) => {
+  const row2KeyComponents: JSX.Element[] = ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'].map((letter) => {
     const status = getKeyStatus(letter, tilesTable)
     return <Key key={letter} letter={letter} type={'CHARACTER'} status={status} handleOnClick={handleOnClick} />
   })
-  const row3KeyComponents = ['Z', 'X', 'C', 'V', 'B', 'N', 'M'].map((letter) => {
+  const row3KeyComponents: JSX.Element[] = ['Z', 'X', 'C', 'V', 'B', 'N', 'M'].map((letter) => {
     const status = getKeyStatus(letter, tilesTable)
     return <Key key={letter} letter={letter} type={'CHARACTER'} status={status} handleOnClick={handleOnClick} />
   })
@@ -30,7 +31,12 @@ const Qwerty = ({ tilesTable, handleOnClick }: Props) => {
     </Key>
   )
   row3KeyComponents.push(
-    <Key key={'Enter'} letter={'Enter'} type={'MODIFIER'} status={'ABSENT'} handleOnClick={handleOnClick} />
+    <Key key={'Enter'} letter={'Enter'} type={'MODIFIER'} status={'ABSENT'} handleOnClick={handleOnClick} style={{width: '100%'}} />
+  )
+  row3KeyComponents.unshift(
+    <Key key='Info' letter='Info' type='MODIFIER' status='ABSENT' handleOnClick={handleOnClick}>
+      <FontAwesomeIcon icon={faLightbulb}/>
+    </Key>
   )
   return (
     <div className='keyboard-en-qwerty'>
