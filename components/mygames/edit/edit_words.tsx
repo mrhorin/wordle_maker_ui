@@ -195,6 +195,8 @@ const EditWords = ({ game }: EditWordsProps) => {
         if (json.ok) {
           setCurrentWordList(json.data.words)
           setPagination(json.data.pagination)
+          document.body.scrollTop = 0 // For Safari
+          document.documentElement.scrollTop = 0 // For Chrome, Firefox, IE and Opera
         }
       }).catch(error => {
         console.log(error)
