@@ -114,9 +114,12 @@ export default {
   GAMES: {
     HOW_TO_PLAY: {
       TITLE: 'How to Play',
+      BASIC_RULES: 'Basic Rules',
       EXAMPLES: 'Examples',
-      BLUE: 'A correct letter and correct position of the letter will be blue.',
-      YELLOW: 'A correct letter but wrong position of the letter will be yellow.',
+      RULE_1: 'Guess a word hidden in blank boxes.',
+      RULE_2: 'A correct letter and correct position of the letter will be blue.',
+      RULE_3: 'A correct letter but wrong position of the letter will be yellow.',
+      RULE_4: "Finally clear the today's game after you fill the boxes with blue!",
     },
     RESULT: {
       ANSWER: "Today's Answer",

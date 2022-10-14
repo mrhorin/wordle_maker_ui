@@ -1226,67 +1226,64 @@ button{
 .howtoplay{
   display: flex;
   flex-direction: column;
-  .howtoplay-block{
-    padding: 1rem 0;
+  .howtoplay-label{
+    color: $font-color3;
+    font-size: 0.8rem;
+    display: block;
+    margin-top: 5px;
+    margin-bottom: 5px;
   }
-  .howtoplay-title{
-    @extend .howtoplay-block;
-    order: 1;
-    font-weight: bold;
-    padding: 0;
-  }
-  .howtoplay-desc{
-    @extend .howtoplay-block;
-    order: 2;
-    padding-top: 0.5rem;
+  .howtoplay-text{
     white-space: pre-wrap;
-  }
-  .howtoplay-example{
-    @extend .howtoplay-block;
-    order: 3;
-    border-top: 1px solid $boarder-color;
+    font-size: 1rem;
+    margin-bottom: 20px;
   }
 }
 
-.example{
-  .example-label{
+.example-text{
+  margin-bottom: 25px;
+  .example-text-number{
+    display: inline-flex;
+    margin-right: 0.25rem;
+    color: $font-color3;
     font-weight: bold;
-    margin-bottom: 1rem;
   }
-  .example-body{
-    .example-word{
-      display: flex;
-      flex-direction: row;
-      .example-word-tile{
-        font-size: 18px;
-        line-height: 24px;
-        width: 24px;
-        font-weight: bold;
-        text-transform: uppercase;
-        text-align: center;
-        border: 1px solid $font-color1;
-        margin: 3px;
-      }
-      .example-word-tile-correct{
-        @extend .example-word-tile;
-        background: $correct-color;
-        border: 1px solid $correct-color;
-      }
-      .example-word-tile-present{
-        @extend .example-word-tile;
-        background: $present-color;
-        border: 1px solid $present-color;
-      }
-      .example-word-tile-absent{
-        @extend .example-word-tile;
-        background: $absent-color;
-        border: 1px solid $absent-color;
-      }
-    }
-    .example-text{
-      padding-top: 0.5rem;
-      padding-bottom: 1rem;
-    }
+}
+.example-word{
+  margin-top: 5px;
+  margin-bottom: 5px;
+  display: flex;
+  flex-direction: row;
+  .example-word-tile{
+    font-size: 18px;
+    line-height: 26px;
+    min-height: 26px;
+    width: 26px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    border: 1px solid $font-color1;
+    margin: 3px;
+  }
+  .example-word-tile-empty{
+    @extend .example-word-tile;
+    background: $base-color1;
+    border: 1px solid $font-color3;
+  }
+  .example-word-tile-correct{
+    @extend .example-word-tile;
+    background: $correct-color;
+    border: 1px solid $font-color3;
+  }
+  .example-word-tile-present{
+    @extend .example-word-tile;
+    background: $present-color;
+    border: 1px solid $font-color3;
+  }
+  .example-word-tile-absent{
+    @extend .example-word-tile;
+    background: $absent-color;
+    border: 1px solid $font-color3;
   }
 }
 
@@ -1668,7 +1665,6 @@ button{
     flex-direction: row;
     .addwords-attrs-item-label{
       order: 1;
-;
       margin-right: 1rem;
       color: $font-color3;
     }

@@ -458,41 +458,71 @@ const Games = (props: Props) => {
       {/* How to Play Modal */}
       <Modal showModal={showHowToPlayModal} setShowModal={setShowHowToPlayModal}>
         <div className='modal-window-container'>
-          <div className='modal-window-header' style={{position: 'relative'}}>
+          {/* Header */}
+          <div className='modal-window-header' style={{ position: 'relative' }}>
             <div style={{ fontWeight: 'bold', fontSize: '1.5rem', textAlign: 'center' }}>{t.SLIDEOUT_MENU.HOW_TO_PLAY}</div>
             <FontAwesomeIcon icon={faXmark} className='xmark' style={{ position: 'absolute', top: '15px', right: '15px'}} onClick={() => setShowHowToPlayModal(false)} />
           </div>
+          {/* Body */}
           <div className='modal-window-body'>
             <div className='howtoplay'>
-              <div className='howtoplay-title'>{props.game.title}</div>
-              <div className='howtoplay-desc'>{props.game.desc}</div>
-              <div className='howtoplay-example'>
-                <div className='example'>
-                  <div className='example-label'>{t.GAMES.HOW_TO_PLAY.EXAMPLES}</div>
-                  <div className='example-body'>
-                    <div className='example-word'>
-                      <div className='example-word-tile-correct'>A</div>
-                      <div className='example-word-tile-absent'>P</div>
-                      <div className='example-word-tile-absent'>P</div>
-                      <div className='example-word-tile-absent'>L</div>
-                      <div className='example-word-tile-absent'>E</div>
-                    </div>
-                    <div className='example-text'>{t.GAMES.HOW_TO_PLAY.BLUE}</div>
-                    <div className='example-word'>
-                      <div className='example-word-tile-absent'>C</div>
-                      <div className='example-word-tile-present'>A</div>
-                      <div className='example-word-tile-absent'>T</div>
-                      <div className='example-word-tile-absent'>C</div>
-                      <div className='example-word-tile-absent'>H</div>
-                    </div>
-                    <div className='example-text'>{t.GAMES.HOW_TO_PLAY.YELLOW}</div>
-                  </div>
-                </div>
+              {/* Title */}
+              <label className='howtoplay-label'>{t.GAME.TITLE}:</label>
+              <div className='howtoplay-text'>{props.game.title}</div>
+              {/* Desc */}
+              <label className='howtoplay-label'>{t.GAME.DESC}:</label>
+              <div className='howtoplay-text'>{props.game.desc}</div>
+              {/* Basic Rules */}
+              <label className='howtoplay-label'>{t.GAMES.HOW_TO_PLAY.BASIC_RULES}:</label>
+              {/* 1 */}
+              <div className='example-word'>
+                <div className='example-word-tile-empty'> </div>
+                <div className='example-word-tile-empty'> </div>
+                <div className='example-word-tile-empty'> </div>
+                <div className='example-word-tile-empty'> </div>
+                <div className='example-word-tile-empty'> </div>
+              </div>
+              <div className='example-text'>
+                <div className='example-text-number'>1.</div>{t.GAMES.HOW_TO_PLAY.RULE_1}
+              </div>
+              {/* 2 */}
+              <div className='example-word'>
+                <div className='example-word-tile-correct'>C</div>
+                <div className='example-word-tile-absent'>L</div>
+                <div className='example-word-tile-absent'>O</div>
+                <div className='example-word-tile-absent'>T</div>
+                <div className='example-word-tile-absent'>H</div>
+              </div>
+              <div className='example-text'>
+                <div className='example-text-number'>2.</div>{t.GAMES.HOW_TO_PLAY.RULE_2}
+              </div>
+              {/* 3 */}
+              <div className='example-word'>
+                <div className='example-word-tile-correct'>C</div>
+                <div className='example-word-tile-absent'>H</div>
+                <div className='example-word-tile-present'>A</div>
+                <div className='example-word-tile-absent'>I</div>
+                <div className='example-word-tile-absent'>R</div>
+              </div>
+              <div className='example-text'>
+                <div className='example-text-number'>3.</div>{t.GAMES.HOW_TO_PLAY.RULE_3}
+              </div>
+              {/* 4 */}
+              <div className='example-word'>
+                <div className='example-word-tile-correct'>C</div>
+                <div className='example-word-tile-correct'>A</div>
+                <div className='example-word-tile-correct'>N</div>
+                <div className='example-word-tile-correct'>D</div>
+                <div className='example-word-tile-correct'>Y</div>
+              </div>
+              <div className='example-text'>
+                <div className='example-text-number'>4.</div>{t.GAMES.HOW_TO_PLAY.RULE_4}
               </div>
             </div>
           </div>
+          {/* Close */}
           <div className='modal-window-footer'>
-          <button className='btn btn-default' onClick={() => setShowHowToPlayModal(false)}>{ t.COMMON.CLOSE }</button>
+            <button className='btn btn-default' onClick={() => setShowHowToPlayModal(false)}>{ t.COMMON.CLOSE }</button>
           </div>
         </div>
       </Modal>
