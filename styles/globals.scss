@@ -49,6 +49,15 @@ body {
   z-index: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, "Helvetica Neue",Arial, Helvetica Neue, Helvetica,Meiryo, sans-serif;
+
+  // Remove .header's border only when mygames-edit-header shown
+  &:has(*> .mygames-edit-header){
+    @media screen and (max-width: $sp-break-point){
+      *>.header{
+        border-bottom: none;
+      }
+    }
+  }
 }
 
 ::-webkit-scrollbar{
