@@ -1500,6 +1500,13 @@ button{
     background: lighten($base-color1, 20%);
   }
 }
+.keyboard-key-accent1{
+  background: $accent-color1;
+  color: #424242;
+  &:hover{
+    background: lighten($accent-color1, 8%);
+  }
+}
 
 /* ---------- Qwerty ---------- */
 .keyboard-en-qwerty{

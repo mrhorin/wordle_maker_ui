@@ -34,7 +34,7 @@ const Qwerty = ({ tilesTable, handleOnClick }: Props) => {
     <Key key={'Enter'} letter={'Enter'} type={'MODIFIER'} status={'ABSENT'} handleOnClick={handleOnClick} style={{width: '100%'}} />
   )
   row3KeyComponents.unshift(
-    <Key key='Info' letter='Info' type='MODIFIER' status='ABSENT' handleOnClick={handleOnClick}>
+    <Key key='Info' letter='Info' type='MODIFIER' status='ABSENT' handleOnClick={handleOnClick} addnlClassNames='keyboard-key-accent1'>
       <FontAwesomeIcon icon={faLightbulb}/>
     </Key>
   )

@@ -66,7 +66,7 @@ const Gozyuon = ({ tilesTable, handleOnClick }: Props) => {
           {/* 小字゛゜/通常 */}
           {keyModeComponent}
           {/* Info */}
-          <Key key='Info' letter='Info' type='MODIFIER' status='ABSENT' handleOnClick={handleOnClick} style={{ width: '19%' }}>
+          <Key key='Info' letter='Info' type='MODIFIER' status='ABSENT' handleOnClick={handleOnClick} style={{ width: '19%' }} addnlClassNames='keyboard-key-accent1'>
             <FontAwesomeIcon icon={faLightbulb}/>
           </Key>
         </div>
