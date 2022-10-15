@@ -21,7 +21,6 @@ const Sidemenu = (props: Props) => {
     if (props.activeMenu == 'edit') editEl.current?.classList.add('sidemenu-item-active')
     if (props.activeMenu == 'create') createEl.current?.classList.add('sidemenu-item-active')
     if (props.activeMenu == 'account') accountEl.current?.classList.add('sidemenu-item-active')
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

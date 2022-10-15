@@ -220,7 +220,6 @@ const Games = (props: Props) => {
           }
         })
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameStatus])
 
   useEffect(() => {
@@ -238,7 +237,6 @@ const Games = (props: Props) => {
         setGameStatus(GameStatus.Ready)
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tilesTable])
 
   useEffect(() => {
@@ -395,7 +393,6 @@ const Games = (props: Props) => {
         }
       })
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameStatus])
 
   /*

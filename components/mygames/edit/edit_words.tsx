@@ -96,7 +96,6 @@ const EditWords = ({ game }: EditWordsProps) => {
         )
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentWordList])
 
   const updateWord = useCallback((nextWord: Word) => {
@@ -106,7 +105,6 @@ const EditWords = ({ game }: EditWordsProps) => {
         return prevWord
       })
     })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const removeWord = useCallback((id: number) => {
@@ -115,14 +113,12 @@ const EditWords = ({ game }: EditWordsProps) => {
         return prevWord.id !== id
       })
     })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleClickEdit = useCallback((word: Word) => {
     setInputUpdateWord(word.name)
     setInputUpdateId(word.id)
     setShowModal(true)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleClickDelete = useCallback((word_id: number) => {
@@ -147,7 +143,6 @@ const EditWords = ({ game }: EditWordsProps) => {
     } else {
       signOut(() => router.replace('/signin'))
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   function handleClickUpdate() {

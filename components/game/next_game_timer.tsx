@@ -22,7 +22,6 @@ const NextGameTimer = () => {
       // Clear interval on re-render to avoid memory leaks
       return () => clearInterval(countDownInterval)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [now])
 
   const hours: string = now ? ('00' + (23 - now.getHours())).slice(-2) : '00'

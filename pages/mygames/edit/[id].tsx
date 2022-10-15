@@ -45,7 +45,6 @@ const MygamesEdit = () => {
         )
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.isReady])
 
   function getTabClassName(tab: TabStatus): string{
