@@ -3,49 +3,94 @@
 0: body
   1: #sidemenu
   1: .mygames-edit-header
-    2: .loading-overlay
       3: .header
       3: ul.header-account-menu
         4: .modal-overlay
           5: .modal-window
             6: .slideout-menu-overlay
               7: .slideout-menu-main
+                8: .loading-overlay
 */
+
 $base-color1: #1e2022;
 $base-color2: lighten($base-color1, 3%);
 $base-color3: lighten($base-color1, 6%);
-$boarder-color: lighten($base-color1, 25%);
+$border-color: lighten($base-color1, 25%);
 $header-color: lighten($base-color1, 2%);
 
-$accent-color1: #42c897;
-$accent-color2: #cf8e1d;
+$base-color1-light: #fff;
+$base-color2-light: darken($base-color1-light, 3%);
+$base-color3-light: darken($base-color1-light, 6%);
+$border-color-light: darken($base-color1-light, 25%);
+$header-color-light: #fafafa;
 
 $font-color1: #dfe3e5;
 $font-color2: darken($font-color1, 30%);
 $font-color3: darken($font-color1, 35%);
 $font-color4: darken($font-color1, 10%);
+$font-link-color: #5d9ff3;
+$font-link-color-light: #5092e8;
+$font-tile-color: #fff;
+
+$font-color1-light: #313131;
+$font-color2-light: lighten($font-color1-light, 30%);
+$font-color3-light: lighten($font-color1-light, 35%);
+$font-color4-light: lighten($font-color1-light, 10%);
+$font-link-color: #5d9ff3;
+
+$accent-color1: #42c897;
+$accent-color2: #cf8e1d;
 
 $default-color: #fafafa;
 $primary-color: #307fe5;
-$warning-color: #cf9e2a;
+$warning-color: #e4b32d;
 $secondary-color: #565761;
 $danger-color: #eb0000;
 $info-color: #5d9ff3;
-
 $correct-color: $primary-color;
 $present-color: $warning-color;
-$absent-color: lighten($base-color1, 12%);
-
-$font-link-color: $info-color;
+$absent-color: lighten(#1e2022, 12%);
+$absent-color-light: lighten(#1e2022, 35%);
 
 $sp-break-point: 599px;
 $tablet-break-point: 1024px;
 
+@mixin sp {
+  @media screen and (max-width: ($sp-break-point)) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media screen and (max-width: ($tablet-break-point)) {
+    @content;
+  }
+}
+
+@mixin light{
+  @media (prefers-color-scheme: light){
+    @content;
+  }
+}
+
+@mixin dark{
+  @media (prefers-color-scheme: dark){
+    @content;
+  }
+}
+
+
 html,
 body {
+  @include light{
+    background: $base-color1-light;
+    color: $base-color1;
+  }
+  @include dark{
+    background: $base-color1;
+    color: $font-color4;
+  }
   word-break: break-word;
-  background: $base-color1;
-  color: $font-color4;
   font-size: 15px;
   padding: 0;
   margin: 0;
@@ -55,7 +100,7 @@ body {
 
   // Remove .header's border only when mygames-edit-header shown
   &:has(*> .mygames-edit-header){
-    @media screen and (max-width: $sp-break-point){
+    @include sp {
       *>.header{
         border-bottom: none;
       }
@@ -63,17 +108,42 @@ body {
   }
 }
 
-::-webkit-scrollbar{
-  background: $base-color2;
-  border-left: 1px solid lighten($base-color3, 5%);
+// Scrollbar
+@include light{
+  ::-webkit-scrollbar{
+    background: lighten($base-color2-light, 5%);
+    border-left: 1px solid lighten($base-color3-light, 5%);
+  }
+  ::-webkit-scrollbar-thumb{
+    background: $base-color2-light;
+    border-left: 1px solid lighten($base-color3-light, 5%);
+  }
 }
-::-webkit-scrollbar-thumb{
-  background: lighten($base-color2, 5%);
-  border-left: 1px solid lighten($base-color3, 5%);
+@include dark{
+  ::-webkit-scrollbar{
+    background: $base-color2;
+    border-left: 1px solid lighten($base-color3, 5%);
+  }
+  ::-webkit-scrollbar-thumb{
+    background: lighten($base-color2, 5%);
+    border-left: 1px solid lighten($base-color3, 5%);
+  }
 }
+
 
 * {
   box-sizing: border-box;
+}
+
+a{
+  text-decoration: none;
+  @include light{ color: $font-link-color-light; }
+  @include dark{ color: $font-link-color; }
+  &:hover{
+    color: $font-link-color;
+    text-decoration: underline;
+    cursor: pointer;
+  }
 }
 
 section{
@@ -98,15 +168,6 @@ h3{
   margin: 1.2rem 0;
 }
 
-a {
-  color: $font-link-color;
-  text-decoration: none;
-}
-a:hover{
-  text-decoration: underline;
-  cursor: pointer;
-}
-
 ol{
   margin: 1rem 0;
   li{
@@ -125,10 +186,17 @@ select,
   line-height: 1.5rem;
   padding: 0.5rem;
   margin-bottom: 0;
-  color: $font-color1;
-  background: $base-color3;
-  border: 1px solid $base-color3;
   border-radius: 3px;
+  @include light{
+    color: $font-color1-light;
+    background: $base-color2-light;
+    border: 1px solid $border-color-light;
+  }
+  @include dark{
+    color: $font-color1;
+    background: $base-color3;
+    border: 1px solid $base-color3;
+  }
 }
 input[type="text"].input-invalid,
 textarea.input-invalid,
@@ -143,8 +211,14 @@ select:focus{
   border: 1px solid #0099ff;
 }
 input[type="text"]:disabled{
-  background: lighten($base-color1, 20%);
-  color: darken($font-color1, 30%);
+  @include light{
+    background: darken($base-color1-light, 20%);
+    color: lighten($font-color1-light, 30%);
+  }
+  @include dark{
+    background: lighten($base-color1, 20%);
+    color: darken($font-color1, 30%);
+  }
   &:hover{
     cursor: not-allowed;
   }
@@ -157,18 +231,21 @@ textarea{
   resize: none;
 }
 textarea::-webkit-scrollbar{
-  background: lighten($base-color2, 5%);
   cursor: default;
+  @include light{ background: $base-color2-light; }
+  @include dark{ background: lighten($base-color2, 5%); }
 }
 textarea::-webkit-scrollbar-thumb{
-  background: $base-color2;
   cursor: default;
+  @include light{ background: darken($base-color2-light, 5%); }
+  @include dark{ background: $base-color2; }
 }
 
 label{
   font-size: 0.8rem;
   font-weight: bold;
-  color: $font-color4;
+  @include light{ color: $font-color4-light; }
+  @include dark{ color: $font-color4; }
 }
 
 .form-group{
@@ -261,13 +338,21 @@ label{
 .form-countable-input-counter{
   text-align: right;
   font-size: 0.8rem;
-  color: $font-color2;
   line-height: 1rem;
-  background: $base-color3;
   padding: 0 0.5rem 0.25rem 0.5rem;
-  border: 1px solid $base-color3;
-  border-top: none;
   border-radius: 0 0 3px 3px;
+  @include light{
+    color: $font-color2-light;
+    background: $base-color2-light;
+    border: 1px solid $border-color-light;
+    border-top: none;
+  }
+  @include dark{
+    color: $font-color2;
+    background: $base-color3;
+    border: 1px solid $base-color3;
+    border-top: none;
+  }
 }
 
 .form-group-checkbox{
@@ -297,6 +382,14 @@ label{
 }
 
 .header{
+  @include light{
+    background: $header-color-light;
+    border-bottom: 1px solid $base-color3-light;
+  }
+  @include dark{
+    background: $header-color;
+    border-bottom: 1px solid $base-color3;
+  }
   z-index: 3;
   order: 1;
   width: 100%;
@@ -305,8 +398,7 @@ label{
   top: 0;
   left: 0;
   padding: 0;
-  background: $header-color;
-  border-bottom: 1px solid $base-color3;
+
 }
 
 #main {
@@ -326,14 +418,21 @@ table{
   border-collapse: collapse;
   thead{
     tr{
-      background: $base-color2;
-      color: $font-color3;
+      @include light{
+        background: $base-color2-light;
+        color: $font-color3-light;
+      }
+      @include dark{
+        background: $base-color2;
+        color: $font-color3;
+      }
       th{
         font-size: 0.8rem;
         text-align: left;
         white-space: nowrap;
-        border: 3px solid $base-color1;
         padding: 0.5rem 1rem;
+        @include light{ border: 3px solid $base-color1-light; }
+        @include dark{ border: 3px solid $base-color1; }
       }
       th.table-th-word{
         width: 100%;
@@ -342,11 +441,13 @@ table{
   }
   tbody{
     tr{
-      background: $base-color3;
+      @include light{ background: $base-color3-light; }
+      @include dark{ background: $base-color3; }
       td{
         white-space: nowrap;
-        border: 5px solid $base-color1;
         padding: 0.5rem 1rem;
+        @include light{ border: 5px solid $base-color1-light; }
+        @include dark{ border: 5px solid $base-color1; }
         .btn.btn-mini{
           width: 4rem;
           margin: 0;
@@ -358,7 +459,8 @@ table{
       }
     }
     tr:nth-child(even){
-      background-color: $base-color2;
+      @include light{ background: $base-color2-light; }
+      @include dark{ background: $base-color2; }
     }
   }
   tfoot{
@@ -375,10 +477,11 @@ button{
   line-height: 2rem;
   padding: 0 1rem;
   margin: 0 0.25rem;
-  border: $base-color3;
   border-radius: 20px;
   text-align: center;
   cursor: pointer;
+  box-sizing: border-box;
+  border: none;
 }
 .btn.btn-mini{
   font-size: 0.8rem;
@@ -392,6 +495,8 @@ button{
 .btn.btn-default{
   color: #111111;
   background-color: $default-color;
+  @include light{ border: 1px solid $border-color-light; }
+  @include dark{ border: 1px solid $base-color3; }
   &:hover{
     background: darken($default-color, 8%);
   }
@@ -509,14 +614,12 @@ button{
   100% { background-position: 0% 50% }
 }
 
-
-
-
 .tabs-container{
   display: flex;
   flex-direction: row;
   width: 100%;
-  border-bottom: 2px solid lighten($base-color1, 10%);
+  @include light{ border-bottom: 2px solid darken($base-color1-light, 13%); }
+  @include dark{ border-bottom: 2px solid lighten($base-color1, 10%); }
   .tab{
     font-size: 1rem;
     padding: 0 1rem;
@@ -527,16 +630,24 @@ button{
     text-overflow: ellipsis;
     white-space: nowrap;
     cursor: pointer;
-  }
-  .tab:hover{
-    background: $base-color2;
+    &:hover{
+      text-decoration: none;
+      cursor: pointer;
+      @include light{ background: $base-color2-light; }
+      @include dark{ background: $base-color2; }
+    }
   }
   .tab-active{
-    color: $font-color1;
     border-bottom: 2px solid $accent-color1;
     margin-bottom: -2px;
+    @include light{
+      font-weight: bold;
+      color: $font-color1-light;
+      background: $base-color3-light;
+    }
+    @include dark{ color: $font-color1; }
   }
-  @media screen and (max-width: $sp-break-point){
+  @include sp {
     justify-content: space-between;
     align-items: center;
     .tab{
@@ -590,18 +701,29 @@ button{
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  // background: $base-color2;
-  // border-bottom: 1px solid $base-color3;
   .header-menu{
     order: 1;
     flex-basis: 33%;
     padding: 10px 10px 10px 25px;
     text-align: left;
     .header-menu-icon{
+      @include light{
+        color: $font-color1-light;
+        border: none;
+        &:hover{
+          color: $font-color2-light;
+        }
+      }
+      @include dark{
+        color: $font-color2;
+        border: 1px solid $font-color2;
+        &:hover{
+          color: $font-color1;
+          border: 1px solid $font-color1;
+        }
+      }
       display: inline-flex;
       flex-direction: column;
-      color: $font-color2;
-      border: 1px solid $font-color2;
       border-radius: 5px;
       padding: 3px;
       svg,i{
@@ -617,8 +739,6 @@ button{
       }
       &:hover{
         cursor: pointer;
-        color: $font-color1;
-        border: 1px solid $font-color1;
       }
     }
   }
@@ -649,19 +769,24 @@ button{
       display: inline-flex;
       align-items: center;
       .header-account-button-image{
+
         order: 1;
         display: inline-flex;
         border-radius: 100px;
         overflow: hidden;
-        background: $base-color3;
         min-width: 30px;
         min-height: 30px;
       }
       .header-account-button-caretdown{
+        @include light{
+          color: lighten($font-color1-light, 20%);
+        }
+        @include dark{
+          color: darken($font-color1, 20%);
+        }
         order: 2;
         padding: 0 0.75rem;
         font-size: 0.8rem;
-        color: darken($font-color1, 20%);
       }
       &:hover{
         cursor: pointer;
@@ -671,6 +796,26 @@ button{
       cursor: pointer;
     }
     ul.header-account-menu{
+      @include light{
+        background: $header-color-light;
+        border: 1px solid $base-color3-light;
+        li{
+          color: $font-color4-light;
+          &:hover{
+            background: $base-color3-light;
+          }
+        }
+      }
+      @include dark{
+        background: $base-color2;
+        border: 1px solid $base-color3;
+        li{
+          color: $font-color4;
+          &:hover{
+            background: $base-color3;
+          }
+        }
+      }
       z-index: 3;
       position: absolute;
       right: 15px;
@@ -681,12 +826,10 @@ button{
       margin: 0;
       padding: 0;
       min-width: 170px;
-      background: $base-color2;
-      border: 1px solid $base-color3;
       border-top: none;
       overflow: hidden;
       transition: max-height 0s ease-out;
-      @media screen and (max-width: $sp-break-point){
+      @include sp {
         right: 0;
         min-width: 100vw;
         border-left: none;
@@ -699,12 +842,8 @@ button{
         line-height: 3.5rem;
         padding: 0 1rem;
         text-align: left;
-        color: $font-color4;
         svg,i{
           margin-right: 0.5rem;
-        }
-        &:hover{
-          background: $base-color3;
         }
       }
       li.header-account-menu-hide-separater{
@@ -733,16 +872,21 @@ button{
     top: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0,0,0, 0.5);
     left: 0;
     display: none;
+    background: rgba(0,0,0, 0.5);
   }
   .slideout-menu-main{
+    @include light{
+      background: $header-color-light;
+    }
+    @include dark{
+      background: $base-color2;
+    }
     z-index: 7;
     position: fixed;
     top: 0;
     left: 0;
-    background: $base-color2;
     min-height: 100vh;
     max-width: 0;
     overflow: hidden;
@@ -764,8 +908,38 @@ button{
       margin: 0;
       padding: 0 0 2rem 0;
       li{
+        @include light{
+          .slideout-menu-main-item{
+            color: $font-color1-light;
+          }
+          *>select{
+            background: $base-color1-light;
+            color: $font-color1-light;
+            border: 1px solid $border-color-light;
+          }
+          a.slideout-menu-main-item:hover{
+            background: $base-color3-light;
+          }
+        }
+        @include dark{
+          .slideout-menu-main-item{
+            color: $font-color1;
+          }
+          *>select{
+            background: $base-color1;
+            color: $font-color1;
+          }
+          a.slideout-menu-main-item:hover{
+            background: $base-color3;
+          }
+        }
+        *>select{
+          font-size: 1rem;
+          padding: 0.75rem;
+          margin: 0;
+          min-width: 50%;
+        }
         .slideout-menu-main-item{
-          color: $font-color1;
           font-size: 1rem;
           padding: 0 1rem;
           line-height: 3.6rem;
@@ -785,20 +959,11 @@ button{
           .slideout-menu-main-item-text{
             order: 2;
             flex-grow: 1;
-            select{
-              background: $base-color1;
-              color: $font-color1;
-              font-size: 1rem;
-              padding: 0.75rem;
-              margin: 0;
-              min-width: 50%;
-            }
           }
         }
         a.slideout-menu-main-item:hover{
           text-decoration: none;
           cursor: pointer;
-          background: $base-color3;
         }
       }
     }
@@ -808,8 +973,8 @@ button{
 .slideout-menu-show{
   .slideout-menu-main{
     max-width: $sp-break-point * 0.6;
-    border-right: 1px solid $boarder-color;
-    @media screen and (max-width: $sp-break-point){
+    border-right: 1px solid $border-color;
+    @include sp {
       max-width: 80vw;
     }
   }
@@ -821,10 +986,20 @@ button{
 /* ---------- Sidemenu ---------- */
 .xmark{
   font-size: 2rem;
-  color: $font-color2;
   &:hover{
     cursor: pointer;
-    color: $font-color1
+  }
+  @include light{
+    color: $font-color2-light;
+    &:hover{
+      color: $font-color1-light;
+    }
+  }
+  @include dark{
+    color: $font-color2;
+    &:hover{
+      color: $font-color1;
+    }
   }
 }
 #sidemenu-container{
@@ -850,25 +1025,33 @@ button{
           a{
             display: block;
             padding: 0.5rem;
-            color: $font-color3;
+            @include light{ color: $font-color3-light; }
+            @include dark{ color: $font-color3; }
             svg, i{
               width: 30px;
               margin-right: 0.5rem;
             }
-          }
-          a:hover{
-            background: $base-color2;
-            text-decoration: none;
-            cursor: pointer;
+            &:hover{
+              text-decoration: none;
+              cursor: pointer;
+              @include light{ background: $base-color2-light; }
+              @include dark{ background: $base-color2; }
+            }
           }
         }
         li.sidemenu-item-active{
           a{
-            color: $accent-color1;
+            @include light{
+              color: $font-color1-light;
+              font-weight: bold;
+              background: $base-color3-light;
+            }
+            @include dark{ color: $accent-color1; }
             &:hover{
-              background: $base-color2;
               text-decoration: none;
               cursor: pointer;
+              @include light{ background: $base-color2-light; }
+              @include dark{ background: $base-color2; }
             }
           }
         }
@@ -876,7 +1059,8 @@ button{
         li.sidemenu-item-title:hover{
           padding: 0.5rem;
           font-size: 1rem;
-          color: $font-color1;
+          @include light{ color: $font-color1-light; }
+          @include dark{ color: $font-color1; }
           svg, i{
             width: 30px;
             margin-right: 0.5rem;
@@ -892,7 +1076,7 @@ button{
     width: 100%;
     padding: 0 25px;
   }
-  @media screen and (max-width: $sp-break-point){
+  @include sp {
     flex-direction: column;
     #sidemenu-main{
       order: 1;
@@ -905,7 +1089,7 @@ button{
       width: 100%;
       position: fixed;
       bottom: 0;
-      border-top: 1px solid $boarder-color;
+      border-top: 1px solid $border-color;
       background: $base-color2;
       margin: 0;
       .sidemenu-items-container{
@@ -918,12 +1102,13 @@ button{
           flex-direction: row;
           margin-bottom: 0;
           li>a{
-            color: $font-color2;
             font-size: 1.3rem;
             padding: 0.5rem 2rem 1rem 2rem;
             display: flex;
             flex-direction: column;
             text-align: center;
+            @include light{ color: $font-color2-light; }
+            @include dark{ color: $font-color2; }
             svg,i{
               order: 1;
               margin: 0;
@@ -958,7 +1143,6 @@ button{
 
 /* ---------- Modal ---------- */
 .modal{
-  $modal-border-color: darken($boarder-color, 5%);
   .modal-overlay{
     z-index: 4;
     position: fixed;
@@ -977,20 +1161,40 @@ button{
     width: 70%;
     max-width: $sp-break-point;
     overscroll-behavior: contain;
-    color: $font-color1;
+    @include light{
+      $modal-border-color: lighten($border-color-light, 5%);
+      color: $font-color1-light;
+      .modal-window-container{
+        background: $base-color2-light;
+        border: 1px solid $font-color4-light;
+        .modal-window-header{ border-bottom: 1px solid $modal-border-color; }
+        .modal-window-footer{ border-top: 1px solid $modal-border-color; }
+      }
+      *>input[type="text"]{ background: lighten($base-color3-light, 3%); }
+      *>.form-countable-input-counter{ background: lighten($base-color3-light, 3%); }
+    }
+    @include dark{
+      $modal-border-color: darken($border-color, 5%);
+      color: $font-color1;
+      .modal-window-container{
+        background: $base-color2;
+        border: 1px solid $modal-border-color;
+        .modal-window-header{ border-bottom: 1px solid $modal-border-color; }
+        .modal-window-footer{ border-top: 1px solid $modal-border-color; }
+      }
+      *>input[type="text"]{ background: lighten($base-color3, 3%); }
+      *>.form-countable-input-counter{ background: lighten($base-color3, 3%); }
+    }
     .modal-window-container{
       display: flex;
       flex-direction: column;
-      border: 1px solid $modal-border-color;
       border-radius: 5px;
-      background: $base-color2;
       .modal-window-header{
         order: 1;
         padding: 1rem;
         margin-top: auto;
         font-size: 1rem;
         text-align: center;
-        border-bottom: 1px solid $modal-border-color;
       }
       .modal-window-body{
         order: 2;
@@ -998,16 +1202,6 @@ button{
         overflow: auto;
         height: auto;
         max-height: 65vh;
-        .form-group{
-          input[type="text"]{
-            background: lighten($base-color3, 3%);
-          }
-          .form-countable-input-group{
-            .form-countable-input-counter{
-              background: lighten($base-color3, 3%);
-            }
-          }
-        }
         li{
           line-height: 2rem;
         }
@@ -1017,7 +1211,6 @@ button{
         padding: 1rem;
         margin-bottom: auto;
         text-align: right;
-        border-top: 1px solid $modal-border-color;
       }
     }
   }
@@ -1027,7 +1220,7 @@ button{
   }
 }
 
-@media screen and (max-width: $sp-break-point){
+@include sp {
   .modal{
     .modal-window{
       width: 95%;
@@ -1038,13 +1231,13 @@ button{
 
 /* ---------- LoadingOverlay ---------- */
 .loading-overlay{
-  z-index: 2;
+  z-index: 8;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100vh;
-  background: rgba(0,0,0, 0.3);
+  background: rgba(0,0,0, 0.5);
   .loading-overlay-spin-center{
     text-align: center;
     position: fixed;
@@ -1070,15 +1263,14 @@ button{
       order: 1;
       font-size: 1.2rem;
       line-height: 1.5rem;
-      a{
-        font-weight: 500;
-      }
       .game-index-item-title-lock{
         svg, i{
           margin-right: 0.3rem;
         }
-        color: $font-color3;
         cursor: not-allowed;
+        text-decoration: line-through;
+        @include light{ color: $font-color3-light; }
+        @include dark{ color: $font-color3; }
       }
     }
     .game-index-item-desc{
@@ -1108,7 +1300,8 @@ button{
           font-size: 0.8rem;
           margin-right: 0.2rem;
           word-break: keep-all;
-          color: $font-color3;
+          @include light{ color: $font-color3-light; }
+          @include dark{ color: $font-color3; }
           &::after{
             content: ':';
           }
@@ -1127,7 +1320,14 @@ button{
 
 /* --------------- Index --------------- */
 .index-board{
-  background: $base-color3;
+  @include light{
+    background: #58739d;
+    color: #fff;
+  }
+  @include dark{
+    background: $base-color3;
+    color: $font-color4;
+  }
   padding: 2rem 1rem;
   margin-bottom: 2rem;
   .index-board-title{
@@ -1145,7 +1345,7 @@ button{
     text-align: center;
     padding-top: 2rem;
   }
-  @media screen and (max-width: $sp-break-point){
+  @include sp {
     .index-board-title{
       font-size: 2rem;
     }
@@ -1155,8 +1355,9 @@ button{
   display: flex;
   align-items: center;
   padding: 0 1rem;
-  font-size: 1.3rem;
-  line-height: 1.8rem;;
+  font-size: 1.2rem;
+  line-height: 1.8rem;
+  @include light{ font-weight: 700; }
   .index-title-icon{
     order: 1;
     margin-right: 5px;
@@ -1183,13 +1384,17 @@ button{
   .games-keyboard{
     order: 2;
     padding: 0.5%;
-    background: $base-color1;
     position: sticky;
     bottom: 0;
-  }
-  @media screen and (max-width: $sp-break-point){
-    .games-keyboard{
-      background: $header-color;
+    @include sp{
+      @include light{
+        background: $header-color-light;
+        border-top: 1px solid $border-color-light;
+      }
+      @include dark{
+        background: $header-color;
+        border-top: 1px solid $base-color3;
+      }
     }
   }
 }
@@ -1216,11 +1421,19 @@ button{
       text-align: center;
       width: 100%;
       margin: 3px;
-      border: 1px solid $font-color1;
       user-select: none;
       cursor: default;
-      background: $base-color1;
       transform: rotateX(0deg);
+      color: $font-tile-color;
+      @include light{
+        color: $font-color1-light;
+        background: darken($base-color1-light, 2.5%);
+        border: 1px solid lighten($border-color-light, 13%);
+      }
+      @include dark{
+        background: $base-color1;
+        border: 1px solid $font-color1;
+      }
       &::before{
         content: "";
         padding-top: 100%;
@@ -1244,7 +1457,7 @@ button{
     .tiles-table-row-tile:first-child:nth-last-child(n+9) ~ .tiles-table-row-tile{
       max-width: 50px;
       font-size: 20px;
-      @media screen and (max-width: $sp-break-point){
+      @include sp {
         font-size: 15px;
       }
     }
@@ -1257,6 +1470,9 @@ button{
     .tiles-table-row-tile-present,
     .tiles-table-row-tile-absent{
       animation: transform-tile 1s;
+      @include light{
+        color: $font-tile-color;
+      }
     }
     .tiles-table-row-tile-correct{
       background: $correct-color;
@@ -1267,8 +1483,14 @@ button{
       border: 1px solid $present-color;
     }
     .tiles-table-row-tile-absent{
-      background: $absent-color;
-      border: 1px solid $absent-color;
+      @include light{
+        border: 1px solid $absent-color-light;
+        background: $absent-color-light;
+      }
+      @include dark{
+        border: 1px solid $absent-color;
+        background: $absent-color;
+      }
     }
   }
 }
@@ -1277,16 +1499,19 @@ button{
   display: flex;
   flex-direction: column;
   .howtoplay-label{
-    color: $font-color3;
     font-size: 0.8rem;
     display: block;
     margin-top: 5px;
     margin-bottom: 5px;
+    @include light{ color: $font-color3-light; }
+    @include dark{ color: $font-color3; }
   }
   .howtoplay-text{
     white-space: pre-wrap;
     font-size: 1rem;
     margin-bottom: 20px;
+    @include light{ color: $font-color4-light; }
+    @include dark{ color: $font-color4; }
   }
 }
 
@@ -1308,32 +1533,36 @@ button{
     font-size: 18px;
     line-height: 26px;
     min-height: 26px;
-    width: 26px;
+    width: 28px;
     font-weight: bold;
     text-transform: uppercase;
     text-align: center;
-    border: 1px solid $font-color1;
-    margin: 3px;
+    border: 1px solid $font-color3;
+    margin: 2px;
+    color: $font-tile-color;
+    cursor: default;
   }
   .example-word-tile-empty{
     @extend .example-word-tile;
-    background: $base-color1;
     border: 1px solid $font-color3;
   }
   .example-word-tile-correct{
     @extend .example-word-tile;
     background: $correct-color;
     border: 1px solid $font-color3;
+    @include light{ border-color: $correct-color; }
   }
   .example-word-tile-present{
     @extend .example-word-tile;
     background: $present-color;
     border: 1px solid $font-color3;
+    @include light{ border-color: $present-color; }
   }
   .example-word-tile-absent{
     @extend .example-word-tile;
     background: $absent-color;
     border: 1px solid $font-color3;
+    @include light{ border-color: $absent-color; }
   }
 }
 
@@ -1366,7 +1595,7 @@ button{
     display: block;
     flex: 1;
     text-align: center;
-    border-right: 1px solid $boarder-color;
+    border-right: 1px solid $border-color;
     padding: 0 5px;
     &:last-child{ border-right: none; }
     .statistic-label{
@@ -1446,7 +1675,7 @@ button{
     order: 2;
     background: #1e9bf0;
   }
-  @media screen and (max-width: $sp-break-point){
+  @include sp {
     justify-content: center;
     .share{
       display: block;
@@ -1460,34 +1689,55 @@ button{
 .keyboard-key{
   border-radius: 3px;
   display: block;
-  color: $font-color1;
   font-weight: 500;
   text-align: center;
-  background: lighten($base-color1, 30%);
   word-break: keep-all;
   text-transform: capitalize;
   user-select: none;
+  box-sizing: border-box;
   cursor: pointer;
-  &:hover{
-    background: lighten($base-color1, 40%);
+  @include light{
+    color: $font-color1-light;
+  }
+  @include dark{
+    color: $font-color1;
+  }
+}
+.keyboard-key-empty{
+  @include light{
+    background: darken($base-color1-light, 2.5%);
+    border: 1px solid lighten($border-color-light, 13%);
+    &:hover{ background: $base-color1-light }
+  }
+  @include dark{
+    background: lighten($base-color1, 30%);
+    border: 1px solid lighten($base-color1, 30%);
+    &:hover{ background: lighten($base-color1, 40%); }
   }
 }
 .keyboard-key-correct{
+  color: $font-tile-color;
   background: $correct-color;
-  &:hover{
-    background: $correct-color;
-  }
+  border: 1px solid $correct-color;
+  &:hover{ background: lighten($correct-color, 5%); }
 }
 .keyboard-key-present{
+  color: $font-tile-color;
   background: $present-color;
-  &:hover{
-    background: $present-color;
-  }
+  border: 1px solid $present-color;
+  &:hover{ background: lighten($present-color, 5%); }
 }
 .keyboard-key-absent{
-  background: $absent-color;
-  &:hover{
+  color: $font-tile-color;
+  @include light{
+    background: $absent-color-light;
+    border: 1px solid $absent-color-light;
+    &:hover{ background: lighten($absent-color-light, 5%); }
+  }
+  @include dark{
     background: $absent-color;
+    border: 1px solid $absent-color;
+    &:hover{ background: lighten($base-color1, 20%); }
   }
 }
 .keyboard-key-character{
@@ -1495,9 +1745,14 @@ button{
 }
 .keyboard-key-modifier{
   @extend .keyboard-key;
-  background: $absent-color;
-  &:hover{
-    background: lighten($base-color1, 20%);
+  color: $font-tile-color;
+  @include light{
+    background: $absent-color-light;
+    &:hover{ background: lighten($absent-color-light, 5%); }
+  }
+  @include dark{
+     background: $absent-color;
+     &:hover{ background: lighten($base-color1, 20%); }
   }
 }
 .keyboard-key-accent1{
@@ -1625,7 +1880,7 @@ button{
       justify-content: center;
     }
   }
-  @media screen and (max-width: $sp-break-point){
+  @include sp {
     .col{
       width: 9%;
       .keyboard-key{
@@ -1643,14 +1898,15 @@ button{
     order: 1;
     position: sticky;
     top: 70px;
-    background: $base-color1;
     margin-bottom: 2rem;
     z-index: 1;
+    @include light{ background: $base-color1-light; }
+    @include dark{ background: $base-color1; }
   }
   .mygames-edit-main{
     order: 2;
   }
-  @media screen and (max-width: $sp-break-point){
+  @include sp {
     .mygames-edit-header{
       background: $header-color;
       .tabs-container{
@@ -1667,24 +1923,33 @@ button{
   .mygames-edit-link-btn{
     line-height: 2rem;
     padding: 0 1rem 0 0.5rem;
-    background: $base-color3;
+    @include light{ background: $base-color3-light; }
+    @include dark{ background: $base-color3; }
     &:hover{
-      background: darken($base-color3, 5%);
       cursor: pointer;
+      @include light{ background: darken($base-color3-light, 5%) }
+      @include dark{ background: darken($base-color3, 5%); }
     }
   }
   .mygames-edit-link-text{
     order: 1;
-    border: 1px solid $boarder-color;
     border-top-left-radius: 30px;
     border-bottom-left-radius: 30px;
     box-sizing: border-box;
-    background: $secondary-color;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    @include light{
+      border: 1px solid $border-color-light;
+      background: $base-color1-light;
+    }
+    @include dark{
+      border: 1px solid $border-color;
+      background: $secondary-color;
+    }
     &:hover{
-      background: darken($secondary-color, 5%);
+      @include light{ background: darken($base-color1-light, 2%); }
+      @include dark{ background: darken($secondary-color, 5%); }
     }
     a{
       display: block;
@@ -1694,6 +1959,8 @@ button{
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+      @include light{ color: $font-color1-light; }
+      @include dark{ color: $font-color1; }
       &:hover{
         text-decoration: none;
       }
@@ -1702,10 +1969,11 @@ button{
   .mygames-edit-link-copy{
     @extend .mygames-edit-link-btn;
     order: 2;
-    border: 1px solid $boarder-color;
     margin-left: -1px;
     border-top-right-radius: 30px;
     border-bottom-right-radius: 30px;
+    @include light{ border: 1px solid $border-color-light; }
+    @include dark{ border: 1px solid $border-color; }
   }
 }
 
@@ -1722,12 +1990,14 @@ button{
     .addwords-attrs-item-label{
       order: 1;
       margin-right: 1rem;
-      color: $font-color3;
+      @include light{ color: $font-color3-light; }
+      @include dark{ color: $font-color3; }
     }
     .addwords-attrs-item-value{
       order: 2;
-      color: $font-color4;
       display: inline-block;
+      @include light{ color: $font-color4-light; }
+      @include dark{ color: $font-color4; }
     }
   }
 }
@@ -1854,7 +2124,6 @@ button{
     }
   }
   .title-text{
-    color: $font-color4;
     font-weight: bold;
     white-space: nowrap;
     overflow: hidden;
@@ -1864,8 +2133,10 @@ button{
     min-height: 2rem;
     text-align: center;
     padding: 0 3rem;
+    @include light{ color: $font-color4-light; }
+    @include dark{ color: $font-color4; }
   }
-  @media screen and (max-width: $sp-break-point){
+  @include sp {
     margin: 0.5rem 0;
     .title-button{
       font-size: 1.3rem;
@@ -1880,7 +2151,7 @@ button{
 }
 
 .sp-padding{
-  @media screen and (max-width: $sp-break-point){
+  @include sp {
     padding: 0 1rem;
   }
 }

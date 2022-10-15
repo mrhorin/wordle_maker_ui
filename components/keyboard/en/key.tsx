@@ -16,6 +16,7 @@ const Key = ({ letter, type, status, handleOnClick, style, addnlClassNames, chil
   if (status == 'CORRECT' && type != 'MODIFIER') classes += ' keyboard-key-correct'
   if (status == 'PRESENT' && type != 'MODIFIER') classes += ' keyboard-key-present'
   if (status == 'ABSENT' && type != 'MODIFIER') classes += ' keyboard-key-absent'
+  if (status == 'EMPTY' && type != 'MODIFIER') classes += ' keyboard-key-empty'
   if (addnlClassNames) classes += ` ${addnlClassNames}`
   const print: string | JSX.Element = children ? children : letter
 
