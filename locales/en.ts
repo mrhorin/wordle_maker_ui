@@ -35,7 +35,7 @@ export default {
     }
   },
   HEADER: {
-    SIGN_UP: 'Sign Up',
+    SIGN_IN: 'Sign In',
     ACCOUNT: {
       EDIT_GAMES: 'Edit Games',
       CREATE_A_GAME: 'Create a Game',
@@ -131,8 +131,8 @@ export default {
       NEXT_GAME: 'Next Game',
     },
   },
-  SIGN_UP: {
-    TITLE: 'Sign up',
+  SIGN_IN: {
+    TITLE: 'Sign in',
     I_AGREED: 'I agreed to Terms of Service.',
     CONTINUE: {
       TWITTER: 'Continue with Twitter',

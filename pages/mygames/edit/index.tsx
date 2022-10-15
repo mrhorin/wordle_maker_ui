@@ -38,7 +38,7 @@ const MygamesEditIndex = () => {
         }
       })
     } else {
-      signOut(() => router.replace('/signup'))
+      signOut(() => router.replace('/signin'))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

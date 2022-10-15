@@ -53,7 +53,7 @@ const Index = () => {
     if (currentUserInfoContext.currentUserInfo) {
       router.push("/mygames/create")
     } else {
-      router.push("/signup")
+      router.push("/signin")
     }
   }
 

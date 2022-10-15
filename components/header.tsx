@@ -63,7 +63,7 @@ const Header = () => {
         }
       }).catch(error => {
         console.log(error)
-        setAccountStatus('SIGNUP')
+        setAccountStatus('SIGNIN')
       }).finally(() => {
         nprogress.done()
       })
@@ -72,7 +72,7 @@ const Header = () => {
       ClientSideCookies.destroyToken()
       ClientSideCookies.destroyUserInfo()
       currentUserInfoContext.setCurrentUserInfo(null)
-      setAccountStatus('SIGNUP')
+      setAccountStatus('SIGNIN')
     }
   }, [])
 
@@ -117,10 +117,10 @@ const Header = () => {
 
   function handleSignOut(): void {
     signOut(() => {
-      setAccountStatus('SIGNUP')
+      setAccountStatus('SIGNIN')
       alert.removeAll()
       alert.show(t.ALERT.SIGN_OUT, { type: 'success' })
-      router.push('/signup')
+      router.push('/signin')
     })
   }
 
@@ -145,12 +145,12 @@ const Header = () => {
           </ul>
         </div>
       )
-    } else if(accountStatus == 'SIGNUP'){
+    } else if(accountStatus == 'SIGNIN'){
       return (
-        <Link href="/signup">
+        <Link href="/signin">
           <a>
             <button type='button' className='btn btn-primary'>
-              {t.HEADER.SIGN_UP}
+              {t.HEADER.SIGN_IN}
             </button>
           </a>
         </Link>

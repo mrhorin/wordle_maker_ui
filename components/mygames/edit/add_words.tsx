@@ -115,7 +115,7 @@ const AddWords = ({ game }: Props) => {
         alert.show(t.ALERT.ADDED_INVALID_WORDS.replace(/\*/g, game.char_count.toString()), { type: 'error' })
       }
     } else {
-      signOut(() => router.replace('/signup'))
+      signOut(() => router.replace('/signin'))
     }
   }
 

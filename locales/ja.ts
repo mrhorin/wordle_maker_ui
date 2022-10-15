@@ -35,7 +35,7 @@ export default {
     }
   },
   HEADER: {
-    SIGN_UP: 'Sign Up',
+    SIGN_IN: 'Sign In',
     ACCOUNT: {
       EDIT_GAMES: '編集',
       CREATE_A_GAME: '新規作成',
@@ -131,8 +131,8 @@ export default {
       NEXT_GAME: '次のゲームまで',
     },
   },
-  SIGN_UP: {
-    TITLE: 'サインアップ',
+  SIGN_IN: {
+    TITLE: 'サインイン',
     I_AGREED: '利用規約に同意しました。',
     CONTINUE: {
       TWITTER: 'Twitterでサインイン',

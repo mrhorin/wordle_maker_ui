@@ -63,7 +63,7 @@ const DeleteGame = ({ game }: Props) => {
       })
       .finally(() => { nprogress.done() })
     } else {
-      signOut(() => router.replace('/signup'))
+      signOut(() => router.replace('/signin'))
     }
   }
 

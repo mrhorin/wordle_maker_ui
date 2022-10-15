@@ -53,7 +53,7 @@ export type Tab = {
   hash: string,
 }
 
-export type HeaderStatus = 'INITIALIZING' | 'LOGGEDIN' | 'SIGNUP'
+export type HeaderStatus = 'INITIALIZING' | 'LOGGEDIN' | 'SIGNIN'
 
 export type TileStatus = 'EMPTY' |'CORRECT' | 'PRESENT' | 'ABSENT'
 

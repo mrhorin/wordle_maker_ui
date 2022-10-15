@@ -145,7 +145,7 @@ const EditWords = ({ game }: EditWordsProps) => {
         setShowOverlay(false)
       })
     } else {
-      signOut(() => router.replace('/signup'))
+      signOut(() => router.replace('/signin'))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -178,7 +178,7 @@ const EditWords = ({ game }: EditWordsProps) => {
           setShowOverlay(false)
         })
       } else {
-        signOut(() => router.replace('/signup'))
+        signOut(() => router.replace('/signin'))
       }
     } else if (inputUpdateWordModalEl.current && divInvalidWordModaldEl.current) {
       // Add invalid style
@@ -204,7 +204,7 @@ const EditWords = ({ game }: EditWordsProps) => {
         () => nprogress.done()
       )
     } else {
-      signOut(() => router.replace('/signup'))
+      signOut(() => router.replace('/signin'))
     }
   }
 

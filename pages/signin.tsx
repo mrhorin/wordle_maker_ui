@@ -10,7 +10,7 @@ import SlideoutMenu from 'components/slideout_menu'
 
 import Link from 'next/link'
 
-const Signup: NextPage = () => {
+const Signin: NextPage = () => {
   const [checkedTosAgreement, setCheckedTosAgreement] = useState<boolean>(false)
   const { t } = useLocale()
 
@@ -22,13 +22,13 @@ const Signup: NextPage = () => {
     <main id='main'>
       <div className='container'>
         <Head>
-          <title>{t.SIGN_UP.TITLE} | {t.APP_NAME}</title>
+          <title>{t.SIGN_IN.TITLE} | {t.APP_NAME}</title>
         </Head>
 
         <SlideoutMenu />
 
         <div className='text'>
-          <h1>{t.SIGN_UP.TITLE}</h1>
+          <h1>{t.SIGN_IN.TITLE}</h1>
           <p>
             <Link href="/tos" shallow={true}>
               <a>{t.TOS.TITLE}</a>
@@ -38,12 +38,12 @@ const Signup: NextPage = () => {
           <form method="post" action={`${process.env.NEXT_PUBLIC_API_PROTOCOL}://${process.env.NEXT_PUBLIC_API_DOMAIN}/api/v1/auth/twitter`}>
             {/* tos_agreement */}
             <div className='form-group-checkbox' style={{ marginBottom: '1rem' }}>
-              <label onClick={handleCheckedTosAgreement}>{t.SIGN_UP.I_AGREED}</label>
+              <label onClick={handleCheckedTosAgreement}>{t.SIGN_IN.I_AGREED}</label>
               <input type="checkbox" id="tos_agreement" checked={checkedTosAgreement} onChange={handleCheckedTosAgreement} />
             </div>
             <button className='btn btn-default' disabled={!checkedTosAgreement}>
               <FontAwesomeIcon icon={faTwitter} style={{marginRight: '1rem'}} />
-              {t.SIGN_UP.CONTINUE.TWITTER}
+              {t.SIGN_IN.CONTINUE.TWITTER}
             </button>
           </form>
         </div>
@@ -52,4 +52,4 @@ const Signup: NextPage = () => {
   )
 }
 
-export default Signup
+export default Signin

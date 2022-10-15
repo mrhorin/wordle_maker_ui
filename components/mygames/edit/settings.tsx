@@ -107,7 +107,7 @@ const Settings = ({ game, setGame }: Props) => {
           setShowOverlay(false)
         })
       } else {
-        signOut(() => router.replace('/signup'))
+        signOut(() => router.replace('/signin'))
       }
     }
   }
