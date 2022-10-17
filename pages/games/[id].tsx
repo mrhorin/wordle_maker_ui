@@ -19,7 +19,7 @@ import JaKeyboard from 'components/keyboard/ja/gozyuon'
 import ShowSlideoutMenuContext from 'contexts/show_slideout_menu'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faXmark, faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
+import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { faCopy } from '@fortawesome/free-regular-svg-icons'
 
 import { faTwitter } from '@fortawesome/free-brands-svg-icons'

@@ -1,10 +1,19 @@
-import type { Token, UserInfo, Locale } from 'types/global'
+import type { Token, UserInfo, Locale, Theme } from 'types/global'
 import { parseCookies, setCookie, destroyCookie } from 'nookies'
 
 import validate from './validate'
 
 export class ClientSideCookies{
   static readonly cookieOptions = { maxAge: 30 * 24 * 60 * 60, path: '/', secure: process.env.NEXT_PUBLIC_CLIENT_COOKIE_SECURE }
+
+  static saveTheme(theme: Theme): void{
+    setCookie(null, 'theme', theme, this.cookieOptions)
+  }
+
+  static loadTheme(): Theme | null{
+    const cookies = parseCookies()
+    return cookies['theme'] == 'dark' || cookies['theme'] == 'light' || cookies['theme'] == 'system' ? cookies['theme'] as Theme : null
+  }
 
   static saveLocale(locale: Locale): void{
     setCookie(null, 'locale', locale, this.cookieOptions)

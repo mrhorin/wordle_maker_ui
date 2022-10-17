@@ -9,9 +9,9 @@ export default () => {
   const { locale, pathname, asPath, query } = useRouter()
   const t = locale === "ja" ? ja : en
 
-  const switchLocale = (nextLocale: Locale) => {
+  const setLocale = (nextLocale: Locale) => {
     router.push({ pathname, query }, asPath, { locale: nextLocale })
   }
 
-  return {switchLocale, t, locale}
+  return {setLocale, t, locale}
 }

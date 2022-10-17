@@ -1,13 +1,15 @@
+import type { Theme } from 'types/global'
 import { useRouter } from 'next/router'
 import { ChangeEvent, useContext, useLayoutEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faXmark, faHome, faSignature, faGlobe } from '@fortawesome/free-solid-svg-icons'
+import { faXmark, faHome, faSignature, faGlobe, faCircleHalfStroke } from '@fortawesome/free-solid-svg-icons'
 
 import useLocale from 'hooks/useLocale'
 
 import cookie from 'scripts/cookie'
 
 import ShowSlideoutMenuContext from 'contexts/show_slideout_menu'
+import useTheme from 'hooks/useTheme'
 
 type Props = {
   children?: JSX.Element
@@ -16,11 +18,8 @@ type Props = {
 const SlideoutMenu = ({ children }: Props) => {
   const showSlideoutMenuContext = useContext(ShowSlideoutMenuContext)
   const router = useRouter()
-  const { t, switchLocale } = useLocale()
-
-  useLayoutEffect(() => {
-    showSlideoutMenuContext.set(false)
-  }, [])
+  const { t, setLocale } = useLocale()
+  const { getSystemTheme, setTheme } = useTheme()
 
   function handleClickHome(): void{
     router.push('/')
@@ -32,10 +31,18 @@ const SlideoutMenu = ({ children }: Props) => {
     showSlideoutMenuContext.set(false)
   }
 
+  function handleOnChangeTheme(event: ChangeEvent<HTMLSelectElement>): void{
+    if (event.target.value == 'system' || event.target.value == 'light' || event.target.value == 'dark') {
+      cookie.client.saveTheme(event.target.value)
+      setTheme(event.target.value)
+    }
+    showSlideoutMenuContext.set(false)
+  }
+
   function handleChangeLang(event: ChangeEvent<HTMLSelectElement>): void{
     if (event.target.value == 'en' || event.target.value == 'ja') {
       cookie.client.saveLocale(event.target.value)
-      switchLocale(event.target.value)
+      setLocale(event.target.value)
     }
     showSlideoutMenuContext.set(false)
   }
@@ -72,6 +79,22 @@ const SlideoutMenu = ({ children }: Props) => {
                 {t.SLIDEOUT_MENU.TERMS}
               </div>
             </a>
+          </li>
+          {/* Theme */}
+          <li>
+            <div className='slideout-menu-main-item'>
+              <div className='slideout-menu-main-item-icon'>
+                <FontAwesomeIcon icon={faCircleHalfStroke} />
+              </div>
+              <div className='slideout-menu-main-item-text'>
+                <select onChange={e => handleOnChangeTheme(e)} defaultValue='none'>
+                  <option value='none' disabled hidden>{t.SLIDEOUT_MENU.THEME.THEME}</option>
+                  <option value='system'>{t.SLIDEOUT_MENU.THEME.SYSTEM}</option>
+                  <option value='light'>{t.SLIDEOUT_MENU.THEME.LIGHT}</option>
+                  <option value='dark'>{t.SLIDEOUT_MENU.THEME.DARK}</option>
+                </select>
+              </div>
+            </div>
           </li>
           {/* Language */}
           <li>

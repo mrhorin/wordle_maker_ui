@@ -12,31 +12,48 @@
                 8: .loading-overlay
 */
 
-$base-color1: #1e2022;
-$base-color2: lighten($base-color1, 3%);
-$base-color3: lighten($base-color1, 6%);
-$border-color: lighten($base-color1, 25%);
-$header-color: lighten($base-color1, 2%);
+/* ---------- dark theme ---------- */
+$base-color: #1e2022; // sass
+$font-color: #dfe3e5; // sass
+:root,
+html[data-theme='dark']{
+  // base
+  --base-color1: #1e2022;
+  --base-color2: #25282a;
+  --base-color3: #2c2f32;
+  // border
+  --border-color: #5a6066;
+  --border-modal-color: #4e5358;
+  // font
+  --font-color1: #dfe3e5;
+  --font-color2: #8b99a0;
+  --font-color3: #7d8d95;
+  --font-color4: #c3cace;
+  --font-link-color: #5d9ff3;
+  --font-tile-color: #fff;
+  // header
+  --header-color: #232527;
+}
 
-$base-color1-light: #fff;
-$base-color2-light: darken($base-color1-light, 3%);
-$base-color3-light: darken($base-color1-light, 6%);
-$border-color-light: darken($base-color1-light, 25%);
-$header-color-light: #fafafa;
-
-$font-color1: #dfe3e5;
-$font-color2: darken($font-color1, 30%);
-$font-color3: darken($font-color1, 35%);
-$font-color4: darken($font-color1, 10%);
-$font-link-color: #5d9ff3;
-$font-link-color-light: #5092e8;
-$font-tile-color: #fff;
-
-$font-color1-light: #313131;
-$font-color2-light: lighten($font-color1-light, 30%);
-$font-color3-light: lighten($font-color1-light, 35%);
-$font-color4-light: lighten($font-color1-light, 10%);
-$font-link-color: #5d9ff3;
+/* ---------- light theme ---------- */
+$base-color-light: #fff; // sass
+$font-color-light: #313131; // sass
+html[data-theme='light']{
+  // base
+  --base-color1: #fff;
+  --base-color2: #f7f7f7;
+  --base-color3: #f0f0f0;
+  // border
+  --border-color: #bfbfbf;
+  --border-modal-color: #d2d2d2;
+  // font
+  --font-color1: #313131;
+  --font-color2: #7d7d7d;
+  --font-color3: #8a8a8a;
+  --font-color4: #4a4a4a;
+  // header
+  --header-color: #fafafa;
+}
 
 $accent-color1: #42c897;
 $accent-color2: #cf8e1d;
@@ -68,28 +85,21 @@ $tablet-break-point: 1024px;
 }
 
 @mixin light{
-  @media (prefers-color-scheme: light){
+  [data-theme="light"] &{
     @content;
   }
 }
 
 @mixin dark{
-  @media (prefers-color-scheme: dark){
+  [data-theme="dark"] &{
     @content;
   }
 }
 
-
 html,
 body {
-  @include light{
-    background: $base-color1-light;
-    color: $base-color1;
-  }
-  @include dark{
-    background: $base-color1;
-    color: $font-color4;
-  }
+  background: var(--base-color1);
+  color: var(--font-color4);
   word-break: break-word;
   font-size: 15px;
   padding: 0;
@@ -108,28 +118,17 @@ body {
   }
 }
 
-// Scrollbar
-@include light{
-  ::-webkit-scrollbar{
-    background: lighten($base-color2-light, 5%);
-    border-left: 1px solid lighten($base-color3-light, 5%);
-  }
-  ::-webkit-scrollbar-thumb{
-    background: $base-color2-light;
-    border-left: 1px solid lighten($base-color3-light, 5%);
+::-webkit-scrollbar{
+  background: var(--base-color3);
+  border-left: 1px solid var(--base-color3);
+}
+::-webkit-scrollbar-thumb{
+  background: var(--base-color1);
+  border-left: 1px solid var(--base-color3);
+  @include light{
+    background: #d3d3d3;
   }
 }
-@include dark{
-  ::-webkit-scrollbar{
-    background: $base-color2;
-    border-left: 1px solid lighten($base-color3, 5%);
-  }
-  ::-webkit-scrollbar-thumb{
-    background: lighten($base-color2, 5%);
-    border-left: 1px solid lighten($base-color3, 5%);
-  }
-}
-
 
 * {
   box-sizing: border-box;
@@ -137,10 +136,9 @@ body {
 
 a{
   text-decoration: none;
-  @include light{ color: $font-link-color-light; }
-  @include dark{ color: $font-link-color; }
+  color: var(--font-link-color);
   &:hover{
-    color: $font-link-color;
+    color: var(--font-link-color);
     text-decoration: underline;
     cursor: pointer;
   }
@@ -187,15 +185,14 @@ select,
   padding: 0.5rem;
   margin-bottom: 0;
   border-radius: 3px;
+  color: var(--font-color1);
   @include light{
-    color: $font-color1-light;
-    background: $base-color2-light;
-    border: 1px solid $border-color-light;
+    background: var(--base-color2);
+    border: 1px solid var(--border-color);
   }
   @include dark{
-    color: $font-color1;
-    background: $base-color3;
-    border: 1px solid $base-color3;
+    background: var(--base-color3);
+    border: 1px solid var(--base-color3);
   }
 }
 input[type="text"].input-invalid,
@@ -211,14 +208,14 @@ select:focus{
   border: 1px solid #0099ff;
 }
 input[type="text"]:disabled{
-  @include light{
-    background: darken($base-color1-light, 20%);
-    color: lighten($font-color1-light, 30%);
-  }
-  @include dark{
-    background: lighten($base-color1, 20%);
-    color: darken($font-color1, 30%);
-  }
+  // @include light{
+  //   background: darken($base-color-light, 20%);
+  //   color: lighten($font-color1-light, 30%);
+  // }
+  // @include dark{
+  //   background: lighten($base-color, 20%);
+  //   color: darken($font-color1, 30%);
+  // }
   &:hover{
     cursor: not-allowed;
   }
@@ -232,22 +229,19 @@ textarea{
 }
 textarea::-webkit-scrollbar{
   cursor: default;
-  @include light{ background: $base-color2-light; }
-  @include dark{ background: lighten($base-color2, 5%); }
+  background: var(--base-color2);
+  border-left: 1px solid var(--base-color2);
 }
 textarea::-webkit-scrollbar-thumb{
   cursor: default;
-  @include light{ background: darken($base-color2-light, 5%); }
-  @include dark{ background: $base-color2; }
+  background: var(--base-color1);
+  border-left: 1px solid var(--base-color2);
 }
-
 label{
   font-size: 0.8rem;
   font-weight: bold;
-  @include light{ color: $font-color4-light; }
-  @include dark{ color: $font-color4; }
+  color: var(--font-color4);
 }
-
 .form-group{
   display: flex;
   flex-direction: column;
@@ -318,7 +312,7 @@ label{
   }
   .form-group-desc{
     order: 3;
-    color: $font-color2;
+    color: var(--font-color2);
     font-size: 0.8rem;
     font-weight: 500;
     margin-top: 0.3rem;
@@ -334,27 +328,24 @@ label{
     left: 0;
   }
 }
-
 .form-countable-input-counter{
   text-align: right;
   font-size: 0.8rem;
   line-height: 1rem;
   padding: 0 0.5rem 0.25rem 0.5rem;
   border-radius: 0 0 3px 3px;
+  color: var(--font-color2);
   @include light{
-    color: $font-color2-light;
-    background: $base-color2-light;
-    border: 1px solid $border-color-light;
+    background: var(--base-color2);
+    border: 1px solid var(--border-color);
     border-top: none;
   }
   @include dark{
-    color: $font-color2;
-    background: $base-color3;
-    border: 1px solid $base-color3;
+    background: var(--base-color3);
+    border: 1px solid var(--base-color3);
     border-top: none;
   }
 }
-
 .form-group-checkbox{
   display: flex;
   flex-direction: row;
@@ -373,23 +364,15 @@ label{
   max-width: 1024px;
   margin: 0 auto;
 }
-
 #wrap {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   padding: 0;
 }
-
 .header{
-  @include light{
-    background: $header-color-light;
-    border-bottom: 1px solid $base-color3-light;
-  }
-  @include dark{
-    background: $header-color;
-    border-bottom: 1px solid $base-color3;
-  }
+  background: var(--header-color);
+  border-bottom: 1px solid var(--base-color3);
   z-index: 3;
   order: 1;
   width: 100%;
@@ -398,7 +381,6 @@ label{
   top: 0;
   left: 0;
   padding: 0;
-
 }
 
 #main {
@@ -418,21 +400,14 @@ table{
   border-collapse: collapse;
   thead{
     tr{
-      @include light{
-        background: $base-color2-light;
-        color: $font-color3-light;
-      }
-      @include dark{
-        background: $base-color2;
-        color: $font-color3;
-      }
+      background: var(--base-color2);
+      color: var(--font-color3);
       th{
         font-size: 0.8rem;
         text-align: left;
         white-space: nowrap;
         padding: 0.5rem 1rem;
-        @include light{ border: 3px solid $base-color1-light; }
-        @include dark{ border: 3px solid $base-color1; }
+        border: 3px solid var(--base-color1);
       }
       th.table-th-word{
         width: 100%;
@@ -441,13 +416,11 @@ table{
   }
   tbody{
     tr{
-      @include light{ background: $base-color3-light; }
-      @include dark{ background: $base-color3; }
+      background: var(--base-color3);
       td{
         white-space: nowrap;
         padding: 0.5rem 1rem;
-        @include light{ border: 5px solid $base-color1-light; }
-        @include dark{ border: 5px solid $base-color1; }
+        border: 5px solid var(--base-color1);
         .btn.btn-mini{
           width: 4rem;
           margin: 0;
@@ -459,12 +432,11 @@ table{
       }
     }
     tr:nth-child(even){
-      @include light{ background: $base-color2-light; }
-      @include dark{ background: $base-color2; }
+      background: var(--base-color2);
     }
   }
   tfoot{
-    background: $base-color3;
+    background: var(--base-color3);
 
   }
 }
@@ -495,10 +467,9 @@ button{
 .btn.btn-default{
   color: #111111;
   background-color: $default-color;
-  @include light{ border: 1px solid $border-color-light; }
-  @include dark{ border: 1px solid $base-color3; }
+  border: 1px solid var(--base-color3);
   &:hover{
-    background: darken($default-color, 8%);
+    opacity: .9;
   }
   &:disabled{
     color: #656565;
@@ -618,13 +589,15 @@ button{
   display: flex;
   flex-direction: row;
   width: 100%;
-  @include light{ border-bottom: 2px solid darken($base-color1-light, 13%); }
-  @include dark{ border-bottom: 2px solid lighten($base-color1, 10%); }
+  margin-bottom: 5px;
+  // @include light{ border-bottom: 2px solid darken($base-color-light, 13%); }
+  border-bottom: 2px solid var(--base-color3);
+  @include dark{ border-bottom: 2px solid #363a3d; }
   .tab{
     font-size: 1rem;
     padding: 0 1rem;
     line-height: 3rem;
-    color: $font-color3;
+    color: var(--font-color3);
     font-weight: 500;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -633,19 +606,20 @@ button{
     &:hover{
       text-decoration: none;
       cursor: pointer;
-      @include light{ background: $base-color2-light; }
-      @include dark{ background: $base-color2; }
+      background: var(--base-color2);
     }
   }
   .tab-active{
     border-bottom: 2px solid $accent-color1;
     margin-bottom: -2px;
+    color: var(--font-color1);
     @include light{
       font-weight: bold;
-      color: $font-color1-light;
-      background: $base-color3-light;
+      background: var(--base-color2);
     }
-    @include dark{ color: $font-color1; }
+    &:hover{
+      background: var(--base-color3);
+    }
   }
   @include sp {
     justify-content: space-between;
@@ -664,7 +638,7 @@ button{
   text-align: center;
   button.pagination-page{
     background: $secondary-color;
-    color: $font-color1;
+    color: var(--font-color1);
     border: none;
     border-radius: 2px;
     font-size: 1rem;
@@ -679,12 +653,12 @@ button{
     }
   }
   button.pagination-page.pagination-page-current{
-    background-color: $font-color1;
+    background-color: var(--font-color1);
     color: $secondary-color;
     border: none;
     cursor: default;
     &:hover{
-      background-color: $font-color1;
+      background-color: var(--font-color1);
       color: $secondary-color;
     }
   }
@@ -707,25 +681,19 @@ button{
     padding: 10px 10px 10px 25px;
     text-align: left;
     .header-menu-icon{
-      @include light{
-        color: $font-color1-light;
-        border: none;
-        &:hover{
-          color: $font-color2-light;
-        }
-      }
-      @include dark{
-        color: $font-color2;
-        border: 1px solid $font-color2;
-        &:hover{
-          color: $font-color1;
-          border: 1px solid $font-color1;
-        }
-      }
       display: inline-flex;
       flex-direction: column;
       border-radius: 5px;
       padding: 3px;
+      color: var(--font-color2);
+      border: 1px solid var(--font-color2);
+      &:hover{
+        color: var(--font-color1);
+        border: 1px solid var(--font-color1);
+      }
+      @include light{
+        border: none;
+      }
       svg,i{
         order: 1;
         font-size: 22px;
@@ -748,7 +716,7 @@ button{
     padding: 10px;
     text-align: center;
     font-weight: bold;
-    a{ color: $font-color1; }
+    a{ color: var(--font-color1);}
     a:hover{
       text-decoration: none;
       cursor: pointer;
@@ -778,15 +746,10 @@ button{
         min-height: 30px;
       }
       .header-account-button-caretdown{
-        @include light{
-          color: lighten($font-color1-light, 20%);
-        }
-        @include dark{
-          color: darken($font-color1, 20%);
-        }
         order: 2;
         padding: 0 0.75rem;
         font-size: 0.8rem;
+        color: var(--font-color2);
       }
       &:hover{
         cursor: pointer;
@@ -796,26 +759,6 @@ button{
       cursor: pointer;
     }
     ul.header-account-menu{
-      @include light{
-        background: $header-color-light;
-        border: 1px solid $base-color3-light;
-        li{
-          color: $font-color4-light;
-          &:hover{
-            background: $base-color3-light;
-          }
-        }
-      }
-      @include dark{
-        background: $base-color2;
-        border: 1px solid $base-color3;
-        li{
-          color: $font-color4;
-          &:hover{
-            background: $base-color3;
-          }
-        }
-      }
       z-index: 3;
       position: absolute;
       right: 15px;
@@ -826,9 +769,22 @@ button{
       margin: 0;
       padding: 0;
       min-width: 170px;
-      border-top: none;
-      overflow: hidden;
       transition: max-height 0s ease-out;
+      background: var(--base-color2);
+      @include light{
+        border: 1px solid var(--border-color);
+        border-top: none;
+      }
+      @include dark{
+        border: 1px solid #383838;
+        border-top: none;
+      }
+      li{
+        color: var(--font-color4);
+        &:hover{
+          background: var(--base-color3);
+        }
+      }
       @include sp {
         right: 0;
         min-width: 100vw;
@@ -877,12 +833,6 @@ button{
     background: rgba(0,0,0, 0.5);
   }
   .slideout-menu-main{
-    @include light{
-      background: $header-color-light;
-    }
-    @include dark{
-      background: $base-color2;
-    }
     z-index: 7;
     position: fixed;
     top: 0;
@@ -891,6 +841,7 @@ button{
     max-width: 0;
     overflow: hidden;
     transition: max-width 0.2s ease-out;
+    background: var(--base-color2);
     .slideout-menu-main-xmark{
       padding: 0;
       min-width: 100%;
@@ -908,30 +859,15 @@ button{
       margin: 0;
       padding: 0 0 2rem 0;
       li{
-        @include light{
-          .slideout-menu-main-item{
-            color: $font-color1-light;
-          }
-          *>select{
-            background: $base-color1-light;
-            color: $font-color1-light;
-            border: 1px solid $border-color-light;
-          }
-          a.slideout-menu-main-item:hover{
-            background: $base-color3-light;
-          }
+        .slideout-menu-main-item{
+          color: var(--font-color1);
         }
-        @include dark{
-          .slideout-menu-main-item{
-            color: $font-color1;
-          }
-          *>select{
-            background: $base-color1;
-            color: $font-color1;
-          }
-          a.slideout-menu-main-item:hover{
-            background: $base-color3;
-          }
+        *>select{
+          background: var(--base-color1);
+          color: var(--font-color1);
+        }
+        a.slideout-menu-main-item:hover{
+          background: var(--base-color3);
         }
         *>select{
           font-size: 1rem;
@@ -973,7 +909,7 @@ button{
 .slideout-menu-show{
   .slideout-menu-main{
     max-width: $sp-break-point * 0.6;
-    border-right: 1px solid $border-color;
+    border-right: 1px solid var(--border-color);
     @include sp {
       max-width: 80vw;
     }
@@ -989,17 +925,9 @@ button{
   &:hover{
     cursor: pointer;
   }
-  @include light{
-    color: $font-color2-light;
-    &:hover{
-      color: $font-color1-light;
-    }
-  }
-  @include dark{
-    color: $font-color2;
-    &:hover{
-      color: $font-color1;
-    }
+  color: var(--font-color2);
+  &:hover{
+    color: var(--font-color1);
   }
 }
 #sidemenu-container{
@@ -1025,8 +953,7 @@ button{
           a{
             display: block;
             padding: 0.5rem;
-            @include light{ color: $font-color3-light; }
-            @include dark{ color: $font-color3; }
+            color: var(--font-color3);
             svg, i{
               width: 30px;
               margin-right: 0.5rem;
@@ -1034,24 +961,24 @@ button{
             &:hover{
               text-decoration: none;
               cursor: pointer;
-              @include light{ background: $base-color2-light; }
-              @include dark{ background: $base-color2; }
+              background: var(--base-color3);
             }
           }
         }
         li.sidemenu-item-active{
           a{
             @include light{
-              color: $font-color1-light;
               font-weight: bold;
-              background: $base-color3-light;
+              color: var(--font-color1);
+              background: var(--base-color2);
             }
-            @include dark{ color: $accent-color1; }
+            @include dark{
+              color: $accent-color1;
+            }
             &:hover{
               text-decoration: none;
               cursor: pointer;
-              @include light{ background: $base-color2-light; }
-              @include dark{ background: $base-color2; }
+              background: var(--base-color3);
             }
           }
         }
@@ -1059,8 +986,7 @@ button{
         li.sidemenu-item-title:hover{
           padding: 0.5rem;
           font-size: 1rem;
-          @include light{ color: $font-color1-light; }
-          @include dark{ color: $font-color1; }
+          color: var(--font-color1);
           svg, i{
             width: 30px;
             margin-right: 0.5rem;
@@ -1089,8 +1015,8 @@ button{
       width: 100%;
       position: fixed;
       bottom: 0;
-      border-top: 1px solid $border-color;
-      background: $base-color2;
+      border-top: 1px solid var(--border-color0);
+      background: var(--base-color2);
       margin: 0;
       .sidemenu-items-container{
         width: 100%;
@@ -1107,8 +1033,7 @@ button{
             display: flex;
             flex-direction: column;
             text-align: center;
-            @include light{ color: $font-color2-light; }
-            @include dark{ color: $font-color2; }
+            color: var(--font-color2);
             svg,i{
               order: 1;
               margin: 0;
@@ -1161,30 +1086,18 @@ button{
     width: 70%;
     max-width: $sp-break-point;
     overscroll-behavior: contain;
-    @include light{
-      $modal-border-color: lighten($border-color-light, 5%);
-      color: $font-color1-light;
-      .modal-window-container{
-        background: $base-color2-light;
-        border: 1px solid $font-color4-light;
-        .modal-window-header{ border-bottom: 1px solid $modal-border-color; }
-        .modal-window-footer{ border-top: 1px solid $modal-border-color; }
-      }
-      *>input[type="text"]{ background: lighten($base-color3-light, 3%); }
-      *>.form-countable-input-counter{ background: lighten($base-color3-light, 3%); }
+    @include sp{
+      width: 95%;
     }
-    @include dark{
-      $modal-border-color: darken($border-color, 5%);
-      color: $font-color1;
-      .modal-window-container{
-        background: $base-color2;
-        border: 1px solid $modal-border-color;
-        .modal-window-header{ border-bottom: 1px solid $modal-border-color; }
-        .modal-window-footer{ border-top: 1px solid $modal-border-color; }
-      }
-      *>input[type="text"]{ background: lighten($base-color3, 3%); }
-      *>.form-countable-input-counter{ background: lighten($base-color3, 3%); }
+    .modal-window-container{
+      color: var(--font-color1);
+      background: var(--base-color2);
+      border: 1px solid var(--border-modal-color);
+      .modal-window-header{ border-bottom: 1px solid var(--border-modal-color); }
+      .modal-window-footer{ border-top: 1px solid var(--border-modal-color); }
     }
+    *>input[type="text"]{ background: var(--base-color3); }
+    *>.form-countable-input-counter{ background: var(--base-color3) }
     .modal-window-container{
       display: flex;
       flex-direction: column;
@@ -1217,15 +1130,6 @@ button{
   .modal-overlay.hidden,
   .modal-window.hidden{
     display: none;
-  }
-}
-
-@include sp {
-  .modal{
-    .modal-window{
-      width: 95%;
-      // margin-top: 70px;
-    }
   }
 }
 
@@ -1269,8 +1173,7 @@ button{
         }
         cursor: not-allowed;
         text-decoration: line-through;
-        @include light{ color: $font-color3-light; }
-        @include dark{ color: $font-color3; }
+        color: var(--font-color3);
       }
     }
     .game-index-item-desc{
@@ -1300,8 +1203,7 @@ button{
           font-size: 0.8rem;
           margin-right: 0.2rem;
           word-break: keep-all;
-          @include light{ color: $font-color3-light; }
-          @include dark{ color: $font-color3; }
+          color: var(--font-color3);
           &::after{
             content: ':';
           }
@@ -1320,22 +1222,21 @@ button{
 
 /* --------------- Index --------------- */
 .index-board{
+  padding: 2rem 1rem;
+  margin-bottom: 2rem;
+  background: var(--base-color3);
+  color: var(--font-color4);
   @include light{
     background: #58739d;
     color: #fff;
   }
-  @include dark{
-    background: $base-color3;
-    color: $font-color4;
-  }
-  padding: 2rem 1rem;
-  margin-bottom: 2rem;
   .index-board-title{
-    color: $font-color1;
     text-align: center;
     font-size: 3rem;
     font-weight: bold;
     padding-bottom: 1rem;
+    @include dark{ color: #fff; }
+    @include dark{ color: $font-color; }
   }
   .index-board-desc{
     text-align: center;
@@ -1357,7 +1258,8 @@ button{
   padding: 0 1rem;
   font-size: 1.2rem;
   line-height: 1.8rem;
-  @include light{ font-weight: 700; }
+  @include dark{ font-weight: 500; }
+  @include dark{ font-weight: 700; }
   .index-title-icon{
     order: 1;
     margin-right: 5px;
@@ -1387,13 +1289,10 @@ button{
     position: sticky;
     bottom: 0;
     @include sp{
+      background: var(--header-color);
+      border-top: 1px solid var(--base-color3);
       @include light{
-        background: $header-color-light;
-        border-top: 1px solid $border-color-light;
-      }
-      @include dark{
-        background: $header-color;
-        border-top: 1px solid $base-color3;
+        border-top: 1px solid var(--border-color);
       }
     }
   }
@@ -1422,18 +1321,8 @@ button{
       width: 100%;
       margin: 3px;
       user-select: none;
-      cursor: default;
       transform: rotateX(0deg);
-      color: $font-tile-color;
-      @include light{
-        color: $font-color1-light;
-        background: darken($base-color1-light, 2.5%);
-        border: 1px solid lighten($border-color-light, 13%);
-      }
-      @include dark{
-        background: $base-color1;
-        border: 1px solid $font-color1;
-      }
+      cursor: default;
       &::before{
         content: "";
         padding-top: 100%;
@@ -1470,8 +1359,18 @@ button{
     .tiles-table-row-tile-present,
     .tiles-table-row-tile-absent{
       animation: transform-tile 1s;
+      color: #fff;
+    }
+    .tiles-table-row-tile-empty{
       @include light{
-        color: $font-tile-color;
+        color: var(--font-color4);
+        background: darken($base-color-light, 2.5%);
+        border: 1px solid darken($base-color-light, 12%);;
+      }
+      @include dark{
+        color: #fff;
+        background: var(--base-color1);
+        border: 1px solid var(--font-color1);
       }
     }
     .tiles-table-row-tile-correct{
@@ -1503,15 +1402,13 @@ button{
     display: block;
     margin-top: 5px;
     margin-bottom: 5px;
-    @include light{ color: $font-color3-light; }
-    @include dark{ color: $font-color3; }
+    color: var(--font-color3);
   }
   .howtoplay-text{
     white-space: pre-wrap;
     font-size: 1rem;
     margin-bottom: 20px;
-    @include light{ color: $font-color4-light; }
-    @include dark{ color: $font-color4; }
+    color: var(--font-color4);
   }
 }
 
@@ -1520,7 +1417,7 @@ button{
   .example-text-number{
     display: inline-flex;
     margin-right: 0.25rem;
-    color: $font-color3;
+    color: var(--font-color2);
     font-weight: bold;
   }
 }
@@ -1532,36 +1429,38 @@ button{
   .example-word-tile{
     font-size: 18px;
     line-height: 26px;
-    min-height: 26px;
+    min-height: 28px;
+    min-width: 28px;
     width: 28px;
     font-weight: bold;
     text-transform: uppercase;
     text-align: center;
-    border: 1px solid $font-color3;
     margin: 2px;
-    color: $font-tile-color;
     cursor: default;
+    border: 1px solid var(--font-color3);
+    color: var(--font-tile-color);
   }
   .example-word-tile-empty{
     @extend .example-word-tile;
-    border: 1px solid $font-color3;
+    background: var(--base-color1);
+    border: 1px solid var(--font-color3);
   }
   .example-word-tile-correct{
     @extend .example-word-tile;
     background: $correct-color;
-    border: 1px solid $font-color3;
+    border: 1px solid var(--font-color3);
     @include light{ border-color: $correct-color; }
   }
   .example-word-tile-present{
     @extend .example-word-tile;
     background: $present-color;
-    border: 1px solid $font-color3;
+    border: 1px solid var(--font-color3);
     @include light{ border-color: $present-color; }
   }
   .example-word-tile-absent{
     @extend .example-word-tile;
     background: $absent-color;
-    border: 1px solid $font-color3;
+    border: 1px solid var(--font-color3);
     @include light{ border-color: $absent-color; }
   }
 }
@@ -1595,7 +1494,7 @@ button{
     display: block;
     flex: 1;
     text-align: center;
-    border-right: 1px solid $border-color;
+    border-right: 1px solid var(--border-color);
     padding: 0 5px;
     &:last-child{ border-right: none; }
     .statistic-label{
@@ -1696,39 +1595,34 @@ button{
   user-select: none;
   box-sizing: border-box;
   cursor: pointer;
-  @include light{
-    color: $font-color1-light;
-  }
-  @include dark{
-    color: $font-color1;
-  }
+  color: var(--font-color1);
 }
 .keyboard-key-empty{
   @include light{
-    background: darken($base-color1-light, 2.5%);
-    border: 1px solid lighten($border-color-light, 13%);
-    &:hover{ background: $base-color1-light }
+    background: darken($base-color-light, 2.5%);
+    border: 1px solid darken($base-color-light, 12%);
+    &:hover{ background: $base-color-light }
   }
   @include dark{
-    background: lighten($base-color1, 30%);
-    border: 1px solid lighten($base-color1, 30%);
-    &:hover{ background: lighten($base-color1, 40%); }
+    background: lighten($base-color, 30%);
+    border: 1px solid lighten($base-color, 30%);
+    &:hover{ background: lighten($base-color, 40%); }
   }
 }
 .keyboard-key-correct{
-  color: $font-tile-color;
+  color: var(--font-tile-color);
   background: $correct-color;
   border: 1px solid $correct-color;
   &:hover{ background: lighten($correct-color, 5%); }
 }
 .keyboard-key-present{
-  color: $font-tile-color;
+  color: var(--font-tile-color);
   background: $present-color;
   border: 1px solid $present-color;
   &:hover{ background: lighten($present-color, 5%); }
 }
 .keyboard-key-absent{
-  color: $font-tile-color;
+  color: var(--font-tile-color);
   @include light{
     background: $absent-color-light;
     border: 1px solid $absent-color-light;
@@ -1737,7 +1631,7 @@ button{
   @include dark{
     background: $absent-color;
     border: 1px solid $absent-color;
-    &:hover{ background: lighten($base-color1, 20%); }
+    &:hover{ background: lighten($base-color, 20%); }
   }
 }
 .keyboard-key-character{
@@ -1745,21 +1639,30 @@ button{
 }
 .keyboard-key-modifier{
   @extend .keyboard-key;
-  color: $font-tile-color;
+  color: var(--font-tile-color);
   @include light{
     background: $absent-color-light;
     &:hover{ background: lighten($absent-color-light, 5%); }
   }
   @include dark{
      background: $absent-color;
-     &:hover{ background: lighten($base-color1, 20%); }
+     &:hover{ background: lighten($base-color, 20%); }
   }
 }
 .keyboard-key-accent1{
-  background: $accent-color1;
-  color: #424242;
-  &:hover{
-    background: lighten($accent-color1, 8%);
+  @include dark{
+    background: $accent-color1;
+    color: #424242;
+    &:hover{
+      background: lighten($accent-color1, 8%);
+    }
+  }
+  @include light{
+    background: $accent-color1;
+    color: #424242;
+    &:hover{
+      background: lighten($accent-color1, 8%);
+    }
   }
 }
 
@@ -1898,17 +1801,16 @@ button{
     order: 1;
     position: sticky;
     top: 70px;
-    margin-bottom: 2rem;
+    margin-bottom: 25px;
     z-index: 1;
-    @include light{ background: $base-color1-light; }
-    @include dark{ background: $base-color1; }
+    background: var(--base-color1);
   }
   .mygames-edit-main{
     order: 2;
   }
   @include sp {
     .mygames-edit-header{
-      background: $header-color;
+      background: var(--header-color);
       .tabs-container{
         justify-content: space-around;
       }
@@ -1923,12 +1825,10 @@ button{
   .mygames-edit-link-btn{
     line-height: 2rem;
     padding: 0 1rem 0 0.5rem;
-    @include light{ background: $base-color3-light; }
-    @include dark{ background: $base-color3; }
+    background: var(--base-color3);
     &:hover{
       cursor: pointer;
-      @include light{ background: darken($base-color3-light, 5%) }
-      @include dark{ background: darken($base-color3, 5%); }
+      background: var(--base-color2)
     }
   }
   .mygames-edit-link-text{
@@ -1939,28 +1839,24 @@ button{
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    border: 1px solid var(--border-color);
+    background: $secondary-color;
     @include light{
-      border: 1px solid $border-color-light;
-      background: $base-color1-light;
-    }
-    @include dark{
-      border: 1px solid $border-color;
-      background: $secondary-color;
+      background: $base-color-light;
     }
     &:hover{
-      @include light{ background: darken($base-color1-light, 2%); }
+      @include light{ background: darken($base-color-light, 2%); }
       @include dark{ background: darken($secondary-color, 5%); }
     }
     a{
       display: block;
       line-height: 2rem;
       padding: 0 1rem;
-      color: $font-color1;
+      color: var(--font-color1);
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      @include light{ color: $font-color1-light; }
-      @include dark{ color: $font-color1; }
+      color: var(--font-color1);
       &:hover{
         text-decoration: none;
       }
@@ -1972,8 +1868,7 @@ button{
     margin-left: -1px;
     border-top-right-radius: 30px;
     border-bottom-right-radius: 30px;
-    @include light{ border: 1px solid $border-color-light; }
-    @include dark{ border: 1px solid $border-color; }
+    border: 1px solid var(--border-color);
   }
 }
 
@@ -1990,14 +1885,12 @@ button{
     .addwords-attrs-item-label{
       order: 1;
       margin-right: 1rem;
-      @include light{ color: $font-color3-light; }
-      @include dark{ color: $font-color3; }
+      color: var(--font-color3);
     }
     .addwords-attrs-item-value{
       order: 2;
       display: inline-block;
-      @include light{ color: $font-color4-light; }
-      @include dark{ color: $font-color4; }
+      color: var(--font-color4);
     }
   }
 }
@@ -2016,8 +1909,6 @@ button{
   .chip-textarea-chip{
     align-self: flex-start;
     font-size: 0.8rem;
-    color: $font-color1;
-    background: lighten($base-color1, 25%);
     border-radius: 100px;
     line-height: 1.3rem;
     padding: 0 0.3rem 0 1rem;
@@ -2026,8 +1917,10 @@ button{
     display: inline-flex;
     flex-wrap: nowrap;
     align-items: center;
+    color: #fff;
+    background: lighten($base-color, 25%);
     &:hover{
-      background: lighten($base-color1, 35%);
+      background: lighten($base-color, 35%);
     }
     .chip-textarea-chip-value{
       order: 1;
@@ -2063,8 +1956,8 @@ button{
         width: 13px;
         height: 13px;
         &:hover{
-          background: $font-color1;
-          color: lighten($base-color1, 25%);
+          background: #fff;
+          color: lighten($base-color, 35%);
         }
       }
     }
@@ -2117,9 +2010,9 @@ button{
     font-size: 1.8rem;
     line-height: 2rem;
     a{
-      color: $font-color2;
+      color: darken($font-color, 30%);
       &:hover{
-        color: $font-color1;
+        opacity: .9;
       }
     }
   }
@@ -2133,8 +2026,7 @@ button{
     min-height: 2rem;
     text-align: center;
     padding: 0 3rem;
-    @include light{ color: $font-color4-light; }
-    @include dark{ color: $font-color4; }
+    color: var(--font-color4);
   }
   @include sp {
     margin: 0.5rem 0;

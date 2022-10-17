@@ -11,6 +11,8 @@ export default {
     EDIT: 'Edit',
     DELETE: 'Delete',
     CLOSE: 'Close',
+    LIGHT: 'Light',
+    DARK: 'Dark',
   },
   ALERT: {
     SIGN_OUT: 'SIGNED OUT',
@@ -48,6 +50,12 @@ export default {
     TERMS: 'Terms',
     HOW_TO_PLAY: 'How to Play',
     LANGUAGE: 'Language',
+    THEME: {
+      THEME: 'Theme',
+      SYSTEM: 'System',
+      LIGHT: 'Light',
+      DARK: 'Dark',
+    },
   },
   SIDE_MENU: {
     MY_GAMES: 'My Games',

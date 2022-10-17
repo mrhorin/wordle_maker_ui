@@ -1,8 +1,9 @@
-import type { Locale, UserInfo } from 'types/global'
+import type { Theme, Locale, UserInfo } from 'types/global'
 import Head from 'next/head'
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import useLocale from 'hooks/useLocale'
+import useTheme from 'hooks/useTheme'
 
 import cookie from 'scripts/cookie'
 
@@ -21,10 +22,14 @@ export default function Layout({ children }: Props) {
   const [showAccountMenu, setShowAccountMenu] = useState<boolean>(false)
   const [showSlideoutMenu, setShowSlideoutMenu] = useState<boolean>(false)
   const router = useRouter()
-  const { t, switchLocale } = useLocale()
+  const { t, setLocale } = useLocale()
+  const { setTheme } = useTheme()
 
   useEffect(() => {
-    if (router.isReady) setLocale()
+    loadTheme()
+    if (router.isReady) {
+      loadLocale()
+    }
   }, [router.isReady])
 
   useEffect(() => {
@@ -33,9 +38,14 @@ export default function Layout({ children }: Props) {
     return (() => removeEventListener('resize', setMinHeight))
   }, [])
 
-  function setLocale(): void{
+  function loadTheme(): void{
+    const prevTheme: Theme | null = cookie.client.loadTheme()
+    prevTheme ? setTheme(prevTheme) : setTheme('dark')
+  }
+
+  function loadLocale(): void{
     const prevLocale: Locale | null = cookie.client.loadLocale()
-    if (prevLocale) switchLocale(prevLocale)
+    if (prevLocale) setLocale(prevLocale)
   }
 
   function setMinHeight(): void{

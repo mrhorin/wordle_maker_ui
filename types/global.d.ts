@@ -65,3 +65,5 @@ export type Tile = {
 export type KeyType = 'CHARACTER' | 'MODIFIER'
 
 type Locale = 'en' | 'ja'
+
+type Theme = 'system' | 'light' | 'dark'
