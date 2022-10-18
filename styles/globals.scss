@@ -234,14 +234,14 @@ select:focus{
   border: 1px solid #0099ff;
 }
 input[type="text"]:disabled{
-  // @include light{
-  //   background: darken($base-color-light, 20%);
-  //   color: lighten($font-color1-light, 30%);
-  // }
-  // @include dark{
-  //   background: lighten($base-color, 20%);
-  //   color: darken($font-color1, 30%);
-  // }
+  @include light{
+    background: darken($base-color-light, 20%);
+    color: lighten($font-color-light, 25%);
+  }
+  @include dark{
+    background: lighten($base-color, 20%);
+    color: darken($font-color, 25%);
+  }
   &:hover{
     cursor: not-allowed;
   }
@@ -514,6 +514,7 @@ button{
   &:disabled{
     color: #656565;
     background-color: #c4c4c4;
+    border: 1px solid var(--border-color);
     cursor: not-allowed;
   }
 }
@@ -528,6 +529,7 @@ button{
   &:disabled{
     background: lighten($secondary-color, 15%);
     color: #c4c4c4;
+    border: 1px solid var(--border-color);
     cursor: not-allowed;
   }
 }
@@ -542,6 +544,7 @@ button{
   &:disabled{
     background: lighten($info-color, 15%);
     color: #c4c4c4;
+    border: 1px solid var(--border-color);
     cursor: not-allowed;
   }
 }
@@ -556,6 +559,7 @@ button{
   &:disabled{
     color: #838383;
     background-color: #fa9393;
+    border: 1px solid var(--border-color);
     cursor: not-allowed;
   }
 }
@@ -570,6 +574,7 @@ button{
   &:disabled{
     color: #838383;
     background-color: #fa9393;
+    border: 1px solid var(--border-color);
     cursor: not-allowed;
   }
 }
