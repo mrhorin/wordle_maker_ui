@@ -939,7 +939,8 @@ button{
           text-align: left;
           a{
             display: block;
-            padding: 0.5rem;
+            padding: 0 0.5rem;
+            line-height: 3rem;
             margin-left: 15px;
             color: var(--font-color3);
             border-left: 2px solid var(--border-color);
@@ -975,7 +976,8 @@ button{
         li.sidemenu-item-title,
         li.sidemenu-item-title:hover{
           font-size: 1rem;
-          padding: 0.5rem;
+          padding: 0 0.5rem;
+          line-height: 3rem;
           font-weight: 500;
           font-size: 1rem;
           color: var(--font-color1);
@@ -992,7 +994,7 @@ button{
   }
   #sidemenu-main{
     width: 100%;
-    padding: 0 25px;
+    padding: 0 60px;
   }
   @include sp {
     flex-direction: column;
