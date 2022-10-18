@@ -69,7 +69,7 @@ $font-color-light: #313131;
   --font-color1: #313131;
   --font-color2: #7d7d7d;
   --font-color3: #8a8a8a;
-  --font-color4: #4a4a4a;
+  --font-color4: #183155;
   // header
   --header-color: #fafafa;
 }
@@ -234,17 +234,8 @@ select:focus{
   border: 1px solid #0099ff;
 }
 input[type="text"]:disabled{
-  @include light{
-    background: darken($base-color-light, 20%);
-    color: lighten($font-color-light, 25%);
-  }
-  @include dark{
-    background: lighten($base-color, 20%);
-    color: darken($font-color, 25%);
-  }
-  &:hover{
-    cursor: not-allowed;
-  }
+  filter: contrast(50%);
+  cursor: not-allowed;
 }
 input[type="checkbox"]{
   transform: scale(1.4);
@@ -402,7 +393,7 @@ label{
   z-index: 3;
   order: 1;
   width: 100%;
-  height: 70px;
+  height: 50px;
   position: sticky;
   top: 0;
   left: 0;
@@ -470,19 +461,6 @@ table{
 button{
   white-space: nowrap;
 }
-.btn{
-  font-size: 1rem;
-  line-height: 1.8rem;
-  padding: 0 1rem;
-  margin: 0 0.25rem;
-  border-radius: 20px;
-  text-align: center;
-  cursor: pointer;
-  box-sizing: border-box;
-  &:hover{
-    opacity: .7;
-  }
-}
 .btn.btn-mini{
   font-size: 0.8rem;
   line-height: 1.5rem;
@@ -497,102 +475,48 @@ button{
   background-color: $default-color;
   @include light{ border: 1px solid var(--border-color); }
   @include dark{ border: 1px solid var(--base-color3); }
-  &:disabled{
-    color: #656565;
-    background-color: #a6a6a6;
-    cursor: not-allowed;
-  }
 }
 .btn.btn-primary{
   color: #fff;
   background-color: $primary-color;
   @include light{ border: 1px solid $primary-color; }
   @include dark{ border: 1px solid $primary-color; }
-  &:hover{
-    background: darken($primary-color, 8%);
-  }
-  &:disabled{
-    color: #656565;
-    background-color: #c4c4c4;
-    border: 1px solid var(--border-color);
-    cursor: not-allowed;
-  }
 }
 .btn.btn-secondary{
   color: #fff;
   background: $secondary-color;
   @include light{ border: 1px solid $secondary-color; }
   @include dark{ border: 1px solid $secondary-color; }
-  &:hover{
-    background: darken($secondary-color, 8%);
-  }
-  &:disabled{
-    background: lighten($secondary-color, 15%);
-    color: #c4c4c4;
-    border: 1px solid var(--border-color);
-    cursor: not-allowed;
-  }
 }
 .btn.btn-info{
   color: #fff;
   background: $info-color;
   @include light{ border: 1px solid $info-color; }
   @include dark{ border: 1px solid $info-color; }
-  &:hover{
-    background: darken($info-color, 8%);
-  }
-  &:disabled{
-    background: lighten($info-color, 15%);
-    color: #c4c4c4;
-    border: 1px solid var(--border-color);
-    cursor: not-allowed;
-  }
 }
 .btn.btn-danger{
   color: #fff;
   background-color: $danger-color;
   @include light{ border: 1px solid $danger-color; }
   @include dark{ border: 1px solid $danger-color; }
-  &:hover{
-    background: darken($danger-color, 8%);
-  }
-  &:disabled{
-    color: #838383;
-    background-color: #fa9393;
-    border: 1px solid var(--border-color);
-    cursor: not-allowed;
-  }
 }
 .btn.btn-accent1{
   color: #111;
   background-color: $accent-color1;
   @include light{ border: 1px solid $accent-color1; }
   @include dark{ border: 1px solid $accent-color1; }
-  &:hover{
-    background: darken($accent-color1, 8%);
-  }
-  &:disabled{
-    color: #838383;
-    background-color: #fa9393;
-    border: 1px solid var(--border-color);
-    cursor: not-allowed;
-  }
 }
-
 .btn-grad {
   background-image: linear-gradient(to right, #e96443 0%, #904e95  51%, #e96443  100%);
   transition: 0.5s;
   background-size: 200% auto;
   color: white;
-
+  &:hover {
+    background-position: right center; /* change the direction of the change here */
+    color: #fff;
+    text-decoration: none;
+  }
 }
-
-.btn-grad:hover {
-  background-position: right center; /* change the direction of the change here */
-  color: #fff;
-  text-decoration: none;
-}
-
 .btn-grad, .btn-grad2{
   padding: 0 1rem;
   font-size: 1rem;
@@ -606,6 +530,9 @@ button{
   animation: anime 30s linear infinite;
   display: inline-flex;
   cursor: pointer;
+  &:hover{
+    filter: brightness(90%);
+  }
   a{
     color: rgba(255,255,255,0.9);
     &:hover{
@@ -618,6 +545,23 @@ button{
     z-index: -1;
     filter: blur(30px);
     opacity: 0.8;
+  }
+}
+.btn{
+  font-size: 1rem;
+  line-height: 1.8rem;
+  padding: 0 1rem;
+  margin: 0 0.25rem;
+  border-radius: 20px;
+  text-align: center;
+  cursor: pointer;
+  box-sizing: border-box;
+  &:hover{
+    filter: brightness(90%);
+  }
+  &:disabled{
+    filter: contrast(40%);
+    cursor: not-allowed;
   }
 }
 
@@ -714,35 +658,31 @@ button{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: center;
+  align-items: stretch;
   .header-menu{
     order: 1;
-    flex-basis: 33%;
-    padding: 10px 10px 10px 25px;
-    text-align: left;
-    .header-menu-icon{
+    margin: auto 0;
+    padding: 0px 10px 0px 25px;
+    .header-hamburger{
       display: inline-flex;
       flex-direction: column;
       border-radius: 5px;
-      padding: 3px;
-      color: var(--font-color2);
-      border: 1px solid var(--font-color2);
+      padding: 4px 5px;
+      color: var(--font-color4);
+      background: var(--header-color);
+      text-align: center;
       &:hover{
-        color: var(--font-color1);
-        border: 1px solid var(--font-color1);
-      }
-      @include light{
-        border: none;
+        color: var(--font-color3);
       }
       svg,i{
         order: 1;
-        font-size: 22px;
+        font-size: 28px;
       }
       &:after{
         order: 2;
         content: 'MENU';
         font-size: 10px;
-        font-weight: 500;
+        font-weight: 700;
         white-space: nowrap;
       }
       &:hover{
@@ -752,21 +692,30 @@ button{
   }
   .header-home{
     order: 2;
-    flex-basis: 34%;
-    padding: 10px;
-    text-align: center;
-    font-weight: bold;
-    a{ color: var(--font-color1);}
-    a:hover{
-      text-decoration: none;
-      cursor: pointer;
+    margin: auto 0;
+    padding: 0 10px;
+    padding-top: 5px;
+    a{
+      display: inline-flex;
+      &:hover{
+        text-decoration: none;
+        @keyframes heart-beat{
+          0%{ transform: scale(1); }
+          50%{ transform: scale(1.4); }
+          100%{ transform: scale(1); }
+        }
+        animation: heart-beat 1000ms;
+        animation-iteration-count: infinite;
+      }
+      @include light{
+        filter: brightness(4);
+      }
     }
   }
   .header-account{
     order: 3;
-    flex-basis: 33%;
-    padding: 10px 25px 10px 10px;
-    text-align: right;
+    margin: auto 0;
+    padding: 0px 25px 0px 10px;
     position: relative;
     a{
       button{
@@ -777,7 +726,6 @@ button{
       display: inline-flex;
       align-items: center;
       .header-account-button-image{
-
         order: 1;
         display: inline-flex;
         border-radius: 100px;
@@ -793,6 +741,9 @@ button{
       }
       &:hover{
         cursor: pointer;
+        .header-account-button-caretdown{
+          color: var(--font-color3);
+        }
       }
     }
     .header-account-image:hover{
@@ -802,7 +753,7 @@ button{
       z-index: 3;
       position: absolute;
       right: 15px;
-      top: 60px;
+      top: 41px;
       display: flex;
       flex-direction: column;
       overflow: hidden;
@@ -881,7 +832,8 @@ button{
     max-width: 0;
     overflow: hidden;
     transition: max-width 0.2s ease-out;
-    background: var(--base-color2);
+    background: var(--header-color);
+    color: var(--font-color4);
     .slideout-menu-main-xmark{
       padding: 0;
       min-width: 100%;
@@ -899,17 +851,15 @@ button{
       margin: 0;
       padding: 0 0 2rem 0;
       li{
-        .slideout-menu-main-item{
-          color: var(--font-color1);
+        a{
+          color: var(--font-color4);
+          &:hover{
+            background: var(--base-color3);
+          }
         }
-        *>select{
+        select{
           background: var(--base-color1);
           color: var(--font-color1);
-        }
-        a.slideout-menu-main-item:hover{
-          background: var(--base-color3);
-        }
-        *>select{
           font-size: 1rem;
           padding: 0.75rem;
           margin: 0;
@@ -1418,7 +1368,7 @@ button{
       @include light{
         color: var(--font-color4);
         background: darken($base-color-light, 2.5%);
-        border: 1px solid $absent-color;
+        border: 1px solid var(--font-color4);
       }
       @include dark{
         color: #fff;
@@ -1663,7 +1613,7 @@ button{
 .keyboard-key-empty{
   @include light{
     background: darken($base-color-light, 2.5%);
-    border: 1px solid darken($base-color-light, 25%);
+    border: 1px solid #f5f5f5;
     &:hover{ background: $base-color-light }
   }
   @include dark{
@@ -1863,7 +1813,7 @@ button{
   .mygames-edit-header{
     order: 1;
     position: sticky;
-    top: 70px;
+    top: 50px;
     margin-bottom: 25px;
     z-index: 1;
     background: var(--base-color1);

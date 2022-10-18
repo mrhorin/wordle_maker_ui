@@ -1,7 +1,6 @@
-import { useRouter } from 'next/router'
 import { useEffect, useRef, memo } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGamepad, faPlus, faPenToSquare, faGear, faUser } from '@fortawesome/free-solid-svg-icons'
+import { faPlus, faPenToSquare, faUser } from '@fortawesome/free-solid-svg-icons'
 
 import useLocale from 'hooks/useLocale'
 

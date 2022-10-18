@@ -16,7 +16,7 @@ type Props = {
 }
 
 const SlideoutMenu = ({ children }: Props) => {
-  const [currentTheme, setCurrentTheme] = useState<Theme | null>(null)
+  const [currentTheme, setCurrentTheme] = useState<Theme>('dark')
   const showSlideoutMenuContext = useContext(ShowSlideoutMenuContext)
   const router = useRouter()
   const { t, setLocale } = useLocale()
@@ -45,7 +45,6 @@ const SlideoutMenu = ({ children }: Props) => {
       setCurrentTheme(event.target.value)
       setTheme(event.target.value)
     }
-    showSlideoutMenuContext.set(false)
   }
 
   function handleChangeLang(event: ChangeEvent<HTMLSelectElement>): void{
@@ -53,7 +52,6 @@ const SlideoutMenu = ({ children }: Props) => {
       cookie.client.saveLocale(event.target.value)
       setLocale(event.target.value)
     }
-    showSlideoutMenuContext.set(false)
   }
 
   const style = showSlideoutMenuContext.show ? 'slideout-menu slideout-menu-show' : 'slideout-menu'
@@ -98,9 +96,9 @@ const SlideoutMenu = ({ children }: Props) => {
               <div className='slideout-menu-main-item-text'>
                 <select onChange={e => handleOnChangeTheme(e)} defaultValue='none'>
                   <option value='none' disabled hidden>{t.SLIDEOUT_MENU.THEME.THEME}</option>
-                  <option value='system' selected={currentTheme == 'system'}>{t.SLIDEOUT_MENU.THEME.SYSTEM}</option>
-                  <option value='light' selected={currentTheme == 'light'}>{t.SLIDEOUT_MENU.THEME.LIGHT}</option>
-                  <option value='dark' selected={currentTheme == 'dark'}>{t.SLIDEOUT_MENU.THEME.DARK}</option>
+                  <option value='system' defaultValue={currentTheme}>{t.SLIDEOUT_MENU.THEME.SYSTEM}</option>
+                  <option value='light' defaultValue={currentTheme}>{t.SLIDEOUT_MENU.THEME.LIGHT}</option>
+                  <option value='dark' defaultValue={currentTheme}>{t.SLIDEOUT_MENU.THEME.DARK}</option>
                 </select>
               </div>
             </div>

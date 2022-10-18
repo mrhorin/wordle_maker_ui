@@ -164,8 +164,8 @@ const Header = () => {
     <header className='header'>
       <div className='container'>
         <div className='header-menu'>
-          <div className='header-menu-icon' onClick={() => showSlideoutMenuContext.set(!showSlideoutMenuContext.show)}>
-            <FontAwesomeIcon icon={faBars} />
+          <div className='header-hamburger' onClick={() => showSlideoutMenuContext.set(!showSlideoutMenuContext.show)}>
+            <FontAwesomeIcon icon={faBars} className='fa-fw' />
           </div>
         </div>
         <div className='header-home'>
