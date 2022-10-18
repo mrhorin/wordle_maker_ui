@@ -23,15 +23,17 @@ const Account = () => {
   const [showOverlay, setShowOverlay] = useState<boolean>(false)
   const [checkedConfirmation, setCheckedConfirmation] = useState<boolean | undefined>(false)
   const [showModal, setShowModal] = useState<boolean>(false)
+  const router = useRouter()
+  const { t } = useLocale()
+  const alert = useAlert()
+  const signOut = useSignOut()
+
+  /*********** Memo ***********/
   const handleConfirmation = useMemo(() => {
     return () => {
       setCheckedConfirmation(!checkedConfirmation);
     }
   }, [checkedConfirmation])
-  const router = useRouter()
-  const { t } = useLocale()
-  const alert = useAlert()
-  const signOut = useSignOut()
 
   function handleClickDeleteAccount(): void{
     const token: Token | null = ClientSideCookies.loadToken()
@@ -78,7 +80,7 @@ const Account = () => {
             </ol>
             <div>
             <input type="checkbox" id="confirmation" checked={checkedConfirmation} onChange={handleConfirmation} />
-            <label>{ t.FORM.I_AGREE }</label>
+            <label onClick={handleConfirmation}>{t.FORM.I_AGREE}</label>
           </div>
           </div>
           <div className='modal-window-footer'>
