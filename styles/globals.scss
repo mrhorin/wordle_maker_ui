@@ -983,13 +983,16 @@ button{
         margin-bottom: 2rem;
         li{
           cursor: default;
+          font-size: 0.9rem;
           font-weight: 500;
           white-space: nowrap;
           text-align: left;
           a{
             display: block;
             padding: 0.5rem;
+            margin-left: 15px;
             color: var(--font-color3);
+            border-left: 2px solid var(--border-color);
             svg, i{
               width: 30px;
               margin-right: 0.5rem;
@@ -1003,13 +1006,14 @@ button{
         }
         li.sidemenu-item-active{
           a{
+            color: var(--font-color1);
+            border-left: 2px solid $accent-color1;
             @include light{
               font-weight: bold;
-              color: var(--font-color1);
               background: var(--base-color2);
             }
             @include dark{
-              color: $accent-color1;
+              background: var(--base-color2);
             }
             &:hover{
               text-decoration: none;
@@ -1020,7 +1024,9 @@ button{
         }
         li.sidemenu-item-title,
         li.sidemenu-item-title:hover{
+          font-size: 1rem;
           padding: 0.5rem;
+          font-weight: 500;
           font-size: 1rem;
           color: var(--font-color1);
           svg, i{
@@ -2063,8 +2069,9 @@ button{
     font-size: 1.8rem;
     line-height: 2rem;
     a{
-      color: darken($font-color, 30%);
+      color: var(--font-color3);
       &:hover{
+        color: var(--font-color1);
         opacity: .9;
       }
     }
