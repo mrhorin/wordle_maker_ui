@@ -558,6 +558,7 @@ button{
   box-sizing: border-box;
   &:hover{
     filter: brightness(90%);
+    transition: 0.3s;
   }
   &:disabled{
     filter: contrast(40%);
@@ -673,6 +674,7 @@ button{
       text-align: center;
       &:hover{
         color: var(--font-color3);
+        transition: 0.2s ;
       }
       svg,i{
         order: 1;
@@ -699,13 +701,6 @@ button{
       display: inline-flex;
       &:hover{
         text-decoration: none;
-        @keyframes heart-beat{
-          0%{ transform: scale(1); }
-          50%{ transform: scale(1.4); }
-          100%{ transform: scale(1); }
-        }
-        animation: heart-beat 1000ms;
-        animation-iteration-count: infinite;
       }
       @include light{
         filter: brightness(4);
@@ -743,6 +738,7 @@ button{
         cursor: pointer;
         .header-account-button-caretdown{
           color: var(--font-color3);
+          transition: 0.2s;
         }
       }
     }
@@ -753,7 +749,7 @@ button{
       z-index: 3;
       position: absolute;
       right: 15px;
-      top: 41px;
+      top: 46px;
       display: flex;
       flex-direction: column;
       overflow: hidden;
@@ -786,7 +782,7 @@ button{
       li{
         list-style: none;
         white-space: nowrap;
-        line-height: 3.5rem;
+        line-height: 4rem;
         padding: 0 1rem;
         text-align: left;
         svg,i{
@@ -929,7 +925,7 @@ button{
     margin-top: 30px;
     .sidemenu-items-container{
       position: sticky;
-      top: 100px;
+      top: 90px;
       ul.sidemenu-item{
         padding: 0;
         margin: 0;
@@ -1813,7 +1809,7 @@ button{
   .mygames-edit-header{
     order: 1;
     position: sticky;
-    top: 50px;
+    top: 60px;
     margin-bottom: 25px;
     z-index: 1;
     background: var(--base-color1);
