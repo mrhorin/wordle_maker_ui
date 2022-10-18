@@ -1,7 +1,7 @@
 import type { Theme } from 'types/global'
 
 export default () => {
-  const defaultTheme: Theme = 'dark'
+  const defaultTheme: Theme = process.env.NEXT_PUBLIC_DEFAULT_THEME as Theme
 
   function getSystemTheme(): Theme | null{
     if (window.matchMedia('(prefers-color-scheme: light)').matches) return 'light'
