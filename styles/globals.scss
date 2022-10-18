@@ -1389,21 +1389,26 @@ button{
       }
     }
     @keyframes transform-tile{
-      0%{ transform: rotateX(0deg); }
+      0%{
+        color: var(--font-color2);
+        transform: rotateX(0deg);
+      }
       50%{ transform: rotateX(90deg); }
-      100%{ transform: rotateX(0deg); }
+      100%{
+        color: #fff;
+        transform: rotateX(0deg);
+      }
     }
     .tiles-table-row-tile-correct,
     .tiles-table-row-tile-present,
     .tiles-table-row-tile-absent{
       animation: transform-tile 1s;
-      color: #fff;
     }
     .tiles-table-row-tile-empty{
       @include light{
         color: var(--font-color4);
         background: darken($base-color-light, 2.5%);
-        border: 1px solid darken($base-color-light, 12%);;
+        border: 1px solid $absent-color;
       }
       @include dark{
         color: #fff;
@@ -1414,17 +1419,23 @@ button{
     .tiles-table-row-tile-correct{
       background: $correct-color;
       border: 1px solid $correct-color;
+      @include light { color: #fff; }
+      @include dark { color: #fff; }
     }
     .tiles-table-row-tile-present{
       background: $present-color;
       border: 1px solid $present-color;
+      @include light { color: #fff; }
+      @include dark { color: #fff; }
     }
     .tiles-table-row-tile-absent{
       @include light{
+        color: #fff;
         border: 1px solid $absent-color-light;
         background: $absent-color-light;
       }
       @include dark{
+        color: #fff;
         border: 1px solid $absent-color;
         background: $absent-color;
       }
@@ -1477,10 +1488,11 @@ button{
     cursor: default;
     border: 1px solid var(--font-color3);
     color: var(--font-tile-color);
+    @include light{ filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.4)); }
   }
   .example-word-tile-empty{
     @extend .example-word-tile;
-    background: var(--base-color1);
+    background: var(--base-color2);
     border: 1px solid var(--font-color3);
   }
   .example-word-tile-correct{
@@ -1634,11 +1646,14 @@ button{
   box-sizing: border-box;
   cursor: pointer;
   color: var(--font-color1);
+  @include light{
+    filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.4));
+  }
 }
 .keyboard-key-empty{
   @include light{
     background: darken($base-color-light, 2.5%);
-    border: 1px solid darken($base-color-light, 12%);
+    border: 1px solid darken($base-color-light, 25%);
     &:hover{ background: $base-color-light }
   }
   @include dark{
