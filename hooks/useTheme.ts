@@ -9,9 +9,13 @@ export default () => {
     return null
   }
 
+  function getTheme(): string | null{
+    return document.documentElement.getAttribute("data-theme")
+  }
+
   function setTheme(theme: Theme): void{
     document.documentElement.setAttribute("data-theme", theme)
   }
 
-  return { defaultTheme, getSystemTheme, setTheme }
+  return { defaultTheme, getSystemTheme, getTheme, setTheme }
 }

@@ -1,25 +1,33 @@
 import type { Theme } from 'types/global'
 import { useRouter } from 'next/router'
-import { ChangeEvent, useContext, useLayoutEffect } from 'react'
+import { ChangeEvent, useContext, useState, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark, faHome, faSignature, faGlobe, faCircleHalfStroke } from '@fortawesome/free-solid-svg-icons'
 
 import useLocale from 'hooks/useLocale'
+import useTheme from 'hooks/useTheme'
 
 import cookie from 'scripts/cookie'
 
 import ShowSlideoutMenuContext from 'contexts/show_slideout_menu'
-import useTheme from 'hooks/useTheme'
 
 type Props = {
   children?: JSX.Element
 }
 
 const SlideoutMenu = ({ children }: Props) => {
+  const [currentTheme, setCurrentTheme] = useState<Theme | null>(null)
   const showSlideoutMenuContext = useContext(ShowSlideoutMenuContext)
   const router = useRouter()
   const { t, setLocale } = useLocale()
-  const { setTheme } = useTheme()
+  const { getTheme, setTheme } = useTheme()
+
+  useEffect(() => {
+    const theme: string | null = getTheme()
+    if (theme == 'dark' || theme == 'light' || theme == 'system') {
+      setCurrentTheme(theme as Theme)
+    }
+  }, [])
 
   function handleClickHome(): void{
     router.push('/')
@@ -34,6 +42,7 @@ const SlideoutMenu = ({ children }: Props) => {
   function handleOnChangeTheme(event: ChangeEvent<HTMLSelectElement>): void{
     if (event.target.value == 'system' || event.target.value == 'light' || event.target.value == 'dark') {
       cookie.client.saveTheme(event.target.value)
+      setCurrentTheme(event.target.value)
       setTheme(event.target.value)
     }
     showSlideoutMenuContext.set(false)
@@ -89,9 +98,9 @@ const SlideoutMenu = ({ children }: Props) => {
               <div className='slideout-menu-main-item-text'>
                 <select onChange={e => handleOnChangeTheme(e)} defaultValue='none'>
                   <option value='none' disabled hidden>{t.SLIDEOUT_MENU.THEME.THEME}</option>
-                  <option value='system'>{t.SLIDEOUT_MENU.THEME.SYSTEM}</option>
-                  <option value='light'>{t.SLIDEOUT_MENU.THEME.LIGHT}</option>
-                  <option value='dark'>{t.SLIDEOUT_MENU.THEME.DARK}</option>
+                  <option value='system' selected={currentTheme == 'system'}>{t.SLIDEOUT_MENU.THEME.SYSTEM}</option>
+                  <option value='light' selected={currentTheme == 'light'}>{t.SLIDEOUT_MENU.THEME.LIGHT}</option>
+                  <option value='dark' selected={currentTheme == 'dark'}>{t.SLIDEOUT_MENU.THEME.DARK}</option>
                 </select>
               </div>
             </div>
