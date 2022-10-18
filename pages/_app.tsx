@@ -1,4 +1,5 @@
-import type { AppProps } from 'next/app'
+import type { AppContext, AppProps } from 'next/app'
+import App from 'next/app'
 import Router from 'next/router'
 import { transitions, positions, Provider as AlertProvider } from 'react-alert'
 import AlertTemplate from 'react-alert-template-basic'
@@ -24,7 +25,7 @@ Router.events.on('routeChangeStart', nprogress.start)
 Router.events.on('routeChangeError', nprogress.done)
 Router.events.on('routeChangeComplete', nprogress.done)
 
-export default function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps }: AppProps) {
   return (
     <AlertProvider template={AlertTemplate} {...alertOptions}>
       <Layout>
@@ -34,3 +35,9 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   )
 }
 
+MyApp.getInitialProps = async (appContext: AppContext) => {
+  const appProps = await App.getInitialProps(appContext);
+  return { ...appProps }
+}
+
+export default MyApp

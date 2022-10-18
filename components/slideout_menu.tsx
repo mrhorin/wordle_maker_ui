@@ -19,7 +19,7 @@ const SlideoutMenu = ({ children }: Props) => {
   const showSlideoutMenuContext = useContext(ShowSlideoutMenuContext)
   const router = useRouter()
   const { t, setLocale } = useLocale()
-  const { getSystemTheme, setTheme } = useTheme()
+  const { setTheme } = useTheme()
 
   function handleClickHome(): void{
     router.push('/')

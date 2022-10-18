@@ -13,10 +13,9 @@
 */
 
 /* ---------- dark theme ---------- */
-$base-color: #1e2022; // sass
-$font-color: #dfe3e5; // sass
-:root,
-html[data-theme='dark']{
+$base-color: #1e2022; // called in sass functions
+$font-color: #dfe3e5; // called in sass functions
+@mixin dark-theme-vars {
   // base
   --base-color1: #1e2022;
   --base-color2: #25282a;
@@ -36,9 +35,9 @@ html[data-theme='dark']{
 }
 
 /* ---------- light theme ---------- */
-$base-color-light: #fff; // sass
-$font-color-light: #313131; // sass
-html[data-theme='light']{
+$base-color-light: #fff; // called in sass functions
+$font-color-light: #313131; // called in sass functions
+@mixin light-theme-vars {
   // base
   --base-color1: #fff;
   --base-color2: #f7f7f7;
@@ -77,7 +76,6 @@ $tablet-break-point: 1024px;
     @content;
   }
 }
-
 @mixin tablet {
   @media screen and (max-width: ($tablet-break-point)) {
     @content;
@@ -88,11 +86,36 @@ $tablet-break-point: 1024px;
   [data-theme="light"] &{
     @content;
   }
+  [data-theme="system"] &{
+    @media (prefers-color-scheme: light){
+      @content;
+    }
+  }
 }
-
 @mixin dark{
   [data-theme="dark"] &{
     @content;
+  }
+  [data-theme="system"] &{
+    @media (prefers-color-scheme: dark){
+      @content;
+    }
+  }
+}
+
+:root,
+html[data-theme='dark']{
+  @include dark-theme-vars();
+}
+html[data-theme='light']{
+  @include light-theme-vars();
+}
+html[data-theme='system']{
+  @media (prefers-color-scheme: light){
+    @include light-theme-vars();
+  }
+  @media (prefers-color-scheme: dark){
+    @include dark-theme-vars();
   }
 }
 

@@ -1,16 +1,17 @@
 import type { Theme } from 'types/global'
 
 export default () => {
+  const defaultTheme: Theme = 'dark'
 
-  function getSystemTheme(): Theme{
+  function getSystemTheme(): Theme | null{
     if (window.matchMedia('(prefers-color-scheme: light)').matches) return 'light'
-    return 'dark'
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) return 'dark'
+    return null
   }
 
   function setTheme(theme: Theme): void{
-    const dataTheme: Theme = theme == 'system' ? getSystemTheme() : theme as Theme
-    document.documentElement.setAttribute("data-theme", dataTheme)
+    document.documentElement.setAttribute("data-theme", theme)
   }
 
-  return { getSystemTheme, setTheme }
+  return { defaultTheme, getSystemTheme, setTheme }
 }
