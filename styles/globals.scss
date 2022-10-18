@@ -12,9 +12,33 @@
                 8: .loading-overlay
 */
 
-/* ---------- dark theme ---------- */
-$base-color: #1e2022; // called in sass functions
-$font-color: #dfe3e5; // called in sass functions
+/******************************************
+  Sass variables
+ ******************************************/
+$accent-color1: #42c897;
+$accent-color2: #cf8e1d;
+$default-color: #fafafa;
+$primary-color: #307fe5;
+$warning-color: #e4b32d;
+$secondary-color: #565761;
+$danger-color: #eb0000;
+$info-color: #5d9ff3;
+$correct-color: $primary-color;
+$present-color: $warning-color;
+$absent-color: lighten(#1e2022, 12%);
+$absent-color-light: lighten(#1e2022, 35%);
+$sp-break-point: 599px;
+$tablet-break-point: 1024px;
+// dark
+$base-color: #1e2022;
+$font-color: #dfe3e5;
+// light
+$base-color-light: #fff;
+$font-color-light: #313131;
+
+/******************************************
+  CSS3 variables
+ ******************************************/
 @mixin dark-theme-vars {
   // base
   --base-color1: #1e2022;
@@ -33,10 +57,6 @@ $font-color: #dfe3e5; // called in sass functions
   // header
   --header-color: #232527;
 }
-
-/* ---------- light theme ---------- */
-$base-color-light: #fff; // called in sass functions
-$font-color-light: #313131; // called in sass functions
 @mixin light-theme-vars {
   // base
   --base-color1: #fff;
@@ -54,30 +74,13 @@ $font-color-light: #313131; // called in sass functions
   --header-color: #fafafa;
 }
 
-$accent-color1: #42c897;
-$accent-color2: #cf8e1d;
-
-$default-color: #fafafa;
-$primary-color: #307fe5;
-$warning-color: #e4b32d;
-$secondary-color: #565761;
-$danger-color: #eb0000;
-$info-color: #5d9ff3;
-$correct-color: $primary-color;
-$present-color: $warning-color;
-$absent-color: lighten(#1e2022, 12%);
-$absent-color-light: lighten(#1e2022, 35%);
-
-$sp-break-point: 599px;
-$tablet-break-point: 1024px;
-
 @mixin sp {
-  @media screen and (max-width: ($sp-break-point)) {
+  @media screen and (max-width: $sp-break-point) {
     @content;
   }
 }
 @mixin tablet {
-  @media screen and (max-width: ($tablet-break-point)) {
+  @media screen and (max-width: $tablet-break-point) {
     @content;
   }
 }
@@ -613,7 +616,6 @@ button{
   flex-direction: row;
   width: 100%;
   margin-bottom: 5px;
-  // @include light{ border-bottom: 2px solid darken($base-color-light, 13%); }
   border-bottom: 2px solid var(--base-color3);
   @include dark{ border-bottom: 2px solid #363a3d; }
   .tab{
@@ -1247,18 +1249,20 @@ button{
 .index-board{
   padding: 2rem 1rem;
   margin-bottom: 2rem;
-  background: var(--base-color3);
-  color: var(--font-color4);
   @include light{
     background: #58739d;
     color: #fff;
+  }
+  @include dark{
+    background: var(--base-color3);
+    color: var(--font-color4);
   }
   .index-board-title{
     text-align: center;
     font-size: 3rem;
     font-weight: bold;
     padding-bottom: 1rem;
-    @include dark{ color: #fff; }
+    @include light{ color: #fff; }
     @include dark{ color: $font-color; }
   }
   .index-board-desc{
