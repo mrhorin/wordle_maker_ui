@@ -2,7 +2,8 @@ import type { Token, Game, Word } from 'types/global'
 import cookie from 'scripts/cookie'
 import validate from 'scripts/validate'
 
-const API_URL: string = `${process.env.NEXT_PUBLIC_API_PROTOCOL}://${process.env.NEXT_PUBLIC_API_DOMAIN}`
+const API_URL: string = `${process.env.API_PROTOCOL}://${process.env.API_DOMAIN}`
+const NEXT_PUBLIC_API_URL: string = `${process.env.NEXT_PUBLIC_API_PROTOCOL}://${process.env.NEXT_PUBLIC_API_DOMAIN}`
 
 function saveToken(headers: Headers) {
   const token = {
@@ -17,7 +18,7 @@ function saveToken(headers: Headers) {
 }
 
 export async function deleteSignOut(token: Token) {
-  const res = await fetch(`${API_URL}/api/v1/auth/sign_out`, {
+  const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/v1/auth/sign_out`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
@@ -30,9 +31,10 @@ export async function deleteSignOut(token: Token) {
   return await res.json()
 }
 
-// ********** User **********
+// ******************** User ********************
+// users#current
 export async function getCuurentUser(token: Token) {
-  const res = await fetch(`${API_URL}/api/v1/users/current`, {
+  const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/v1/users/current`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -45,8 +47,9 @@ export async function getCuurentUser(token: Token) {
   return res.json()
 }
 
+// users#destroy
 export async function deleteCurrentUser(token: Token) {
-  const res = await fetch(`${API_URL}/api/v1/auth/`, {
+  const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/v1/auth/`, {
     method: 'DELETE',
     headers: {
       'access-token': token.accessToken,
@@ -58,20 +61,31 @@ export async function deleteCurrentUser(token: Token) {
   return await res.json()
 }
 
-// ********** Game **********
-export async function getGame(gameId: number) {
-  const res = await fetch(`${API_URL}/api/v1/games/${gameId}`)
+// ******************** Game ********************
+// games#show
+export async function getGame(gameId: number, token?: Token) {
+  const url: string = typeof window === 'undefined' ? `${API_URL}/api/v1/games/${gameId}` : `${NEXT_PUBLIC_API_URL}/api/v1/games/${gameId}`
+  const res = token ? await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'access-token': token.accessToken,
+      'client': token.client,
+      'uid': token.uid,
+    }
+  }) : await fetch(url)
   return await res.json()
 }
 
-
+// games#index
 export async function getGames() {
-  const res = await fetch(`${API_URL}/api/v1/games/`)
+  const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/v1/games/`)
   return await res.json()
 }
 
+// games#current_user_index
 export async function getCurrentGames(token: Token) {
-  const res = await fetch(`${API_URL}/api/v1/games/current_user_index`, {
+  const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/v1/games/current_user_index`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -84,6 +98,7 @@ export async function getCurrentGames(token: Token) {
   return await res.json()
 }
 
+// games#create
 export async function postGame(token: Token, game: Game) {
   const body = {
     game: {
@@ -94,7 +109,7 @@ export async function postGame(token: Token, game: Game) {
       'lang': game.lang
     }
   }
-  const res = await fetch(`${API_URL}/api/v1/games`, {
+  const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/v1/games`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -108,6 +123,7 @@ export async function postGame(token: Token, game: Game) {
   return await res.json()
 }
 
+// games#update
 export async function putGame(token: Token, game: Game) {
   const body = {
     game: {
@@ -117,7 +133,7 @@ export async function putGame(token: Token, game: Game) {
       'challenge_count': game.challenge_count,
     }
   }
-  const res = await fetch(`${API_URL}/api/v1/games/${game.id}`, {
+  const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/v1/games/${game.id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -131,8 +147,9 @@ export async function putGame(token: Token, game: Game) {
   return await res.json()
 }
 
+// games#destroy
 export async function deleteGame(token: Token, game: Game) {
-  const res = await fetch(`${API_URL}/api/v1/games/${game.id}`, {
+  const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/v1/games/${game.id}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
@@ -145,9 +162,40 @@ export async function deleteGame(token: Token, game: Game) {
   return await res.json()
 }
 
-// ********** Word **********
+// ******************** Word ********************
+// words#index
+export async function getGameWords(gameId: number, token?: Token) {
+  const url: string = typeof window === 'undefined' ? `${API_URL}/api/v1/games/${gameId}/words` : `${NEXT_PUBLIC_API_URL}/api/v1/games/${gameId}/words`
+  const res = token ? await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'access-token': token.accessToken,
+      'client': token.client,
+      'uid': token.uid
+    }
+  }) : await fetch(url)
+  return await res.json()
+}
+
+// words#today
+export async function getWordsToday(gameId: number, token?: Token) {
+  const url: string = typeof window === 'undefined' ? `${API_URL}/api/v1/words/today/${gameId}` : `${NEXT_PUBLIC_API_URL}/api/v1/words/today/${gameId}`
+  const res = token ? await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'access-token': token.accessToken,
+      'client': token.client,
+      'uid': token.uid
+    }
+  }) : await fetch(url)
+  return await res.json()
+}
+
+// words#edit
 export async function getCurrentWords(token: Token, game: Game, page: number) {
-  const res = await fetch(`${API_URL}/api/v1/games/${game.id}/words/edit?page=${page}`, {
+  const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/v1/games/${game.id}/words/edit?page=${page}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -160,9 +208,10 @@ export async function getCurrentWords(token: Token, game: Game, page: number) {
   return await res.json()
 }
 
+// words#create
 export async function postWords(token: Token, game: Game, words: string[]) {
   const body = { words: words, game_id: game.id }
-  const res = await fetch(`${API_URL}/api/v1/words`, {
+  const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/v1/words`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -176,6 +225,7 @@ export async function postWords(token: Token, game: Game, words: string[]) {
   return await res.json()
 }
 
+// words#update
 export async function putWord(token: Token, word: Word) {
   const body = {
     word: {
@@ -183,7 +233,7 @@ export async function putWord(token: Token, word: Word) {
       'name': word.name,
     }
   }
-  const res = await fetch(`${API_URL}/api/v1/words/${word.id}`, {
+  const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/v1/words/${word.id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -197,8 +247,9 @@ export async function putWord(token: Token, word: Word) {
   return await res.json()
 }
 
+// words#destroy
 export async function deleteWord(token: Token, word_id: number) {
-  const res = await fetch(`${API_URL}/api/v1/words/${word_id}`, {
+  const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/v1/words/${word_id}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',

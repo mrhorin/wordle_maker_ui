@@ -1,11 +1,12 @@
-import type { Game, Word, Tile } from 'types/global'
+import type { Game, Word, Tile, Token } from 'types/global'
 import Head from 'next/head'
 import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import { useState, useEffect, useCallback, useContext } from 'react'
 import { useAlert } from 'react-alert'
-import useLocale from 'hooks/useLocale'
+import nookies from 'nookies'
 
+import useLocale from 'hooks/useLocale'
 import useCopyToClipboard from 'hooks/useCopyToClipboard'
 import useLanguage from 'hooks/useLanguage'
 
@@ -21,8 +22,9 @@ import ShowSlideoutMenuContext from 'contexts/show_slideout_menu'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { faCopy } from '@fortawesome/free-regular-svg-icons'
-
 import { faTwitter } from '@fortawesome/free-brands-svg-icons'
+
+import { getGame, getGameWords, getWordsToday } from 'scripts/api'
 
 type Props = {
   game: Game,
@@ -62,23 +64,27 @@ type Statistics = {
   maxStreak: number,
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const id: string = context.query['id'] as string
-  const reses = await Promise.all([
-    fetch(`${process.env.API_PROTOCOL}://${process.env.API_DOMAIN}/api/v1/games/${id}`),
-    fetch(`${process.env.API_PROTOCOL}://${process.env.API_DOMAIN}/api/v1/games/${id}/words`),
-    fetch(`${process.env.API_PROTOCOL}://${process.env.API_DOMAIN}/api/v1/words/today/${id}`),
-  ])
-  if (reses[0].status == 200 && reses[1].status == 200 && reses[2].status == 200) {
-    const jsons = await Promise.all([reses[0].json(), reses[1].json(), reses[2].json()])
-    if (jsons[0].ok && jsons[1].ok && jsons[2].ok) {
-      return {
-        props: {
-          game: jsons[0].data,
-          wordList: jsons[1].data,
-          wordToday: jsons[2].data.word,
-          questionNo: jsons[2].data.questionNo,
-        }
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const id: number = Number(ctx.query['id'])
+  const cookies = nookies.get(ctx)
+  const token: Token = {
+    accessToken: cookies.accessToken,
+    client: cookies.client,
+    uid: cookies.uid,
+    expiry: cookies.expiry,
+  }
+
+  const game = await getGame(id, token)
+  const wordList = await getGameWords(id, token)
+  const wordToday = await getWordsToday(id, token)
+
+  if (game.ok && wordList.ok && wordToday.ok) {
+    return {
+      props: {
+        game: game.data,
+        wordList: wordList.data,
+        wordToday: wordToday.data.word,
+        questionNo: wordToday.data.questionNo,
       }
     }
   }

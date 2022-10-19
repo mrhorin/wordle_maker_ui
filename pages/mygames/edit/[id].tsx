@@ -1,4 +1,4 @@
-import type { Game } from 'types/global'
+import type { Game, Token } from 'types/global'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import nprogress from 'nprogress'
@@ -18,8 +18,11 @@ import EditWords from 'components/mygames/edit/edit_words'
 import DeleteGame from 'components/mygames/edit/delete_game'
 
 import useLocale from 'hooks/useLocale'
+import useSignOut from 'hooks/useSignOut'
 
+import validate from 'scripts/validate'
 import { getGame } from 'scripts/api'
+import cookie from 'scripts/cookie'
 
 type TabStatus = 'SETTINGS' | 'ADD_WORDS' | 'EDIT_WORDS' | 'DELETE_GAME'
 
@@ -30,20 +33,26 @@ const MygamesEdit = () => {
   const [game, setGame] = useState<Game | null>(null)
   const [tabStatus, setTabStatus] = useState<TabStatus>('SETTINGS')
   const { t } = useLocale()
+  const signOut = useSignOut()
   const router = useRouter()
 
   useEffect(() => {
-    if (router.isReady && router.query.id) {
-      if (game == null && router.query.id) {
-        nprogress.start()
-        getGame(Number(router.query.id)).then(json => {
-          if (json.ok) setGame(json.data)
-        }).catch(error => {
-          console.log(error)
-        }).finally(
-          () => nprogress.done()
-        )
+    const token: Token | null = cookie.client.loadToken()
+    if (validate.token(token)) {
+      if (router.isReady && router.query.id) {
+        if (game == null && router.query.id) {
+          nprogress.start()
+          getGame(Number(router.query.id), token).then(json => {
+            if (json.ok) setGame(json.data)
+          }).catch(error => {
+            console.log(error)
+          }).finally(
+            () => nprogress.done()
+          )
+        }
       }
+    } else {
+      signOut(() => router.replace('/signin'))
     }
   }, [router.isReady])
 
