@@ -60,6 +60,8 @@ const Header = () => {
           cookie.client.saveUserInfo(userInfo)
           currentUserInfoContext.setCurrentUserInfo(userInfo)
           setAccountStatus('LOGGEDIN')
+        } else {
+          setAccountStatus('SIGNIN')
         }
       }).catch(error => {
         console.log(error)
