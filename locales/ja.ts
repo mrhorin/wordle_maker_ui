@@ -167,7 +167,7 @@ export default {
     UPDATE: '更新',
     SUBMIT: '送信',
     CANCEL: 'キャンセル',
-    I_AGREE: '同意しました',
+    I_AGREE: 'はい、同意しました',
     CHIP_TEXTAREA: {
       NOTE: '各ワードの後には,半角カンマを入力してください'
     },
