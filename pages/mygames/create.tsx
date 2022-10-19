@@ -64,6 +64,7 @@ const MygamesCreate = () => {
           lang: lang,
           char_count: charCount,
           challenge_count: challengeCount,
+          is_published: false,
         }
         postGame(token, nextGame).then(json => {
           alert.removeAll()
