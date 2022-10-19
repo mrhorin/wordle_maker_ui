@@ -271,10 +271,14 @@ label{
     display: block;
     margin-bottom: 0.2rem;
   }
+  label.toggle{
+    order: 2;
+    display: inline-flex;
+  }
   .form-group-input{
     order: 2;
   }
-  input,textarea,select{
+  input[type="text"],textarea,select{
     order: 2;
     display: block;
   }
@@ -376,6 +380,54 @@ label{
     order: 2;
     cursor: default;
   }
+}
+
+.toggle {
+  cursor: pointer;
+  display: inline-block;
+}
+
+.toggle-switch {
+  display: inline-block;
+  background: var(--base-color3);
+  margin-top: 5px;
+  border: 1px solid var(--base-color3);
+  border-radius: 16px;
+  width: 50px;
+  height: 22px;
+  position: relative;
+  vertical-align: middle;
+  transition: background 0.25s;
+  border: 1px solid var(--border-color);
+}
+.toggle-switch:before, .toggle-switch:after {
+  content: "";
+}
+.toggle-switch:before {
+  display: block;
+  background: linear-gradient(to bottom, #fff 0%, #eee 100%);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.25);
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  top: 0px;
+  left: -1px;
+  transition: left 0.25s;
+}
+.toggle:hover .toggle-switch:before {
+  background: linear-gradient(to bottom, #fff 0%, #fff 100%);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5);
+}
+.toggle-checkbox:checked + .toggle-switch {
+  background: $primary-color;
+}
+.toggle-checkbox:checked + .toggle-switch:before {
+  left: 30px;
+}
+.toggle-checkbox {
+  position: absolute;
+  visibility: hidden;
 }
 
 .container{
@@ -1820,6 +1872,7 @@ button{
   }
   .mygames-edit-main{
     order: 2;
+    padding-bottom: 10rem;
   }
   @include sp {
     .mygames-edit-header{

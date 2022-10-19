@@ -131,6 +131,7 @@ export async function putGame(token: Token, game: Game) {
       'title': game.title,
       'desc': game.desc,
       'challenge_count': game.challenge_count,
+      'is_published': game.is_published,
     }
   }
   const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/v1/games/${game.id}`, {

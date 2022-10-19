@@ -180,6 +180,7 @@ export default {
     CHALLENGE_COUNT: 'Challenge',
     CHARACTER_COUNT: 'Chars',
     LANGUAGE: 'Language',
+    PUBLIC: 'Public',
   },
   LANG: {
     EN: 'English',

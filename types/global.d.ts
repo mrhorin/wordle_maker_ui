@@ -29,6 +29,7 @@ export type Game = {
   lang: string,
   char_count: number,
   challenge_count: number,
+  is_published: boolean,
   id?: number,
   user_id?: number,
   is_suspended?: boolean,

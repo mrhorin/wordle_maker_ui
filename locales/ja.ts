@@ -178,6 +178,7 @@ export default {
     CHALLENGE_COUNT: '最大回数',
     CHARACTER_COUNT: '文字数',
     LANGUAGE: '言語',
+    PUBLIC: '公開'
   },
   LANG: {
     EN: 'English',

@@ -37,6 +37,7 @@ const Settings = ({ game, setGame }: Props) => {
   const [title, setTitle] = useState<string>(game.title)
   const [desc, setDesc] = useState<string>(game.desc)
   const [challengeCount, setChallengeCount] = useState<number>(game.challenge_count)
+  const [isPublished, setIsPublished] = useState<boolean>(game.is_published)
   /* isChanged:
    *  The flag indicates that parameters are changed in the game form or not. */
   const [isChanged, setIsChanged] = useState<boolean>(false)
@@ -55,12 +56,12 @@ const Settings = ({ game, setGame }: Props) => {
 
   useEffect(() => {
     // When title or desc are changed, the update button is clickable
-    if (game.title != title || game.desc != desc || game.challenge_count != challengeCount) {
+    if (game.title != title || game.desc != desc || game.challenge_count != challengeCount || game.is_published != isPublished) {
       setIsChanged(true)
     } else {
       setIsChanged(false)
     }
-  }, [title, desc, challengeCount, game])
+  }, [title, desc, challengeCount, isPublished, game])
 
   function validateTitle(): boolean{
     const titleLength: number = Number(title.length)
@@ -92,6 +93,7 @@ const Settings = ({ game, setGame }: Props) => {
           challenge_count: challengeCount,
           lang: game.lang,
           char_count: game.char_count,
+          is_published: isPublished,
         }
         putGame(token, nextGame).then(json => {
           alert.removeAll()
@@ -139,6 +141,16 @@ const Settings = ({ game, setGame }: Props) => {
       </div>
       {/* Game Form */}
       <form id='game-form' onSubmit={e => e.preventDefault()}>
+        {/* Public */}
+        <div>
+          <label>{t.GAME.PUBLIC}</label>
+        </div>
+        <div style={{marginBottom: '2rem'}}>
+          <label className="toggle">
+            <input type="checkbox" className="toggle-checkbox" checked={isPublished} onChange={e=> setIsPublished(e.target.checked)} />
+            <div className="toggle-switch"></div>
+          </label>
+        </div>
         {/* Title */}
         <div className='form-group'>
           <label>{ t.GAME.TITLE }</label>
