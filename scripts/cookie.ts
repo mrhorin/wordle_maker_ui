@@ -3,8 +3,23 @@ import { parseCookies, setCookie, destroyCookie } from 'nookies'
 
 import validate from './validate'
 
+interface CookieOptions{
+  maxAge: number,
+  path: string,
+  secure: boolean,
+}
+
 export class ClientSideCookies{
-  static readonly cookieOptions = { maxAge: 30 * 24 * 60 * 60, path: '/', secure: process.env.NEXT_PUBLIC_CLIENT_COOKIE_SECURE }
+
+  static get cookieOptions(): CookieOptions {
+    let secure: boolean = true
+    if (process.env.NEXT_PUBLIC_CLIENT_COOKIE_SECURE == 'false') secure = false
+    return {
+      maxAge: 30 * 24 * 60 * 60,
+      path: '/',
+      secure: secure
+    }
+  }
 
   static saveTheme(theme: Theme): void{
     setCookie(null, 'theme', theme, this.cookieOptions)
