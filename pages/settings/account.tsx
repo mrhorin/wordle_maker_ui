@@ -16,7 +16,7 @@ import Modal from 'components/modal'
 import LoadingOverlay from 'components/loading_overlay'
 
 import validate from 'scripts/validate'
-import { ClientSideCookies } from 'scripts/cookie'
+import cookie from 'scripts/cookie'
 import { deleteCurrentUser } from 'scripts/api'
 
 const Account = () => {
@@ -36,7 +36,7 @@ const Account = () => {
   }, [checkedConfirmation])
 
   function handleClickDeleteAccount(): void{
-    const token: Token | null = ClientSideCookies.loadToken()
+    const token: Token | null = cookie.client.loadToken()
     if (validate.token(token)) {
       setShowOverlay(true)
       nprogress.start()

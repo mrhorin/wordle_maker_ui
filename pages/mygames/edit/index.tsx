@@ -13,7 +13,7 @@ import SlideoutMenu from 'components/slideout_menu'
 import Sidemenu from 'components/sidemenu'
 import GameIndexItem from 'components/game_index_item'
 
-import { ClientSideCookies } from 'scripts/cookie'
+import cookie from 'scripts/cookie'
 import { getCurrentGames } from 'scripts/api'
 import validate from 'scripts/validate'
 
@@ -25,7 +25,7 @@ const MygamesEditIndex = () => {
   const signOut = useSignOut()
 
   useEffect(() => {
-    const token: Token | null = ClientSideCookies.loadToken()
+    const token: Token | null = cookie.client.loadToken()
     if (validate.token(token)) {
       getCurrentGames(token).then((json) => {
         if (json.ok) {

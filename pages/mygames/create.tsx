@@ -13,7 +13,7 @@ import SlideoutMenu from 'components/slideout_menu'
 import Sidemenu from 'components/sidemenu'
 import LoadingOverlay from 'components/loading_overlay'
 
-import { ClientSideCookies } from 'scripts/cookie'
+import cookie from 'scripts/cookie'
 import { postGame } from 'scripts/api'
 import validate from 'scripts/validate'
 
@@ -53,7 +53,7 @@ const MygamesCreate = () => {
   }
 
   function handleClickSubmit(): void{
-    const token: Token | null = ClientSideCookies.loadToken()
+    const token: Token | null = cookie.client.loadToken()
     if (validate.token(token)) {
       if (validateTitle()) {
         setShowOverlay(true)

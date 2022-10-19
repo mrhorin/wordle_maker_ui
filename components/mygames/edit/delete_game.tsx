@@ -10,7 +10,7 @@ import { useAlert } from 'react-alert'
 import Modal from 'components/modal'
 import LoadingOverlay from 'components/loading_overlay'
 
-import { ClientSideCookies } from 'scripts/cookie'
+import cookie from 'scripts/cookie'
 import { deleteGame } from 'scripts/api'
 import validate from 'scripts/validate'
 
@@ -43,7 +43,7 @@ const DeleteGame = ({ game }: Props) => {
   const alert = useAlert()
 
   function handleClickDelete(): void{
-    const token: Token | null = ClientSideCookies.loadToken()
+    const token: Token | null = cookie.client.loadToken()
     if (validate.token(token)) {
       setShowOverlay(true)
       nprogress.start()

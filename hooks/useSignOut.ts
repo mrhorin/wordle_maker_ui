@@ -3,7 +3,7 @@ import { useContext } from 'react'
 
 import CurrentUserInfoContext from 'contexts/current_user_info'
 
-import { ClientSideCookies } from 'scripts/cookie'
+import cookie from 'scripts/cookie'
 import { deleteSignOut } from 'scripts/api'
 import validate from 'scripts/validate'
 
@@ -15,12 +15,12 @@ export default () => {
   }
 
   const destroyCookies = () => {
-    ClientSideCookies.destroyToken()
-    ClientSideCookies.destroyUserInfo()
+    cookie.client.destroyToken()
+    cookie.client.destroyUserInfo()
   }
 
   const signOut = (callback?: () => void): void => {
-    const token: Token | null = ClientSideCookies.loadToken()
+    const token: Token | null = cookie.client.loadToken()
     if (validate.token(token)) {
       deleteSignOut(token).then(json => {
         if (!json.success) console.error(json)

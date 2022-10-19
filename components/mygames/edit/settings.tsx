@@ -20,7 +20,7 @@ import LoadingOverlay from 'components/loading_overlay'
 
 import validate from 'scripts/validate'
 import { putGame } from 'scripts/api'
-import { ClientSideCookies } from 'scripts/cookie'
+import cookie from 'scripts/cookie'
 
 interface Props {
   game: Game
@@ -80,7 +80,7 @@ const Settings = ({ game, setGame }: Props) => {
   }
 
   function handleClickUpdate(): void{
-    const token: Token | null = ClientSideCookies.loadToken()
+    const token: Token | null = cookie.client.loadToken()
     if (validateTitle()) {
       if (validate.token(token)) {
         setShowOverlay(true)

@@ -13,7 +13,7 @@ import ShowSlideoutMenuContext from 'contexts/show_slideout_menu'
 import useSignOut from 'hooks/useSignOut'
 import useLocale from 'hooks/useLocale'
 
-import { ClientSideCookies } from 'scripts/cookie'
+import cookie from 'scripts/cookie'
 import validate from 'scripts/validate'
 import { getCuurentUser } from 'scripts/api'
 
@@ -31,8 +31,8 @@ const Header = () => {
   const signOut = useSignOut()
 
   useEffect(() => {
-    const prevToken: Token | null = ClientSideCookies.loadToken()
-    const prevUserInfo: UserInfo | null = ClientSideCookies.loadUserInfo()
+    const prevToken: Token | null = cookie.client.loadToken()
+    const prevUserInfo: UserInfo | null = cookie.client.loadUserInfo()
     const query: Query = getQuery()
     if (validate.token(prevToken) && validate.userInfo(prevUserInfo)) {
       // Restore current user
@@ -46,7 +46,7 @@ const Header = () => {
         uid: query['uid'],
         expiry: query['expiry']
       }
-      ClientSideCookies.saveToken(token)
+      cookie.client.saveToken(token)
       nprogress.start()
       getCuurentUser(token).then(json => {
         if (json && json.isLoggedIn) {
@@ -57,7 +57,7 @@ const Header = () => {
             uid: json.data.uid,
             image: json.data.image
           }
-          ClientSideCookies.saveUserInfo(userInfo)
+          cookie.client.saveUserInfo(userInfo)
           currentUserInfoContext.setCurrentUserInfo(userInfo)
           setAccountStatus('LOGGEDIN')
         }
@@ -69,8 +69,8 @@ const Header = () => {
       })
     } else {
       // Delete current user and token
-      ClientSideCookies.destroyToken()
-      ClientSideCookies.destroyUserInfo()
+      cookie.client.destroyToken()
+      cookie.client.destroyUserInfo()
       currentUserInfoContext.setCurrentUserInfo(null)
       setAccountStatus('SIGNIN')
     }

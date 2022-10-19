@@ -13,7 +13,7 @@ import PaginationComponent from 'components/pagination'
 import Modal from 'components/modal'
 import LoadingOverlay from 'components/loading_overlay'
 
-import { ClientSideCookies } from 'scripts/cookie'
+import cookie from 'scripts/cookie'
 import validate from 'scripts/validate'
 import { getCurrentWords, putWord, deleteWord } from 'scripts/api'
 
@@ -78,7 +78,7 @@ const EditWords = ({ game }: EditWordsProps) => {
   const language = useLanguage(game.lang)
 
   useEffect(() => {
-    const token: Token | null = ClientSideCookies.loadToken()
+    const token: Token | null = cookie.client.loadToken()
     if (validate.token(token) && currentWordList.length <= 0) {
       // When currentWordList is empty
       if ((pagination == null) || (pagination.total_count > 0)) {
@@ -122,7 +122,7 @@ const EditWords = ({ game }: EditWordsProps) => {
   }, [])
 
   const handleClickDelete = useCallback((word_id: number) => {
-    const token: Token | null = ClientSideCookies.loadToken()
+    const token: Token | null = cookie.client.loadToken()
     if (validate.token(token)) {
       setShowOverlay(true)
       nprogress.start()
@@ -147,7 +147,7 @@ const EditWords = ({ game }: EditWordsProps) => {
 
   function handleClickUpdate() {
     let nextWord = { id: inputUpdateId, name: inputUpdateWord, game_id: game.id }
-    const token: Token | null = ClientSideCookies.loadToken()
+    const token: Token | null = cookie.client.loadToken()
     if (validate.wordWithGame(nextWord.name, game) && validate.word(nextWord)) {
       // Remove invalid style
       if (inputUpdateWordModalEl.current) inputUpdateWordModalEl.current.classList.remove('input-invalid')
@@ -183,7 +183,7 @@ const EditWords = ({ game }: EditWordsProps) => {
   }
 
   function handleClickPage(page: number): void{
-    const token: Token | null = ClientSideCookies.loadToken()
+    const token: Token | null = cookie.client.loadToken()
     if (validate.token(token)) {
       nprogress.start()
       getCurrentWords(token, game, page).then(json => {

@@ -14,7 +14,7 @@ import nprogress from 'nprogress'
 import ChipTextarea from 'components/form/chip_textarea'
 import LoadingOverlay from 'components/loading_overlay'
 
-import { ClientSideCookies } from 'scripts/cookie'
+import cookie from 'scripts/cookie'
 import validate from 'scripts/validate'
 import { postWords } from 'scripts/api'
 
@@ -87,7 +87,7 @@ const AddWords = ({ game }: Props) => {
   }
 
   function handleClickSubmit(): void{
-    const token: Token | null = ClientSideCookies.loadToken()
+    const token: Token | null = cookie.client.loadToken()
     if (validate.token(token)) {
       alert.removeAll()
       if (validateWords() && game.id) {

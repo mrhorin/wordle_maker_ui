@@ -1,5 +1,5 @@
 import type { Token, Game, Word } from 'types/global'
-import { ClientSideCookies } from 'scripts/cookie'
+import cookie from 'scripts/cookie'
 import validate from 'scripts/validate'
 
 const API_URL: string = `${process.env.NEXT_PUBLIC_API_PROTOCOL}://${process.env.NEXT_PUBLIC_API_DOMAIN}`
@@ -12,7 +12,7 @@ function saveToken(headers: Headers) {
     expiry: headers.get('expiry'),
   }
   if (validate.token(token)) {
-    ClientSideCookies.saveToken(token as Token)
+    cookie.client.saveToken(token as Token)
   }
 }
 
@@ -26,7 +26,7 @@ export async function deleteSignOut(token: Token) {
       'uid': token.uid
     }
   })
-  ClientSideCookies.destroyToken()
+  cookie.client.destroyToken()
   return await res.json()
 }
 
@@ -54,7 +54,7 @@ export async function deleteCurrentUser(token: Token) {
       'uid': token.uid
     }
   })
-  ClientSideCookies.destroyToken()
+  cookie.client.destroyToken()
   return await res.json()
 }
 
