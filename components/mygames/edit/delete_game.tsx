@@ -68,7 +68,7 @@ const DeleteGame = ({ game }: Props) => {
   }
 
   return (
-    <>
+    <div className='sp-padding'>
       <button className='btn btn-danger' onClick={() => { setShowModal(true) }}>{ t.MY_GAMES.EDIT.DELETE_GAME.BUTTON }</button>
 
       {/* Modal */}
@@ -96,7 +96,7 @@ const DeleteGame = ({ game }: Props) => {
       </Modal>
       {/* LoadingOverlay */}
       <LoadingOverlay showOverlay={showOverlay} />
-    </>
+    </div>
   )
 }
 

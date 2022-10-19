@@ -139,7 +139,7 @@ export default {
   },
   SIGN_IN: {
     TITLE: 'サインイン',
-    I_AGREED: '利用規約に同意しました。',
+    I_AGREED: '利用規約に同意します',
     CONTINUE: {
       TWITTER: 'Twitterでサインイン',
       FACEBOOK: 'Facebookでサインイン',
@@ -178,7 +178,7 @@ export default {
     CHALLENGE_COUNT: '最大回数',
     CHARACTER_COUNT: '文字数',
     LANGUAGE: '言語',
-    PUBLIC: '公開'
+    PUBLIC: '公開状態'
   },
   LANG: {
     EN: 'English',

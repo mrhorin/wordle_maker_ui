@@ -117,7 +117,7 @@ const AddWords = ({ game }: Props) => {
   }
 
   return (
-    <>
+    <div className='sp-padding'>
       <div className='addwords-attrs'>
         {/* Language */}
         <div className='addwords-attrs-item'>
@@ -135,7 +135,7 @@ const AddWords = ({ game }: Props) => {
       </div>
       <button className='btn btn-primary' disabled={!validateWords() || 0 == chips.length} onClick={handleClickSubmit}>{ t.FORM.SUBMIT }</button>
       <LoadingOverlay showOverlay={showOverlay} />
-    </>
+    </div>
   )
 }
 

@@ -122,7 +122,7 @@ const Settings = ({ game, setGame }: Props) => {
   }
 
   return (
-    <>
+    <div className='sp-padding'>
       {/* Gmae Link */}
       <div className='form-group'>
         <label>{ t.MY_GAMES.EDIT.SETTINGS.GAME_LINK }</label>
@@ -198,7 +198,7 @@ const Settings = ({ game, setGame }: Props) => {
         <button type='button' id='game-submit' className='btn btn-primary' disabled={!isChanged} onClick={handleClickUpdate}>{ t.FORM.UPDATE }</button>
       </form>
       <LoadingOverlay showOverlay={showOverlay} />
-    </>
+    </div>
   )
 }
 

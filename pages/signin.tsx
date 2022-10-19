@@ -29,22 +29,26 @@ const Signin: NextPage = () => {
 
         <div className='text'>
           <h1>{t.SIGN_IN.TITLE}</h1>
-          <p>
+          {/* TOS */}
+          <div style={{margin: '15rem 0 0.5rem 0'}}>
             <Link href="/tos" shallow={true}>
               <a>{t.TOS.TITLE}</a>
             </Link>
-          </p>
+          </div>
 
           <form method="post" action={`${process.env.NEXT_PUBLIC_API_PROTOCOL}://${process.env.NEXT_PUBLIC_API_DOMAIN}/api/v1/auth/twitter`}>
             {/* tos_agreement */}
-            <div className='form-group-checkbox' style={{ marginBottom: '1rem' }}>
-              <label onClick={handleCheckedTosAgreement}>{t.SIGN_IN.I_AGREED}</label>
-              <input type="checkbox" id="tos_agreement" checked={checkedTosAgreement} onChange={handleCheckedTosAgreement} />
+            <div className='agreement' onClick={handleCheckedTosAgreement}>
+              <input id="tos_agreement" className='checkbox-default agreement-checkbox' type="checkbox" checked={checkedTosAgreement} onChange={handleCheckedTosAgreement} />
+              <span className='agreement-text' style={{ fontWeight: '500'}}>{ t.SIGN_IN.I_AGREED}</span>
             </div>
-            <button className='btn btn-default' disabled={!checkedTosAgreement}>
-              <FontAwesomeIcon icon={faTwitter} style={{marginRight: '1rem'}} />
-              {t.SIGN_IN.CONTINUE.TWITTER}
-            </button>
+            {/* buttons */}
+            <div style={{ marginTop: '1rem' }}>
+              <button className='btn btn-default btn-signin' style={{ background: '#1e9bf0', color: '#fff' }} disabled={!checkedTosAgreement}>
+                <FontAwesomeIcon icon={faTwitter} style={{marginRight: '1rem'}} />
+                {t.SIGN_IN.CONTINUE.TWITTER}
+              </button>
+            </div>
           </form>
         </div>
       </div>

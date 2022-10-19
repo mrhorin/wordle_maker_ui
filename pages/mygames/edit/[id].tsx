@@ -110,7 +110,7 @@ const MygamesEdit = () => {
               </div>
             </div>
             {/* Main */}
-            <div className='mygames-edit-main sp-padding'>
+            <div className='mygames-edit-main'>
               {(() => {
                 if (game == null) {
                   return <ReactLoading type={'spin'} color={'#008eff'} height={'25px'} width={'25px'} className='loading-center' />
