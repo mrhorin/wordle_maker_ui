@@ -213,6 +213,7 @@ select,
   margin-bottom: 0;
   border-radius: 3px;
   color: var(--font-color1);
+  appearance: none;
   @include light{
     background: var(--base-color2);
     border: 1px solid var(--border-color);
