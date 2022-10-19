@@ -74,6 +74,7 @@ export async function getGame(gameId: number, token?: Token) {
       'uid': token.uid,
     }
   }) : await fetch(url)
+  if (token) saveToken(res.headers)
   return await res.json()
 }
 
@@ -176,6 +177,7 @@ export async function getGameWords(gameId: number, token?: Token) {
       'uid': token.uid
     }
   }) : await fetch(url)
+  if (token) saveToken(res.headers)
   return await res.json()
 }
 
@@ -191,6 +193,7 @@ export async function getWordsToday(gameId: number, token?: Token) {
       'uid': token.uid
     }
   }) : await fetch(url)
+  if (token) saveToken(res.headers)
   return await res.json()
 }
 
