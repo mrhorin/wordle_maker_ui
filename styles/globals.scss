@@ -571,8 +571,6 @@ table{
           margin: 0;
         }
       }
-      td.table-td-checkbox{
-      }
       td.table-td-word{
         // width: 100%;
         overflow: hidden;
@@ -1609,7 +1607,10 @@ button{
     @extend .example-word-tile;
     background: $absent-color;
     border: 1px solid var(--font-color3);
-    @include light{ border-color: $absent-color; }
+    @include light{
+      border-color: $absent-color-light;
+      background: $absent-color-light;
+    }
   }
 }
 
