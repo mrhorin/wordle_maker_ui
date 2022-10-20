@@ -475,6 +475,25 @@ const Games = (props: Props) => {
               {/* Desc */}
               <label className='howtoplay-label'>{t.GAME.DESC}:</label>
               <div className='howtoplay-text'>{props.game.desc}</div>
+              {/* Attrs */}
+              <div className='howtoplay-attrs'>
+                <div className='howtoplay-attrs-item'>
+                  <label className='howtoplay-label'>{t.GAME_IDEX.LANGUAGE}:</label>
+                  <div className='howtoplay-text'>{props.game.lang == 'ja' ? t.LANG.JA : t.LANG.EN}</div>
+                </div>
+                <div className='howtoplay-attrs-item'>
+                  <label className='howtoplay-label'>{t.GAME_IDEX.WORD_COUNT}:</label>
+                  <div className='howtoplay-text'>{props.game.words_count}</div>
+                </div>
+                <div className='howtoplay-attrs-item'>
+                  <label className='howtoplay-label'>{t.GAME_IDEX.CHARACTER_COUNT}:</label>
+                  <div className='howtoplay-text'>{props.game.char_count}</div>
+                </div>
+                <div className='howtoplay-attrs-item'>
+                  <label className='howtoplay-label'>{t.GAME_IDEX.CHALLENGE_COUNT}:</label>
+                  <div className='howtoplay-text'>{props.game.challenge_count}</div>
+                </div>
+              </div>
               {/* Basic Rules */}
               <label className='howtoplay-label'>{t.GAMES.HOW_TO_PLAY.BASIC_RULES}:</label>
               {/* 1 */}

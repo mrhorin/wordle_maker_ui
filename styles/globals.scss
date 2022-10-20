@@ -1599,6 +1599,29 @@ button{
     margin-bottom: 20px;
     color: var(--font-color4);
   }
+  .howtoplay-attrs{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-end;
+    margin-bottom: 20px;
+    .howtoplay-attrs-item{
+      display: inline-flex;
+      align-items: baseline;
+      flex-direction: row;
+      margin-right: 1rem;
+      .howtoplay-label{
+        order: 1;
+        margin: 0;
+        margin-right: 5px;
+      }
+      .howtoplay-text{
+        order: 2;
+        margin: 0;
+      }
+    }
+  }
 }
 
 .example-text{
