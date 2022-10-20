@@ -1406,6 +1406,43 @@ button{
   }
 }
 
+/* ------------- Signin ------------- */
+.signin{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+  .signin-item{
+    width: 100%;
+    max-width: 400px;
+    @include sp{
+      max-width: none;
+    }
+  }
+  .signin-title{
+    @extend .signin-item;
+    order: 1;
+    text-align: center
+  }
+  .signin-tos{
+    @extend .signin-item;
+    order: 2;
+    color: var(--font-color3);
+  }
+  .signin-agreement{
+    @extend .signin-item;
+    order: 2;
+  }
+  .signin-btns{
+    @extend .signin-item;
+    order: 4;
+    margin-top: 1rem;
+    .btn{
+      min-width: 100%;
+    }
+  }
+}
+
 /* --------------- Games --------------- */
 .games{
   display: flex;

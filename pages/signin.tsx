@@ -27,30 +27,29 @@ const Signin: NextPage = () => {
 
         <SlideoutMenu />
 
-        <div className='text'>
-          <h1>{t.SIGN_IN.TITLE}</h1>
+        <div className='signin text'>
+          <h1 className='signin-title'>{t.SIGN_IN.TITLE}</h1>
           {/* TOS */}
-          <div style={{margin: '15rem 0 0.5rem 0'}}>
-            <Link href="/tos" shallow={true}>
-              <a>{t.TOS.TITLE}</a>
-            </Link>
+          <div className='signin-tos'>
+            サインインする前に必ず<Link href="/tos" shallow={true}><a>{t.TOS.TITLE}</a></Link>をご確認ください。
           </div>
-
-          <form method="post" action={`${process.env.NEXT_PUBLIC_API_PROTOCOL}://${process.env.NEXT_PUBLIC_API_DOMAIN}/api/v1/auth/twitter`}>
-            {/* confirmation */}
-            <div className='agreement' onClick={handleChangeConfirmation}>
-              <input className='checkbox-default agreement-checkbox' type="checkbox" checked={checkedConfirmation} onChange={handleChangeConfirmation} />
-              <span className='agreement-text'>{ t.SIGN_IN.I_AGREED}</span>
-            </div>
-            {/* buttons */}
-            <div style={{ marginTop: '1rem' }}>
+          {/* agreement */}
+          <div className='signin-agreement agreement' onClick={handleChangeConfirmation}>
+            <input className='checkbox-default agreement-checkbox' type="checkbox" checked={checkedConfirmation} onChange={handleChangeConfirmation} />
+            <span className='agreement-text'>{ t.SIGN_IN.I_AGREED}</span>
+          </div>
+          {/* Sign in buttons */}
+          <div className='signin-btns'>
+            {/* Twitter */}
+            <form className='signin-form' method="post" action={`${process.env.NEXT_PUBLIC_API_PROTOCOL}://${process.env.NEXT_PUBLIC_API_DOMAIN}/api/v1/auth/twitter`}>
               <button className='btn btn-default btn-signin' style={{ background: '#1e9bf0', color: '#fff' }} disabled={!checkedConfirmation}>
                 <FontAwesomeIcon icon={faTwitter} style={{marginRight: '1rem'}} />
                 {t.SIGN_IN.CONTINUE.TWITTER}
               </button>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
+
       </div>
     </main>
   )

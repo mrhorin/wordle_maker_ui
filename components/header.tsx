@@ -1,10 +1,13 @@
 import type { Token, UserInfo, Query, HeaderStatus } from 'types/global'
 import { useRouter } from 'next/router'
-import { useState, useEffect, useContext, memo } from 'react'
+import { useState, useEffect, useContext, useMemo, memo } from 'react'
 import { useAlert } from 'react-alert'
 import nprogress from 'nprogress'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBars, faCaretDown, faEdit, faPlus, faGear, faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
+import { faBars, faCaretDown, faEdit, faPlus, faGear, faRightFromBracket, faXmark } from '@fortawesome/free-solid-svg-icons'
+import { faTwitter } from '@fortawesome/free-brands-svg-icons'
+
+import Modal from 'components/modal'
 
 import CurrentUserInfoContext from 'contexts/current_user_info'
 import ShowAccountMenuContext from 'contexts/show_account_menu'
@@ -22,6 +25,9 @@ import Image from 'next/image'
 
 const Header = () => {
   const [accountStatus, setAccountStatus] = useState<HeaderStatus>('INITIALIZING')
+  const [showModal, setShowModal] = useState<boolean>(false)
+  const [checkedConfirmation, setCheckedConfirmation] = useState<boolean>(false)
+
   const currentUserInfoContext = useContext(CurrentUserInfoContext)
   const showAccountMenuContext = useContext(ShowAccountMenuContext)
   const showSlideoutMenuContext = useContext(ShowSlideoutMenuContext)
@@ -77,6 +83,17 @@ const Header = () => {
       setAccountStatus('SIGNIN')
     }
   }, [])
+
+  const handleChangeConfirmation = useMemo(() => {
+    return () => { setCheckedConfirmation(!checkedConfirmation) }
+  }, [checkedConfirmation])
+
+  const handleClickTos = useMemo(() => {
+    return () => {
+      router.push('/tos')
+      setShowModal(false)
+    }
+  }, [checkedConfirmation])
 
   function getQuery(): Query{
     const url_search: string[] = location.search.slice(1).split('&')
@@ -149,13 +166,7 @@ const Header = () => {
       )
     } else if(accountStatus == 'SIGNIN'){
       return (
-        <Link href="/signin">
-          <a>
-            <button type='button' className='btn btn-primary'>
-              {t.HEADER.SIGN_IN}
-            </button>
-          </a>
-        </Link>
+        <button type='button' className='btn btn-primary' onClick={()=> setShowModal(true)}>{t.HEADER.SIGN_IN}</button>
       )
     } else {
       return <div className='header-account-button'></div>
@@ -163,23 +174,59 @@ const Header = () => {
   }
 
   return (
-    <header className='header'>
-      <div className='container'>
-        <div className='header-menu'>
-          <div className='header-hamburger' onClick={() => showSlideoutMenuContext.set(!showSlideoutMenuContext.show)}>
-            <FontAwesomeIcon icon={faBars} className='fa-fw' />
+    <>
+      {/* Modal */}
+      <Modal showModal={showModal} setShowModal={setShowModal}>
+        <div className='modal-window-container'>
+          {/* header */}
+          <div className='modal-window-header' style={{ position: 'relative' }}>
+            <div style={{ fontWeight: 'bold', fontSize: '1.5rem', textAlign: 'center' }}>{t.SIGN_IN.TITLE}</div>
+            <FontAwesomeIcon icon={faXmark} className='xmark' style={{ position: 'absolute', top: '15px', right: '15px' }} onClick={() => setShowModal(false)} />
+          </div>
+          {/* body */}
+          <div className='modal-window-body' style={{ margin: '2rem 0' }}>
+            <div className='signin'>
+              {/* tos */}
+              <div className='signin-tos'>
+                サインインする前に必ず<a onClick={handleClickTos}>{t.TOS.TITLE}</a>をご確認ください。
+              </div>
+              {/* agreement */}
+              <div className='signin-agreement agreement' onClick={handleChangeConfirmation}>
+                <input className='checkbox-default agreement-checkbox' type="checkbox" checked={checkedConfirmation} onChange={handleChangeConfirmation} />
+                <span className='agreement-text'>{ t.SIGN_IN.I_AGREED}</span>
+              </div>
+              <div className='signin-btns'>
+                {/* Twitter */}
+                <form method="post" action={`${process.env.NEXT_PUBLIC_API_PROTOCOL}://${process.env.NEXT_PUBLIC_API_DOMAIN}/api/v1/auth/twitter`}>
+                  <button className='btn btn-default btn-signin' style={{ background: '#1e9bf0', color: '#fff', margin: '0 auto', display: 'block' }} disabled={!checkedConfirmation}>
+                    <FontAwesomeIcon icon={faTwitter} style={{marginRight: '1rem'}} />
+                    {t.SIGN_IN.CONTINUE.TWITTER}
+                  </button>
+                </form>
+              </div>
+            </div>
           </div>
         </div>
-        <div className='header-home'>
-          <Link href="/">
-            <a><Image src="/icon.svg" width={23} height={23} alt="HOME" /></a>
-          </Link>
+      </Modal>
+
+      <header className='header'>
+        <div className='container'>
+          <div className='header-menu'>
+            <div className='header-hamburger' onClick={() => showSlideoutMenuContext.set(!showSlideoutMenuContext.show)}>
+              <FontAwesomeIcon icon={faBars} className='fa-fw' />
+            </div>
+          </div>
+          <div className='header-home'>
+            <Link href="/">
+              <a><Image src="/icon.svg" width={23} height={23} alt="HOME" /></a>
+            </Link>
+          </div>
+          <div className='header-account'>
+            { createHeaderAccountComponent() }
+          </div>
         </div>
-        <div className='header-account'>
-          { createHeaderAccountComponent() }
-        </div>
-      </div>
-    </header>
+      </header>
+    </>
   )
 }
 
