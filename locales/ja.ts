@@ -139,6 +139,10 @@ export default {
   },
   SIGN_IN: {
     TITLE: 'サインイン',
+    TOS_TEXT: {
+      A: 'サインインする前に必ず',
+      B: 'をご確認下さい。'
+    },
     I_AGREED: '利用規約に同意します',
     CONTINUE: {
       TWITTER: 'Twitterでサインイン',

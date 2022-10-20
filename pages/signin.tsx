@@ -31,7 +31,7 @@ const Signin: NextPage = () => {
           <h1 className='signin-title'>{t.SIGN_IN.TITLE}</h1>
           {/* TOS */}
           <div className='signin-tos'>
-            サインインする前に必ず<Link href="/tos" shallow={true}><a>{t.TOS.TITLE}</a></Link>をご確認ください。
+            {t.SIGN_IN.TOS_TEXT.A}<Link href="/tos" shallow={true}><a>{t.TOS.TITLE}</a></Link>{t.SIGN_IN.TOS_TEXT.B}
           </div>
           {/* agreement */}
           <div className='signin-agreement agreement' onClick={handleChangeConfirmation}>

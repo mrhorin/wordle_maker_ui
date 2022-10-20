@@ -141,6 +141,10 @@ export default {
   },
   SIGN_IN: {
     TITLE: 'Sign in',
+    TOS_TEXT: {
+      A: 'You must confirm ',
+      B: ' before signing in.'
+    },
     I_AGREED: 'I agreed to Terms of Service.',
     CONTINUE: {
       TWITTER: 'Continue with Twitter',

@@ -1428,6 +1428,7 @@ button{
     @extend .signin-item;
     order: 2;
     color: var(--font-color3);
+    margin: 0.5rem 0;
   }
   .signin-agreement{
     @extend .signin-item;

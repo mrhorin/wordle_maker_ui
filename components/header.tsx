@@ -188,7 +188,8 @@ const Header = () => {
             <div className='signin'>
               {/* tos */}
               <div className='signin-tos'>
-                サインインする前に必ず<a onClick={handleClickTos}>{t.TOS.TITLE}</a>をご確認ください。
+              {t.SIGN_IN.TOS_TEXT.A}<a onClick={handleClickTos}>{t.TOS.TITLE}</a>{t.SIGN_IN.TOS_TEXT.B}
+
               </div>
               {/* agreement */}
               <div className='signin-agreement agreement' onClick={handleChangeConfirmation}>
