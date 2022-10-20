@@ -1403,9 +1403,8 @@ button{
   @include dark{ font-weight: 500; }
   .index-title-icon{
     order: 1;
-    margin-right: 5px;
     display: inline-flex;
-    align-items: center;
+    width: 50px;
   }
   .index-title-text{
     order: 2;
