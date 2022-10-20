@@ -800,11 +800,13 @@ button{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: stretch;
+  align-items: center;
   .header-menu{
     order: 1;
+    flex-basis: 30%;
     margin: auto 0;
-    padding: 0px 10px 0px 25px;
+    padding: 0px 10px 0px 15px;
+    text-align: left;
     .header-hamburger{
       display: inline-flex;
       flex-direction: column;
@@ -834,6 +836,8 @@ button{
   }
   .header-home{
     order: 2;
+    flex-basis: 40%;
+    text-align: center;
     margin: auto 0;
     padding: 0 10px;
     padding-top: 5px;
@@ -846,9 +850,11 @@ button{
   }
   .header-account{
     order: 3;
+    flex-basis: 30%;
     margin: auto 0;
-    padding: 0px 25px 0px 10px;
+    padding: 0px 15px 0px 10px;
     position: relative;
+    text-align: right;
     a{
       button{
         margin: 0;
