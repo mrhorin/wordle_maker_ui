@@ -29,7 +29,7 @@ const Account = () => {
   const signOut = useSignOut()
 
   /*********** Memo ***********/
-  const handleConfirmation = useMemo(() => {
+  const handleChangeConfirmation = useMemo(() => {
     return () => {
       setCheckedConfirmation(!checkedConfirmation);
     }
@@ -79,9 +79,10 @@ const Account = () => {
               <li>{ t.SETTINGS.ACCOUNT.DELETE_ACCOUNT.MESSAGE.CANNOT_REPlY }</li>
             </ol>
             <div>
-            <div className='agreement'>
-              <input className='checkbox-default agreement-checkbox' type="checkbox" id="confirmation" checked={checkedConfirmation} onChange={handleConfirmation} />
-              <span className='agreement-text' onClick={handleConfirmation}>{t.FORM.I_AGREE}</span>
+            {/* confirmation */}
+            <div className='agreement' onClick={handleChangeConfirmation}>
+              <input className='checkbox-default agreement-checkbox' type="checkbox" checked={checkedConfirmation} onChange={handleChangeConfirmation} />
+              <span className='agreement-text'>{t.FORM.I_AGREE}</span>
             </div>
           </div>
           </div>

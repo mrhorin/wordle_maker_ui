@@ -30,17 +30,17 @@ const DeleteGame = ({ game }: Props) => {
    *  The flag indicates whether LoadingOverlay component is shown or not. */
   const [showOverlay, setShowOverlay] = useState<boolean>(false)
 
-  /*********** Memo ***********/
-  const handleConfirmation = useMemo(() => {
-    return () => {
-      setCheckedConfirmation(!checkedConfirmation);
-    }
-  }, [checkedConfirmation])
-
   const router = useRouter()
   const { t } = useLocale()
   const signOut = useSignOut()
   const alert = useAlert()
+
+  /*********** Memo ***********/
+  const handleChangeConfirmation = useMemo(() => {
+    return () => {
+      setCheckedConfirmation(!checkedConfirmation);
+    }
+  }, [checkedConfirmation])
 
   function handleClickDelete(): void{
     const token: Token | null = cookie.client.loadToken()
@@ -83,9 +83,10 @@ const DeleteGame = ({ game }: Props) => {
               <li>{ t.MY_GAMES.EDIT.DELETE_GAME.MESSAGE.CANNOT_RECOVER }</li>
               <li>{ t.MY_GAMES.EDIT.DELETE_GAME.MESSAGE.CANNOT_REPlY }</li>
             </ol>
-            <div className='agreement' onClick={handleConfirmation}>
-              <input className='checkbox-default agreement-checkbox' type="checkbox" id="confirmation" checked={checkedConfirmation} />
-              <span className='agreement-text' style={{ fontWeight: '500', cursor: 'default' }}>{ t.FORM.I_AGREE }</span>
+            {/* confirmation */}
+            <div className='agreement' onClick={handleChangeConfirmation}>
+              <input className='checkbox-default agreement-checkbox' type="checkbox" checked={checkedConfirmation} onChange={handleChangeConfirmation} />
+              <span className='agreement-text'>{ t.FORM.I_AGREE }</span>
             </div>
           </div>
           <div className='modal-window-footer'>
