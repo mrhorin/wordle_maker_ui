@@ -1222,7 +1222,7 @@ button{
       width: 95%;
     }
     .modal-window-container{
-      color: var(--font-color1);
+      color: var(--font-color4);
       background: var(--base-color2);
       border: 1px solid var(--border-modal-color);
       .modal-window-header{ border-bottom: 1px solid var(--border-modal-color); }
@@ -1620,7 +1620,7 @@ button{
   text-align: center;
   .answer-label{
     order: 1;
-    color: #a2a2a2;
+    // color: #a2a2a2;
     font-size: 0.8rem;
     line-height: 1rem;
     font-weight: 500;
@@ -1647,7 +1647,7 @@ button{
     padding: 0 5px;
     &:last-child{ border-right: none; }
     .statistic-label{
-      color: #a2a2a2;
+      // color: #a2a2a2;
       font-size: 0.8rem;
       line-height: 1rem;
       font-weight: 500;
@@ -1672,7 +1672,7 @@ button{
     text-align: left;
     text-transform: uppercase;
     .timer-label{
-      color: #a2a2a2;
+      // color: #a2a2a2;
       font-size: 0.8rem;
       line-height: 1rem;
       font-weight: 500;
