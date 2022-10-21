@@ -252,7 +252,7 @@ export async function putWord(token: Token, word: Word) {
 }
 
 // words#destroy
-export async function deleteWord(token: Token, word_id: number) {
+export async function deleteWord(token: Token, word_id: number | number[]) {
   const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/v1/words/${word_id}`, {
     method: 'DELETE',
     headers: {

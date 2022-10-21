@@ -117,7 +117,7 @@ const AddWords = ({ game }: Props) => {
   }
 
   return (
-    <div className='sp-padding'>
+    <div className='addwords sp-padding'>
       <div className='addwords-attrs'>
         {/* Language */}
         <div className='addwords-attrs-item'>

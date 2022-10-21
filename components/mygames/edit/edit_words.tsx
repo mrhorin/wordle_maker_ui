@@ -4,6 +4,8 @@ import { useRouter } from 'next/router'
 import { useAlert } from 'react-alert'
 import ReactLoading from 'react-loading'
 import nprogress from 'nprogress'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrashCan } from '@fortawesome/free-solid-svg-icons'
 
 import useLanguage from 'hooks/useLanguage'
 import useLocale from 'hooks/useLocale'
@@ -17,44 +19,49 @@ import cookie from 'scripts/cookie'
 import validate from 'scripts/validate'
 import { getCurrentWords, putWord, deleteWord } from 'scripts/api'
 
-interface TrWordProps {
-  word: Word
-  handleClickEdit(word: Word): void
-  handleClickDelete(word_id: number): void
+type TableStatus = 'INITIALIZING' | 'NO_RECORDS' | 'HAS_RECORDS' | 'IS_SUSPENDED' | 'UNAUTHORIZED' | 'REQUEST_FAILED'
+
+interface WordState {
+  word: Word,
+  isChecked: boolean,
 }
-
-const TrWordMemo = memo(({ word, handleClickEdit, handleClickDelete }: TrWordProps) => {
-  const { t } = useLocale()
-
-  return (
-    <tr>
-      <td className='table-td-word'>{ word.name }</td>
-      <td className='table-td-edit'>
-        <button className='btn btn-mini btn-square btn-secondary' onClick={() => handleClickEdit(word)}>{ t.COMMON.EDIT }</button>
-      </td>
-      <td className='table-td-delete'>
-        <button className='btn btn-mini btn-square btn-danger' onClick={() => handleClickDelete(word.id)}>
-          { t.COMMON.DELETE }
-        </button>
-      </td>
-    </tr>
-  )
-})
-
-TrWordMemo.displayName = 'TrWordMemo'
 
 interface EditWordsProps {
   game: Game
 }
 
+interface TrWordStateProps {
+  wordState: WordState
+  handleClickEdit(word: Word): void
+  handleChangeCheckbox(wordState: WordState): void
+}
+
+const TrWordStateMemo = memo(({ wordState, handleClickEdit, handleChangeCheckbox }: TrWordStateProps) => {
+  return (
+    <tr>
+      <td className='editwords-td-checkbox'>
+        <input className='checkbox-default' type='checkbox'
+          onChange={() => handleChangeCheckbox(wordState)} checked={wordState.isChecked} />
+      </td>
+      <td className='editwords-td-word' onClick={() => handleClickEdit(wordState.word)}>{wordState.word.name}</td>
+    </tr>
+  )
+})
+
 const EditWords = ({ game }: EditWordsProps) => {
   /*
-   * currentWordList:
-   *  A list of words. */
-  const [currentWordList, setCurrentWordList] = useState<Word[]>([])
+   * wordStateList:
+   *  A list of word state. */
+  const [wordStateList, setWordStateList] = useState<WordState[]>([])
   /* pagination:
    *  Pagenation infomation to render PaginationComponent.  */
-  const [pagination, setPagination] = useState<Pagination | null>(null)
+  // const [pagination, setPagination] = useState<Pagination | null>(null)
+  const [pagination, setPagination] = useState<Pagination>({
+    total_count: 0,
+    limit_value: 0,
+    total_pages: 0,
+    current_page: 0,
+  })
   /* inputUpdateWord:
    * inputUpdateId:
    *  A value of InputUpdateWordModalEl for updating word in Modal.  */
@@ -66,6 +73,8 @@ const EditWords = ({ game }: EditWordsProps) => {
   /* showOverLay:
    *  A flag indicates whether LoadingOverlay component is shown or not. */
   const [showOverlay, setShowOverlay] = useState<boolean>(false)
+  const [isCheckedAll, setIsCheckedAll] = useState<boolean>(false)
+  const [tableStatus, setTableStatus] = useState<TableStatus>('INITIALIZING')
 
   /*********** Ref ***********/
   const inputUpdateWordModalEl = useRef<HTMLInputElement>(null)
@@ -79,38 +88,48 @@ const EditWords = ({ game }: EditWordsProps) => {
 
   useEffect(() => {
     const token: Token | null = cookie.client.loadToken()
-    if (validate.token(token) && currentWordList.length <= 0) {
-      // When currentWordList is empty
-      if ((pagination == null) || (pagination.total_count > 0)) {
-        // When rendered at first OR words exists, it fetches words
+    if (tableStatus == 'INITIALIZING') {
+      if (validate.token(token)) {
         nprogress.start()
         getCurrentWords(token, game, 1).then(json => {
           if (json.ok) {
+            setWordStateList(json.data.words.map((word: Word) => {
+              return { word: word, isChecked: false }
+            }))
             setPagination(json.data.pagination)
-            setCurrentWordList(json.data.words)
+            setTableStatus(json.data.pagination.total_count > 0 ? 'HAS_RECORDS' : 'NO_RECORDS')
+          } else if (!json.isSuspended) {
+            setTableStatus('IS_SUSPENDED')
+          } else if (!json.isLoggedIn) {
+            setTableStatus('UNAUTHORIZED')
+          } else {
+            setTableStatus('REQUEST_FAILED')
           }
         }).catch(error => {
           console.log(error)
+          setTableStatus('NO_RECORDS')
         }).finally(
           () => nprogress.done()
         )
+      } else {
+        setTableStatus('UNAUTHORIZED')
       }
     }
-  }, [currentWordList])
+  }, [])
 
   const updateWord = useCallback((nextWord: Word) => {
-    setCurrentWordList(prevCuurentWordList => {
-      return prevCuurentWordList.map((prevWord) => {
-        if (prevWord.id == nextWord.id) return nextWord
-        return prevWord
+    setWordStateList(prevWordStateList => {
+      return prevWordStateList.map((prevWordState: WordState) => {
+        if (prevWordState.word.id == nextWord.id) return { word: nextWord, isChecked: prevWordState.isChecked }
+        return prevWordState
       })
     })
   }, [])
 
   const removeWord = useCallback((id: number) => {
-    setCurrentWordList(prevCuurentWordList => {
-      return prevCuurentWordList.filter((prevWord) => {
-        return prevWord.id !== id
+    setWordStateList(prevWordStateList => {
+      return prevWordStateList.filter((prevWordState: WordState) => {
+        return prevWordState.word.id !== id
       })
     })
   }, [])
@@ -121,15 +140,45 @@ const EditWords = ({ game }: EditWordsProps) => {
     setShowModal(true)
   }, [])
 
-  const handleClickDelete = useCallback((word_id: number) => {
+  const handleChangeCheckbox = useCallback((wordState: WordState) => {
+    setWordStateList(prevWordStateList => {
+      return prevWordStateList.map((prevWordState: WordState) => {
+        if (wordState.word.id == prevWordState.word.id) {
+          return { word: prevWordState.word, isChecked: !wordState.isChecked }
+        }
+        return prevWordState
+      })
+    })
+  }, [])
+
+  function handleClickIsCheckedAll(): void {
+    if (isCheckedAll) {
+      setWordStateList(prevWordStateList => {
+        return prevWordStateList.map((wordState: WordState) => {
+          return { word: wordState.word, isChecked: false }
+        })
+      })
+    } else {
+      setWordStateList(prevWordStateList => {
+        return prevWordStateList.map((wordState: WordState) => {
+          return { word: wordState.word, isChecked: true }
+        })
+      })
+    }
+    setIsCheckedAll(!isCheckedAll)
+  }
+
+  function handleClickDelete(): void {
+    let nextWord = { id: inputUpdateId, name: inputUpdateWord, game_id: game.id }
     const token: Token | null = cookie.client.loadToken()
-    if (validate.token(token)) {
+    if (validate.token(token) && validate.word(nextWord) && nextWord.id) {
       setShowOverlay(true)
       nprogress.start()
-      deleteWord(token, word_id).then(json => {
+      deleteWord(token, nextWord.id).then(json => {
         alert.removeAll()
-        if (json.ok) {
-          removeWord(word_id)
+        if (json.ok && nextWord.id) {
+          removeWord(nextWord.id)
+          setShowModal(false)
           alert.show(t.ALERT.DELETED, { type: 'success' })
         } else {
           alert.show(t.ALERT.FAILED, { type: 'error' })
@@ -143,9 +192,36 @@ const EditWords = ({ game }: EditWordsProps) => {
     } else {
       signOut(() => router.replace('/signin'))
     }
-  }, [])
+  }
 
-  function handleClickUpdate() {
+  function handleClickDeleteCheckedWords(): void {
+    const token: Token | null = cookie.client.loadToken()
+    const ids: number[] = []
+    for (let wordState of wordStateList) {
+      if (wordState.isChecked) ids.push(wordState.word.id)
+    }
+    if (validate.token(token) && ids.length > 0) {
+      setShowOverlay(true)
+      nprogress.start()
+      deleteWord(token, ids).then(json => {
+        alert.removeAll()
+        if (json.ok) {
+          ids.forEach(id => removeWord(id))
+          setShowModal(false)
+          alert.show(t.ALERT.DELETED, { type: 'success' })
+        } else {
+          alert.show(t.ALERT.FAILED, { type: 'error' })
+        }
+      }).catch(error => {
+        console.log(error)
+      }).finally(() => {
+        nprogress.done()
+        setShowOverlay(false)
+      })
+    }
+  }
+
+  function handleClickUpdate(): void {
     let nextWord = { id: inputUpdateId, name: inputUpdateWord, game_id: game.id }
     const token: Token | null = cookie.client.loadToken()
     if (validate.wordWithGame(nextWord.name, game) && validate.word(nextWord)) {
@@ -188,7 +264,9 @@ const EditWords = ({ game }: EditWordsProps) => {
       nprogress.start()
       getCurrentWords(token, game, page).then(json => {
         if (json.ok) {
-          setCurrentWordList(json.data.words)
+          setWordStateList(json.data.words.map((word: Word) => {
+            return { word: word, isChecked: false }
+          }))
           setPagination(json.data.pagination)
           document.body.scrollTop = 0 // For Safari
           document.documentElement.scrollTop = 0 // For Chrome, Firefox, IE and Opera
@@ -203,70 +281,75 @@ const EditWords = ({ game }: EditWordsProps) => {
     }
   }
 
-  if (pagination?.total_count == 0) {
-    // When words don't exist after fetching words and pagination data
-    return (
-      <div className='mygames-edit-main'>
-        <p style={{textAlign: 'center', margin: '10rem auto'}}>Looks like you have not created anything yet..?</p>
-      </div>
-    )
-  } else if (currentWordList.length <= 0) {
-    // When words don't exist before fetching words and pagination data
-    return (
-      <div className='mygames-edit-main'>
-        <ReactLoading type={'spin'} color={'#008eff'} height={'25px'} width={'25px'} className='loading-center' />
-      </div>
-    )
-  } else {
-    // When words exist
-    const wordComponents = currentWordList.map((s) => {
-      return <TrWordMemo key={s.id} word={s} handleClickEdit={handleClickEdit} handleClickDelete={handleClickDelete} />
-    })
-    return (
-      <>
-        {/* Modal */}
-        <Modal showModal={showModal} setShowModal={setShowModal}>
-          <div className='modal-window-container'>
-            <div className='modal-window-header'>
-              {t.COMMON.EDIT}
-            </div>
-            <div className='modal-window-body'>
-              <div className='form-group'>
-                <label>{ t.COMMON.WORD }</label>
-                <div className='form-countable-input-group'>
-                  <input ref={inputUpdateWordModalEl} value={inputUpdateWord} type='text' maxLength={game.char_count} onChange={e => setInputUpdateWord(e.target.value)} />
-                  <div className='form-countable-input-counter'>{`${inputUpdateWord.length} / ${game.char_count}`}</div>
+  const trWordStateMemoComponents: JSX.Element[] = wordStateList.map((wordState) => {
+    return <TrWordStateMemo key={wordState.word.id} wordState={wordState}
+      handleClickEdit={handleClickEdit} handleChangeCheckbox={handleChangeCheckbox} />
+  })
+
+  return (
+    <div className='editwords sp-padding'>
+      {/* Edit word window */}
+      <Modal showModal={showModal} setShowModal={setShowModal}>
+        <div className='modal-window-container'>
+          <div className='modal-window-header'>
+            {t.COMMON.EDIT}
+          </div>
+          <div className='modal-window-body'>
+            <div className='form-group'>
+              <label>{ t.COMMON.WORD }</label>
+              <div className='form-countable-input-group'>
+                <input ref={inputUpdateWordModalEl} value={inputUpdateWord} type='text'
+                  maxLength={game.char_count} onChange={e => setInputUpdateWord(e.target.value)} />
+                <div className='form-countable-input-counter'>
+                  {`${inputUpdateWord.length} / ${game.char_count}`}
                 </div>
-                <div ref={divInvalidWordModaldEl} className='form-group-invalid-feedback'></div>
               </div>
-            </div>
-            <div className='modal-window-footer'>
-              <button className='btn btn-primary' onClick={handleClickUpdate}>{t.FORM.UPDATE }</button>
-              <button className='btn btn-default' onClick={() => setShowModal(false)}>{ t.COMMON.CLOSE }</button>
+              <div ref={divInvalidWordModaldEl} className='form-group-invalid-feedback'></div>
             </div>
           </div>
-        </Modal>
-        {/* LoadingOverlay */}
-        <LoadingOverlay showOverlay={showOverlay} />
+          <div className='modal-window-footer'>
+            <button className='btn btn-mini btn-square btn-default'
+              onClick={() => setShowModal(false)}>{t.COMMON.CLOSE}</button>
+            <button className='btn btn-mini btn-square btn-danger'
+              onClick={handleClickDelete}>{t.COMMON.DELETE}</button>
+            <button className='btn btn-mini btn-square btn-primary'
+              onClick={handleClickUpdate}>{t.FORM.UPDATE}</button>
+          </div>
+        </div>
+      </Modal>
 
-        <table>
-          <thead>
-            <tr>
-              <th className='table-th-word'>{ t.COMMON.WORD }</th>
-              <th className='table-th-date-edit'>{ t.COMMON.EDIT }</th>
-              <th className='table-th-date-delete'>{ t.COMMON.DELETE }</th>
-            </tr>
-          </thead>
-          <tbody>{ wordComponents }</tbody>
-        </table>
-        {(() => {
-          if (pagination && pagination.total_pages > 1) {
-            return <PaginationComponent pagination={pagination} handleClickPage={handleClickPage} />
-          }
-        })()}
-      </>
-    )
-  }
+      <LoadingOverlay showOverlay={showOverlay} />
+
+      {/* word list */}
+      {(() => {
+        if (tableStatus == 'HAS_RECORDS') {
+          return (
+            <table>
+              <thead>
+                <tr>
+                  <th className='editwords-th-checkbox'>
+                    <input className='checkbox-default' type='checkbox' onChange={handleClickIsCheckedAll} />
+                  </th>
+                  <th className='editwords-th-word'>
+                    <div className='editwords-btn' onClick={handleClickDeleteCheckedWords}>
+                      <FontAwesomeIcon icon={faTrashCan} />
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>{trWordStateMemoComponents}</tbody>
+            </table>
+          )
+        }
+        if (tableStatus == 'INITIALIZING') return <ReactLoading type={'spin'} color={'#008eff'} height={'25px'} width={'25px'} className='loading-center' />
+        if (tableStatus == 'NO_RECORDS') return <p>Looks like you have not created anything yet..?</p>
+        if (tableStatus == 'REQUEST_FAILED') return <p>取得に失敗しました</p>
+        if (tableStatus == 'IS_SUSPENDED') return <p>このゲームは凍結されています</p>
+        if (tableStatus == 'UNAUTHORIZED') return <p>認証に失敗しました</p>
+      })()}
+      <PaginationComponent pagination={pagination} handleClickPage={handleClickPage} />
+    </div>
+  )
 }
 
 export default EditWords
