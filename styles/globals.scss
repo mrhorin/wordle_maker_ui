@@ -586,7 +586,6 @@ table{
     tr{
       transition: background 0.15s ease-out, box-shadow 0.15s ease-out;
       box-shadow: inset 0px 0px 0px;
-      touch-action: none;
       &:nth-child(odd){
         background: var(--base-color2);
       }
