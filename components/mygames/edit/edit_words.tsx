@@ -40,8 +40,10 @@ const TrWordStateMemo = memo(({ wordState, handleClickEdit, handleChangeCheckbox
   return (
     <tr>
       <td className='editwords-td-checkbox'>
-        <input className='checkbox-default' type='checkbox'
-          onChange={() => handleChangeCheckbox(wordState)} checked={wordState.isChecked} />
+        <div className='checkbox-bg-animation-container'>
+          <input className='checkbox-default' type='checkbox'
+            onChange={() => handleChangeCheckbox(wordState)} checked={wordState.isChecked} />
+        </div>
       </td>
       <td className='editwords-td-word' onClick={() => handleClickEdit(wordState.word)}>{wordState.word.name}</td>
     </tr>
@@ -331,11 +333,15 @@ const EditWords = ({ game }: EditWordsProps) => {
               <thead>
                 <tr>
                   <th className='editwords-th-checkbox'>
-                    <input className='checkbox-default' type='checkbox' onChange={handleClickIsCheckedAll} />
+                    <div className='checkbox-bg-animation-container'>
+                      <input className='checkbox-default' type='checkbox' onChange={handleClickIsCheckedAll} />
+                    </div>
                   </th>
                   <th className='editwords-th-word'>
-                    <div className='editwords-btn' onClick={handleClickDeleteCheckedWords}>
-                      <FontAwesomeIcon icon={faTrashCan} />
+                    <div className='btn-bg-animation-container'>
+                      <div className='editwords-btn' onClick={handleClickDeleteCheckedWords}>
+                        <FontAwesomeIcon icon={faTrashCan} />
+                      </div>
                     </div>
                   </th>
                 </tr>
