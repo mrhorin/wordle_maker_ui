@@ -50,6 +50,8 @@ const TrWordStateMemo = memo(({ wordState, handleClickEdit, handleChangeCheckbox
   )
 })
 
+TrWordStateMemo.displayName = "TrWordStateMemo"
+
 const EditWords = ({ game }: EditWordsProps) => {
   /*
    * wordStateList:
