@@ -1,5 +1,5 @@
 import type { Token, Game, Word, Pagination } from 'types/global'
-import { useEffect, useState, useRef, useCallback, memo } from 'react'
+import { useEffect, useState, useRef, useCallback, memo, ChangeEvent } from 'react'
 import { useRouter } from 'next/router'
 import { useAlert } from 'react-alert'
 import ReactLoading from 'react-loading'
@@ -62,11 +62,9 @@ const EditWords = ({ game }: EditWordsProps) => {
     total_pages: 0,
     current_page: 0,
   })
-  /* inputUpdateWord:
-   * inputUpdateId:
-   *  A value of InputUpdateWordModalEl for updating word in Modal.  */
-  const [inputUpdateWord, setInputUpdateWord] = useState<string>('')
-  const [inputUpdateId, setInputUpdateId] = useState<number>()
+  /* currentWord:
+   *  A word clicked by a user for updating or deleting word in Modal.  */
+  const [currentWord, setCurrentWord] = useState<Word>({id: 0, name: ""})
   /* showeModal:
    *  A flag indicates whether the delete modal window  is shown or not. */
   const [showModal, setShowModal] = useState<boolean>(false)
@@ -135,8 +133,7 @@ const EditWords = ({ game }: EditWordsProps) => {
   }, [])
 
   const handleClickEdit = useCallback((word: Word) => {
-    setInputUpdateWord(word.name)
-    setInputUpdateId(word.id)
+    setCurrentWord(word)
     setShowModal(true)
   }, [])
 
@@ -169,7 +166,7 @@ const EditWords = ({ game }: EditWordsProps) => {
   }
 
   function handleClickDelete(): void {
-    let nextWord = { id: inputUpdateId, name: inputUpdateWord, game_id: game.id }
+    let nextWord = { id: currentWord.id, name: currentWord.name, game_id: game.id }
     const token: Token | null = cookie.client.loadToken()
     if (validate.token(token) && validate.word(nextWord) && nextWord.id) {
       setShowOverlay(true)
@@ -222,7 +219,7 @@ const EditWords = ({ game }: EditWordsProps) => {
   }
 
   function handleClickUpdate(): void {
-    let nextWord = { id: inputUpdateId, name: inputUpdateWord, game_id: game.id }
+    let nextWord = { id: currentWord.id, name: currentWord.name, game_id: game.id }
     const token: Token | null = cookie.client.loadToken()
     if (validate.wordWithGame(nextWord.name, game) && validate.word(nextWord)) {
       // Remove invalid style
@@ -243,7 +240,7 @@ const EditWords = ({ game }: EditWordsProps) => {
             alert.show(t.ALERT.FAILED, { type: 'error' })
           }
         }).catch(error => {
-          console.log(error)
+          console.error(error)
         }).finally(() => {
           nprogress.done()
           setShowOverlay(false)
@@ -281,6 +278,12 @@ const EditWords = ({ game }: EditWordsProps) => {
     }
   }
 
+  function handleChangeCurrentWord(event: ChangeEvent<HTMLInputElement>): void {
+    if (currentWord && event.target.value) {
+      setCurrentWord({ id: currentWord.id, name: event.target.value })
+    }
+  }
+
   const trWordStateMemoComponents: JSX.Element[] = wordStateList.map((wordState) => {
     return <TrWordStateMemo key={wordState.word.id} wordState={wordState}
       handleClickEdit={handleClickEdit} handleChangeCheckbox={handleChangeCheckbox} />
@@ -298,10 +301,10 @@ const EditWords = ({ game }: EditWordsProps) => {
             <div className='form-group'>
               <label>{ t.COMMON.WORD }</label>
               <div className='form-countable-input-group'>
-                <input ref={inputUpdateWordModalEl} value={inputUpdateWord} type='text'
-                  maxLength={game.char_count} onChange={e => setInputUpdateWord(e.target.value)} />
+                <input ref={inputUpdateWordModalEl} value={currentWord?.name} type='text'
+                  maxLength={game.char_count} onChange={e => handleChangeCurrentWord(e)} />
                 <div className='form-countable-input-counter'>
-                  {`${inputUpdateWord.length} / ${game.char_count}`}
+                  {`${currentWord?.name.length} / ${game.char_count}`}
                 </div>
               </div>
               <div ref={divInvalidWordModaldEl} className='form-group-invalid-feedback'></div>
