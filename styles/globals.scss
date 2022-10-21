@@ -40,7 +40,7 @@ $font-color-light: #313131;
  ******************************************/
 @mixin dark-theme-vars {
   // base
-  --base-color1: #1e2022;
+  --base-color1: #1e1e21;
   --base-color2: #222425;
   --base-color3: #2c2f32;
   // border
@@ -71,7 +71,7 @@ $font-color-light: #313131;
   --font-color4: #183155;
   --font-link-color: #4686ed;
   // header
-  --header-color: #f3f5fc;
+  --header-color: #f5f6fa;
 }
 
 @mixin sp {
