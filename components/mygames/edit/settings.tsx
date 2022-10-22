@@ -143,7 +143,7 @@ const Settings = ({ game, setGame }: Props) => {
       <form id='game-form' onSubmit={e => e.preventDefault()}>
         {/* Public */}
         <div className='checkbox-group'>
-          <label checkbox-label>{t.GAME.IS_PUBLISHED}</label>
+          <label className='checkbox-label'>{t.GAME.IS_PUBLISHED}</label>
           <div className='checkbox-input-group' onClick={() => setIsPublished(!isPublished)}>
             <input className="checkbox-default" type="checkbox" checked={isPublished} onChange={() => setIsPublished(!isPublished)} />
             <div className='checkbox-input-group-text'>{t.FORM.PUBLIC}</div>
