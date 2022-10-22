@@ -8,6 +8,7 @@ import { faBars, faCaretDown, faEdit, faPlus, faGear, faRightFromBracket, faXmar
 import { faTwitter } from '@fortawesome/free-brands-svg-icons'
 
 import Modal from 'components/modal'
+import Checkbox from './form/checkbox'
 
 import CurrentUserInfoContext from 'contexts/current_user_info'
 import ShowAccountMenuContext from 'contexts/show_account_menu'
@@ -84,7 +85,7 @@ const Header = () => {
     }
   }, [])
 
-  const handleChangeConfirmation = useMemo(() => {
+  const handleClickConfirmation = useMemo(() => {
     return () => { setCheckedConfirmation(!checkedConfirmation) }
   }, [checkedConfirmation])
 
@@ -191,11 +192,8 @@ const Header = () => {
                 {t.SIGN_IN.TOS_TEXT.A}<a onClick={handleClickTos}>{t.TOS.TITLE}</a>{t.SIGN_IN.TOS_TEXT.B}
               </div>
               {/* agreement */}
-              <div className='signin-agreement checkbox-group' onClick={handleChangeConfirmation}>
-                <div className='checkbox-input-group'>
-                <input className='checkbox-default' type="checkbox" checked={checkedConfirmation} onChange={handleChangeConfirmation} />
-                <span className='checkbox-input-group-text'>{ t.SIGN_IN.I_AGREED}</span>
-                </div>
+              <div className='signin-agreement'>
+                <Checkbox checked={checkedConfirmation} handleClick={handleClickConfirmation} text={t.SIGN_IN.I_AGREED} />
               </div>
               <div className='signin-btns'>
                 {/* Twitter */}

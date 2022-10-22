@@ -17,6 +17,7 @@ import useLocale from 'hooks/useLocale'
 import useCopyToClipboard from 'hooks/useCopyToClipboard'
 
 import LoadingOverlay from 'components/loading_overlay'
+import Checkbox from 'components/form/checkbox'
 
 import validate from 'scripts/validate'
 import { putGame } from 'scripts/api'
@@ -78,6 +79,10 @@ const Settings = ({ game, setGame }: Props) => {
       if (divTitleInvalidEl.current) divTitleInvalidEl.current.innerHTML = ''
       return true
     }
+  }
+
+  function handleClickVisibility(): void {
+    setIsPublished(!isPublished)
   }
 
   function handleClickUpdate(): void{
@@ -142,13 +147,7 @@ const Settings = ({ game, setGame }: Props) => {
       {/* Game Form */}
       <form id='game-form' onSubmit={e => e.preventDefault()}>
         {/* Public */}
-        <div className='checkbox-group'>
-          <label className='checkbox-label'>{t.GAME.IS_PUBLISHED}</label>
-          <div className='checkbox-input-group' onClick={() => setIsPublished(!isPublished)}>
-            <input className="checkbox-default" type="checkbox" checked={isPublished} onChange={() => setIsPublished(!isPublished)} />
-            <div className='checkbox-input-group-text'>{t.FORM.PUBLIC}</div>
-          </div>
-        </div>
+        <Checkbox checked={isPublished} handleClick={handleClickVisibility} label={t.GAME.IS_PUBLISHED} text={t.FORM.PUBLIC} />
         {/* Title */}
         <div className='form-group'>
           <label>{ t.GAME.TITLE }</label>

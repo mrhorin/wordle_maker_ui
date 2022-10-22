@@ -14,6 +14,7 @@ import SlideoutMenu from 'components/slideout_menu'
 import Sidemenu from 'components/sidemenu'
 import Modal from 'components/modal'
 import LoadingOverlay from 'components/loading_overlay'
+import Checkbox from 'components/form/checkbox'
 
 import validate from 'scripts/validate'
 import cookie from 'scripts/cookie'
@@ -21,7 +22,7 @@ import { deleteCurrentUser } from 'scripts/api'
 
 const Account = () => {
   const [showOverlay, setShowOverlay] = useState<boolean>(false)
-  const [checkedConfirmation, setCheckedConfirmation] = useState<boolean | undefined>(false)
+  const [checkedConfirmation, setCheckedConfirmation] = useState<boolean>(false)
   const [showModal, setShowModal] = useState<boolean>(false)
   const router = useRouter()
   const { t } = useLocale()
@@ -29,7 +30,7 @@ const Account = () => {
   const signOut = useSignOut()
 
   /*********** Memo ***********/
-  const handleChangeConfirmation = useMemo(() => {
+  const handleClickConfirmation = useMemo(() => {
     return () => {
       setCheckedConfirmation(!checkedConfirmation);
     }
@@ -80,12 +81,7 @@ const Account = () => {
             </ol>
             <div>
             {/* confirmation */}
-            <div className='agreement checkbox-group' onClick={handleChangeConfirmation}>
-              <div className='checkbox-input-group'>
-                <input className='checkbox-default' type="checkbox" checked={checkedConfirmation} onChange={handleChangeConfirmation} />
-                <div className='checkbox-input-group-text'>{t.FORM.I_AGREE}</div>
-              </div>
-            </div>
+            <Checkbox checked={checkedConfirmation} handleClick={handleClickConfirmation} text={t.FORM.I_AGREE} />
           </div>
           </div>
           <div className='modal-window-footer'>

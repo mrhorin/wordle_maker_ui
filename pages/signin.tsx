@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTwitter } from '@fortawesome/free-brands-svg-icons'
 
 import SlideoutMenu from 'components/slideout_menu'
+import Checkbox from 'components/form/checkbox'
 
 import Link from 'next/link'
 
@@ -14,7 +15,7 @@ const Signin: NextPage = () => {
   const [checkedConfirmation, setCheckedConfirmation] = useState<boolean>(false)
   const { t } = useLocale()
 
-  const handleChangeConfirmation = useMemo(() => {
+  const handleClickConfirmation = useMemo(() => {
     return () => { setCheckedConfirmation(!checkedConfirmation) }
   }, [checkedConfirmation])
 
@@ -34,11 +35,8 @@ const Signin: NextPage = () => {
             {t.SIGN_IN.TOS_TEXT.A}<Link href="/tos" shallow={true}><a>{t.TOS.TITLE}</a></Link>{t.SIGN_IN.TOS_TEXT.B}
           </div>
           {/* agreement */}
-          <div className='signin-agreement checkbox-group' onClick={handleChangeConfirmation}>
-            <div className='checkbox-input-group'>
-              <input className='checkbox-default' type="checkbox" checked={checkedConfirmation} onChange={handleChangeConfirmation} />
-              <span className='checkbox-input-group-text'>{ t.SIGN_IN.I_AGREED}</span>
-            </div>
+          <div className='signin-agreement'>
+            <Checkbox checked={checkedConfirmation} handleClick={handleClickConfirmation} text={t.SIGN_IN.I_AGREED} />
           </div>
           {/* Sign in buttons */}
           <div className='signin-btns'>
