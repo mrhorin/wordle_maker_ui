@@ -174,6 +174,7 @@ export default {
     SUBMIT: 'Sumit',
     CANCEL: 'Cancel',
     I_AGREE: 'I agree.',
+    PUBLIC: 'Public',
     CHIP_TEXTAREA: {
       NOTE: 'Type words separated by commas.'
     },
@@ -184,7 +185,7 @@ export default {
     CHALLENGE_COUNT: 'Challenge',
     CHARACTER_COUNT: 'Chars',
     LANGUAGE: 'Language',
-    PUBLIC: 'Public',
+    IS_PUBLISHED: 'Visibility',
   },
   LANG: {
     EN: 'English',

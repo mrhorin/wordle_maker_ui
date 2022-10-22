@@ -83,10 +83,12 @@ const DeleteGame = ({ game }: Props) => {
               <li>{ t.MY_GAMES.EDIT.DELETE_GAME.MESSAGE.CANNOT_RECOVER }</li>
               <li>{ t.MY_GAMES.EDIT.DELETE_GAME.MESSAGE.CANNOT_REPlY }</li>
             </ol>
-            {/* confirmation */}
-            <div className='agreement' onClick={handleChangeConfirmation}>
-              <input className='checkbox-default agreement-checkbox' type="checkbox" checked={checkedConfirmation} onChange={handleChangeConfirmation} />
-              <span className='agreement-text'>{ t.FORM.I_AGREE }</span>
+            {/* agreement */}
+            <div className='agreement checkbox-group' onClick={handleChangeConfirmation}>
+              <div className='checkbox-input-group'>
+                <input className='checkbox-default' type="checkbox" checked={checkedConfirmation} onChange={handleChangeConfirmation} />
+                <span className='checkbox-input-group-text'>{ t.FORM.I_AGREE }</span>
+              </div>
             </div>
           </div>
           <div className='modal-window-footer'>

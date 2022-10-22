@@ -80,9 +80,11 @@ const Account = () => {
             </ol>
             <div>
             {/* confirmation */}
-            <div className='agreement' onClick={handleChangeConfirmation}>
-              <input className='checkbox-default agreement-checkbox' type="checkbox" checked={checkedConfirmation} onChange={handleChangeConfirmation} />
-              <span className='agreement-text'>{t.FORM.I_AGREE}</span>
+            <div className='agreement checkbox-group' onClick={handleChangeConfirmation}>
+              <div className='checkbox-input-group'>
+                <input className='checkbox-default' type="checkbox" checked={checkedConfirmation} onChange={handleChangeConfirmation} />
+                <div className='checkbox-input-group-text'>{t.FORM.I_AGREE}</div>
+              </div>
             </div>
           </div>
           </div>

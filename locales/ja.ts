@@ -172,6 +172,7 @@ export default {
     SUBMIT: '送信',
     CANCEL: 'キャンセル',
     I_AGREE: 'はい、同意しました',
+    PUBLIC: '公開する',
     CHIP_TEXTAREA: {
       NOTE: '各ワードの後には,半角カンマを入力してください'
     },
@@ -182,7 +183,7 @@ export default {
     CHALLENGE_COUNT: '最大回数',
     CHARACTER_COUNT: '文字数',
     LANGUAGE: '言語',
-    PUBLIC: '公開状態'
+    IS_PUBLISHED: '公開状態',
   },
   LANG: {
     EN: 'English',

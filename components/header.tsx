@@ -188,13 +188,14 @@ const Header = () => {
             <div className='signin'>
               {/* tos */}
               <div className='signin-tos'>
-              {t.SIGN_IN.TOS_TEXT.A}<a onClick={handleClickTos}>{t.TOS.TITLE}</a>{t.SIGN_IN.TOS_TEXT.B}
-
+                {t.SIGN_IN.TOS_TEXT.A}<a onClick={handleClickTos}>{t.TOS.TITLE}</a>{t.SIGN_IN.TOS_TEXT.B}
               </div>
               {/* agreement */}
-              <div className='signin-agreement agreement' onClick={handleChangeConfirmation}>
-                <input className='checkbox-default agreement-checkbox' type="checkbox" checked={checkedConfirmation} onChange={handleChangeConfirmation} />
-                <span className='agreement-text'>{ t.SIGN_IN.I_AGREED}</span>
+              <div className='signin-agreement checkbox-group' onClick={handleChangeConfirmation}>
+                <div className='checkbox-input-group'>
+                <input className='checkbox-default' type="checkbox" checked={checkedConfirmation} onChange={handleChangeConfirmation} />
+                <span className='checkbox-input-group-text'>{ t.SIGN_IN.I_AGREED}</span>
+                </div>
               </div>
               <div className='signin-btns'>
                 {/* Twitter */}
