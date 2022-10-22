@@ -1,6 +1,6 @@
 import type { Token, Game } from 'types/global'
 import { useRouter } from 'next/router'
-import { useState, useRef } from 'react'
+import React, { useState, useRef } from 'react'
 import { useAlert } from 'react-alert'
 
 import useSignOut from 'hooks/useSignOut'
@@ -16,6 +16,7 @@ import LoadingOverlay from 'components/loading_overlay'
 import cookie from 'scripts/cookie'
 import { postGame } from 'scripts/api'
 import validate from 'scripts/validate'
+import Select from 'components/form/select'
 
 const MygamesCreate = () => {
   /********** State **********/
@@ -28,7 +29,6 @@ const MygamesCreate = () => {
   /*********** Ref ***********/
   const inputTitleEl = useRef<HTMLInputElement>(null)
   const divTitleInvalidEl = useRef<HTMLDivElement>(null)
-  const selectLangEl = useRef<HTMLSelectElement>(null)
 
   const signOut = useSignOut()
   const router = useRouter()
@@ -50,6 +50,19 @@ const MygamesCreate = () => {
       if (divTitleInvalidEl.current) divTitleInvalidEl.current.innerHTML = ''
       return true
     }
+  }
+
+
+  function handleChangeChallengeCount(event: React.ChangeEvent<HTMLSelectElement>): void{
+    setChallengeCount(Number(event.target.value))
+  }
+
+  function handleChangeCharCount(event: React.ChangeEvent<HTMLSelectElement>): void{
+    setCharCount(Number(event.target.value))
+  }
+
+  function handleChangeLang(event: React.ChangeEvent<HTMLSelectElement>): void{
+    setLang(event.target.value)
   }
 
   function handleClickSubmit(): void{
@@ -126,8 +139,7 @@ const MygamesCreate = () => {
               </div>
               {/* Challenge count */}
               <div className='form-group'>
-                <label>{ t.GAME.CHALLENGE_COUNT }</label>
-                <select id='game-challengeount' value={challengeCount} onChange={e => setChallengeCount(Number(e.target.value))}>
+                <Select id='game-challengeount' value={challengeCount} handleChange={handleChangeChallengeCount} label={t.GAME.CHALLENGE_COUNT}>
                   <option value='2'>2</option>
                   <option value='3'>3</option>
                   <option value='4'>4</option>
@@ -137,12 +149,11 @@ const MygamesCreate = () => {
                   <option value='8'>8</option>
                   <option value='9'>9</option>
                   <option value='10'>10</option>
-                </select>
+                </Select>
               </div>
               {/* Character count */}
               <div className='form-group'>
-                <label>{ t.GAME.CHARACTER_COUNT }</label>
-                <select id='game-charcount' value={charCount} onChange={e => setCharCount(Number(e.target.value))}>
+                <Select id='game-charcount' value={charCount} handleChange={handleChangeCharCount} label={t.GAME.CHARACTER_COUNT}>
                   <option value='2'>2</option>
                   <option value='3'>3</option>
                   <option value='4'>4</option>
@@ -152,15 +163,14 @@ const MygamesCreate = () => {
                   <option value='8'>8</option>
                   <option value='9'>9</option>
                   <option value='10'>10</option>
-                </select>
+                </Select>
               </div>
               {/* Language */}
               <div className='form-group'>
-                <label>{ t.GAME.LANGUAGE }</label>
-                <select ref={selectLangEl} id='game-lang' value={lang} onChange={e => setLang(e.target.value)}>
+                <Select id='game-lang' value={lang} handleChange={handleChangeLang} label={t.GAME.LANGUAGE}>
                   <option value='en'>English</option>
                   <option value='ja'>Japanese</option>
-                </select>
+                </Select>
               </div>
               {/* Submit */}
               <button type='button' id='game-submit' className='btn btn-primary' disabled={title.length < 1 || title.length > 100} onClick={handleClickSubmit}>

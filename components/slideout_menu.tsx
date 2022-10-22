@@ -10,6 +10,7 @@ import useTheme from 'hooks/useTheme'
 import cookie from 'scripts/cookie'
 
 import ShowSlideoutMenuContext from 'contexts/show_slideout_menu'
+import Select from './form/select'
 
 type Props = {
   children?: JSX.Element
@@ -39,7 +40,7 @@ const SlideoutMenu = ({ children }: Props) => {
     showSlideoutMenuContext.set(false)
   }
 
-  function handleOnChangeTheme(event: ChangeEvent<HTMLSelectElement>): void{
+  function handleChangeTheme(event: ChangeEvent<HTMLSelectElement>): void{
     if (event.target.value == 'system' || event.target.value == 'light' || event.target.value == 'dark') {
       cookie.client.saveTheme(event.target.value)
       setCurrentTheme(event.target.value)
@@ -94,12 +95,12 @@ const SlideoutMenu = ({ children }: Props) => {
                 <FontAwesomeIcon icon={faCircleHalfStroke} />
               </div>
               <div className='slideout-menu-main-item-text'>
-                <select onChange={e => handleOnChangeTheme(e)} defaultValue='none'>
+                <Select handleChange={handleChangeTheme} defaultValue={'none'}>
                   <option value='none' disabled hidden>{t.SLIDEOUT_MENU.THEME.THEME}</option>
                   <option value='system' defaultValue={currentTheme}>{t.SLIDEOUT_MENU.THEME.SYSTEM}</option>
                   <option value='light' defaultValue={currentTheme}>{t.SLIDEOUT_MENU.THEME.LIGHT}</option>
                   <option value='dark' defaultValue={currentTheme}>{t.SLIDEOUT_MENU.THEME.DARK}</option>
-                </select>
+                </Select>
               </div>
             </div>
           </li>
@@ -110,11 +111,11 @@ const SlideoutMenu = ({ children }: Props) => {
                 <FontAwesomeIcon icon={faGlobe} />
               </div>
               <div className='slideout-menu-main-item-text'>
-                <select onChange={e => handleChangeLang(e)} defaultValue='none'>
+                <Select handleChange={handleChangeLang} defaultValue='none'>
                   <option value='none' disabled hidden>{t.SLIDEOUT_MENU.LANGUAGE}</option>
                   <option value='en'>{t.LANG.EN}</option>
                   <option value='ja'>{t.LANG.JA}</option>
-                </select>
+                </Select>
               </div>
             </div>
           </li>

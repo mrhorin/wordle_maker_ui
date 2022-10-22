@@ -22,6 +22,7 @@ import Checkbox from 'components/form/checkbox'
 import validate from 'scripts/validate'
 import { putGame } from 'scripts/api'
 import cookie from 'scripts/cookie'
+import Select from 'components/form/select'
 
 interface Props {
   game: Game
@@ -83,6 +84,10 @@ const Settings = ({ game, setGame }: Props) => {
 
   function handleClickVisibility(): void {
     setIsPublished(!isPublished)
+  }
+
+  function handleChangeChallengeCount(event: React.ChangeEvent<HTMLSelectElement>): void{
+    setChallengeCount(Number(event.target.value))
   }
 
   function handleClickUpdate(): void{
@@ -168,8 +173,7 @@ const Settings = ({ game, setGame }: Props) => {
         </div>
         {/* Challenge count */}
         <div className='form-group'>
-          <label>{ t.GAME.CHALLENGE_COUNT }</label>
-          <select id='game-challengeount' value={challengeCount} onChange={e => setChallengeCount(Number(e.target.value))}>
+          <Select id='game-challengeount' value={challengeCount} handleChange={handleChangeChallengeCount} label={t.GAME.CHALLENGE_COUNT}>
             <option value='2'>2</option>
             <option value='3'>3</option>
             <option value='4'>4</option>
@@ -179,7 +183,7 @@ const Settings = ({ game, setGame }: Props) => {
             <option value='8'>8</option>
             <option value='9'>9</option>
             <option value='10'>10</option>
-          </select>
+          </Select>
         </div>
         {/* Character count */}
         <div className='form-group'>
