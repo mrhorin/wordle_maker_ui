@@ -24,7 +24,7 @@ export default function Layout({ children }: Props) {
   const { t, setLocale } = useLocale()
 
   useEffect(() => {
-    if (router.isReady) loadLocale()
+    if (router.isReady) initializeLocale()
   }, [router.isReady])
 
   useEffect(() => {
@@ -33,9 +33,13 @@ export default function Layout({ children }: Props) {
     return (() => removeEventListener('resize', setMinHeight))
   }, [])
 
-  function loadLocale(): void{
+  function initializeLocale(): void{
     const prevLocale: Locale | null = cookie.client.loadLocale()
-    if (prevLocale) setLocale(prevLocale)
+    if (prevLocale) {
+      setLocale(prevLocale)
+    } else if (router.isReady && (router.locale == 'en' || router.locale == 'ja')) {
+      cookie.client.saveLocale(router.locale)
+    }
   }
 
   function setMinHeight(): void{
