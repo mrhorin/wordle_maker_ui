@@ -4,6 +4,7 @@ import Router from 'next/router'
 import { transitions, positions, Provider as AlertProvider } from 'react-alert'
 import AlertTemplate from 'react-alert-template-basic'
 import nprogress from 'nprogress'
+import nookies from 'nookies'
 import 'styles/globals.scss'
 import 'nprogress/nprogress.css'
 import { config } from '@fortawesome/fontawesome-svg-core'
@@ -36,8 +37,16 @@ function MyApp({ Component, pageProps }: AppProps) {
 }
 
 MyApp.getInitialProps = async (appContext: AppContext) => {
-  const appProps = await App.getInitialProps(appContext);
-  return { ...appProps }
+  const { ctx, Component } = appContext
+  const cookies = nookies.get(ctx)
+  // Redirect to suitable locale page if cookies have locale key
+  if (ctx.locale != cookies.locale && ctx.res) {
+    ctx.res.writeHead(307, { Location: `/${cookies.locale}${ctx.asPath}` })
+    ctx.res.end()
+  }
+  const pageContext = { ...ctx }
+  const pageProps = Component.getInitialProps ? await Component.getInitialProps(pageContext) : {}
+  return { pageProps };
 }
 
 export default MyApp

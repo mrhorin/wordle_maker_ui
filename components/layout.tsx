@@ -4,8 +4,6 @@ import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import useLocale from 'hooks/useLocale'
 
-import cookie from 'scripts/cookie'
-
 import Header from 'components/header'
 
 import CurrentUserInfoContext from 'contexts/current_user_info'
@@ -21,26 +19,13 @@ export default function Layout({ children }: Props) {
   const [showAccountMenu, setShowAccountMenu] = useState<boolean>(false)
   const [showSlideoutMenu, setShowSlideoutMenu] = useState<boolean>(false)
   const router = useRouter()
-  const { t, setLocale } = useLocale()
-
-  useEffect(() => {
-    if (router.isReady) initializeLocale()
-  }, [router.isReady])
+  const { t } = useLocale()
 
   useEffect(() => {
     window.addEventListener('resize', setMinHeight)
     setMinHeight()
     return (() => removeEventListener('resize', setMinHeight))
   }, [])
-
-  function initializeLocale(): void{
-    const prevLocale: Locale | null = cookie.client.loadLocale()
-    if (prevLocale) {
-      setLocale(prevLocale)
-    } else if (router.isReady && (router.locale == 'en' || router.locale == 'ja')) {
-      cookie.client.saveLocale(router.locale)
-    }
-  }
 
   function setMinHeight(): void{
     const wrapElement: HTMLElement | null = document.getElementById('wrap')
