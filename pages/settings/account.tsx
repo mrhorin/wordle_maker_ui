@@ -7,6 +7,8 @@ import useLocale from 'hooks/useLocale'
 import useSignOut from 'hooks/useSignOut'
 
 import nprogress from 'nprogress'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faXmark } from '@fortawesome/free-solid-svg-icons'
 
 import Head from 'next/head'
 
@@ -71,7 +73,8 @@ const Account = () => {
       <Modal showModal={showModal} setShowModal={setShowModal}>
         <div className='modal-window-container'>
           <div className='modal-window-header'>
-            { t.SETTINGS.ACCOUNT.DELETE_ACCOUNT.MESSAGE.SURE }
+            {t.SETTINGS.ACCOUNT.DELETE_ACCOUNT.MESSAGE.SURE}
+            <FontAwesomeIcon icon={faXmark} className='modal-window-header-xmark' onClick={() => setShowModal(false)} />
           </div>
           <div className='modal-window-body'>
             <ol>

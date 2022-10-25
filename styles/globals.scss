@@ -308,6 +308,7 @@ label{
     }
     .form-countable-input-counter{
       order: 2;
+      margin-top: -1px;
     }
     .form-countable-input-counter.form-countable-input-counter-focus{
       border: 1px solid #0099ff;
@@ -1345,7 +1346,6 @@ input[type="checkbox"].checkbox-default{
         order: 1;
         padding: 1rem;
         margin-top: auto;
-        font-size: 1.2rem;
         font-weight: 700;
         text-align: center;
         position: relative;

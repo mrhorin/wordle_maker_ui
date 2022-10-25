@@ -6,6 +6,8 @@ import useSignOut from 'hooks/useSignOut'
 
 import nprogress from 'nprogress'
 import { useAlert } from 'react-alert'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faXmark } from '@fortawesome/free-solid-svg-icons'
 
 import Modal from 'components/modal'
 import LoadingOverlay from 'components/loading_overlay'
@@ -77,6 +79,7 @@ const DeleteGame = ({ game }: Props) => {
         <div className='modal-window-container'>
           <div className='modal-window-header'>
             { t.MY_GAMES.EDIT.DELETE_GAME.MESSAGE.SURE }
+            <FontAwesomeIcon icon={faXmark} className='modal-window-header-xmark' onClick={() => setShowModal(false)} />
           </div>
           <div className='modal-window-body'>
             <ol>
@@ -88,8 +91,10 @@ const DeleteGame = ({ game }: Props) => {
             <Checkbox checked={checkedConfirmation} handleClick={handleClickConfirmation} text={t.FORM.I_AGREE} />
           </div>
           <div className='modal-window-footer'>
-            <button className='btn btn-danger' disabled={!checkedConfirmation} onClick={handleClickDelete}>{ t.COMMON.DELETE }</button>
             <button className='btn btn-default' onClick={() => setShowModal(false)}>{ t.COMMON.CLOSE }</button>
+            <button className='btn btn-danger' disabled={!checkedConfirmation} onClick={handleClickDelete}>
+              {t.MY_GAMES.EDIT.DELETE_GAME.BUTTON}
+            </button>
           </div>
         </div>
       </Modal>

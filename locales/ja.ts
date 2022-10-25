@@ -96,7 +96,7 @@ export default {
         },
       },
       DELETE_GAME: {
-        BUTTON: 'このゲームを削除する',
+        BUTTON: 'このゲームを削除',
         MESSAGE: {
           SURE: '削除してよろしいですか？',
           WILL_BE_DELETED: 'このゲームは削除されます。',
@@ -110,7 +110,7 @@ export default {
     ACCOUNT: {
       TITLE: 'アカウント',
       DELETE_ACCOUNT: {
-        BUTTON: 'アカウントを削除する',
+        BUTTON: 'アカウントを削除',
         MESSAGE: {
           SURE: 'アカウント削除',
           WILL_BE_DELETED: 'アカウントと、アカウントに関連するデータはすべて削除されます。',
