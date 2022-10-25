@@ -12,30 +12,6 @@
 */
 
 /******************************************
-  Sass variables
- ******************************************/
-$accent-color1: #42c897;
-$accent-color2: #cf8e1d;
-$default-color: #fafafa;
-$primary-color: #307fe5;
-$warning-color: #e4b32d;
-$secondary-color: #565761;
-$danger-color: #eb0000;
-$info-color: #5d9ff3;
-$correct-color: $primary-color;
-$present-color: $warning-color;
-$absent-color: lighten(#1e2022, 12%);
-$absent-color-light: lighten(#1e2022, 35%);
-$sp-break-point: 599px;
-$tablet-break-point: 1024px;
-// dark
-$base-color: #1e2022;
-$font-color: #dfe3e5;
-// light
-$base-color-light: #f5f6fa;
-$font-color-light: #313131;
-
-/******************************************
   CSS3 variables
  ******************************************/
 @mixin dark-theme-vars {
@@ -43,6 +19,20 @@ $font-color-light: #313131;
   --base-color1: #1e1e21;
   --base-color2: #222425;
   --base-color3: #2c2f32;
+  --base-color4: #555a5d;
+  // accent
+  --accent-color1: #42c897;
+  --accent-color2: #cf8e1d;
+  --default-color: #fafafa;
+  --primary-color: #307fe5;
+  --warning-color: #e4b32d;
+  --secondary-color: #565761;
+  --danger-color: #eb0000;
+  --info-color: #5d9ff3;
+  // tile
+  --correct-color: #307fe5;
+  --present-color: #e4b32d;
+  --absent-color: #3b3f43;
   // border
   --border-color: #5a6066;
   --border-modal-color: #4e5358;
@@ -61,6 +51,20 @@ $font-color-light: #313131;
   --base-color1: #f5f6fa;
   --base-color2: #eff1f6;
   --base-color3: #e5e9f1;
+  --base-color4: #e0e4ea;
+  // accent
+  --accent-color1: #42c897;
+  --accent-color2: #cf8e1d;
+  --default-color: #fafafa;
+  --primary-color: #307fe5;
+  --warning-color: #e4b32d;
+  --secondary-color: #565761;
+  --danger-color: #eb0000;
+  --info-color: #5d9ff3;
+  // tile
+  --correct-color: #307fe5;
+  --present-color: #e4b32d;
+  --absent-color: #727981;
   // border
   --border-color: #bfbfbf;
   --border-modal-color: #d2d2d2;
@@ -74,6 +78,12 @@ $font-color-light: #313131;
   --header-color: #f5f6fa;
 }
 
+/******************************************
+  Sass variables and functions
+ ******************************************/
+ $sp-break-point: 599px;
+ $tablet-break-point: 1024px;
+
 @mixin sp {
   @media screen and (max-width: $sp-break-point) {
     @content;
@@ -84,7 +94,6 @@ $font-color-light: #313131;
     @content;
   }
 }
-
 @mixin light{
   [data-theme="light"] &{
     @content;
@@ -430,7 +439,7 @@ label{
   &::before{
     content: "";
     z-index: 0;
-    background: $primary-color;
+    background: var(--primary-color);
     opacity: .3;
     border-radius: 100px;
     width: 2.5rem;
@@ -485,7 +494,6 @@ table{
   }
   tbody{
     tr{
-      transition: background 0.15s ease-out, box-shadow 0.15s ease-out;
       box-shadow: inset 0px 0px 0px;
       &:nth-child(odd){
         background: var(--base-color2);
@@ -501,11 +509,9 @@ table{
       }
       @media (hover: hover){
         &:hover{
-          color: var(--font-color1);
+          background: var(--base-color4);
           box-shadow: inset 0px 0px 1px;
           cursor: pointer;
-          @include dark{ background: lighten($base-color, 20%); }
-          @include light{ background: darken($base-color-light, 10%); }
         }
       }
       td{
@@ -535,39 +541,39 @@ button{
 }
 .btn.btn-default{
   color: #111111;
-  background-color: $default-color;
+  background-color: var(--default-color);
   @include light{ border: 1px solid var(--border-color); }
   @include dark{ border: 1px solid var(--base-color3); }
 }
 .btn.btn-primary{
   color: #fff;
-  background-color: $primary-color;
-  @include light{ border: 1px solid $primary-color; }
-  @include dark{ border: 1px solid $primary-color; }
+  background-color: var(--primary-color);
+  @include light{ border: 1px solid var(--primary-color); }
+  @include dark{ border: 1px solid var(--primary-color); }
 }
 .btn.btn-secondary{
   color: #fff;
-  background: $secondary-color;
-  @include light{ border: 1px solid $secondary-color; }
-  @include dark{ border: 1px solid $secondary-color; }
+  background: var(--secondary-color);
+  @include light{ border: 1px solid var(--secondary-color); }
+  @include dark{ border: 1px solid var(--secondary-color); }
 }
 .btn.btn-info{
   color: #fff;
-  background: $info-color;
-  @include light{ border: 1px solid $info-color; }
-  @include dark{ border: 1px solid $info-color; }
+  background: var(--info-color);
+  @include light{ border: 1px solid var(--info-color); }
+  @include dark{ border: 1px solid var(--info-color); }
 }
 .btn.btn-danger{
   color: #fff;
-  background-color: $danger-color;
-  @include light{ border: 1px solid $danger-color; }
-  @include dark{ border: 1px solid $danger-color; }
+  background-color: var(--danger-color);
+  @include light{ border: 1px solid var(--danger-color); }
+  @include dark{ border: 1px solid var(--danger-color); }
 }
 .btn.btn-accent1{
   color: rgb(229, 229, 229);
-  background-color: $accent-color1;
-  @include light{ border: 1px solid $accent-color1; }
-  @include dark{ border: 1px solid $accent-color1; }
+  background-color: var(--accent-color1);
+  @include light{ border: 1px solid var(--accent-color1); }
+  @include dark{ border: 1px solid var(--accent-color1); }
 }
 .btn-grad {
   background-image: linear-gradient(to right, #e96443 0%, #904e95  51%, #e96443  100%);
@@ -662,7 +668,7 @@ button{
     }
   }
   .tab-active{
-    border-bottom: 2px solid $accent-color1;
+    border-bottom: 2px solid var(--accent-color1);
     margin-bottom: -2px;
     color: var(--font-color1);
     background: var(--base-color2);
@@ -788,9 +794,9 @@ input[type="checkbox"].checkbox-default{
     flex-wrap: nowrap;
     align-items: center;
     color: #fff;
-    background: lighten($base-color, 25%);
+    background: var(--base-color4);
     &:hover{
-      background: lighten($base-color, 35%);
+      filter: brightness(110%);
     }
     .chip-textarea-chip-value{
       order: 1;
@@ -827,22 +833,19 @@ input[type="checkbox"].checkbox-default{
         height: 13px;
         &:hover{
           background: #fff;
-          color: lighten($base-color, 35%);
+          color: var(--base-color4);
         }
       }
     }
   }
   .chip-textarea-chip-invalid{
-    background: $danger-color;
+    background: var(--danger-color);
     color: #fff;
-    &:hover{
-      background: lighten($danger-color, 5%);
-    }
     .chip-textarea-chip-xmark{
       svg,i{
         &:hover{
           background: #fff;
-          color: $danger-color;
+          color: var(--danger-color);
         }
       }
     }
@@ -871,7 +874,7 @@ input[type="checkbox"].checkbox-default{
   margin: 1rem;
   text-align: center;
   button.kaminari-page{
-    background: $secondary-color;
+    background: var(--secondary-color);
     color: var(--font-color1);
     border: none;
     border-radius: 2px;
@@ -883,17 +886,17 @@ input[type="checkbox"].checkbox-default{
     white-space: nowrap;
     cursor: pointer;
     &:hover{
-      background: darken($secondary-color, 10%);
+      filter: brightness(110%);
     }
   }
   button.kaminari-page.kaminari-page-current{
     background-color: var(--font-color1);
-    color: $secondary-color;
+    color: var(--secondary-color);
     border: none;
     cursor: default;
     &:hover{
       background-color: var(--font-color1);
-      color: $secondary-color;
+      color: var(--secondary-color);
     }
   }
 }
@@ -1041,7 +1044,6 @@ input[type="checkbox"].checkbox-default{
       li.header-account-menu-hide-separater{
         padding: 0;
         margin: 0;
-        // border-bottom: 1px solid lighten($base-color3, 5%);
       }
     }
     ul.header-account-menu-hide{
@@ -1201,7 +1203,7 @@ input[type="checkbox"].checkbox-default{
         li.sidemenu-item-active{
           a{
             color: var(--font-color1);
-            border-left: 2px solid $accent-color1;
+            border-left: 2px solid var(--accent-color1);
             @include light{
               font-weight: bold;
               background: var(--base-color2);
@@ -1487,7 +1489,7 @@ input[type="checkbox"].checkbox-default{
     font-weight: bold;
     padding-bottom: 1rem;
     @include light{ color: #fff; }
-    @include dark{ color: $font-color; }
+    @include dark{ color: var(--font-color1); }
   }
   .index-board-desc{
     text-align: center;
@@ -1667,28 +1669,21 @@ input[type="checkbox"].checkbox-default{
       }
     }
     .tiles-table-row-tile-correct{
-      background: $correct-color;
-      border: 1px solid $correct-color;
+      background: var(--correct-color);
+      border: 1px solid var(--correct-color);
       @include light { color: #fff; }
       @include dark { color: #fff; }
     }
     .tiles-table-row-tile-present{
-      background: $present-color;
-      border: 1px solid $present-color;
+      background: var(--present-color);
+      border: 1px solid var(--present-color);
       @include light { color: #fff; }
       @include dark { color: #fff; }
     }
     .tiles-table-row-tile-absent{
-      @include light{
-        color: #fff;
-        border: 1px solid $absent-color-light;
-        background: $absent-color-light;
-      }
-      @include dark{
-        color: #fff;
-        border: 1px solid $absent-color;
-        background: $absent-color;
-      }
+      color: #fff;
+      border: 1px solid var(--absent-color);
+      background: var(--absent-color);
     }
   }
 }
@@ -1770,24 +1765,20 @@ input[type="checkbox"].checkbox-default{
   }
   .example-word-tile-correct{
     @extend .example-word-tile;
-    background: $correct-color;
+    background: var(--correct-color);
     border: 1px solid var(--font-color3);
-    @include light{ border-color: $correct-color; }
+    @include light{ border-color: var(--correct-color); }
   }
   .example-word-tile-present{
     @extend .example-word-tile;
-    background: $present-color;
+    background: var(--present-color);
     border: 1px solid var(--font-color3);
-    @include light{ border-color: $present-color; }
+    @include light{ border-color: var(--present-color); }
   }
   .example-word-tile-absent{
     @extend .example-word-tile;
-    background: $absent-color;
-    border: 1px solid var(--font-color3);
-    @include light{
-      border-color: $absent-color-light;
-      background: $absent-color-light;
-    }
+    background: var(--absent-color);
+    border: 1px solid var(--absent-color);
   }
 }
 
@@ -1893,7 +1884,7 @@ input[type="checkbox"].checkbox-default{
   .share-copy{
     @extend .share;
     order: 1;
-    background: $secondary-color;
+    background: var(--secondary-color);
   }
   .share-tweet{
     @extend .share;
@@ -1930,38 +1921,30 @@ input[type="checkbox"].checkbox-default{
   @include light{
     background: #f3f3f3;
     border: 1px solid #c7c7c7;
-    &:hover{ background: #f9f9f9; }
   }
   @include dark{
-    background: lighten($base-color, 30%);
-    border: 1px solid lighten($base-color, 30%);
-    &:hover{ background: lighten($base-color, 40%); }
+    background: #666d73;
+    border: 1px solid #666d73;
   }
+  &:hover{ filter: brightness(110%); }
 }
 .keyboard-key-correct{
   color: var(--font-tile-color);
-  background: $correct-color;
-  border: 1px solid $correct-color;
-  &:hover{ background: lighten($correct-color, 5%); }
+  background: var(--correct-color);
+  border: 1px solid var(--correct-color);
+  &:hover{ filter: brightness(110%); }
 }
 .keyboard-key-present{
   color: var(--font-tile-color);
-  background: $present-color;
-  border: 1px solid $present-color;
-  &:hover{ background: lighten($present-color, 5%); }
+  background: var(--present-color);
+  border: 1px solid var(--present-color);
+  &:hover{ filter: brightness(110%); }
 }
 .keyboard-key-absent{
   color: var(--font-tile-color);
-  @include light{
-    background: $absent-color-light;
-    border: 1px solid $absent-color-light;
-    &:hover{ background: lighten($absent-color-light, 5%); }
-  }
-  @include dark{
-    background: $absent-color;
-    border: 1px solid $absent-color;
-    &:hover{ background: lighten($base-color, 20%); }
-  }
+  background: var(--absent-color);
+  border: 1px solid var(--absent-color);
+  &:hover{ filter: brightness(110%); }
 }
 .keyboard-key-character{
   @extend .keyboard-key;
@@ -1969,30 +1952,13 @@ input[type="checkbox"].checkbox-default{
 .keyboard-key-modifier{
   @extend .keyboard-key;
   color: var(--font-tile-color);
-  @include light{
-    background: $absent-color-light;
-    &:hover{ background: lighten($absent-color-light, 5%); }
-  }
-  @include dark{
-     background: $absent-color;
-     &:hover{ background: lighten($base-color, 20%); }
-  }
+  background: var(--absent-color);
+  &:hover{ filter: brightness(110%); }
 }
 .keyboard-key-accent1{
-  @include dark{
-    background: $accent-color1;
-    color: #424242;
-    &:hover{
-      background: lighten($accent-color1, 8%);
-    }
-  }
-  @include light{
-    background: $accent-color1;
-    color: #424242;
-    &:hover{
-      background: lighten($accent-color1, 8%);
-    }
-  }
+  background: var(--accent-color1);
+  color: #424242;
+  &:hover{ filter: brightness(110%); }
 }
 
 /* ---------- Qwerty ---------- */
@@ -2171,7 +2137,7 @@ input[type="checkbox"].checkbox-default{
     white-space: nowrap;
     border: 1px solid var(--border-color);
     @include light{ background: var(--base-color2); }
-    @include dark{ background: $secondary-color; }
+    @include dark{ background: var(--secondary-color); }
     &:hover{
       filter: brightness(90%);
     }
