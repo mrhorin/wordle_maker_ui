@@ -1343,8 +1343,20 @@ input[type="checkbox"].checkbox-default{
         order: 1;
         padding: 1rem;
         margin-top: auto;
-        font-size: 1rem;
+        font-size: 1.2rem;
+        font-weight: 700;
         text-align: center;
+        position: relative;
+        .modal-window-header-xmark{
+          position: absolute;
+          top: 15px;
+          right: 15px;
+          font-size: 2rem;
+          &:hover{
+            color: var(--font-color1);
+            cursor: pointer;
+          }
+        }
       }
       .modal-window-body{
         order: 2;

@@ -463,8 +463,8 @@ const Games = (props: Props) => {
         <div className='modal-window-container'>
           {/* Header */}
           <div className='modal-window-header' style={{ position: 'relative' }}>
-            <div style={{ fontWeight: 'bold', fontSize: '1.5rem', textAlign: 'center' }}>{t.SLIDEOUT_MENU.HOW_TO_PLAY}</div>
-            <FontAwesomeIcon icon={faXmark} className='xmark' style={{ position: 'absolute', top: '15px', right: '15px'}} onClick={() => setShowHowToPlayModal(false)} />
+            {t.SLIDEOUT_MENU.HOW_TO_PLAY}
+            <FontAwesomeIcon icon={faXmark} className='modal-window-header-xmark' onClick={() => setShowHowToPlayModal(false)} />
           </div>
           {/* Body */}
           <div className='modal-window-body'>

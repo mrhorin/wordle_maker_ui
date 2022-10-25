@@ -5,7 +5,7 @@ import { useAlert } from 'react-alert'
 import ReactLoading from 'react-loading'
 import nprogress from 'nprogress'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrashCan, faArrowDownAZ } from '@fortawesome/free-solid-svg-icons'
+import { faTrashCan, faArrowDownAZ, faXmark } from '@fortawesome/free-solid-svg-icons'
 
 import useLanguage from 'hooks/useLanguage'
 import useLocale from 'hooks/useLocale'
@@ -307,6 +307,7 @@ const EditWords = ({ game }: EditWordsProps) => {
         <div className='modal-window-container'>
           <div className='modal-window-header'>
             {t.COMMON.EDIT}
+            <FontAwesomeIcon icon={faXmark} className='modal-window-header-xmark' onClick={() => setShowModal(false)} />
           </div>
           <div className='modal-window-body'>
             <div className='form-group'>
@@ -322,12 +323,8 @@ const EditWords = ({ game }: EditWordsProps) => {
             </div>
           </div>
           <div className='modal-window-footer'>
-            <button className='btn btn-mini btn-square btn-default'
-              onClick={() => setShowModal(false)}>{t.COMMON.CLOSE}</button>
-            <button className='btn btn-mini btn-square btn-danger'
-              onClick={handleClickDelete}>{t.COMMON.DELETE}</button>
-            <button className='btn btn-mini btn-square btn-primary'
-              onClick={handleClickUpdate}>{t.FORM.UPDATE}</button>
+            <button className='btn btn-danger' onClick={handleClickDelete}>{t.COMMON.DELETE}</button>
+            <button className='btn btn-primary' onClick={handleClickUpdate}>{t.FORM.UPDATE}</button>
           </div>
         </div>
       </Modal>
