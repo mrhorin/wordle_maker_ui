@@ -9,7 +9,7 @@ export default function Custom404() {
   return (
     <main id='main'>
       <Head>
-        <title>{ t.NOT_FOUND.TITLE } | { t.APP_NAME }</title>
+        <title>{`${ t.NOT_FOUND.TITLE } | ${ t.APP_NAME }`}</title>
         <meta name="description" content={t.NOT_FOUND.DESC} />
       </Head>
 

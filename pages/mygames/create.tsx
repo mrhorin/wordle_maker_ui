@@ -52,7 +52,6 @@ const MygamesCreate = () => {
     }
   }
 
-
   function handleChangeChallengeCount(event: React.ChangeEvent<HTMLSelectElement>): void{
     setChallengeCount(Number(event.target.value))
   }
@@ -102,7 +101,7 @@ const MygamesCreate = () => {
   return (
     <main id='main'>
       <Head>
-        <title>{t.MY_GAMES.CREATE.TITLE} | {t.APP_NAME}</title>
+        <title>{`${t.MY_GAMES.CREATE.TITLE} | ${t.APP_NAME}`}</title>
       </Head>
 
       <SlideoutMenu />

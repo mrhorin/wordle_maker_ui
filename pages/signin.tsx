@@ -23,7 +23,7 @@ const Signin: NextPage = () => {
     <main id='main'>
       <div className='container'>
         <Head>
-          <title>{t.SIGN_IN.TITLE} | {t.APP_NAME}</title>
+          <title>{`${t.SIGN_IN.TITLE} | ${t.APP_NAME}`}</title>
         </Head>
 
         <SlideoutMenu />

@@ -73,7 +73,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     uid: cookies.uid,
     expiry: cookies.expiry,
   }
-
   const game = await getGame(id, token)
   const wordList = await getGameWords(id, token)
   const wordToday = await getWordsToday(id, token)
@@ -452,7 +451,7 @@ const Games = (props: Props) => {
   return (
     <main id='main'>
       <Head>
-        <title>{props.game.title} | { t.APP_NAME}</title>
+        <title>{`${props.game.title} | ${t.APP_NAME}`}</title>
         <meta name="description" content={props.game.desc ? props.game.desc : t.APP_DESC.FIRST_LINE + t.APP_DESC.SECOND_LINE} />
       </Head>
 

@@ -12,7 +12,7 @@ function Error({ statusCode }: Props): JSX.Element {
   return (
     <main id='main'>
       <Head>
-        <title>`${statusCode} | {t.APP_NAME}`</title>
+        <title>{`${statusCode} | ${t.APP_NAME}`}</title>
         <meta name="description" content={t.ERROR.DESC} />
       </Head>
 

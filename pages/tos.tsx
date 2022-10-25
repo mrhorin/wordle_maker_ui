@@ -11,7 +11,7 @@ const Tos = () => {
   return (
     <main id='main'>
       <Head>
-        <title>{t.TOS.TITLE} | {t.APP_NAME}</title>
+        <title>{`${t.TOS.TITLE} | ${t.APP_NAME}`}</title>
       </Head>
 
       <SlideoutMenu />

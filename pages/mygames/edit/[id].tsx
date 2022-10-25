@@ -73,7 +73,7 @@ const MygamesEdit = () => {
   return (
     <main id='main'>
       <Head>
-        <title>{t.MY_GAMES.EDIT.TITLE} | {t.APP_NAME}</title>
+        <title>{`${t.MY_GAMES.EDIT.TITLE} | ${t.APP_NAME}`}</title>
       </Head>
 
       <SlideoutMenu />
