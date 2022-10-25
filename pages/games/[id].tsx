@@ -25,6 +25,7 @@ import { faCopy } from '@fortawesome/free-regular-svg-icons'
 import { faTwitter } from '@fortawesome/free-brands-svg-icons'
 
 import { getGame, getGameWords, getWordsToday } from 'scripts/api'
+import validate from 'scripts/validate'
 
 type Props = {
   game: Game,
@@ -73,9 +74,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     uid: cookies.uid,
     expiry: cookies.expiry,
   }
-  const game = await getGame(id, token)
-  const wordList = await getGameWords(id, token)
-  const wordToday = await getWordsToday(id, token)
+  const game = validate.token(token) ? await getGame(id, token, ctx) : await getGame(id)
+  const wordList = validate.token(token) ? await getGameWords(id, token, ctx) : await getGameWords(id)
+  const wordToday = validate.token(token) ? await getWordsToday(id, token, ctx) : await getWordsToday(id)
 
   if (game.ok && wordList.ok && wordToday.ok) {
     return {

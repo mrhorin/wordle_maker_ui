@@ -1,5 +1,6 @@
 import type { Token, UserInfo, Locale, Theme } from 'types/global'
 import { parseCookies, setCookie, destroyCookie } from 'nookies'
+import { GetServerSidePropsContext } from 'next'
 
 import validate from './validate'
 
@@ -73,11 +74,11 @@ export class ClientSideCookies{
     }
   }
 
-  static saveToken(token: Token): void {
-    setCookie(null, 'accessToken', token.accessToken, this.cookieOptions)
-    setCookie(null, 'client', token.client, this.cookieOptions)
-    setCookie(null, 'uid', token.uid, this.cookieOptions)
-    setCookie(null, 'expiry', token.expiry, this.cookieOptions)
+  static saveToken(token: Token, ctx?: GetServerSidePropsContext): void {
+    setCookie(ctx, 'accessToken', token.accessToken, this.cookieOptions)
+    setCookie(ctx, 'client', token.client, this.cookieOptions)
+    setCookie(ctx, 'uid', token.uid, this.cookieOptions)
+    setCookie(ctx, 'expiry', token.expiry, this.cookieOptions)
   }
 
   static destroyToken(): void{

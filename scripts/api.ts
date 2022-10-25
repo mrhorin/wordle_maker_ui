@@ -1,11 +1,12 @@
 import type { Token, Game, Word } from 'types/global'
+import { GetServerSidePropsContext } from 'next'
 import cookie from 'scripts/cookie'
 import validate from 'scripts/validate'
 
 const API_URL: string = `${process.env.API_PROTOCOL}://${process.env.API_DOMAIN}`
 const NEXT_PUBLIC_API_URL: string = `${process.env.NEXT_PUBLIC_API_PROTOCOL}://${process.env.NEXT_PUBLIC_API_DOMAIN}`
 
-function saveToken(headers: Headers) {
+function saveToken(headers: Headers, ctx?: GetServerSidePropsContext) {
   const token = {
     accessToken: headers.get('access-token'),
     client: headers.get('client'),
@@ -13,7 +14,13 @@ function saveToken(headers: Headers) {
     expiry: headers.get('expiry'),
   }
   if (validate.token(token)) {
-    cookie.client.saveToken(token as Token)
+    if (typeof window === 'undefined' && ctx) {
+      // When server side
+      cookie.client.saveToken(token as Token, ctx)
+    } else {
+      // When client side
+      cookie.client.saveToken(token as Token)
+    }
   }
 }
 
@@ -63,7 +70,7 @@ export async function deleteCurrentUser(token: Token) {
 
 // ******************** Game ********************
 // games#show
-export async function getGame(gameId: number, token?: Token) {
+export async function getGame(gameId: number, token?: Token, ctx?: GetServerSidePropsContext) {
   const url: string = typeof window === 'undefined' ? `${API_URL}/api/v1/games/${gameId}` : `${NEXT_PUBLIC_API_URL}/api/v1/games/${gameId}`
   const res = token ? await fetch(url, {
     method: 'GET',
@@ -74,7 +81,9 @@ export async function getGame(gameId: number, token?: Token) {
       'uid': token.uid,
     }
   }) : await fetch(url)
-  if (token) saveToken(res.headers)
+  if (token) {
+    ctx ? saveToken(res.headers, ctx) : saveToken(res.headers)
+  }
   return await res.json()
 }
 
@@ -166,7 +175,7 @@ export async function deleteGame(token: Token, game: Game) {
 
 // ******************** Word ********************
 // words#index
-export async function getGameWords(gameId: number, token?: Token) {
+export async function getGameWords(gameId: number, token?: Token, ctx?: GetServerSidePropsContext) {
   const url: string = typeof window === 'undefined' ? `${API_URL}/api/v1/games/${gameId}/words` : `${NEXT_PUBLIC_API_URL}/api/v1/games/${gameId}/words`
   const res = token ? await fetch(url, {
     method: 'GET',
@@ -177,12 +186,14 @@ export async function getGameWords(gameId: number, token?: Token) {
       'uid': token.uid
     }
   }) : await fetch(url)
-  if (token) saveToken(res.headers)
+  if (token) {
+    ctx ? saveToken(res.headers, ctx) : saveToken(res.headers)
+  }
   return await res.json()
 }
 
 // words#today
-export async function getWordsToday(gameId: number, token?: Token) {
+export async function getWordsToday(gameId: number, token?: Token, ctx?: GetServerSidePropsContext) {
   const url: string = typeof window === 'undefined' ? `${API_URL}/api/v1/words/today/${gameId}` : `${NEXT_PUBLIC_API_URL}/api/v1/words/today/${gameId}`
   const res = token ? await fetch(url, {
     method: 'GET',
@@ -193,13 +204,16 @@ export async function getWordsToday(gameId: number, token?: Token) {
       'uid': token.uid
     }
   }) : await fetch(url)
-  if (token) saveToken(res.headers)
+  if (token) {
+    ctx ? saveToken(res.headers, ctx) : saveToken(res.headers)
+  }
   return await res.json()
 }
 
 // words#edit
 export async function getCurrentWords(token: Token, game: Game, page: number) {
   const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/v1/games/${game.id}/words/edit?page=${page}`, {
+  const url: string = `${NEXT_PUBLIC_API_URL}/api/v1/games/${game.id}/words/edit?page=${page}`
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
