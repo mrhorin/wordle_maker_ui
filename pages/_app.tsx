@@ -40,7 +40,7 @@ MyApp.getInitialProps = async (appContext: AppContext) => {
   const { ctx, Component } = appContext
   const cookies = nookies.get(ctx)
   // Redirect to suitable locale page if cookies have locale key
-  if (ctx.locale != cookies.locale && ctx.res) {
+  if (cookies.locale && cookies.locale != ctx.locale && ctx.res) {
     ctx.res.writeHead(307, { Location: `/${cookies.locale}${ctx.asPath}` })
     ctx.res.end()
   }
