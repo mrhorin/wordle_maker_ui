@@ -54,14 +54,14 @@ export type Tab = {
   hash: string,
 }
 
-export type HeaderStatus = 'INITIALIZING' | 'LOGGEDIN' | 'SIGNIN'
-
-export type TileStatus = 'EMPTY' |'CORRECT' | 'PRESENT' | 'ABSENT'
-
 export type Tile = {
   letter: string,
   status: TileStatus
 }
+
+export type HeaderStatus = 'INITIALIZING' | 'LOGGEDIN' | 'SIGNIN'
+
+export type TileStatus = 'EMPTY' |'CORRECT' | 'PRESENT' | 'ABSENT'
 
 export type KeyType = 'CHARACTER' | 'MODIFIER'
 

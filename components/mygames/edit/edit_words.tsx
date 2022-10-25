@@ -5,13 +5,14 @@ import { useAlert } from 'react-alert'
 import ReactLoading from 'react-loading'
 import nprogress from 'nprogress'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrashCan } from '@fortawesome/free-solid-svg-icons'
+import { faTrashCan, faArrowDownAZ } from '@fortawesome/free-solid-svg-icons'
 
 import useLanguage from 'hooks/useLanguage'
 import useLocale from 'hooks/useLocale'
 import useSignOut from 'hooks/useSignOut'
 
-import PaginationComponent from 'components/pagination'
+import Kaminari from 'components/kaminari'
+import Select from 'components/form/select'
 import Modal from 'components/modal'
 import LoadingOverlay from 'components/loading_overlay'
 
@@ -20,6 +21,7 @@ import validate from 'scripts/validate'
 import { getCurrentWords, putWord, deleteWord } from 'scripts/api'
 
 type TableStatus = 'INITIALIZING' | 'NO_RECORDS' | 'HAS_RECORDS' | 'IS_SUSPENDED' | 'UNAUTHORIZED' | 'REQUEST_FAILED'
+type SortStatus = 'NAME_ASC' | 'NAME_DESC' | 'ID_ASC' | 'ID_DESC'
 
 interface WordState {
   word: Word,
@@ -57,10 +59,10 @@ const EditWords = ({ game }: EditWordsProps) => {
    * wordStateList:
    *  A list of word state. */
   const [wordStateList, setWordStateList] = useState<WordState[]>([])
-  /* pagination:
-   *  Pagenation infomation to render PaginationComponent.  */
-  // const [pagination, setPagination] = useState<Pagination | null>(null)
-  const [pagination, setPagination] = useState<Pagination>({
+  /* page:
+   *  Pagenation infomation to render Pagination component.  */
+  // const [page, setPage] = useState<Pagination | null>(null)
+  const [page, setPage] = useState<Pagination>({
     total_count: 0,
     limit_value: 0,
     total_pages: 0,
@@ -68,7 +70,10 @@ const EditWords = ({ game }: EditWordsProps) => {
   })
   /* currentWord:
    *  A word clicked by a user for updating or deleting word in Modal.  */
-  const [currentWord, setCurrentWord] = useState<Word>({id: 0, name: ""})
+  const [currentWord, setCurrentWord] = useState<Word>({ id: 0, name: "" })
+  /* sortStatus:
+   * current status of sort order of wordStateList. */
+  const [sortStatus, setSortStatus] = useState<SortStatus>('NAME_ASC')
   /* showeModal:
    *  A flag indicates whether the delete modal window  is shown or not. */
   const [showModal, setShowModal] = useState<boolean>(false)
@@ -89,35 +94,12 @@ const EditWords = ({ game }: EditWordsProps) => {
   const language = useLanguage(game.lang)
 
   useEffect(() => {
-    const token: Token | null = cookie.client.loadToken()
-    if (tableStatus == 'INITIALIZING') {
-      if (validate.token(token)) {
-        nprogress.start()
-        getCurrentWords(token, game, 1).then(json => {
-          if (json.ok) {
-            setWordStateList(json.data.words.map((word: Word) => {
-              return { word: word, isChecked: false }
-            }))
-            setPagination(json.data.pagination)
-            setTableStatus(json.data.pagination.total_count > 0 ? 'HAS_RECORDS' : 'NO_RECORDS')
-          } else if (!json.isSuspended) {
-            setTableStatus('IS_SUSPENDED')
-          } else if (!json.isLoggedIn) {
-            setTableStatus('UNAUTHORIZED')
-          } else {
-            setTableStatus('REQUEST_FAILED')
-          }
-        }).catch(error => {
-          console.log(error)
-          setTableStatus('NO_RECORDS')
-        }).finally(
-          () => nprogress.done()
-        )
-      } else {
-        setTableStatus('UNAUTHORIZED')
-      }
-    }
+    if (tableStatus == 'INITIALIZING') fetchPage(1)
   }, [])
+
+  useEffect(() => {
+    if (tableStatus != 'INITIALIZING') fetchPage(1)
+  }, [sortStatus])
 
   const updateWord = useCallback((nextWord: Word) => {
     setWordStateList(prevWordStateList => {
@@ -185,7 +167,7 @@ const EditWords = ({ game }: EditWordsProps) => {
           alert.show(t.ALERT.FAILED, { type: 'error' })
         }
       }).catch(error => {
-        console.log(error)
+        console.error(error)
       }).finally(() => {
         nprogress.done()
         setShowOverlay(false)
@@ -260,31 +242,56 @@ const EditWords = ({ game }: EditWordsProps) => {
   }
 
   function handleClickPage(page: number): void{
-    const token: Token | null = cookie.client.loadToken()
-    if (validate.token(token)) {
-      nprogress.start()
-      getCurrentWords(token, game, page).then(json => {
-        if (json.ok) {
-          setWordStateList(json.data.words.map((word: Word) => {
-            return { word: word, isChecked: false }
-          }))
-          setPagination(json.data.pagination)
-          document.body.scrollTop = 0 // For Safari
-          document.documentElement.scrollTop = 0 // For Chrome, Firefox, IE and Opera
-        }
-      }).catch(error => {
-        console.log(error)
-      }).finally(
-        () => nprogress.done()
-      )
-    } else {
-      signOut(() => router.replace('/signin'))
-    }
+    fetchPage(page)
   }
 
   function handleChangeCurrentWord(event: ChangeEvent<HTMLInputElement>): void {
     if (currentWord && event.target.value) {
       setCurrentWord({ id: currentWord.id, name: event.target.value })
+    }
+  }
+
+  function handleChangeSort(event: ChangeEvent<HTMLSelectElement>): void {
+    if (sortStatus && event.target.value) setSortStatus(event.target.value as SortStatus)
+  }
+
+  function getParams(page: number): string {
+    let params = `?page=${page}`
+    if (sortStatus == 'NAME_ASC') params += `&s=name&o=a`
+    if (sortStatus == 'NAME_DESC') params += `&s=name&o=d`
+    if (sortStatus == 'ID_ASC') params += `&s=id&o=a`
+    if (sortStatus == 'ID_DESC') params += `&s=id&o=d`
+    return params
+  }
+
+  function fetchPage(page: number): void{
+    const token: Token | null = cookie.client.loadToken()
+    if (validate.token(token)) {
+      nprogress.start()
+      getCurrentWords(token, game, getParams(page)).then(json => {
+        if (json.ok) {
+          setWordStateList(json.data.words.map((word: Word) => {
+            return { word: word, isChecked: false }
+          }))
+          setPage(json.data.pagination)
+          setTableStatus(json.data.pagination.total_count > 0 ? 'HAS_RECORDS' : 'NO_RECORDS')
+          document.body.scrollTop = 0 // For Safari
+          document.documentElement.scrollTop = 0 // For Chrome, Firefox, IE and Opera
+        } else if (json.isSuspended) {
+          setTableStatus('IS_SUSPENDED')
+        } else if (!json.isLoggedIn) {
+          setTableStatus('UNAUTHORIZED')
+        } else {
+          setTableStatus('REQUEST_FAILED')
+        }
+      }).catch(error => {
+        console.error(error)
+        setTableStatus('REQUEST_FAILED')
+      }).finally(
+        () => nprogress.done()
+      )
+    } else {
+      signOut(() => router.push('/signin'))
     }
   }
 
@@ -339,10 +346,26 @@ const EditWords = ({ game }: EditWordsProps) => {
                       <input className='checkbox-default' type='checkbox' onChange={handleClickIsCheckedAll} />
                     </div>
                   </th>
-                  <th className='editwords-th-word'>
-                    <div className='btn-bg-animation-container'>
-                      <div className='editwords-btn' onClick={handleClickDeleteCheckedWords}>
-                        <FontAwesomeIcon icon={faTrashCan} />
+                  <th className='editwords-th-ctrlpanel'>
+                    {/* sort by */}
+                    <div className='editwords-th-ctrlpanel-item'>
+                      <div className='editwords-btn'>
+                        <FontAwesomeIcon icon={faArrowDownAZ} />
+                      </div>
+                      <Select handleChange={handleChangeSort} value={sortStatus}>
+                        <option value={'NAME_ASC'}>{t.MY_GAMES.EDIT.EDIT_WORDS.SORT.ALPHABET_ASC}</option>
+                        <option value={'NAME_DESC'}>{t.MY_GAMES.EDIT.EDIT_WORDS.SORT.ALPHABET_DESC}</option>
+                        <option value={'ID_ASC'}>{t.MY_GAMES.EDIT.EDIT_WORDS.SORT.NEWEST_ASC}</option>
+                        <option value={'ID_DESC'}>{t.MY_GAMES.EDIT.EDIT_WORDS.SORT.NEWEST_DESC}</option>
+                      </Select>
+                    </div>
+                    {/* buttons */}
+                    <div className='editwords-th-ctrlpanel-item'>
+                      {/* delete */}
+                      <div className='btn-bg-animation-container'>
+                        <div className='editwords-btn' onClick={handleClickDeleteCheckedWords}>
+                          <FontAwesomeIcon icon={faTrashCan} />
+                        </div>
                       </div>
                     </div>
                   </th>
@@ -358,7 +381,7 @@ const EditWords = ({ game }: EditWordsProps) => {
         if (tableStatus == 'IS_SUSPENDED') return <p>このゲームは凍結されています</p>
         if (tableStatus == 'UNAUTHORIZED') return <p>認証に失敗しました</p>
       })()}
-      <PaginationComponent pagination={pagination} handleClickPage={handleClickPage} />
+      <Kaminari page={page} handleClickPage={handleClickPage} />
     </div>
   )
 }

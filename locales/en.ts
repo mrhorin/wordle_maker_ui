@@ -89,6 +89,14 @@ export default {
         CANNOT_ADD_DUPLICATED_WORDS: "Can't add words duplicated with others.",
         WILL_TURN_RED: "Invalid words you inputted will turn red.",
       },
+      EDIT_WORDS: {
+        SORT: {
+          ALPHABET_ASC: 'Alphabet: ASC',
+          ALPHABET_DESC: 'Alphabet: DESC',
+          NEWEST_ASC: 'Newest: ASC',
+          NEWEST_DESC: 'Newest: DESC',
+        },
+      },
       DELETE_GAME: {
         BUTTON: 'Delete Game',
         MESSAGE: {

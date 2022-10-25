@@ -87,6 +87,14 @@ export default {
         CANNOT_ADD_DUPLICATED_WORDS: "登録済みのワードと重複するワードは登録できません",
         WILL_TURN_RED: "無効なワードを入力すると赤色で表示されます",
       },
+      EDIT_WORDS: {
+        SORT: {
+          ALPHABET_ASC: '名前: 昇順',
+          ALPHABET_DESC: '名前: 降順',
+          NEWEST_ASC: '追加日: 昇順',
+          NEWEST_DESC: '追加日: 降順',
+        },
+      },
       DELETE_GAME: {
         BUTTON: 'このゲームを削除する',
         MESSAGE: {

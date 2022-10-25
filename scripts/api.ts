@@ -211,9 +211,10 @@ export async function getWordsToday(gameId: number, token?: Token, ctx?: GetServ
 }
 
 // words#edit
-export async function getCurrentWords(token: Token, game: Game, page: number) {
-  const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/v1/games/${game.id}/words/edit?page=${page}`, {
-  const url: string = `${NEXT_PUBLIC_API_URL}/api/v1/games/${game.id}/words/edit?page=${page}`
+export async function getCurrentWords(token: Token, game: Game, params?: string) {
+  let url: string = `${NEXT_PUBLIC_API_URL}/api/v1/games/${game.id}/words/edit`
+  params ? url += params : url += '?page=1'
+  const res = await fetch(url, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

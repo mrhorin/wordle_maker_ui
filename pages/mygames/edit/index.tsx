@@ -33,8 +33,11 @@ const MygamesEditIndex = () => {
         } else if (json.isSuspended) {
           setIsSuspended(true)
           setGames([])
+          signOut(() => router.replace('/signin'))
         } else {
+          // JSONでUnauthorizedエラーを見て認証されませんエラーを表示する
           setGames([])
+          signOut(() => router.replace('/signin'))
         }
       })
     } else {

@@ -419,6 +419,9 @@ label{
   padding: 0;
   margin: 0;
   pointer-events: none;
+  &:hover{
+    cursor: pointer;
+  }
   &>*{
     margin: 0;
     z-index: 0;
@@ -517,8 +520,6 @@ table{
     background: var(--base-color3);
   }
 }
-
-
 
 button{
   white-space: nowrap;
@@ -688,11 +689,188 @@ button{
   }
 }
 
-.pagination{
+/* ------- Checkbox ------- */
+.checkbox-group{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0;
+  margin: 0;
+  line-height: 2rem;
+  margin-bottom: 1.5rem;
+  .checkbox-label{
+    order: 1;
+    display: block;
+  }
+  .checkbox-input-group{
+    order: 2;
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    &:hover{ cursor: pointer; }
+    input[type="checkbox"]{
+      order: 1;
+      margin-right: 1rem;
+    }
+    .checkbox-input-group-text{
+      order: 2;
+      font-weight: 500;
+    }
+  }
+}
+input[type="checkbox"].checkbox-default{
+  appearance: none;
+  height: 1rem;
+  width: 1rem;
+  background: none;
+  border: 2px solid var(--font-color4);
+  border-radius: 3px;
+  display: inline-grid;
+  place-content: center;
+  transform: scale(1.3);
+  &:hover{
+    cursor: pointer;
+  }
+  &::after{
+    content: "";
+    display: inline-flex;
+    width: 0.70em;
+    height: 0.70em;
+    transform: scale(0);
+    transition: 100ms transform ease-in-out;
+    box-shadow: inset 1em 1em var(--font-color4);
+    transform-origin: bottom left;
+    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+  }
+  &:checked::after {
+    transform: scale(1);
+  }
+}
+
+/* --------- Select --------- */
+.select-group{
+  display: inline-flex;
+  flex-direction: column;
+  .select-label{
+    order: 1;
+  }
+  select.select-default{
+    order: 2;
+    background: var(--base-color3);
+    color: var(--font-color1);
+    font-size: 1rem;
+    padding: 0.75rem;
+    margin: 0;
+  }
+}
+
+/* ------- ChipTextarea ------- */
+.chip-textarea{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  width: 100%;
+  min-height: 10rem;
+  font-size: 0.8rem;
+  cursor: text;
+  .chip-textarea-chip{
+    align-self: flex-start;
+    font-size: 0.8rem;
+    border-radius: 100px;
+    line-height: 1.3rem;
+    padding: 0 0.3rem 0 1rem;
+    margin: 0.2rem;
+    cursor: pointer;
+    display: inline-flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    color: #fff;
+    background: lighten($base-color, 25%);
+    &:hover{
+      background: lighten($base-color, 35%);
+    }
+    .chip-textarea-chip-value{
+      order: 1;
+      display: inline;
+      padding: 0;
+      margin: 0;
+      font-size: 0.8rem;
+      line-height: 1.3rem;
+      height: 1.3rem;
+      font-weight: 300;
+      background: rgba(0,0,0,0);
+      border: none;
+      overflow: hidden;
+    }
+    input[type="text"].chip-textarea-chip-value:focus{
+      outline: none;
+      border: none;
+      padding: 0;
+      margin: 0;
+      font-size: 0.8rem;
+      line-height: 1.3rem;
+      height: 1.3rem;
+      font-weight: 300;
+    }
+    .chip-textarea-chip-xmark{
+      order: 2;
+      margin-left: 0.5rem;
+      font-size: 13px;
+      line-height: 1.3rem;
+      width: 13px;
+      svg,i{
+        border-radius: 100px;
+        width: 13px;
+        height: 13px;
+        &:hover{
+          background: #fff;
+          color: lighten($base-color, 35%);
+        }
+      }
+    }
+  }
+  .chip-textarea-chip-invalid{
+    background: $danger-color;
+    color: #fff;
+    &:hover{
+      background: lighten($danger-color, 5%);
+    }
+    .chip-textarea-chip-xmark{
+      svg,i{
+        &:hover{
+          background: #fff;
+          color: $danger-color;
+        }
+      }
+    }
+  }
+  input[type="text"].chip-textarea-input{
+    border: none;
+    padding: 0 0.5rem;
+    flex-grow: 2;
+    width: 5rem;
+  }
+  input[type="text"].chip-textarea-input:focus{
+    outline: none;
+    border: none;
+  }
+}
+.chip-textarea.chip-textarea-focus{
+  border: 1px solid #0099ff;
+}
+.chip-textarea.chip-textarea-invalid{
+  border: 1px solid #ff6600;
+}
+
+/* ------- Kaminari ------- */
+.kaminari{
   width: 100%;
   margin: 1rem;
   text-align: center;
-  button.pagination-page{
+  button.kaminari-page{
     background: $secondary-color;
     color: var(--font-color1);
     border: none;
@@ -708,7 +886,7 @@ button{
       background: darken($secondary-color, 10%);
     }
   }
-  button.pagination-page.pagination-page-current{
+  button.kaminari-page.kaminari-page-current{
     background-color: var(--font-color1);
     color: $secondary-color;
     border: none;
@@ -718,10 +896,6 @@ button{
       color: $secondary-color;
     }
   }
-}
-
-.text{
-  padding: 1rem;
 }
 
 /* ---------- Header ---------- */
@@ -2044,15 +2218,34 @@ button{
 
 /* --------- EditWords --------- */
 .editwords{
+  // thead
   th.editwords-th-checkbox{
     // width: 10%;
     padding: 0.5rem 1rem;
     text-align: center;
   }
-  th.editwords-th-word{
+  th.editwords-th-ctrlpanel{
     width: 100%;
-    text-align: right;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    align-items: center;
+    .editwords-th-ctrlpanel-item{
+      padding: 0 0.5rem;
+      display: inline-flex;
+      flex-direction: row;
+      align-items: center;
+    }
+    .btn-bg-animation-container{
+      @extend .bg-animation-container;
+      &::before{
+        top: -0.4rem;
+        left: -0.4rem;
+      }
+    }
   }
+  // tbody
   td.editwords-td-checkbox{
     text-align: center;
     padding: 0.5rem 0;
@@ -2063,124 +2256,17 @@ button{
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-  .btn-bg-animation-container{
-    @extend .bg-animation-container;
-    &::before{
-      top: -0.4rem;
-      left: -0.4rem;
-    }
-  }
   .editwords-btn{
     font-size: 1.2rem;
     display: inline-flex;
     position: relative;
     text-align: center;
     padding: 0.3rem;
-    &:hover{
-      color: var(--font-color1);
-      cursor: pointer;
-    }
   }
-}
-
-
-/* ------- ChipTextarea ------- */
-.chip-textarea{
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-content: flex-start;
-  width: 100%;
-  min-height: 10rem;
-  font-size: 0.8rem;
-  cursor: text;
-  .chip-textarea-chip{
-    align-self: flex-start;
-    font-size: 0.8rem;
-    border-radius: 100px;
-    line-height: 1.3rem;
-    padding: 0 0.3rem 0 1rem;
-    margin: 0.2rem;
-    cursor: pointer;
-    display: inline-flex;
-    flex-wrap: nowrap;
-    align-items: center;
-    color: #fff;
-    background: lighten($base-color, 25%);
-    &:hover{
-      background: lighten($base-color, 35%);
-    }
-    .chip-textarea-chip-value{
-      order: 1;
-      display: inline;
-      padding: 0;
-      margin: 0;
-      font-size: 0.8rem;
-      line-height: 1.3rem;
-      height: 1.3rem;
-      font-weight: 300;
-      background: rgba(0,0,0,0);
-      border: none;
-      overflow: hidden;
-    }
-    input[type="text"].chip-textarea-chip-value:focus{
-      outline: none;
-      border: none;
-      padding: 0;
-      margin: 0;
-      font-size: 0.8rem;
-      line-height: 1.3rem;
-      height: 1.3rem;
-      font-weight: 300;
-    }
-    .chip-textarea-chip-xmark{
-      order: 2;
-      margin-left: 0.5rem;
-      font-size: 13px;
-      line-height: 1.3rem;
-      width: 13px;
-      svg,i{
-        border-radius: 100px;
-        width: 13px;
-        height: 13px;
-        &:hover{
-          background: #fff;
-          color: lighten($base-color, 35%);
-        }
-      }
-    }
+  select.select-default{
+    background: var(--base-color1);
+    padding: 0.5rem 1rem;
   }
-  .chip-textarea-chip-invalid{
-    background: $danger-color;
-    color: #fff;
-    &:hover{
-      background: lighten($danger-color, 5%);
-    }
-    .chip-textarea-chip-xmark{
-      svg,i{
-        &:hover{
-          background: #fff;
-          color: $danger-color;
-        }
-      }
-    }
-  }
-  input[type="text"].chip-textarea-input{
-    border: none;
-    padding: 0 0.5rem;
-    flex-grow: 2;
-    width: 5rem;
-  }
-  input[type="text"].chip-textarea-input:focus{
-    outline: none;
-    border: none;
-  }
-}
-.chip-textarea.chip-textarea-focus{
-  border: 1px solid #0099ff;
-}
-.chip-textarea.chip-textarea-invalid{
-  border: 1px solid #ff6600;
 }
 
 /* ------- react-loading ------- */
@@ -2231,86 +2317,12 @@ button{
   }
 }
 
-/* ------- Checkbox ------- */
-.checkbox-group{
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 0;
-  margin: 0;
-  line-height: 2rem;
-  margin-bottom: 1.5rem;
-  .checkbox-label{
-    order: 1;
-    display: block;
-  }
-  .checkbox-input-group{
-    order: 2;
-    display: inline-flex;
-    flex-direction: row;
-    align-items: center;
-    padding: 0;
-    margin: 0;
-    &:hover{ cursor: pointer; }
-    input[type="checkbox"]{
-      order: 1;
-      margin-right: 1rem;
-    }
-    .checkbox-input-group-text{
-      order: 2;
-      font-weight: 500;
-    }
-  }
-}
-input[type="checkbox"].checkbox-default{
-  appearance: none;
-  height: 1rem;
-  width: 1rem;
-  background: none;
-  border: 2px solid var(--font-color4);
-  border-radius: 3px;
-  display: inline-grid;
-  place-content: center;
-  transform: scale(1.3);
-  &:hover{
-    cursor: pointer;
-  }
-  &::after{
-    content: "";
-    display: inline-flex;
-    width: 0.70em;
-    height: 0.70em;
-    transform: scale(0);
-    transition: 100ms transform ease-in-out;
-    box-shadow: inset 1em 1em var(--font-color4);
-    transform-origin: bottom left;
-    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
-  }
-  &:checked::after {
-    transform: scale(1);
-  }
-}
-
-/* --------- Select --------- */
-.select-group{
-  display: inline-flex;
-  flex-direction: column;
-  .select-label{
-    order: 1;
-  }
-  select.select-default{
-    order: 2;
-    background: var(--base-color3);
-    color: var(--font-color1);
-    font-size: 1rem;
-    padding: 0.75rem;
-    margin: 0;
-  }
-}
-
-
 .sp-padding{
   @include sp {
     padding: 0 1rem;
   }
+}
+
+.text{
+  padding: 1rem;
 }
