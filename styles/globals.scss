@@ -1418,6 +1418,16 @@ input[type="checkbox"].checkbox-default{
       order: 1;
       font-size: 1.2rem;
       line-height: 1.5rem;
+      display: inline-flex;
+      flex-direction: row;
+      align-items: baseline;
+      svg,i{
+        order: 1;
+        margin-right: 0.5rem;
+      }
+      .game-index-item-title-text{
+        order: 2;
+      }
       .game-index-item-title-lock{
         svg, i{
           margin-right: 0.3rem;

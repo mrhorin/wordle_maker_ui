@@ -45,10 +45,16 @@ const MygamesEditIndex = () => {
     }
   }, [])
 
-  function createGameComponents(): JSX.Element[] | JSX.Element{
+  function GameIndex(): JSX.Element{
     if (isSuspended) {
-      return <p style={{ textAlign: 'center', margin: '10rem auto' }}>{t.MY_GAMES.EDIT.INDEX.SUSPENDED_ACCOUNT}</p>
+      // Suspended
+      return (
+        <div className='game-index'>
+          <p style={{ textAlign: 'center', margin: '10rem auto' }}>{t.MY_GAMES.EDIT.INDEX.SUSPENDED_ACCOUNT}</p>
+        </div>
+      )
     } else if (games && games.length > 0) {
+      // Game List
       const gameComponents: JSX.Element[] = games.map((game: Game, index: number) => {
         const titleElement: JSX.Element = <Link href={{
           pathname: '/mygames/edit/[id]',
@@ -56,11 +62,21 @@ const MygamesEditIndex = () => {
         }}><a>{ game.title }</a></Link>
         return <GameIndexItem game={game} key={index} titleElement={titleElement} />
       })
-      return gameComponents
+      return <div className='game-index'>{gameComponents}</div>
     } else if (games == null) {
-      return <ReactLoading type={'spin'} color={'#008eff'} height={'25px'} width={'25px'} className='loading-center' />
+      // Loading
+      return (
+        <div className='game-index'>
+          <ReactLoading type={'spin'} color={'#008eff'} height={'25px'} width={'25px'} className='loading-center' />
+        </div>
+      )
     } else {
-      return <p style={{ textAlign: 'center', margin: '10rem auto' }}>{t.MY_GAMES.EDIT.INDEX.NO_GAME}</p>
+      // No Game yet
+      return (
+        <div className='game-index'>
+          <p style={{ textAlign: 'center', margin: '10rem auto' }}>{t.MY_GAMES.EDIT.INDEX.NO_GAME}</p>
+        </div>
+      )
     }
   }
 
@@ -81,7 +97,7 @@ const MygamesEditIndex = () => {
               <div className='title-text'>{ t.MY_GAMES.EDIT.TITLE }</div>
             </div>
 
-            <div className='game-index'>{createGameComponents()}</div>
+            <GameIndex />
           </div>
         </div>
       </div>

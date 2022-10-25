@@ -98,7 +98,7 @@ export default {
       DELETE_GAME: {
         BUTTON: 'このゲームを削除',
         MESSAGE: {
-          SURE: '削除してよろしいですか？',
+          SURE: 'ゲーム削除',
           WILL_BE_DELETED: 'このゲームは削除されます。',
           CANNOT_RECOVER: "削除したゲームは元に戻すことはできません。",
           CANNOT_REPlY: "削除した場合、一切の問い合わせ等にはお答えしかねます。",
