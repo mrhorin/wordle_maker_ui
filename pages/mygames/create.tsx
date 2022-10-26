@@ -82,7 +82,7 @@ const MygamesCreate = () => {
           alert.removeAll()
           if (json.ok) {
             alert.show(t.ALERT.CREATED, { type: 'success' })
-            router.push(`/mygames/edit/${json.data.id}#add-words`)
+            router.push(`/mygames/edit/${json.data.id}?t=2`)
           } else {
             alert.show(json.message, {type: 'error'})
             console.error(json)
