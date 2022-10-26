@@ -88,10 +88,10 @@ const Account = () => {
           </div>
           </div>
           <div className='modal-window-footer'>
+            <button className='btn btn-default' onClick={() => setShowModal(false)}>{ t.COMMON.CLOSE }</button>
             <button className='btn btn-danger' onClick={handleClickDeleteAccount} disabled={!checkedConfirmation}>
               {t.SETTINGS.ACCOUNT.DELETE_ACCOUNT.BUTTON}
             </button>
-            <button className='btn btn-default' onClick={() => setShowModal(false)}>{ t.COMMON.CLOSE }</button>
           </div>
         </div>
       </Modal>
