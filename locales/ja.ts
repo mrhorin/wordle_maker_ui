@@ -26,6 +26,9 @@ export default {
     NOT_ENOUGH_LETTERS: '文字数がたりません',
     FJINISHED_GAME: 'ゲームは終了しています',
   },
+  API: {
+    FAILED: 'データの取得に失敗しました',
+  },
   VALIDATE: {
     GAME: {
       TITLE: {

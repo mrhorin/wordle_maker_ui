@@ -58,7 +58,7 @@ const MygamesEditIndex = () => {
       const gameComponents: JSX.Element[] = games.map((game: Game, index: number) => {
         const titleElement: JSX.Element = <Link href={{
           pathname: '/mygames/edit/[id]',
-          query: { id: game.id }
+          query: { id: game.id, t: '1' }
         }}><a>{ game.title }</a></Link>
         return <GameIndexItem game={game} key={index} titleElement={titleElement} />
       })

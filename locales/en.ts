@@ -28,6 +28,9 @@ export default {
     NOT_ENOUGH_LETTERS: 'Not Enough Letters',
     FJINISHED_GAME: 'Finished Game',
   },
+  API: {
+    FAILED: 'Failed to fetch data from data server.',
+  },
   VALIDATE: {
     GAME: {
       TITLE: {
