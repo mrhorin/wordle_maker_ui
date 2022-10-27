@@ -892,12 +892,12 @@ input[type="checkbox"].checkbox-default{
       filter: brightness(110%);
     }
     &:first-child{
-      border-top-left-radius: 2px;
-      border-bottom-left-radius: 2px;
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
     }
     &:last-child{
-      border-top-right-radius: 2px;
-      border-bottom-right-radius: 2px;
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
     }
   }
   button.kaminari-page.kaminari-page-current{

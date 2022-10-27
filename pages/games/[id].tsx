@@ -74,17 +74,18 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     uid: cookies.uid,
     expiry: cookies.expiry,
   }
-  const game = validate.token(token) ? await getGame(id, token, ctx) : await getGame(id)
-  const wordList = validate.token(token) ? await getGameWords(id, token, ctx) : await getGameWords(id)
-  const wordToday = validate.token(token) ? await getWordsToday(id, token, ctx) : await getWordsToday(id)
-
-  if (game.ok && wordList.ok && wordToday.ok) {
+  const values = validate.token(token) ? await Promise.all([
+    getGame(id, token, ctx), getGameWords(id, token, ctx), getWordsToday(id, token, ctx)
+  ]) : await Promise.all([
+    getGame(id), getGameWords(id), getWordsToday(id)
+  ])
+  if (values[0].ok && values[1].ok && values[2].ok) {
     return {
       props: {
-        game: game.data,
-        wordList: wordList.data,
-        wordToday: wordToday.data.word,
-        questionNo: wordToday.data.questionNo,
+        game: values[0].data,
+        wordList: values[1].data,
+        wordToday: values[2].data.word,
+        questionNo: values[2].data.questionNo,
       }
     }
   }
