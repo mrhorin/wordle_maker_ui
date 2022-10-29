@@ -24,7 +24,7 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { faCopy } from '@fortawesome/free-regular-svg-icons'
 import { faTwitter } from '@fortawesome/free-brands-svg-icons'
 
-import { getGame, getGameWords, getGamesWordsToday } from 'scripts/api'
+import { getGamesPlay } from 'scripts/api'
 import validate from 'scripts/validate'
 
 type Props = {
@@ -74,21 +74,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     uid: cookies.uid,
     expiry: cookies.expiry,
   }
-  const values = validate.token(token) ? await Promise.all([
-    getGame(id, token, ctx), getGameWords(id, token, ctx), getGamesWordsToday(id, token, ctx)
-  ]) : await Promise.all([
-    getGame(id), getGameWords(id), getGamesWordsToday(id)
-  ])
-  if (values[0].ok && values[1].ok && values[2].ok) {
-    return {
-      props: {
-        game: values[0].data,
-        wordList: values[1].data,
-        wordToday: values[2].data.word,
-        questionNo: values[2].data.questionNo,
-      }
-    }
-  }
+  const json = validate.token(token) ? await getGamesPlay(id, token, ctx) : getGamesPlay(id)
+  if (json.ok) return { props: json.data }
   return { notFound: true }
 }
 

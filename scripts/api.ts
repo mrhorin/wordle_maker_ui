@@ -70,6 +70,23 @@ export async function deleteCurrentUser(token: Token) {
 
 // ******************** Game ********************
 // games#show
+export async function getGamesPlay(gameId: number, token?: Token, ctx?: GetServerSidePropsContext) {
+  const url: string = typeof window === 'undefined' ? `${API_URL}/api/v1/games/play/${gameId}` : `${NEXT_PUBLIC_API_URL}/api/v1/games/play/${gameId}`
+  const res = token ? await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'access-token': token.accessToken,
+      'client': token.client,
+      'uid': token.uid,
+    }
+  }) : await fetch(url)
+  if (token) {
+    ctx ? saveToken(res.headers, ctx) : saveToken(res.headers)
+  }
+  return await res.json()
+}
+
 export async function getGame(gameId: number, token?: Token, ctx?: GetServerSidePropsContext) {
   const url: string = typeof window === 'undefined' ? `${API_URL}/api/v1/games/${gameId}` : `${NEXT_PUBLIC_API_URL}/api/v1/games/${gameId}`
   const res = token ? await fetch(url, {
