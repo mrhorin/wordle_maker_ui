@@ -95,7 +95,7 @@ export async function getGames() {
 
 // games#current_user_index
 export async function getCurrentGames(token: Token) {
-  const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/v1/games/current_user_index`, {
+  const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/v1/games/current-user-index`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
