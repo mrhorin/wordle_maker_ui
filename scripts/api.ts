@@ -193,8 +193,8 @@ export async function getGameWords(gameId: number, token?: Token, ctx?: GetServe
 }
 
 // words#today
-export async function getWordsToday(gameId: number, token?: Token, ctx?: GetServerSidePropsContext) {
-  const url: string = typeof window === 'undefined' ? `${API_URL}/api/v1/words/today/${gameId}` : `${NEXT_PUBLIC_API_URL}/api/v1/words/today/${gameId}`
+export async function getGamesWordsToday(gameId: number, token?: Token, ctx?: GetServerSidePropsContext) {
+  const url: string = typeof window === 'undefined' ? `${API_URL}/api/v1/games/${gameId}/words/today` : `${NEXT_PUBLIC_API_URL}/api/v1/games/${gameId}/words/today`
   const res = token ? await fetch(url, {
     method: 'GET',
     headers: {
