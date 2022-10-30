@@ -10,6 +10,7 @@ import useLocale from 'hooks/useLocale'
 import useCopyToClipboard from 'hooks/useCopyToClipboard'
 import useLanguage from 'hooks/useLanguage'
 
+import PrivateGame from 'components/game/private_game'
 import SlideoutMenu from 'components/slideout_menu'
 import TileComponent from 'components/game/tile'
 import NextGameTimer from 'components/game/next_game_timer'
@@ -28,10 +29,13 @@ import { getGamesPlay } from 'scripts/api'
 import validate from 'scripts/validate'
 
 type Props = {
-  game: Game,
-  wordList: String[],
-  wordToday: Word,
-  questionNo: number,
+  isPublished: boolean,
+  data: {
+    game: Game,
+    wordList: String[],
+    wordToday: Word,
+    questionNo: number
+  },
 }
 
 const GameStatus = {
@@ -75,11 +79,16 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     expiry: cookies.expiry,
   }
   const json = validate.token(token) ? await getGamesPlay(id, token, ctx) : await getGamesPlay(id)
-  if (json.ok) return { props: json.data }
+  if (json.ok) return { props: { isPublished: true, data: json.data } }
+  if (!json.ok && !json.isPublished && json.statusCode == 200) {
+    // When private
+    return { props: { isPublished: false, data: { game: json.data } } }
+  }
   return { notFound: true }
 }
 
 const Games = (props: Props) => {
+  if (!props.isPublished) return <PrivateGame game={props.data.game} />
   /*
    * gameStatus:
    *  This value indicates the status of the game.
@@ -110,12 +119,12 @@ const Games = (props: Props) => {
   const { t, locale } = useLocale()
   const [clipboard, copy] = useCopyToClipboard()
 
-  const WORD_TODAY: string[] = props.wordToday.name.toUpperCase().split('')
-  const LOCAL_STORAGE_WORDS_STATE_KEY = `wordsState.${props.game.id}`
-  const LOCAL_STORAGE_STATISTICS_KEY = `statistics.${props.game.id}`
+  const WORD_TODAY: string[] = props.data.wordToday.name.toUpperCase().split('')
+  const LOCAL_STORAGE_WORDS_STATE_KEY = `wordsState.${props.data.game.id}`
+  const LOCAL_STORAGE_STATISTICS_KEY = `statistics.${props.data.game.id}`
 
   const alert = useAlert()
-  const language = useLanguage(props.game.lang)
+  const language = useLanguage(props.data.game.lang)
 
   useEffect(() => {
     window.onkeydown = event => handleOnKeyDown(event.key)
@@ -167,7 +176,7 @@ const Games = (props: Props) => {
           }
           // Check whether game is over or not
           let nextEndedAt: number | null = null
-          if (nextWords[nextWords.length - 1] == WORD_TODAY.join('') || nextTilesTable.length >= props.game.challenge_count) {
+          if (nextWords[nextWords.length - 1] == WORD_TODAY.join('') || nextTilesTable.length >= props.data.game.challenge_count) {
             nextEndedAt = Date.parse(new Date().toString())
             setEndedAt(nextEndedAt)
             // Set next stactics
@@ -217,7 +226,7 @@ const Games = (props: Props) => {
   }, [gameStatus])
 
   useEffect(() => {
-    if (tilesTable.length >= props.game.challenge_count) {
+    if (tilesTable.length >= props.data.game.challenge_count) {
       // When tilesTable is filled with Tiles
       setGameStatus(GameStatus.Finished)
     } else if (tilesTable.length > 0) {
@@ -282,8 +291,8 @@ const Games = (props: Props) => {
       tiles += '\r'
     }
     const guessTimes: string = isClear() ? tilesTable.length.toString() : 'X'
-    const no: string = locale == 'ja' ? `第${props.questionNo}回` : props.questionNo.toString()
-    return `${props.game.title} ${no} ${guessTimes}/${props.game.challenge_count}\r\r${tiles}\r${url}`
+    const no: string = locale == 'ja' ? `第${props.data.questionNo}回` : props.data.questionNo.toString()
+    return `${props.data.game.title} ${no} ${guessTimes}/${props.data.game.challenge_count}\r\r${tiles}\r${url}`
   }
 
   function isClear(): boolean{
@@ -380,7 +389,7 @@ const Games = (props: Props) => {
     } else if (language.regexp?.test(key) && key.length == 1) {
       // Press valid key
       setCurrentWord(prevCurrentWord => {
-        if (prevCurrentWord.length < props.game.char_count) {
+        if (prevCurrentWord.length < props.data.game.char_count) {
           return prevCurrentWord.concat(key.toUpperCase())
         } else {
           return prevCurrentWord
@@ -397,10 +406,10 @@ const Games = (props: Props) => {
         if (gameStatus == GameStatus.Finished) {
           reject(SetCurrentWordStatus.FinishedGame)
           return prevCurrentWord
-        } else if (prevCurrentWord.length != props.game.char_count) {
+        } else if (prevCurrentWord.length != props.data.game.char_count) {
           reject(SetCurrentWordStatus.NotEnoughLetters)
           return prevCurrentWord
-        } else if (!props.wordList.includes(prevCurrentWord.join(''))) {
+        } else if (!props.data.wordList.includes(prevCurrentWord.join(''))) {
           reject(SetCurrentWordStatus.NotInWordList)
           return prevCurrentWord
         } else {
@@ -417,10 +426,10 @@ const Games = (props: Props) => {
 
   function createTilesTableComponent(): JSX.Element{
     const rowComponents: JSX.Element[] = []
-    for (let i = 0; i < props.game.challenge_count; i++){
+    for (let i = 0; i < props.data.game.challenge_count; i++){
       // Set tiles
       const row: JSX.Element[] = []
-      for (let j = 0; j < props.game.char_count; j++){
+      for (let j = 0; j < props.data.game.char_count; j++){
         let tile: Tile = { letter: '', status: 'EMPTY' }
         // When the row already exists
         if (tilesTable[i] && tilesTable[i][j]) tile = tilesTable[i][j]
@@ -434,14 +443,14 @@ const Games = (props: Props) => {
   }
 
   function createKeyboardComponent(): JSX.Element{
-    return props.game.lang == 'en' ? <EnKeyboard tilesTable={tilesTable} handleOnClick={handleOnKeyDown} /> : <JaKeyboard tilesTable={tilesTable} handleOnClick={handleOnKeyDown} />
+    return props.data.game.lang == 'en' ? <EnKeyboard tilesTable={tilesTable} handleOnClick={handleOnKeyDown} /> : <JaKeyboard tilesTable={tilesTable} handleOnClick={handleOnKeyDown} />
   }
 
   return (
     <main id='main'>
       <Head>
-        <title>{`${props.game.title} | ${t.APP_NAME}`}</title>
-        <meta name="description" content={props.game.desc ? props.game.desc : t.APP_DESC.FIRST_LINE + t.APP_DESC.SECOND_LINE} />
+        <title>{`${props.data.game.title} | ${t.APP_NAME}`}</title>
+        <meta name="description" content={props.data.game.desc ? props.data.game.desc : t.APP_DESC.FIRST_LINE + t.APP_DESC.SECOND_LINE} />
       </Head>
 
       <SlideoutMenu />
@@ -459,27 +468,27 @@ const Games = (props: Props) => {
             <div className='howtoplay'>
               {/* Title */}
               <label className='howtoplay-label'>{t.GAME.TITLE}:</label>
-              <div className='howtoplay-text'>{props.game.title}</div>
+              <div className='howtoplay-text'>{props.data.game.title}</div>
               {/* Desc */}
               <label className='howtoplay-label'>{t.GAME.DESC}:</label>
-              <div className='howtoplay-text'>{props.game.desc}</div>
+              <div className='howtoplay-text'>{props.data.game.desc}</div>
               {/* Attrs */}
               <div className='howtoplay-attrs'>
                 <div className='howtoplay-attrs-item'>
                   <label className='howtoplay-label'>{t.GAME_IDEX.LANGUAGE}:</label>
-                  <div className='howtoplay-text'>{props.game.lang == 'ja' ? t.LANG.JA : t.LANG.EN}</div>
+                  <div className='howtoplay-text'>{props.data.game.lang == 'ja' ? t.LANG.JA : t.LANG.EN}</div>
                 </div>
                 <div className='howtoplay-attrs-item'>
                   <label className='howtoplay-label'>{t.GAME_IDEX.WORD_COUNT}:</label>
-                  <div className='howtoplay-text'>{props.game.words_count}</div>
+                  <div className='howtoplay-text'>{props.data.game.words_count}</div>
                 </div>
                 <div className='howtoplay-attrs-item'>
                   <label className='howtoplay-label'>{t.GAME_IDEX.CHARACTER_COUNT}:</label>
-                  <div className='howtoplay-text'>{props.game.char_count}</div>
+                  <div className='howtoplay-text'>{props.data.game.char_count}</div>
                 </div>
                 <div className='howtoplay-attrs-item'>
                   <label className='howtoplay-label'>{t.GAME_IDEX.CHALLENGE_COUNT}:</label>
-                  <div className='howtoplay-text'>{props.game.challenge_count}</div>
+                  <div className='howtoplay-text'>{props.data.game.challenge_count}</div>
                 </div>
               </div>
               {/* Basic Rules */}

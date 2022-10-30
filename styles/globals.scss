@@ -1920,6 +1920,51 @@ input[type="checkbox"].checkbox-default{
   }
 }
 
+.games-private{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+  .games-private-item{
+    width: 100%;
+    max-width: 400px;
+    @include sp{
+      max-width: none;
+    }
+  }
+  .games-private-msg{
+    @extend .games-private-item;
+    order: 1;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin: 3rem 0;
+    display: inline-flex;
+    align-items: baseline;
+    svg,i{ margin-right: 0.5rem; }
+  }
+  .games-private-title{
+    @extend .games-private-item;
+    order: 2;
+    margin-bottom: 1rem;
+  }
+  .games-private-desc{
+    @extend .games-private-item;
+    order: 3;
+
+  }
+  .games-private-label{
+    display: block;
+    color: var(--font-color3);
+  }
+  .games-private-text{
+    white-space: pre-wrap;
+    color: var(--font-color4);
+  }
+  @include sp{
+    max-width: none;
+  }
+}
+
 /* ---------- Key ---------- */
 .keyboard-key{
   border-radius: 3px;
