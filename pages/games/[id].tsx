@@ -74,7 +74,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     uid: cookies.uid,
     expiry: cookies.expiry,
   }
-  const json = validate.token(token) ? await getGamesPlay(id, token, ctx) : getGamesPlay(id)
+  const json = validate.token(token) ? await getGamesPlay(id, token, ctx) : await getGamesPlay(id)
   if (json.ok) return { props: json.data }
   return { notFound: true }
 }
