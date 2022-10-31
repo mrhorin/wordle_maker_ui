@@ -48,7 +48,7 @@ const ChipBadge = ({ chip, handleClickChipXmark, handleChangeChip }: Props) => {
   if (isEditing) {
     value = <input
       id='chip-textarea-current-edit-chip' className='chip-textarea-chip-value' type='text'
-      size={currentEditChipValue.length * 2} autoFocus={true} value={currentEditChipValue}
+      size={currentEditChipValue.length + 3} autoFocus={true} value={currentEditChipValue}
       onChange={e => setCurrentEditChipValue(e.target.value)} onKeyDown={e => handleKeyDownCurrentEditChip(e)} onBlur={handleBlurCurrentEditChip}
     />
   } else {

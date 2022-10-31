@@ -785,15 +785,15 @@ input[type="checkbox"].checkbox-default{
   cursor: text;
   .chip-textarea-chip{
     align-self: flex-start;
-    font-size: 0.8rem;
-    border-radius: 100px;
-    line-height: 1.3rem;
-    padding: 0 0.3rem 0 1rem;
-    margin: 0.2rem;
-    cursor: pointer;
     display: inline-flex;
     flex-wrap: nowrap;
     align-items: center;
+    font-size: 0.8rem;
+    padding: 0 0.3rem 0 0rem;
+    margin: 0.2rem;
+    border-radius: 100px;
+    line-height: 1.3rem;
+    cursor: pointer;
     color: #fff;
     background: var(--base-color4);
     &:hover{
@@ -803,6 +803,8 @@ input[type="checkbox"].checkbox-default{
       order: 1;
       display: inline;
       padding: 0;
+      padding-left: 1rem;
+      padding-right: 0.5rem;
       margin: 0;
       font-size: 0.8rem;
       line-height: 1.3rem;
@@ -816,23 +818,29 @@ input[type="checkbox"].checkbox-default{
       outline: none;
       border: none;
       padding: 0;
+      padding-left: 1rem;
       margin: 0;
+      border-top-left-radius: 100px;
+      border-bottom-left-radius: 100px;
       font-size: 0.8rem;
       line-height: 1.3rem;
+      max-width: 100%;
       height: 1.3rem;
       font-weight: 300;
     }
     .chip-textarea-chip-xmark{
       order: 2;
-      margin-left: 0.5rem;
+      padding-right: 0.25rem;
       font-size: 13px;
       line-height: 1.3rem;
-      width: 13px;
+      text-align: right;
       svg,i{
         border-radius: 100px;
         width: 13px;
         height: 13px;
-        &:hover{
+      }
+      &:hover{
+        svg,i{
           background: #fff;
           color: var(--base-color4);
         }
