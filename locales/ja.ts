@@ -147,6 +147,12 @@ export default {
       GAME_TIME: '思考時間',
       NEXT_GAME: '次のゲームまで',
     },
+    UNPLAYABLE_GAME: {
+      MESSAGE: {
+        PRIVATE: 'このゲームは現在、作成者によって非公開になっています',
+        NO_WORDS: 'このゲームは現在、遊ぶことができません',
+      }
+    },
   },
   SIGN_IN: {
     TITLE: 'サインイン',

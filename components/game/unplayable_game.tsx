@@ -9,10 +9,17 @@ import { faLock } from '@fortawesome/free-solid-svg-icons'
 
 type Props = {
   game: Game,
+  isPrivate: boolean,
+  hasNoWords: boolean,
 }
 
-const PrivateGame = (props: Props) => {
+const UnplayableGame = (props: Props) => {
   const { t, locale } = useLocale()
+
+  function message(): string{
+    if (props.isPrivate) return t.GAMES.UNPLAYABLE_GAME.MESSAGE.PRIVATE
+    return t.GAMES.UNPLAYABLE_GAME.MESSAGE.NO_WORDS
+  }
 
   return (
     <main id='main'>
@@ -25,9 +32,10 @@ const PrivateGame = (props: Props) => {
 
       <div className='container'>
         <div className='games-private text'>
+          {/* message */}
           <div className='games-private-msg'>
             <FontAwesomeIcon icon={faLock} />
-            このゲームは現在非公開です
+            {message()}
           </div>
           {/* title */}
           <div className='games-private-title'>
@@ -45,4 +53,4 @@ const PrivateGame = (props: Props) => {
   )
 }
 
-export default PrivateGame
+export default UnplayableGame

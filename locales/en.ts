@@ -149,6 +149,12 @@ export default {
       GAME_TIME: 'Game Time',
       NEXT_GAME: 'Next Game',
     },
+    UNPLAYABLE_GAME: {
+      MESSAGE: {
+        PRIVATE: 'This game is currently private.',
+        NO_WORDS: 'This game is currently unplayable.',
+      }
+    },
   },
   SIGN_IN: {
     TITLE: 'Sign in',
