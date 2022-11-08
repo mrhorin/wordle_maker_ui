@@ -48,14 +48,14 @@ const MygamesEditIndex = () => {
     }
   }, [accountStatusContext.accountStatus])
 
-  function GameIndex(): JSX.Element{
-    if (accountStatusContext.accountStatus == 'INITIALIZING') {
-      // Loading
-      return <ReactLoading type={'spin'} color={'#008eff'} height={'25px'} width={'25px'} className='loading-center' />
-    } else if (accountStatusContext.accountStatus == 'SUSPENDED') {
+  function GameIndex(): JSX.Element {
+    if (accountStatusContext.accountStatus == 'SUSPENDED') {
       return <p className='sidemenu-main-msg'>{t.MY_GAMES.EDIT.INDEX.SUSPENDED_ACCOUNT}</p>
     } else if (accountStatusContext.accountStatus == 'SIGNIN') {
       return <p className='sidemenu-main-msg'>{t.ALERT.YOU_ARE_NOT_SIGNED_IN}</p>
+    } else if (accountStatusContext.accountStatus == 'INITIALIZING' || games == null) {
+      // Loading
+      return <ReactLoading type={'spin'} color={'#008eff'} height={'25px'} width={'25px'} className='loading-center' />
     }
     if (games && games.length > 0) {
       // Game List
@@ -67,12 +67,11 @@ const MygamesEditIndex = () => {
         return <GameIndexItem game={game} key={index} titleElement={titleElement} />
       })
       return <div className='game-index'>{gameComponents}</div>
-    } else {
-      // No Game yet
-      return (
-        <p className='sidemenu-main-msg'>{t.MY_GAMES.EDIT.INDEX.NO_GAME}</p>
-      )
     }
+    // No Game yet
+    return (
+      <p className='sidemenu-main-msg'>{t.MY_GAMES.EDIT.INDEX.NO_GAME}</p>
+    )
   }
 
   return (

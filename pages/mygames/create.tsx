@@ -104,12 +104,12 @@ const MygamesCreate = () => {
   }
 
   function Form(): JSX.Element{
-    if (accountStatusContext.accountStatus == 'INITIALIZING') {
-      return <ReactLoading type={'spin'} color={'#008eff'} height={'25px'} width={'25px'} className='loading-center' />
-    } else if (accountStatusContext.accountStatus == 'SUSPENDED') {
+    if (accountStatusContext.accountStatus == 'SUSPENDED') {
       return <p className='sidemenu-main-msg'>{t.MY_GAMES.EDIT.INDEX.SUSPENDED_ACCOUNT}</p>
     } else if (accountStatusContext.accountStatus == 'SIGNIN') {
       return <p className='sidemenu-main-msg'>{t.ALERT.YOU_ARE_NOT_SIGNED_IN}</p>
+    } if (accountStatusContext.accountStatus == 'INITIALIZING') {
+      return <ReactLoading type={'spin'} color={'#008eff'} height={'25px'} width={'25px'} className='loading-center' />
     }
     return (
       <form id='game-form' className='sp-padding' onSubmit={e => e.preventDefault()}>
