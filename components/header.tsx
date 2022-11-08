@@ -10,7 +10,6 @@ import { faTwitter } from '@fortawesome/free-brands-svg-icons'
 import Modal from 'components/modal'
 import Checkbox from './form/checkbox'
 
-import CurrentUserInfoContext from 'contexts/current_user_info'
 import ShowAccountMenuContext from 'contexts/show_account_menu'
 import ShowSlideoutMenuContext from 'contexts/show_slideout_menu'
 
@@ -25,11 +24,11 @@ import Link from 'next/link'
 import Image from 'next/image'
 
 const Header = () => {
+  const [currentUser, setCurrentUser] = useState<UserInfo | null>(null)
   const [accountStatus, setAccountStatus] = useState<HeaderStatus>('INITIALIZING')
   const [showModal, setShowModal] = useState<boolean>(false)
   const [checkedConfirmation, setCheckedConfirmation] = useState<boolean>(false)
 
-  const currentUserInfoContext = useContext(CurrentUserInfoContext)
   const showAccountMenuContext = useContext(ShowAccountMenuContext)
   const showSlideoutMenuContext = useContext(ShowSlideoutMenuContext)
   const router = useRouter()
@@ -43,7 +42,7 @@ const Header = () => {
     const query: Query = getQuery()
     if (validate.token(prevToken) && validate.userInfo(prevUserInfo)) {
       // Restore current user
-      currentUserInfoContext.setCurrentUserInfo(prevUserInfo)
+      setCurrentUser(prevUserInfo)
       setAccountStatus('LOGGEDIN')
     } else if (validate.queryToken(query)) {
       // Get current user info with the token
@@ -66,7 +65,7 @@ const Header = () => {
             image: json.data.image
           }
           cookie.client.saveUserInfo(userInfo)
-          currentUserInfoContext.setCurrentUserInfo(userInfo)
+          setCurrentUser(userInfo)
           if (json.data.is_suspended) {
             alert.show(t.ALERT.CURRENT_USER_SUSPENDED, { type: 'error' })
           } else {
@@ -87,7 +86,6 @@ const Header = () => {
       // Delete current user and token
       cookie.client.destroyToken()
       cookie.client.destroyUserInfo()
-      currentUserInfoContext.setCurrentUserInfo(null)
       setAccountStatus('SIGNIN')
     }
   }, [])
@@ -152,12 +150,11 @@ const Header = () => {
   }
 
   function createHeaderAccountComponent(): JSX.Element {
-    if (accountStatus == 'LOGGEDIN') {
-      const src: string = currentUserInfoContext.currentUserInfo ? currentUserInfoContext.currentUserInfo.image : ''
+    if (accountStatus == 'LOGGEDIN' && currentUser) {
       return (
         <div className='header-account-button' onClick={toggleAccountMenu}>
           <div className='header-account-button-image'>
-            <Image src={src} width={30} height={30} alt={'Avatar'} />
+            <Image src={currentUser.image} width={30} height={30} alt={'Avatar'} />
           </div>
           <div className='header-account-button-caretdown'>
             <FontAwesomeIcon icon={faCaretDown} />

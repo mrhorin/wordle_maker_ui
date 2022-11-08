@@ -10,13 +10,11 @@ import GameIndexItem from 'components/game_index_item'
 import Link from 'next/link'
 import Image from 'next/image'
 
-import CurrentUserInfoContext from 'contexts/current_user_info'
-
+import cookie from 'scripts/cookie'
 import { getGames } from 'scripts/api'
 
 const Index = () => {
   const [games, setGames] = useState<Game[] | null>(null)
-  const currentUserInfoContext = useContext(CurrentUserInfoContext)
   const router = useRouter()
   const { t } = useLocale()
 
@@ -49,8 +47,8 @@ const Index = () => {
     }
   }
 
-  function handleClickCreateGameBtn(): void{
-    if (currentUserInfoContext.currentUserInfo) {
+  function handleClickCreateGameBtn(): void {
+    if (cookie.client.loadUserInfo()) {
       router.push("/mygames/create")
     } else {
       router.push("/signin")
