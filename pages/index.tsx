@@ -1,6 +1,6 @@
 import type { Game } from 'types/global'
 import { useRouter } from 'next/router'
-import { useEffect, useState, useContext } from 'react'
+import { useEffect, useState } from 'react'
 import useLocale from 'hooks/useLocale'
 
 import ReactLoading from 'react-loading'

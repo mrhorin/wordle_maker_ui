@@ -9,7 +9,8 @@ import useTheme from 'hooks/useTheme'
 
 import cookie from 'scripts/cookie'
 
-import ShowSlideoutMenuContext from 'contexts/show_slideout_menu'
+import ShowContext from 'contexts/show'
+
 import Select from './form/select'
 
 type Props = {
@@ -18,7 +19,7 @@ type Props = {
 
 const SlideoutMenu = ({ children }: Props) => {
   const [currentTheme, setCurrentTheme] = useState<Theme>('dark')
-  const showSlideoutMenuContext = useContext(ShowSlideoutMenuContext)
+  const showContext = useContext(ShowContext)
   const router = useRouter()
   const { t, setLocale } = useLocale()
   const { getTheme, setTheme } = useTheme()
@@ -32,12 +33,12 @@ const SlideoutMenu = ({ children }: Props) => {
 
   function handleClickHome(): void{
     router.push('/')
-    showSlideoutMenuContext.set(false)
+    showContext.setSlideoutMenu(false)
   }
 
   function handleClickTerms(): void{
     router.push('/tos')
-    showSlideoutMenuContext.set(false)
+    showContext.setSlideoutMenu(false)
   }
 
   function handleChangeTheme(event: ChangeEvent<HTMLSelectElement>): void{
@@ -55,14 +56,14 @@ const SlideoutMenu = ({ children }: Props) => {
     }
   }
 
-  const style = showSlideoutMenuContext.show ? 'slideout-menu slideout-menu-show' : 'slideout-menu'
+  const style = showContext.showSlideoutMenu ? 'slideout-menu slideout-menu-show' : 'slideout-menu'
 
   return (
     <div className={style}>
-      <div className='slideout-menu-overlay' onClick={() => showSlideoutMenuContext.set(false)}></div>
+      <div className='slideout-menu-overlay' onClick={() => showContext.setSlideoutMenu(false)}></div>
       <div className='slideout-menu-main'>
         <div className='slideout-menu-main-xmark'>
-          <FontAwesomeIcon icon={faXmark} onClick={() => showSlideoutMenuContext.set(false)} />
+          <FontAwesomeIcon icon={faXmark} onClick={() => showContext.setSlideoutMenu(false)} />
         </div>
         <ul>
           {children}

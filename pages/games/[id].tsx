@@ -18,7 +18,7 @@ import Modal from 'components/modal'
 import EnKeyboard from 'components/keyboard/en/qwerty'
 import JaKeyboard from 'components/keyboard/ja/gozyuon'
 
-import ShowSlideoutMenuContext from 'contexts/show_slideout_menu'
+import ShowContext from 'contexts/show'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
@@ -105,7 +105,7 @@ const Games = (props: Props) => {
   const [showResultModal, setShowResultModal] = useState<boolean>(false)
   const [showHowToPlayModal, setShowHowToPlayModal] = useState<boolean>(false)
 
-  const showSlideoutMenuContext = useContext(ShowSlideoutMenuContext)
+  const showContext = useContext(ShowContext)
 
   const router = useRouter()
   const { t, locale } = useLocale()
@@ -362,7 +362,7 @@ const Games = (props: Props) => {
   }
 
   function handleClickHowToPlay(): void{
-    showSlideoutMenuContext.set(false)
+    showContext.setSlideoutMenu(false)
     setShowResultModal(false)
     setShowHowToPlayModal(true)
   }

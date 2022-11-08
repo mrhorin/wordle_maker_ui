@@ -10,8 +10,7 @@ import { faTwitter } from '@fortawesome/free-brands-svg-icons'
 import Modal from 'components/modal'
 import Checkbox from './form/checkbox'
 
-import ShowAccountMenuContext from 'contexts/show_account_menu'
-import ShowSlideoutMenuContext from 'contexts/show_slideout_menu'
+import ShowContext from 'contexts/show'
 
 import useSignOut from 'hooks/useSignOut'
 import useLocale from 'hooks/useLocale'
@@ -29,8 +28,8 @@ const Header = () => {
   const [showModal, setShowModal] = useState<boolean>(false)
   const [checkedConfirmation, setCheckedConfirmation] = useState<boolean>(false)
 
-  const showAccountMenuContext = useContext(ShowAccountMenuContext)
-  const showSlideoutMenuContext = useContext(ShowSlideoutMenuContext)
+  const showContext = useContext(ShowContext)
+
   const router = useRouter()
   const { t } = useLocale()
   const alert = useAlert()
@@ -113,7 +112,7 @@ const Header = () => {
   }
 
   function getAccountMenuStyle(): string{
-    if (showAccountMenuContext.showAccountMenu) {
+    if (showContext.showAccountMenu) {
       return 'header-account-menu-show'
     } else {
       return 'header-account-menu-hide'
@@ -121,10 +120,10 @@ const Header = () => {
   }
 
   function toggleAccountMenu(): void{
-    if (showAccountMenuContext.showAccountMenu) {
-      showAccountMenuContext.setShowAccountMenu(false)
+    if (showContext.showAccountMenu) {
+      showContext.setShowAccountMenu(false)
     } else {
-      showAccountMenuContext.setShowAccountMenu(true)
+      showContext.setShowAccountMenu(true)
     }
   }
 
@@ -216,7 +215,7 @@ const Header = () => {
       <header className='header'>
         <div className='container'>
           <div className='header-menu'>
-            <div className='header-hamburger' onClick={() => showSlideoutMenuContext.set(!showSlideoutMenuContext.show)}>
+            <div className='header-hamburger' onClick={() => showContext.setSlideoutMenu(!showContext.showSlideoutMenu)}>
               <FontAwesomeIcon icon={faBars} className='fa-fw' />
             </div>
           </div>
