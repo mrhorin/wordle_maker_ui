@@ -1,6 +1,6 @@
 import type { Token, Game } from 'types/global'
 import { useRouter } from 'next/router'
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useContext } from 'react'
 import { useAlert } from 'react-alert'
 
 import useSignOut from 'hooks/useSignOut'
@@ -9,6 +9,9 @@ import useLocale from 'hooks/useLocale'
 import Head from 'next/head'
 import nprogress from 'nprogress'
 
+import AccountStatusContext from 'contexts/account_status'
+
+import ReactLoading from 'react-loading'
 import SlideoutMenu from 'components/slideout_menu'
 import Sidemenu from 'components/sidemenu'
 import LoadingOverlay from 'components/loading_overlay'
@@ -26,6 +29,8 @@ const MygamesCreate = () => {
   const [challengeCount, setChallengeCount] = useState<number>(6)
   const [charCount, setCharCount] = useState<number>(5)
   const [showOverlay, setShowOverlay] = useState<boolean>(false)
+  /********* Context *********/
+  const accountStatusContext = useContext(AccountStatusContext)
   /*********** Ref ***********/
   const inputTitleEl = useRef<HTMLInputElement>(null)
   const divTitleInvalidEl = useRef<HTMLDivElement>(null)
@@ -98,6 +103,77 @@ const MygamesCreate = () => {
     }
   }
 
+  function Form(): JSX.Element{
+    if (accountStatusContext.accountStatus == 'INITIALIZING') {
+      return <ReactLoading type={'spin'} color={'#008eff'} height={'25px'} width={'25px'} className='loading-center' />
+    } else if (accountStatusContext.accountStatus == 'SUSPENDED') {
+      return <p className='sidemenu-main-msg'>{t.MY_GAMES.EDIT.INDEX.SUSPENDED_ACCOUNT}</p>
+    } else if (accountStatusContext.accountStatus == 'SIGNIN') {
+      return <p className='sidemenu-main-msg'>{t.ALERT.YOU_ARE_NOT_SIGNED_IN}</p>
+    }
+    return (
+      <form id='game-form' className='sp-padding' onSubmit={e => e.preventDefault()}>
+        {/* Title */}
+        <div className='form-group'>
+          <label>{ t.GAME.TITLE }</label>
+          <div className='form-countable-input-group'>
+            <input ref={inputTitleEl} id='game-title' type='text' maxLength={100} value={title} onChange={e => setTitle(e.target.value)} />
+            <div className='form-countable-input-counter'>{`${title.length} / 100`}</div>
+          </div>
+          <div ref={divTitleInvalidEl} id='game-title-invalid-feedback' className='form-group-invalid-feedback'></div>
+        </div>
+        {/* Description */}
+        <div className='form-group'>
+          <label>{ t.GAME.DESC }</label>
+          <div className='form-countable-input-group'>
+            <textarea id='game-desc' rows={8} maxLength={200} value={desc} onChange={e => setDesc(e.target.value)} />
+            <div className='form-countable-input-counter'>{`${desc.length} / 200`}</div>
+          </div>
+          <div id='game-title-invalid-feedback' className='form-group-invalid-feedback'></div>
+        </div>
+        {/* Challenge count */}
+        <div className='form-group'>
+          <Select id='game-challengeount' value={challengeCount} handleChange={handleChangeChallengeCount} label={t.GAME.CHALLENGE_COUNT}>
+            <option value='2'>2</option>
+            <option value='3'>3</option>
+            <option value='4'>4</option>
+            <option value='5'>5</option>
+            <option value='6'>6</option>
+            <option value='7'>7</option>
+            <option value='8'>8</option>
+            <option value='9'>9</option>
+            <option value='10'>10</option>
+          </Select>
+        </div>
+        {/* Character count */}
+        <div className='form-group'>
+          <Select id='game-charcount' value={charCount} handleChange={handleChangeCharCount} label={t.GAME.CHARACTER_COUNT}>
+            <option value='2'>2</option>
+            <option value='3'>3</option>
+            <option value='4'>4</option>
+            <option value='5'>5</option>
+            <option value='6'>6</option>
+            <option value='7'>7</option>
+            <option value='8'>8</option>
+            <option value='9'>9</option>
+            <option value='10'>10</option>
+          </Select>
+        </div>
+        {/* Language */}
+        <div className='form-group'>
+          <Select id='game-lang' value={lang} handleChange={handleChangeLang} label={t.GAME.LANGUAGE}>
+            <option value='en'>English</option>
+            <option value='ja'>Japanese</option>
+          </Select>
+        </div>
+        {/* Submit */}
+        <button type='button' id='game-submit' className='btn btn-primary' disabled={title.length < 1 || title.length > 100} onClick={handleClickSubmit}>
+          { t.FORM.SUBMIT }
+        </button>
+      </form>
+    )
+  }
+
   return (
     <main id='main'>
       <Head>
@@ -115,67 +191,8 @@ const MygamesCreate = () => {
             <div className='title'>
               <div className='title-text'>{ t.MY_GAMES.CREATE.TITLE }</div>
             </div>
-
             {/* Game Form */}
-            <form id='game-form' className='sp-padding' onSubmit={e => e.preventDefault()}>
-              {/* Title */}
-              <div className='form-group'>
-                <label>{ t.GAME.TITLE }</label>
-                <div className='form-countable-input-group'>
-                  <input ref={inputTitleEl} id='game-title' type='text' maxLength={100} value={title} onChange={e => setTitle(e.target.value)} />
-                  <div className='form-countable-input-counter'>{`${title.length} / 100`}</div>
-                </div>
-                <div ref={divTitleInvalidEl} id='game-title-invalid-feedback' className='form-group-invalid-feedback'></div>
-              </div>
-              {/* Description */}
-              <div className='form-group'>
-                <label>{ t.GAME.DESC }</label>
-                <div className='form-countable-input-group'>
-                  <textarea id='game-desc' rows={8} maxLength={200} value={desc} onChange={e => setDesc(e.target.value)} />
-                  <div className='form-countable-input-counter'>{`${desc.length} / 200`}</div>
-                </div>
-                <div id='game-title-invalid-feedback' className='form-group-invalid-feedback'></div>
-              </div>
-              {/* Challenge count */}
-              <div className='form-group'>
-                <Select id='game-challengeount' value={challengeCount} handleChange={handleChangeChallengeCount} label={t.GAME.CHALLENGE_COUNT}>
-                  <option value='2'>2</option>
-                  <option value='3'>3</option>
-                  <option value='4'>4</option>
-                  <option value='5'>5</option>
-                  <option value='6'>6</option>
-                  <option value='7'>7</option>
-                  <option value='8'>8</option>
-                  <option value='9'>9</option>
-                  <option value='10'>10</option>
-                </Select>
-              </div>
-              {/* Character count */}
-              <div className='form-group'>
-                <Select id='game-charcount' value={charCount} handleChange={handleChangeCharCount} label={t.GAME.CHARACTER_COUNT}>
-                  <option value='2'>2</option>
-                  <option value='3'>3</option>
-                  <option value='4'>4</option>
-                  <option value='5'>5</option>
-                  <option value='6'>6</option>
-                  <option value='7'>7</option>
-                  <option value='8'>8</option>
-                  <option value='9'>9</option>
-                  <option value='10'>10</option>
-                </Select>
-              </div>
-              {/* Language */}
-              <div className='form-group'>
-                <Select id='game-lang' value={lang} handleChange={handleChangeLang} label={t.GAME.LANGUAGE}>
-                  <option value='en'>English</option>
-                  <option value='ja'>Japanese</option>
-                </Select>
-              </div>
-              {/* Submit */}
-              <button type='button' id='game-submit' className='btn btn-primary' disabled={title.length < 1 || title.length > 100} onClick={handleClickSubmit}>
-              { t.FORM.SUBMIT }
-              </button>
-            </form>
+            <Form />
             <LoadingOverlay showOverlay={showOverlay} />
           </div>
         </div>

@@ -11,6 +11,8 @@ export default {
     EDIT: '編集',
     DELETE: '削除',
     CLOSE: '閉じる',
+    LIGHT: 'ライト',
+    DARK: 'ダーク',
   },
   ALERT: {
     SIGN_OUT: 'サインアウトしました',
@@ -26,6 +28,7 @@ export default {
     NOT_ENOUGH_LETTERS: '文字数がたりません',
     FIINISHED_GAME: 'ゲームは終了しています',
     CURRENT_USER_SUSPENDED: '凍結されています',
+    YOU_ARE_NOT_SIGNED_IN: 'サインインしていません',
   },
   API: {
     FAILED: 'データの取得に失敗しました',

@@ -1,4 +1,4 @@
-import type { Token, UserInfo, Query, HeaderStatus } from 'types/global'
+import type { Token, UserInfo, Query, AccountStatus } from 'types/global'
 import { useRouter } from 'next/router'
 import { useState, useEffect, useContext, useMemo, memo } from 'react'
 import { useAlert } from 'react-alert'
@@ -10,6 +10,7 @@ import { faTwitter } from '@fortawesome/free-brands-svg-icons'
 import Modal from 'components/modal'
 import Checkbox from './form/checkbox'
 
+import AccountStatusContext from 'contexts/account_status'
 import ShowContext from 'contexts/show'
 
 import useSignOut from 'hooks/useSignOut'
@@ -24,10 +25,10 @@ import Image from 'next/image'
 
 const Header = () => {
   const [currentUser, setCurrentUser] = useState<UserInfo | null>(null)
-  const [accountStatus, setAccountStatus] = useState<HeaderStatus>('INITIALIZING')
   const [showModal, setShowModal] = useState<boolean>(false)
   const [checkedConfirmation, setCheckedConfirmation] = useState<boolean>(false)
 
+  const accountStatusContext = useContext(AccountStatusContext)
   const showContext = useContext(ShowContext)
 
   const router = useRouter()
@@ -36,22 +37,8 @@ const Header = () => {
   const signOut = useSignOut()
 
   useEffect(() => {
-    const prevToken: Token | null = cookie.client.loadToken()
-    const prevUserInfo: UserInfo | null = cookie.client.loadUserInfo()
-    const query: Query = getQuery()
-    if (validate.token(prevToken) && validate.userInfo(prevUserInfo)) {
-      // Restore current user
-      setCurrentUser(prevUserInfo)
-      setAccountStatus('LOGGEDIN')
-    } else if (validate.queryToken(query)) {
-      // Get current user info with the token
-      const token: Token = {
-        accessToken: query['auth_token'],
-        client: query['client_id'],
-        uid: query['uid'],
-        expiry: query['expiry']
-      }
-      cookie.client.saveToken(token)
+    const token: Token | null = getToken()
+    if (validate.token(token)) {
       nprogress.start()
       getCuurentUser(token).then(json => {
         alert.removeAll()
@@ -61,23 +48,23 @@ const Header = () => {
             name: json.data.name,
             nickname: json.data.nickname,
             uid: json.data.uid,
-            image: json.data.image
+            image: json.data.image,
+            isSuspended: json.data.is_suspended,
           }
           cookie.client.saveUserInfo(userInfo)
           setCurrentUser(userInfo)
           if (json.data.is_suspended) {
-            alert.show(t.ALERT.CURRENT_USER_SUSPENDED, { type: 'error' })
+            accountStatusContext.setAccountStatus('SUSPENDED')
           } else {
-            alert.show(t.ALERT.SUCCESS, { type: 'success' })
+            accountStatusContext.setAccountStatus('LOGGEDIN')
           }
-          setAccountStatus('LOGGEDIN')
         } else {
           alert.show(t.ALERT.FAILED, { type: 'error' })
-          setAccountStatus('SIGNIN')
+          accountStatusContext.setAccountStatus('SIGNIN')
         }
       }).catch(error => {
         console.log(error)
-        setAccountStatus('SIGNIN')
+        accountStatusContext.setAccountStatus('SIGNIN')
       }).finally(() => {
         nprogress.done()
       })
@@ -85,7 +72,7 @@ const Header = () => {
       // Delete current user and token
       cookie.client.destroyToken()
       cookie.client.destroyUserInfo()
-      setAccountStatus('SIGNIN')
+      accountStatusContext.setAccountStatus('SIGNIN')
     }
   }, [])
 
@@ -99,6 +86,23 @@ const Header = () => {
       setShowModal(false)
     }
   }, [checkedConfirmation])
+
+  function getToken(): Token | null{
+    const prevToken: Token | null = cookie.client.loadToken()
+    const query: Query = getQuery()
+    if (validate.queryToken(query)) {
+      const token: Token = {
+        accessToken: query['auth_token'],
+        client: query['client_id'],
+        uid: query['uid'],
+        expiry: query['expiry']
+      }
+      cookie.client.saveToken(token)
+      return token
+    }
+    if (validate.token(prevToken)) return prevToken
+    return null
+  }
 
   function getQuery(): Query{
     const url_search: string[] = location.search.slice(1).split('&')
@@ -141,7 +145,7 @@ const Header = () => {
 
   function handleSignOut(): void {
     signOut(() => {
-      setAccountStatus('SIGNIN')
+      accountStatusContext.setAccountStatus('SIGNIN')
       alert.removeAll()
       alert.show(t.ALERT.SIGN_OUT, { type: 'success' })
       router.push('/signin')
@@ -149,7 +153,8 @@ const Header = () => {
   }
 
   function createHeaderAccountComponent(): JSX.Element {
-    if (accountStatus == 'LOGGEDIN' && currentUser) {
+    if ((accountStatusContext.accountStatus == 'LOGGEDIN' || accountStatusContext.accountStatus == 'SUSPENDED')
+      && currentUser) {
       return (
         <div className='header-account-button' onClick={toggleAccountMenu}>
           <div className='header-account-button-image'>
@@ -168,7 +173,7 @@ const Header = () => {
           </ul>
         </div>
       )
-    } else if(accountStatus == 'SIGNIN'){
+    } else if(accountStatusContext.accountStatus == 'SIGNIN'){
       return (
         <button type='button' className='btn btn-primary' onClick={()=> setShowModal(true)}>{t.HEADER.SIGN_IN}</button>
       )

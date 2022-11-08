@@ -28,6 +28,7 @@ export default {
     NOT_ENOUGH_LETTERS: 'Not Enough Letters',
     FIINISHED_GAME: 'Finished Game',
     CURRENT_USER_SUSPENDED: 'Account suspended',
+    YOU_ARE_NOT_SIGNED_IN: 'Your are not signed in.',
   },
   API: {
     FAILED: 'Failed to fetch data from data server.',

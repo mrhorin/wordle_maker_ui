@@ -1,6 +1,6 @@
 import type { Token, Game } from 'types/global'
 import { useRouter } from 'next/router'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 
 import useSignOut from 'hooks/useSignOut'
 import useLocale from 'hooks/useLocale'
@@ -8,6 +8,8 @@ import useLocale from 'hooks/useLocale'
 import ReactLoading from 'react-loading'
 import Head from 'next/head'
 import Link from 'next/link'
+
+import AccountStatusContext from 'contexts/account_status'
 
 import SlideoutMenu from 'components/slideout_menu'
 import Sidemenu from 'components/sidemenu'
@@ -18,20 +20,22 @@ import { getCurrentGames } from 'scripts/api'
 import validate from 'scripts/validate'
 
 const MygamesEditIndex = () => {
+  /********** State **********/
   const [games, setGames] = useState<Game[] | null>(null)
-  const [isSuspended, setIsSuspended] = useState<boolean>(false)
+  /********* Context *********/
+  const accountStatusContext = useContext(AccountStatusContext)
+
   const router = useRouter()
   const { t } = useLocale()
   const signOut = useSignOut()
 
   useEffect(() => {
     const token: Token | null = cookie.client.loadToken()
-    if (validate.token(token)) {
+    if (accountStatusContext.accountStatus == 'LOGGEDIN' && validate.token(token)) {
       getCurrentGames(token).then((json) => {
         if (json.ok) {
           setGames(json.data.map((item: Game) => item))
         } else if (json.code == 1001) {
-          setIsSuspended(true)
           setGames([])
         } else {
           // JSONでUnauthorizedエラーを見て認証されませんエラーを表示する
@@ -39,20 +43,21 @@ const MygamesEditIndex = () => {
           signOut(() => router.replace('/signin'))
         }
       })
-    } else {
+    } else if (accountStatusContext.accountStatus == 'SIGNIN') {
       signOut(() => router.replace('/signin'))
     }
-  }, [])
+  }, [accountStatusContext.accountStatus])
 
   function GameIndex(): JSX.Element{
-    if (isSuspended) {
-      // Suspended
-      return (
-        <div className='game-index'>
-          <p style={{ textAlign: 'center', margin: '10rem auto' }}>{t.MY_GAMES.EDIT.INDEX.SUSPENDED_ACCOUNT}</p>
-        </div>
-      )
-    } else if (games && games.length > 0) {
+    if (accountStatusContext.accountStatus == 'INITIALIZING') {
+      // Loading
+      return <ReactLoading type={'spin'} color={'#008eff'} height={'25px'} width={'25px'} className='loading-center' />
+    } else if (accountStatusContext.accountStatus == 'SUSPENDED') {
+      return <p className='sidemenu-main-msg'>{t.MY_GAMES.EDIT.INDEX.SUSPENDED_ACCOUNT}</p>
+    } else if (accountStatusContext.accountStatus == 'SIGNIN') {
+      return <p className='sidemenu-main-msg'>{t.ALERT.YOU_ARE_NOT_SIGNED_IN}</p>
+    }
+    if (games && games.length > 0) {
       // Game List
       const gameComponents: JSX.Element[] = games.map((game: Game, index: number) => {
         const titleElement: JSX.Element = <Link href={{
@@ -62,19 +67,10 @@ const MygamesEditIndex = () => {
         return <GameIndexItem game={game} key={index} titleElement={titleElement} />
       })
       return <div className='game-index'>{gameComponents}</div>
-    } else if (games == null) {
-      // Loading
-      return (
-        <div className='game-index'>
-          <ReactLoading type={'spin'} color={'#008eff'} height={'25px'} width={'25px'} className='loading-center' />
-        </div>
-      )
     } else {
       // No Game yet
       return (
-        <div className='game-index'>
-          <p style={{ textAlign: 'center', margin: '10rem auto' }}>{t.MY_GAMES.EDIT.INDEX.NO_GAME}</p>
-        </div>
+        <p className='sidemenu-main-msg'>{t.MY_GAMES.EDIT.INDEX.NO_GAME}</p>
       )
     }
   }

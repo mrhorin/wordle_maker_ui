@@ -35,8 +35,9 @@ const schema = {
       nickname: { type: 'string', minLength: 1 },
       uid: { type: 'string', minLength: 1 },
       image: { type: 'string', minLength: 1 },
+      isSuspended: { type: 'boolean'},
     },
-    required: ['provider', 'name', 'nickname', 'uid', 'image'],
+    required: ['provider', 'name', 'nickname', 'uid', 'image', 'isSuspended'],
     additionalProperties: false,
   },
   word: {

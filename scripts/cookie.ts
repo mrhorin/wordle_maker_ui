@@ -46,6 +46,8 @@ export class ClientSideCookies{
     setCookie(null, 'nickname', userInfo.nickname, this.cookieOptions)
     setCookie(null, 'uid', userInfo.uid, this.cookieOptions)
     setCookie(null, 'image', userInfo.image, this.cookieOptions)
+    const isSuspended: '1' | '0' = userInfo.isSuspended ? '1' : '0'
+    setCookie(null, 'isSuspended', isSuspended, this.cookieOptions)
   }
 
   static destroyUserInfo(): void{
@@ -53,6 +55,7 @@ export class ClientSideCookies{
     destroyCookie(null, 'name', this.cookieOptions)
     destroyCookie(null, 'nickname', this.cookieOptions)
     destroyCookie(null, 'image', this.cookieOptions)
+    destroyCookie(null, 'isSuspended', this.cookieOptions)
     const cookies = parseCookies()
     // uid is also used with Token
     if (!cookies['accessToken']) destroyCookie(null, 'uid', this.cookieOptions)
@@ -60,12 +63,14 @@ export class ClientSideCookies{
 
   static loadUserInfo(): UserInfo | null{
     const cookies = parseCookies()
+    const isSuspended: boolean = cookies['isSuspended'] == '1' ? true : false
     const userInfo = {
       provider: cookies['provider'],
       name: cookies['name'],
       nickname: cookies['nickname'],
       uid: cookies['uid'],
       image: cookies['image'],
+      isSuspended: isSuspended,
     }
     if (validate.userInfo(userInfo)) {
       return userInfo as UserInfo

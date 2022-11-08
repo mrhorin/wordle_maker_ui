@@ -4,6 +4,7 @@ export type UserInfo = {
   nickname: string,
   uid: string,
   image: string,
+  isSuspended: boolean,
 }
 
 export type Token = {
@@ -59,7 +60,7 @@ export type Tile = {
   status: TileStatus
 }
 
-export type HeaderStatus = 'INITIALIZING' | 'LOGGEDIN' | 'SIGNIN'
+export type AccountStatus = 'INITIALIZING' | 'LOGGEDIN' | 'SIGNIN' | 'SUSPENDED'
 
 export type TileStatus = 'EMPTY' |'CORRECT' | 'PRESENT' | 'ABSENT'
 
