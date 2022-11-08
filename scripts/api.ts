@@ -54,7 +54,7 @@ export async function getCuurentUser(token: Token) {
   return res.json()
 }
 
-// users#destroy
+// sessions#destroy
 export async function deleteCurrentUser(token: Token) {
   const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/v1/auth/`, {
     method: 'DELETE',
@@ -64,7 +64,7 @@ export async function deleteCurrentUser(token: Token) {
       'uid': token.uid
     }
   })
-  cookie.client.destroyToken()
+  saveToken(res.headers)
   return await res.json()
 }
 

@@ -50,14 +50,18 @@ const Account = () => {
             alert.show(t.ALERT.DELETED, { type: 'success' })
             router.replace('/')
           })
+        } else if (json.code == 1001) {
+          alert.show(t.ALERT.CURRENT_USER_SUSPENDED, { type: 'error' })
         } else {
           alert.show(t.ALERT.FAILED, { type: 'error' })
           console.error('Error', json)
         }
       }).catch(error => {
         console.log(error)
+      }).finally(() => {
         setShowOverlay(false)
-      }).finally(() => { nprogress.done() })
+        nprogress.done()
+      })
     } else {
       signOut(() => router.replace('/signin'))
     }
