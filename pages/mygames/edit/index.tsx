@@ -30,10 +30,9 @@ const MygamesEditIndex = () => {
       getCurrentGames(token).then((json) => {
         if (json.ok) {
           setGames(json.data.map((item: Game) => item))
-        } else if (json.isSuspended) {
+        } else if (json.code == 1001) {
           setIsSuspended(true)
           setGames([])
-          signOut(() => router.replace('/signin'))
         } else {
           // JSONでUnauthorizedエラーを見て認証されませんエラーを表示する
           setGames([])

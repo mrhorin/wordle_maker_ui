@@ -24,7 +24,8 @@ export default {
     ADDED_INVALID_WORDS: 'カタカナ*文字で一意の値を入力して下さい',
     NOT_IN_WORD_LIST: '登録されていないワード',
     NOT_ENOUGH_LETTERS: '文字数がたりません',
-    FJINISHED_GAME: 'ゲームは終了しています',
+    FIINISHED_GAME: 'ゲームは終了しています',
+    CURRENT_USER_SUSPENDED: '凍結されています',
   },
   API: {
     FAILED: 'データの取得に失敗しました',

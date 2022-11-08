@@ -26,7 +26,8 @@ export default {
     ADDED_INVALID_WORDS: 'Must be unique and * characters in English',
     NOT_IN_WORD_LIST: 'Not in Word List',
     NOT_ENOUGH_LETTERS: 'Not Enough Letters',
-    FJINISHED_GAME: 'Finished Game',
+    FIINISHED_GAME: 'Finished Game',
+    CURRENT_USER_SUSPENDED: 'Account suspended',
   },
   API: {
     FAILED: 'Failed to fetch data from data server.',

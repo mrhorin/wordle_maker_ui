@@ -56,7 +56,8 @@ const Header = () => {
       cookie.client.saveToken(token)
       nprogress.start()
       getCuurentUser(token).then(json => {
-        if (json && json.isLoggedIn) {
+        alert.removeAll()
+        if (json.ok) {
           const userInfo: UserInfo = {
             provider: json.data.provider,
             name: json.data.name,
@@ -66,8 +67,14 @@ const Header = () => {
           }
           cookie.client.saveUserInfo(userInfo)
           currentUserInfoContext.setCurrentUserInfo(userInfo)
+          if (json.data.is_suspended) {
+            alert.show(t.ALERT.CURRENT_USER_SUSPENDED, { type: 'error' })
+          } else {
+            alert.show(t.ALERT.SUCCESS, { type: 'success' })
+          }
           setAccountStatus('LOGGEDIN')
         } else {
+          alert.show(t.ALERT.FAILED, { type: 'error' })
           setAccountStatus('SIGNIN')
         }
       }).catch(error => {

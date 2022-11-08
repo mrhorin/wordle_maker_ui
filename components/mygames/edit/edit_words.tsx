@@ -277,9 +277,9 @@ const EditWords = ({ game }: EditWordsProps) => {
           setTableStatus(json.data.pagination.total_count > 0 ? 'HAS_RECORDS' : 'NO_RECORDS')
           document.body.scrollTop = 0 // For Safari
           document.documentElement.scrollTop = 0 // For Chrome, Firefox, IE and Opera
-        } else if (json.isSuspended) {
+        } else if (json.code == 1001) {
           setTableStatus('IS_SUSPENDED')
-        } else if (!json.isLoggedIn) {
+        } else if (json.code == 1002) {
           setTableStatus('UNAUTHORIZED')
         } else {
           setTableStatus('REQUEST_FAILED')

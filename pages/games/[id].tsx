@@ -211,7 +211,7 @@ const Games = (props: Props) => {
             alert.show(t.ALERT.NOT_IN_WORD_LIST, { type: 'error' })
           } else if (status == SetCurrentWordStatus.FinishedGame) {
             setGameStatus(GameStatus.Finished)
-            alert.show(t.ALERT.FJINISHED_GAME, { type: 'error' })
+            alert.show(t.ALERT.FIINISHED_GAME, { type: 'error' })
           }
         })
     }
