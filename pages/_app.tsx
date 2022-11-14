@@ -1,5 +1,4 @@
 import type { AppContext, AppProps } from 'next/app'
-import App from 'next/app'
 import Router from 'next/router'
 import { transitions, positions, Provider as AlertProvider } from 'react-alert'
 import AlertTemplate from 'react-alert-template-basic'
