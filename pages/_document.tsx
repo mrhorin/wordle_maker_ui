@@ -32,7 +32,9 @@ class MyDocument extends Document<Props> {
     const theme = this.props.theme
     return (
       <Html data-theme={theme}>
-        <Head />
+        <Head>
+          <link rel="manifest" href="/manifest.json" />
+        </Head>
         <body>
           {/* Google Tag Manager (noscript) */}
           <this.GTMNoscript />

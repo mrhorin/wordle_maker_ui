@@ -2,7 +2,7 @@ import type { Token, UserInfo, Locale, Theme } from 'types/global'
 import { parseCookies, setCookie, destroyCookie } from 'nookies'
 import { GetServerSidePropsContext } from 'next'
 
-import validate from './validate'
+import validate from 'scripts/validate'
 
 interface CookieOptions{
   maxAge: number,
