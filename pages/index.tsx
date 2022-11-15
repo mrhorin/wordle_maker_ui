@@ -85,7 +85,7 @@ const Index = () => {
         {/* The Latest Games */}
         <div className='index-title'>
           <div className='index-title-icon'>
-            <Image src='/new.svg' width={42} height={23} alt={'New'} />
+            <Image src='/icons/svg/new.svg' width={42} height={23} alt={'New'} />
           </div>
           <div className='index-title-text'>
             {t.INDEX.LATEST_GAMES}
