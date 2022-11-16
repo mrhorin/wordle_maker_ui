@@ -1,4 +1,4 @@
-import type { Token, UserInfo, Query, AccountStatus } from 'types/global'
+import type { Token, User, Query } from 'types/global'
 import { useRouter } from 'next/router'
 import { useState, useEffect, useContext, useMemo, memo } from 'react'
 import { useAlert } from 'react-alert'
@@ -10,7 +10,7 @@ import { faTwitter } from '@fortawesome/free-brands-svg-icons'
 import Modal from 'components/modal'
 import Checkbox from './form/checkbox'
 
-import AccountStatusContext from 'contexts/account_status'
+import AccountContext from 'contexts/account'
 import ShowContext from 'contexts/show'
 
 import useSignOut from 'hooks/useSignOut'
@@ -24,11 +24,12 @@ import Link from 'next/link'
 import Image from 'next/image'
 
 const Header = () => {
-  const [currentUser, setCurrentUser] = useState<UserInfo | null>(null)
+  /********** State **********/
+  const [currentUser, setCurrentUser] = useState<User | null>(null)
   const [showModal, setShowModal] = useState<boolean>(false)
   const [checkedConfirmation, setCheckedConfirmation] = useState<boolean>(false)
-
-  const accountStatusContext = useContext(AccountStatusContext)
+  /********* Context *********/
+  const accountContext = useContext(AccountContext)
   const showContext = useContext(ShowContext)
 
   const router = useRouter()
@@ -43,7 +44,7 @@ const Header = () => {
       getCuurentUser(token).then(json => {
         alert.removeAll()
         if (json.ok) {
-          const userInfo: UserInfo = {
+          const user: User = {
             provider: json.data.provider,
             name: json.data.name,
             nickname: json.data.nickname,
@@ -51,28 +52,28 @@ const Header = () => {
             image: json.data.image,
             isSuspended: json.data.is_suspended,
           }
-          cookie.client.saveUserInfo(userInfo)
-          setCurrentUser(userInfo)
+          cookie.client.saveUser(user)
+          setCurrentUser(user)
           if (json.data.is_suspended) {
-            accountStatusContext.setAccountStatus('SUSPENDED')
+            accountContext.setStatus('SUSPENDED')
           } else {
-            accountStatusContext.setAccountStatus('LOGGEDIN')
+            accountContext.setStatus('LOGGEDIN')
           }
         } else {
           alert.show(t.ALERT.FAILED, { type: 'error' })
-          accountStatusContext.setAccountStatus('SIGNIN')
+          accountContext.setStatus('SIGNIN')
         }
       }).catch(error => {
         console.log(error)
-        accountStatusContext.setAccountStatus('SIGNIN')
+        accountContext.setStatus('SIGNIN')
       }).finally(() => {
         nprogress.done()
       })
     } else {
       // Delete current user and token
       cookie.client.destroyToken()
-      cookie.client.destroyUserInfo()
-      accountStatusContext.setAccountStatus('SIGNIN')
+      cookie.client.destroyUser()
+      accountContext.setStatus('SIGNIN')
     }
   }, [])
 
@@ -145,7 +146,7 @@ const Header = () => {
 
   function handleSignOut(): void {
     signOut(() => {
-      accountStatusContext.setAccountStatus('SIGNIN')
+      accountContext.setStatus('SIGNIN')
       alert.removeAll()
       alert.show(t.ALERT.SIGN_OUT, { type: 'success' })
       router.push('/signin')
@@ -153,7 +154,7 @@ const Header = () => {
   }
 
   function createHeaderAccountComponent(): JSX.Element {
-    if ((accountStatusContext.accountStatus == 'LOGGEDIN' || accountStatusContext.accountStatus == 'SUSPENDED')
+    if ((accountContext.status == 'LOGGEDIN' || accountContext.status == 'SUSPENDED')
       && currentUser) {
       return (
         <div className='header-account-button' onClick={toggleAccountMenu}>
@@ -173,7 +174,7 @@ const Header = () => {
           </ul>
         </div>
       )
-    } else if(accountStatusContext.accountStatus == 'SIGNIN'){
+    } else if(accountContext.status == 'SIGNIN'){
       return (
         <button type='button' className='btn btn-primary' onClick={()=> setShowModal(true)}>{t.HEADER.SIGN_IN}</button>
       )

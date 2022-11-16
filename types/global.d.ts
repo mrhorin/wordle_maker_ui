@@ -1,4 +1,4 @@
-export type UserInfo = {
+export type User = {
   provider: string,
   name: string,
   nickname: string,

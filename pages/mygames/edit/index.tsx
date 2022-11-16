@@ -9,7 +9,7 @@ import ReactLoading from 'react-loading'
 import Head from 'next/head'
 import Link from 'next/link'
 
-import AccountStatusContext from 'contexts/account_status'
+import AccountContext from 'contexts/account'
 
 import SlideoutMenu from 'components/slideout_menu'
 import Sidemenu from 'components/sidemenu'
@@ -23,7 +23,7 @@ const MygamesEditIndex = () => {
   /********** State **********/
   const [games, setGames] = useState<Game[] | null>(null)
   /********* Context *********/
-  const accountStatusContext = useContext(AccountStatusContext)
+  const accountContext = useContext(AccountContext)
 
   const router = useRouter()
   const { t } = useLocale()
@@ -31,7 +31,7 @@ const MygamesEditIndex = () => {
 
   useEffect(() => {
     const token: Token | null = cookie.client.loadToken()
-    if (accountStatusContext.accountStatus == 'LOGGEDIN' && validate.token(token)) {
+    if (accountContext.status == 'LOGGEDIN' && validate.token(token)) {
       getCurrentGames(token).then((json) => {
         if (json.ok) {
           setGames(json.data.map((item: Game) => item))
@@ -43,17 +43,17 @@ const MygamesEditIndex = () => {
           signOut(() => router.replace('/signin'))
         }
       })
-    } else if (accountStatusContext.accountStatus == 'SIGNIN') {
+    } else if (accountContext.status == 'SIGNIN') {
       signOut(() => router.replace('/signin'))
     }
-  }, [accountStatusContext.accountStatus])
+  }, [accountContext.status])
 
   function GameIndex(): JSX.Element {
-    if (accountStatusContext.accountStatus == 'SUSPENDED') {
+    if (accountContext.status == 'SUSPENDED') {
       return <p className='sidemenu-main-msg'>{t.MY_GAMES.EDIT.INDEX.SUSPENDED_ACCOUNT}</p>
-    } else if (accountStatusContext.accountStatus == 'SIGNIN') {
+    } else if (accountContext.status == 'SIGNIN') {
       return <p className='sidemenu-main-msg'>{t.ALERT.YOU_ARE_NOT_SIGNED_IN}</p>
-    } else if (accountStatusContext.accountStatus == 'INITIALIZING' || games == null) {
+    } else if (accountContext.status == 'INITIALIZING' || games == null) {
       // Loading
       return <ReactLoading type={'spin'} color={'#008eff'} height={'25px'} width={'25px'} className='loading-center' />
     }

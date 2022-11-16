@@ -1,4 +1,4 @@
-import type { Token, UserInfo, Locale, Theme } from 'types/global'
+import type { Token, User, Locale, Theme } from 'types/global'
 import { parseCookies, setCookie, destroyCookie } from 'nookies'
 import { GetServerSidePropsContext } from 'next'
 
@@ -40,17 +40,17 @@ export class ClientSideCookies{
     return cookies['locale'] == 'en' || cookies['locale'] == 'ja' ? cookies['locale'] as Locale : null
   }
 
-  static saveUserInfo(userInfo: UserInfo): void{
-    setCookie(null, 'provider', userInfo.provider, this.cookieOptions)
-    setCookie(null, 'name', userInfo.name, this.cookieOptions)
-    setCookie(null, 'nickname', userInfo.nickname, this.cookieOptions)
-    setCookie(null, 'uid', userInfo.uid, this.cookieOptions)
-    setCookie(null, 'image', userInfo.image, this.cookieOptions)
-    const isSuspended: '1' | '0' = userInfo.isSuspended ? '1' : '0'
+  static saveUser(user: User): void{
+    setCookie(null, 'provider', user.provider, this.cookieOptions)
+    setCookie(null, 'name', user.name, this.cookieOptions)
+    setCookie(null, 'nickname', user.nickname, this.cookieOptions)
+    setCookie(null, 'uid', user.uid, this.cookieOptions)
+    setCookie(null, 'image', user.image, this.cookieOptions)
+    const isSuspended: '1' | '0' = user.isSuspended ? '1' : '0'
     setCookie(null, 'isSuspended', isSuspended, this.cookieOptions)
   }
 
-  static destroyUserInfo(): void{
+  static destroyUser(): void{
     destroyCookie(null, 'provider', this.cookieOptions)
     destroyCookie(null, 'name', this.cookieOptions)
     destroyCookie(null, 'nickname', this.cookieOptions)
@@ -61,10 +61,10 @@ export class ClientSideCookies{
     if (!cookies['accessToken']) destroyCookie(null, 'uid', this.cookieOptions)
   }
 
-  static loadUserInfo(): UserInfo | null{
+  static loadUser(): User | null{
     const cookies = parseCookies()
     const isSuspended: boolean = cookies['isSuspended'] == '1' ? true : false
-    const userInfo = {
+    const user = {
       provider: cookies['provider'],
       name: cookies['name'],
       nickname: cookies['nickname'],
@@ -72,8 +72,8 @@ export class ClientSideCookies{
       image: cookies['image'],
       isSuspended: isSuspended,
     }
-    if (validate.userInfo(userInfo)) {
-      return userInfo as UserInfo
+    if (validate.user(user)) {
+      return user as User
     } else {
       return null
     }

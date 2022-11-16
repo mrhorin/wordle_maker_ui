@@ -9,9 +9,6 @@ import useLocale from 'hooks/useLocale'
 import Head from 'next/head'
 import nprogress from 'nprogress'
 
-import AccountStatusContext from 'contexts/account_status'
-
-import ReactLoading from 'react-loading'
 import SlideoutMenu from 'components/slideout_menu'
 import Sidemenu from 'components/sidemenu'
 import LoadingOverlay from 'components/loading_overlay'
@@ -29,8 +26,6 @@ const MygamesCreate = () => {
   const [challengeCount, setChallengeCount] = useState<number>(6)
   const [charCount, setCharCount] = useState<number>(5)
   const [showOverlay, setShowOverlay] = useState<boolean>(false)
-  /********* Context *********/
-  const accountStatusContext = useContext(AccountStatusContext)
   /*********** Ref ***********/
   const inputTitleEl = useRef<HTMLInputElement>(null)
   const divTitleInvalidEl = useRef<HTMLDivElement>(null)

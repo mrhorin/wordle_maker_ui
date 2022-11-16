@@ -1,4 +1,4 @@
-import type { AccountStatus } from 'types/global'
+import type { User, AccountStatus } from 'types/global'
 import Head from 'next/head'
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
@@ -6,7 +6,7 @@ import useLocale from 'hooks/useLocale'
 
 import Header from 'components/header'
 
-import AccountStatusContext from 'contexts/account_status'
+import AccountContext from 'contexts/account'
 import ShowContext from 'contexts/show'
 
 type Props = {
@@ -14,9 +14,11 @@ type Props = {
 }
 
 export default function Layout({ children }: Props) {
+  const [currentUser, setCurrentUser] = useState<User | null>(null)
   const [accountStatus, setAccountStatus] = useState<AccountStatus>('INITIALIZING')
   const [showAccountMenu, setShowAccountMenu] = useState<boolean>(false)
   const [showSlideoutMenu, setShowSlideoutMenu] = useState<boolean>(false)
+
   const router = useRouter()
   const { t } = useLocale()
 
@@ -36,7 +38,12 @@ export default function Layout({ children }: Props) {
   }
 
   return (
-    <AccountStatusContext.Provider value={{ accountStatus, setAccountStatus }}>
+    <AccountContext.Provider value={{
+      user: currentUser,
+      setUser: setCurrentUser,
+      status: accountStatus,
+      setStatus: setAccountStatus
+    }}>
       <ShowContext.Provider value={{
         showAccountMenu: showAccountMenu, setShowAccountMenu: setShowAccountMenu,
         showSlideoutMenu: showSlideoutMenu, setSlideoutMenu: setShowSlideoutMenu
@@ -56,6 +63,6 @@ export default function Layout({ children }: Props) {
           {children}
         </div>
       </ShowContext.Provider>
-    </AccountStatusContext.Provider>
+    </AccountContext.Provider>
   )
 }

@@ -48,7 +48,7 @@ const Index = () => {
   }
 
   function handleClickCreateGameBtn(): void {
-    if (cookie.client.loadUserInfo()) {
+    if (cookie.client.loadUser()) {
       router.push("/mygames/create")
     } else {
       router.push("/signin")

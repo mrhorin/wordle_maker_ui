@@ -27,7 +27,7 @@ const schema = {
     required: ['auth_token', 'client_id', 'uid', 'expiry'],
     additionalProperties: true,
   },
-  userInfo: {
+  user: {
     type: 'object',
     properties: {
       provider: { type: 'string', minLength: 1 },
@@ -62,7 +62,7 @@ const validateWordWithGame = (word: string, game: Game) => {
 const validate = {
   token: ajv.compile(schema.token),
   queryToken: ajv.compile(schema.queryToken),
-  userInfo: ajv.compile(schema.userInfo),
+  user: ajv.compile(schema.user),
   word: ajv.compile(schema.word),
   wordWithGame: validateWordWithGame,
 }

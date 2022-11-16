@@ -8,7 +8,7 @@ export default () => {
 
   const destroyCookies = () => {
     cookie.client.destroyToken()
-    cookie.client.destroyUserInfo()
+    cookie.client.destroyUser()
   }
 
   const signOut = (callback?: () => void): void => {
