@@ -1,6 +1,8 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useState, useMemo } from 'react'
+
+import useOauth from 'hooks/useOauth'
 import useLocale from 'hooks/useLocale'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -12,7 +14,10 @@ import Checkbox from 'components/form/checkbox'
 import Link from 'next/link'
 
 const Signin: NextPage = () => {
+  /********** State **********/
   const [checkedConfirmation, setCheckedConfirmation] = useState<boolean>(false)
+  /********** Hook ***********/
+  const oauth = useOauth()
   const { t } = useLocale()
 
   const handleClickConfirmation = useMemo(() => {
@@ -41,12 +46,10 @@ const Signin: NextPage = () => {
           {/* Sign in buttons */}
           <div className='signin-btns'>
             {/* Twitter */}
-            <form className='signin-form' method="post" action={`${process.env.NEXT_PUBLIC_API_PROTOCOL}://${process.env.NEXT_PUBLIC_API_DOMAIN}/api/v1/auth/twitter`}>
-              <button className='btn btn-default btn-signin' style={{ background: '#1e9bf0', color: '#fff' }} disabled={!checkedConfirmation}>
-                <FontAwesomeIcon icon={faTwitter} style={{marginRight: '1rem'}} />
-                {t.SIGN_IN.CONTINUE.TWITTER}
-              </button>
-            </form>
+            <button className='btn btn-signin-tw' disabled={!checkedConfirmation} onClick={() => oauth.twitter()}>
+              <FontAwesomeIcon icon={faTwitter} />
+              {t.SIGN_IN.CONTINUE.TWITTER}
+            </button>
           </div>
         </div>
 

@@ -2,7 +2,6 @@ import type { Token, User, Query } from 'types/global'
 import { useRouter } from 'next/router'
 import { useState, useEffect, useContext, useMemo, memo } from 'react'
 import { useAlert } from 'react-alert'
-import nprogress from 'nprogress'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars, faCaretDown, faEdit, faPlus, faGear, faRightFromBracket, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { faTwitter } from '@fortawesome/free-brands-svg-icons'
@@ -13,68 +12,35 @@ import Checkbox from './form/checkbox'
 import AccountContext from 'contexts/account'
 import ShowContext from 'contexts/show'
 
+import useSignIn from 'hooks/useSignIn'
 import useSignOut from 'hooks/useSignOut'
+import useOauth from 'hooks/useOauth'
 import useLocale from 'hooks/useLocale'
 
 import cookie from 'scripts/cookie'
 import validate from 'scripts/validate'
-import { getCuurentUser } from 'scripts/api'
 
 import Link from 'next/link'
 import Image from 'next/image'
 
 const Header = () => {
   /********** State **********/
-  const [currentUser, setCurrentUser] = useState<User | null>(null)
   const [showModal, setShowModal] = useState<boolean>(false)
   const [checkedConfirmation, setCheckedConfirmation] = useState<boolean>(false)
   /********* Context *********/
   const accountContext = useContext(AccountContext)
   const showContext = useContext(ShowContext)
-
+  /********** Hook ***********/
   const router = useRouter()
-  const { t } = useLocale()
   const alert = useAlert()
+  const signIn = useSignIn()
   const signOut = useSignOut()
+  const oauth = useOauth()
+  const { t } = useLocale()
 
   useEffect(() => {
     const token: Token | null = getToken()
-    if (validate.token(token)) {
-      nprogress.start()
-      getCuurentUser(token).then(json => {
-        alert.removeAll()
-        if (json.ok) {
-          const user: User = {
-            provider: json.data.provider,
-            name: json.data.name,
-            nickname: json.data.nickname,
-            uid: json.data.uid,
-            image: json.data.image,
-            isSuspended: json.data.is_suspended,
-          }
-          cookie.client.saveUser(user)
-          setCurrentUser(user)
-          if (json.data.is_suspended) {
-            accountContext.setStatus('SUSPENDED')
-          } else {
-            accountContext.setStatus('LOGGEDIN')
-          }
-        } else {
-          alert.show(t.ALERT.FAILED, { type: 'error' })
-          accountContext.setStatus('SIGNIN')
-        }
-      }).catch(error => {
-        console.log(error)
-        accountContext.setStatus('SIGNIN')
-      }).finally(() => {
-        nprogress.done()
-      })
-    } else {
-      // Delete current user and token
-      cookie.client.destroyToken()
-      cookie.client.destroyUser()
-      accountContext.setStatus('SIGNIN')
-    }
+    validate.token(token) ? signIn(token) : accountContext.setStatus('SIGNIN')
   }, [])
 
   const handleClickConfirmation = useMemo(() => {
@@ -90,6 +56,7 @@ const Header = () => {
 
   function getToken(): Token | null{
     const prevToken: Token | null = cookie.client.loadToken()
+    if (validate.token(prevToken)) return prevToken
     const query: Query = getQuery()
     if (validate.queryToken(query)) {
       const token: Token = {
@@ -101,7 +68,6 @@ const Header = () => {
       cookie.client.saveToken(token)
       return token
     }
-    if (validate.token(prevToken)) return prevToken
     return null
   }
 
@@ -155,11 +121,11 @@ const Header = () => {
 
   function createHeaderAccountComponent(): JSX.Element {
     if ((accountContext.status == 'LOGGEDIN' || accountContext.status == 'SUSPENDED')
-      && currentUser) {
+      && accountContext.user) {
       return (
         <div className='header-account-button' onClick={toggleAccountMenu}>
           <div className='header-account-button-image'>
-            <Image src={currentUser.image} width={30} height={30} alt={'Avatar'} />
+            <Image src={accountContext.user.image} width={30} height={30} alt={'Avatar'} />
           </div>
           <div className='header-account-button-caretdown'>
             <FontAwesomeIcon icon={faCaretDown} />
@@ -206,12 +172,10 @@ const Header = () => {
               </div>
               <div className='signin-btns'>
                 {/* Twitter */}
-                <form method="post" action={`${process.env.NEXT_PUBLIC_API_PROTOCOL}://${process.env.NEXT_PUBLIC_API_DOMAIN}/api/v1/auth/twitter`}>
-                  <button className='btn btn-default btn-signin' style={{ background: '#1e9bf0', color: '#fff', margin: '0 auto', display: 'block' }} disabled={!checkedConfirmation}>
-                    <FontAwesomeIcon icon={faTwitter} style={{marginRight: '1rem'}} />
-                    {t.SIGN_IN.CONTINUE.TWITTER}
-                  </button>
-                </form>
+                <button className='btn btn-signin-tw' disabled={!checkedConfirmation} onClick={() => oauth.twitter()}>
+                  <FontAwesomeIcon icon={faTwitter} />
+                  {t.SIGN_IN.CONTINUE.TWITTER}
+                </button>
               </div>
             </div>
           </div>
