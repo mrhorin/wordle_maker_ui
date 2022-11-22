@@ -16,10 +16,10 @@
  ******************************************/
 @mixin dark-theme-vars {
   // base
-  --base-color1: #1e1e21;
-  --base-color2: #222425;
+  --base-color1: #131514;
+  --base-color2: #1e201f;
   --base-color3: #2c2f32;
-  --base-color4: #555a5d;
+  --base-color4: #414548;
   // accent
   --accent-color1: #42c897;
   --accent-color2: #cf8e1d;
@@ -44,7 +44,7 @@
   --font-link-color: #5d9ff3;
   --font-tile-color: #fff;
   // header
-  --header-color: #1e1e21;
+  --header-color: #131514;
 }
 @mixin light-theme-vars {
   // base
@@ -507,6 +507,10 @@ table{
           &:first-child{ border-bottom-left-radius: 7px; }
           &:last-child{ border-bottom-right-radius: 7px; }
         }
+        &:hover{
+          border-bottom-left-radius: 7px;
+          border-bottom-right-radius: 7px;
+        }
       }
       @media (hover: hover){
         &:hover{
@@ -958,7 +962,7 @@ input[type="checkbox"].checkbox-default{
         order: 2;
         content: 'MENU';
         font-size: 10px;
-        font-weight: 700;
+        font-weight: 500;
         white-space: nowrap;
       }
       &:hover{
@@ -1518,7 +1522,7 @@ input[type="checkbox"].checkbox-default{
     color: #fff;
   }
   @include dark{
-    background: #1c1f24;
+    background: #151a1b;
     color: var(--font-color4);
   }
   .index-board-title{
