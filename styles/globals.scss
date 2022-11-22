@@ -94,6 +94,11 @@
     @content;
   }
 }
+@mixin pwa{
+  @media (display-mode: standalone){
+    @content;
+  }
+}
 @mixin light{
   [data-theme="light"] &{
     @content;
@@ -1625,6 +1630,9 @@ input[type="checkbox"].checkbox-default{
       border-top: 1px solid var(--base-color3);
       @include light{
         border-top: 1px solid var(--border-color);
+      }
+      @include pwa{
+        padding-bottom: 1rem;
       }
     }
   }
