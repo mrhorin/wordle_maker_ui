@@ -43,8 +43,9 @@ const AddWords = ({ game }: Props) => {
       const newChips = inputList.map((input, index) => {
         // id has to be unique
         const id = prevChips.length > 0 ? prevChips[prevChips.length - 1].id + index + 1 + index : index + 1
-        const isValid = input.length == game.char_count && language.validateWord(input)
-        return { id: id, value: input.toUpperCase(), isValid: isValid }
+        const value = parseChipValue(input)
+        const isValid = input.length == game.char_count && language.validateWord(value)
+        return { id: id, value: value, isValid: isValid }
       })
       return prevChips.concat(newChips)
     })
@@ -58,13 +59,14 @@ const AddWords = ({ game }: Props) => {
     })
   }, [])
 
-  const updateChip = useCallback((id: number, value: string): void => {
+  const updateChip = useCallback((id: number, nextValue: string): void => {
     setChips(prevChips => {
       return prevChips.map((prevChip) => {
         if (prevChip.id == id) {
+          const value = parseChipValue(nextValue)
           return {
             id: prevChip.id,
-            value: value.toUpperCase(),
+            value: value,
             isValid: game.char_count == value.length && language.validateWord(value)
           }
         }
@@ -73,17 +75,22 @@ const AddWords = ({ game }: Props) => {
     })
   }, [])
 
-
   function validateWords(): boolean{
     let isValid: boolean = true
     if (chips.length <= 0) isValid = false
     for (const c of chips) {
-      if (c.value.length != game.char_count || !language.validateWord(c.value)) {
+      if (c.value.length != game.char_count || !language.validateWord(parseChipValue(c.value))) {
         isValid = false
         break
       }
     }
     return isValid
+  }
+
+  function parseChipValue(input: string): string{
+    return input.toUpperCase().replace(/[ぁ-ん]/g, function(s) {
+      return String.fromCharCode(s.charCodeAt(0) + 0x60)
+    })
   }
 
   function handleClickSubmit(): void{
