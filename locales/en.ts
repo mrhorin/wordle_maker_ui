@@ -101,6 +101,8 @@ export default {
           NEWEST_ASC: 'Newest: ASC',
           NEWEST_DESC: 'Newest: DESC',
         },
+        DELETE_CHECKED_WORDS: 'Delete checked Words',
+        SAVE_CSV: 'Save as a CSV file',
       },
       DELETE_GAME: {
         BUTTON: 'Delete Game',

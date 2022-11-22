@@ -101,6 +101,8 @@ export default {
           NEWEST_ASC: '追加日: 昇順',
           NEWEST_DESC: '追加日: 降順',
         },
+        DELETE_CHECKED_WORDS: '選択したワードを削除',
+        SAVE_CSV: 'CSV形式で保存',
       },
       DELETE_GAME: {
         BUTTON: 'このゲームを削除',

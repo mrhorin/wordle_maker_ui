@@ -2293,10 +2293,11 @@ input[type="checkbox"].checkbox-default{
     justify-content: flex-end;
     align-items: center;
     .editwords-th-ctrlpanel-item{
-      padding: 0 0.5rem;
+      padding-right: 0.5rem;
       display: inline-flex;
       flex-direction: row;
       align-items: center;
+      &:last-child{padding-right: 0}
     }
     .btn-bg-animation-container{
       @extend .bg-animation-container;

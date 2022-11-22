@@ -5,7 +5,7 @@ import { useAlert } from 'react-alert'
 import ReactLoading from 'react-loading'
 import nprogress from 'nprogress'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrashCan, faArrowDownAZ, faXmark } from '@fortawesome/free-solid-svg-icons'
+import { faDownload, faTrashCan, faArrowDownAZ, faXmark } from '@fortawesome/free-solid-svg-icons'
 
 import useLanguage from 'hooks/useLanguage'
 import useLocale from 'hooks/useLocale'
@@ -18,7 +18,7 @@ import LoadingOverlay from 'components/loading_overlay'
 
 import cookie from 'scripts/cookie'
 import validate from 'scripts/validate'
-import { getCurrentWords, putWord, deleteWord } from 'scripts/api'
+import { getCurrentWords, getGameWords, putWord, deleteWord } from 'scripts/api'
 
 type TableStatus = 'INITIALIZING' | 'NO_RECORDS' | 'HAS_RECORDS' | 'IS_SUSPENDED' | 'UNAUTHORIZED' | 'REQUEST_FAILED'
 type SortStatus = 'NAME_ASC' | 'NAME_DESC' | 'ID_ASC' | 'ID_DESC'
@@ -177,6 +177,22 @@ const EditWords = ({ game }: EditWordsProps) => {
     }
   }
 
+  function handleClickSaveCSV(): void{
+    const token: Token | null = cookie.client.loadToken()
+    if (validate.token(token) && game.id) {
+      setShowOverlay(true)
+      nprogress.start()
+      getGameWords(game.id, token).then(json => {
+        if (json.ok) saveCSV(json.data.join(','))
+      }).catch(error => {
+        console.error(error)
+      }).finally(() => {
+        nprogress.done()
+        setShowOverlay(false)
+      })
+    }
+  }
+
   function handleClickDeleteCheckedWords(): void {
     const token: Token | null = cookie.client.loadToken()
     const ids: number[] = []
@@ -196,7 +212,7 @@ const EditWords = ({ game }: EditWordsProps) => {
           alert.show(t.ALERT.FAILED, { type: 'error' })
         }
       }).catch(error => {
-        console.log(error)
+        console.error(error)
       }).finally(() => {
         nprogress.done()
         setShowOverlay(false)
@@ -295,6 +311,13 @@ const EditWords = ({ game }: EditWordsProps) => {
     }
   }
 
+  function saveCSV(data: string): void{
+    const a = document.createElement("a")
+    a.href = window.URL.createObjectURL(new Blob([data], { type: "text/csv" }))
+    a.download = game.title
+    a.click()
+  }
+
   const trWordStateMemoComponents: JSX.Element[] = wordStateList.map((wordState) => {
     return <TrWordStateMemo key={wordState.word.id} wordState={wordState}
       handleClickEdit={handleClickEdit} handleChangeCheckbox={handleChangeCheckbox} />
@@ -356,12 +379,19 @@ const EditWords = ({ game }: EditWordsProps) => {
                         <option value={'ID_DESC'}>{t.MY_GAMES.EDIT.EDIT_WORDS.SORT.NEWEST_DESC}</option>
                       </Select>
                     </div>
-                    {/* buttons */}
+                    {/* delete */}
                     <div className='editwords-th-ctrlpanel-item'>
-                      {/* delete */}
                       <div className='btn-bg-animation-container'>
-                        <div className='editwords-btn' onClick={handleClickDeleteCheckedWords}>
+                        <div className='editwords-btn' onClick={handleClickDeleteCheckedWords} title={t.MY_GAMES.EDIT.EDIT_WORDS.DELETE_CHECKED_WORDS}>
                           <FontAwesomeIcon icon={faTrashCan} />
+                        </div>
+                      </div>
+                    </div>
+                    {/* save as a csv file */}
+                    <div className='editwords-th-ctrlpanel-item'>
+                      <div className='btn-bg-animation-container'>
+                        <div className='editwords-btn' onClick={handleClickSaveCSV} title={t.MY_GAMES.EDIT.EDIT_WORDS.SAVE_CSV}>
+                          <FontAwesomeIcon icon={faDownload} />
                         </div>
                       </div>
                     </div>
