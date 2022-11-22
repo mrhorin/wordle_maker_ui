@@ -1632,7 +1632,7 @@ input[type="checkbox"].checkbox-default{
         border-top: 1px solid var(--border-color);
       }
       @include pwa{
-        padding-bottom: 1rem;
+        padding-bottom: 2rem;
       }
     }
   }
