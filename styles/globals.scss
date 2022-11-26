@@ -1751,6 +1751,7 @@ input[type="checkbox"].checkbox-default{
   }
   .howtoplay-text{
     white-space: pre-wrap;
+    word-break: break-all;
     font-size: 1rem;
     margin-bottom: 20px;
     color: var(--font-color4);
