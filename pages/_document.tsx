@@ -6,16 +6,9 @@ type Props = {
   theme: string,
 }
 
-class MyDocument extends Document<Props> {
+function MyDocument(props: Props) {
 
-  static async getInitialProps(ctx: DocumentContext) {
-    const initialProps: DocumentInitialProps = await Document.getInitialProps(ctx)
-    const cookies = nookies.get(ctx)
-    const theme = cookies.theme || process.env.NEXT_PUBLIC_DEFAULT_THEME
-    return { ...initialProps, theme }
-  }
-
-  GTMNoscript(): JSX.Element{
+  function GTMNoscript(): JSX.Element{
     if (process.env.NEXT_PUBLIC_ENV == 'production') {
       return (
         <noscript
@@ -28,22 +21,28 @@ class MyDocument extends Document<Props> {
     return <></>
   }
 
-  render() {
-    const theme = this.props.theme
-    return (
-      <Html data-theme={theme}>
-        <Head>
-          <link rel="manifest" href="/manifest.json" />
-        </Head>
-        <body>
-          {/* Google Tag Manager (noscript) */}
-          <this.GTMNoscript />
-          <Main />
-          <NextScript />
-        </body>
-      </Html>
-    )
-  }
+  return (
+    <Html data-theme={props.theme}>
+      <Head>
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />
+        <link rel="icon" href="/icons/favicon.ico" />
+        <link rel="manifest" href="/manifest.json" />
+      </Head>
+      <body>
+        {/* Google Tag Manager (noscript) */}
+        <GTMNoscript />
+        <Main />
+        <NextScript />
+      </body>
+    </Html>
+  )
+}
+
+MyDocument.getInitialProps = async (ctx: DocumentContext) => {
+  const initialProps: DocumentInitialProps = await Document.getInitialProps(ctx)
+  const cookies = nookies.get(ctx)
+  const theme = cookies.theme || process.env.NEXT_PUBLIC_DEFAULT_THEME
+  return { ...initialProps, theme }
 }
 
 export default MyDocument
