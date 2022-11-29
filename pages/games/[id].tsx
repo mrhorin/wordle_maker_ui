@@ -467,7 +467,7 @@ const Games = (props: Props) => {
               <div className='howtoplay-text'>{props.game.title}</div>
               {/* Desc */}
               <label className='howtoplay-label'>{t.GAME.DESC}:</label>
-              <div className='howtoplay-text'>{props.game.desc}</div>
+              <div className='howtoplay-text' suppressHydrationWarning={true}>{props.game.desc}</div>
               {/* Attrs */}
               <div className='howtoplay-attrs'>
                 <div className='howtoplay-attrs-item'>
