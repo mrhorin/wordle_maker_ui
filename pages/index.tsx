@@ -13,9 +13,14 @@ import Image from 'next/image'
 import cookie from 'scripts/cookie'
 import { getGames, getPvRanking } from 'scripts/api'
 
+type Rank = {
+  rank: number,
+  game: Game
+}
+
 const Index = () => {
   const [games, setGames] = useState<Game[] | null>(null)
-  const [pvRanking, setPvRanking] = useState<Game[] | null>(null)
+  const [pvRanking, setPvRanking] = useState<Rank[] | null>(null)
   const router = useRouter()
   const { t } = useLocale()
 
@@ -35,7 +40,7 @@ const Index = () => {
   useEffect(() => {
     getPvRanking().then(json => {
       if (json.ok) {
-        setPvRanking(json.data as Game[])
+        setPvRanking(json.data as Rank[])
       } else {
         setPvRanking([])
       }
@@ -64,12 +69,12 @@ const Index = () => {
 
   function GameRanking(): JSX.Element{
     if (pvRanking && pvRanking.length > 0) {
-      const gameComponents: JSX.Element[] = pvRanking.map((game: Game, index: number) => {
+      const gameComponents: JSX.Element[] = pvRanking.map((rank: Rank, index: number) => {
         const titleElement: JSX.Element = <Link href={{
           pathname: '/games/[id]',
-          query: { id: game.id }
-        }}><a>{ game.title }</a></Link>
-        return <GameIndexItem game={game} key={index} titleElement={titleElement} />
+          query: { id: rank.game.id }
+        }}><a>{ rank.game.title }</a></Link>
+        return <GameIndexItem game={rank.game} key={index} titleElement={titleElement} />
       })
       return <>{gameComponents}</>
     } else if (pvRanking == null) {
@@ -141,7 +146,7 @@ const Index = () => {
               </div>
             </div>
             <div className='game-index'>
-              <GameIndex />
+              <GameRanking />
             </div>
           </div>
         </div>
