@@ -132,6 +132,7 @@ export default {
   INDEX: {
     CREATE_GAME: 'Create Game',
     LATEST_GAMES: 'The Latest Games',
+    WEEKLY_RANKING: 'Weekly Ranking',
     NO_GAME: 'There is no Game yet.',
   },
   GAMES: {

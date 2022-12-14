@@ -11,10 +11,11 @@ import Link from 'next/link'
 import Image from 'next/image'
 
 import cookie from 'scripts/cookie'
-import { getGames } from 'scripts/api'
+import { getGames, getPvRanking } from 'scripts/api'
 
 const Index = () => {
   const [games, setGames] = useState<Game[] | null>(null)
+  const [pvRanking, setPvRanking] = useState<Game[] | null>(null)
   const router = useRouter()
   const { t } = useLocale()
 
@@ -31,16 +32,47 @@ const Index = () => {
     })
   }, [])
 
-  function createGameIndexComponents(): JSX.Element[] | JSX.Element{
+  useEffect(() => {
+    getPvRanking().then(json => {
+      if (json.ok) {
+        setPvRanking(json.data as Game[])
+      } else {
+        setPvRanking([])
+      }
+    }).catch(error => {
+      console.log(error)
+      setPvRanking([])
+    })
+  }, [])
+
+  function GameIndex(): JSX.Element{
     if (games && games.length > 0) {
-      return games.map((game: Game, index: number) => {
+      const gameComponents: JSX.Element[] = games.map((game: Game, index: number) => {
         const titleElement: JSX.Element = <Link href={{
           pathname: '/games/[id]',
           query: { id: game.id }
         }}><a>{ game.title }</a></Link>
         return <GameIndexItem game={game} key={index} titleElement={titleElement} />
       })
+      return <>{gameComponents}</>
     } else if (games == null) {
+      return <ReactLoading type={'spin'} color={'#008eff'} height={'25px'} width={'25px'} className='loading-center' />
+    } else {
+      return <p style={{ textAlign: 'center', margin: '10rem auto' }}>{t.INDEX.NO_GAME}</p>
+    }
+  }
+
+  function GameRanking(): JSX.Element{
+    if (pvRanking && pvRanking.length > 0) {
+      const gameComponents: JSX.Element[] = pvRanking.map((game: Game, index: number) => {
+        const titleElement: JSX.Element = <Link href={{
+          pathname: '/games/[id]',
+          query: { id: game.id }
+        }}><a>{ game.title }</a></Link>
+        return <GameIndexItem game={game} key={index} titleElement={titleElement} />
+      })
+      return <>{gameComponents}</>
+    } else if (pvRanking == null) {
       return <ReactLoading type={'spin'} color={'#008eff'} height={'25px'} width={'25px'} className='loading-center' />
     } else {
       return <p style={{ textAlign: 'center', margin: '10rem auto' }}>{t.INDEX.NO_GAME}</p>
@@ -82,17 +114,36 @@ const Index = () => {
       </div>
 
       <div className='container'>
-        {/* The Latest Games */}
-        <div className='index-title'>
-          <div className='index-title-icon'>
-            <Image src='/icons/svg/new.svg' width={42} height={23} alt={'New'} />
+        <div className='index-games-container'>
+          <div className='index-games-col'>
+            {/* The Latest Games */}
+            <div className='index-title'>
+              <div className='index-title-icon'>
+                <Image src='/icons/svg/new.svg' width={42} height={23} alt={'New'} />
+              </div>
+              <div className='index-title-text'>
+                {t.INDEX.LATEST_GAMES}
+              </div>
+            </div>
+            <div className='game-index'>
+              <GameIndex />
+            </div>
           </div>
-          <div className='index-title-text'>
-            {t.INDEX.LATEST_GAMES}
+          {/* Weekly Ranking */}
+          <div className='index-games-col'>
+            {/* The Latest Games */}
+            <div className='index-title'>
+              <div className='index-title-icon'>
+                <Image src='/icons/svg/crown.svg' width={25} height={23} alt={'Weekly Ranking'} />
+              </div>
+              <div className='index-title-text'>
+                {t.INDEX.WEEKLY_RANKING}
+              </div>
+            </div>
+            <div className='game-index'>
+              <GameIndex />
+            </div>
           </div>
-        </div>
-        <div className='game-index'>
-          {createGameIndexComponents()}
         </div>
       </div>
     </main>

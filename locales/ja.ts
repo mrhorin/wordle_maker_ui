@@ -132,6 +132,7 @@ export default {
   INDEX: {
     CREATE_GAME: '作ってみる',
     LATEST_GAMES: '新着',
+    WEEKLY_RANKING: '週間ランキング',
     NO_GAME: 'ゲームがありません。',
   },
   GAMES: {

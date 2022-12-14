@@ -1553,9 +1553,26 @@ input[type="checkbox"].checkbox-default{
     }
   }
 }
+.index-games-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  .index-games-col{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    .index-title{ order: 1; }
+    .game-index{ order: 2; }
+  }
+  @include sp{
+    flex-direction: column;
+    .index-games-col{ width: auto; }
+  }
+}
 .index-title{
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   padding: 0 1rem;
   font-size: 1.2rem;
   line-height: 1.8rem;
@@ -1564,7 +1581,7 @@ input[type="checkbox"].checkbox-default{
   .index-title-icon{
     order: 1;
     display: inline-flex;
-    width: 50px;
+    margin-right: 6px;
   }
   .index-title-text{
     order: 2;

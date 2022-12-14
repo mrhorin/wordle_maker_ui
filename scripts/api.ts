@@ -111,6 +111,12 @@ export async function getGames() {
   return await res.json()
 }
 
+// games#pv_ranking
+export async function getPvRanking() {
+  const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/v1/games/pv-ranking`)
+  return await res.json()
+}
+
 // games#current_user_index
 export async function getCurrentGames(token: Token) {
   const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/v1/games/current-user-index`, {

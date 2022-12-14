@@ -51,6 +51,9 @@ export default function Layout({ children }: Props) {
         <Head>
           <title>{t.APP_NAME}</title>
           <meta name="description" content={t.APP_DESC.FIRST_LINE + t.APP_DESC.SECOND_LINE} />
+          <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />
+          <link rel="icon" href="/icons/favicon.ico" />
+          <link rel="manifest" href="/manifest.json" />
           <link rel="alternate" href={`${process.env.NEXT_PUBLIC_PROTOCOL}://${process.env.NEXT_PUBLIC_DOMAIN}${router.asPath}`} hrefLang="x-default" />
           <link rel="alternate" href={`${process.env.NEXT_PUBLIC_PROTOCOL}://${process.env.NEXT_PUBLIC_DOMAIN}${router.asPath}`} hrefLang="en" />
           <link rel="alternate" href={`${process.env.NEXT_PUBLIC_PROTOCOL}://${process.env.NEXT_PUBLIC_DOMAIN}/ja${router.asPath}`} hrefLang="ja" />
