@@ -89,7 +89,7 @@ const Index = () => {
   function GameRanking(): JSX.Element{
     if (ranks && ranks.length > 0) {
       const rankComponents: JSX.Element[] = ranks.map((rank: Rank, index: number) => {
-        return <GameRankingItem rank={rank} />
+        return <GameRankingItem rank={rank} key={index} />
       })
       return <div className='game-ranking'>{rankComponents}</div>
     } else if (ranks == null) {
