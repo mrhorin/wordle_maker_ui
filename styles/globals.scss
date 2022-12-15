@@ -419,6 +419,7 @@ label{
 #main {
   order: 2;
   padding: 0;
+  padding-bottom: 50px;
   display: flex;
   flex-grow: 1;
   flex-direction: column;
@@ -1446,11 +1447,17 @@ input[type="checkbox"].checkbox-default{
 .game-index{
   display: flex;
   flex-direction: column;
+  @include sp{
+    margin: 0 1rem;
+  }
   .game-index-item{
     display: flex;
     flex-direction: column;
-    margin: 1rem;
     list-style-type: decimal;
+    background: var(--base-color3);
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
     .game-index-item-title{
       order: 1;
       font-size: 1.2rem;
@@ -1561,7 +1568,14 @@ input[type="checkbox"].checkbox-default{
   .index-games-col{
     display: flex;
     flex-direction: column;
-    width: 50%;
+    &:first-child{
+       margin-right: 1rem;
+       @include sp{ margin: 0rem }
+      }
+    &:last-child{
+      margin-left: 1rem ;
+      @include sp{ margin: 0rem }
+    }
     .index-title{ order: 1; }
     .game-index, .game-ranking{ order: 2; }
   }
@@ -1601,6 +1615,7 @@ input[type="checkbox"].checkbox-default{
   display: flex;
   align-items: flex-start;
   padding: 0 1rem;
+  margin-bottom: 1rem;
   font-size: 1.2rem;
   line-height: 1.8rem;
   @include light{ font-weight: 700; }
@@ -1622,10 +1637,9 @@ input[type="checkbox"].checkbox-default{
   flex-direction: column;
   background: var(--base-color3);
   border-radius: 10px;
-  margin-top: 1rem;
   padding: 0.5rem 1rem;
   @include sp{
-    margin: 1rem;
+    margin: 0 1rem;
   }
   .game-ranking-item{
     display: flex;
