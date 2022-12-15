@@ -91,7 +91,7 @@ const Index = () => {
       const rankComponents: JSX.Element[] = ranks.map((rank: Rank, index: number) => {
         return <GameRankingItem rank={rank} key={index} />
       })
-      return <div className='game-ranking'>{rankComponents}</div>
+      return <>{rankComponents}</>
     } else if (ranks == null) {
       return <ReactLoading type={'spin'} color={'#008eff'} height={'25px'} width={'25px'} className='loading-center' />
     } else {
@@ -160,7 +160,9 @@ const Index = () => {
                 {t.INDEX.WEEKLY_RANKING}
               </div>
             </div>
-            <GameRanking />
+            <div className='game-ranking'>
+              <GameRanking />
+            </div>
           </div>
         </div>
       </div>
