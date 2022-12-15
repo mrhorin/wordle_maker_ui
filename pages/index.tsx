@@ -18,9 +18,28 @@ type Rank = {
   game: Game
 }
 
+type GameRankingItemProps = {
+  rank: Rank
+}
+
+const GameRankingItem = (props: GameRankingItemProps) => {
+  return (
+    <div className='game-ranking-item'>
+      <div className='game-ranking-item-rank'>
+        { props.rank.rank }
+      </div>
+      <div className='game-ranking-item-title'>
+        <Link href={{ pathname: '/games/[id]', query: { id: props.rank.game.id } }}>
+          <a>{props.rank.game.title}</a>
+        </Link>
+      </div>
+    </div>
+  )
+}
+
 const Index = () => {
   const [games, setGames] = useState<Game[] | null>(null)
-  const [pvRanking, setPvRanking] = useState<Rank[] | null>(null)
+  const [ranks, setRanks] = useState<Rank[] | null>(null)
   const router = useRouter()
   const { t } = useLocale()
 
@@ -40,13 +59,13 @@ const Index = () => {
   useEffect(() => {
     getPvRanking().then(json => {
       if (json.ok) {
-        setPvRanking(json.data as Rank[])
+        setRanks(json.data as Rank[])
       } else {
-        setPvRanking([])
+        setRanks([])
       }
     }).catch(error => {
       console.log(error)
-      setPvRanking([])
+      setRanks([])
     })
   }, [])
 
@@ -68,16 +87,12 @@ const Index = () => {
   }
 
   function GameRanking(): JSX.Element{
-    if (pvRanking && pvRanking.length > 0) {
-      const gameComponents: JSX.Element[] = pvRanking.map((rank: Rank, index: number) => {
-        const titleElement: JSX.Element = <Link href={{
-          pathname: '/games/[id]',
-          query: { id: rank.game.id }
-        }}><a>{ rank.game.title }</a></Link>
-        return <GameIndexItem game={rank.game} key={index} titleElement={titleElement} />
+    if (ranks && ranks.length > 0) {
+      const rankComponents: JSX.Element[] = ranks.map((rank: Rank, index: number) => {
+        return <GameRankingItem rank={rank} />
       })
-      return <>{gameComponents}</>
-    } else if (pvRanking == null) {
+      return <div className='game-ranking'>{rankComponents}</div>
+    } else if (ranks == null) {
       return <ReactLoading type={'spin'} color={'#008eff'} height={'25px'} width={'25px'} className='loading-center' />
     } else {
       return <p style={{ textAlign: 'center', margin: '10rem auto' }}>{t.INDEX.NO_GAME}</p>
@@ -120,7 +135,7 @@ const Index = () => {
 
       <div className='container'>
         <div className='index-games-container'>
-          <div className='index-games-col'>
+          <div className='index-games-col7'>
             {/* The Latest Games */}
             <div className='index-title'>
               <div className='index-title-icon'>
@@ -135,7 +150,7 @@ const Index = () => {
             </div>
           </div>
           {/* Weekly Ranking */}
-          <div className='index-games-col'>
+          <div className='index-games-col3'>
             {/* The Latest Games */}
             <div className='index-title'>
               <div className='index-title-icon'>
@@ -145,9 +160,7 @@ const Index = () => {
                 {t.INDEX.WEEKLY_RANKING}
               </div>
             </div>
-            <div className='game-index'>
-              <GameRanking />
-            </div>
+            <GameRanking />
           </div>
         </div>
       </div>

@@ -1563,11 +1563,38 @@ input[type="checkbox"].checkbox-default{
     flex-direction: column;
     width: 50%;
     .index-title{ order: 1; }
-    .game-index{ order: 2; }
+    .game-index, .game-ranking{ order: 2; }
+  }
+  .index-games-col3{
+    @extend .index-games-col;
+    width: 30%;
+  }
+  .index-games-col4{
+    @extend .index-games-col;
+    width: 40%;
+  }
+  .index-games-col5{
+    @extend .index-games-col;
+    width: 50%;
+  }
+  .index-games-col6{
+    @extend .index-games-col;
+    width: 60%;
+  }
+  .index-games-col7{
+    @extend .index-games-col;
+    width: 70%;
   }
   @include sp{
     flex-direction: column;
-    .index-games-col{ width: auto; }
+    .index-games-col,
+    .index-games-col3,
+    .index-games-col4,
+    .index-games-col5,
+    .index-games-col6,
+    .index-games-col7{
+      width: 100%;
+    }
   }
 }
 .index-title{
@@ -1578,6 +1605,9 @@ input[type="checkbox"].checkbox-default{
   line-height: 1.8rem;
   @include light{ font-weight: 700; }
   @include dark{ font-weight: 500; }
+  @include sp{
+    margin-top: 2rem;
+  }
   .index-title-icon{
     order: 1;
     display: inline-flex;
@@ -1585,6 +1615,63 @@ input[type="checkbox"].checkbox-default{
   }
   .index-title-text{
     order: 2;
+  }
+}
+.game-ranking{
+  display: flex;
+  flex-direction: column;
+  background: var(--base-color3);
+  border-radius: 10px;
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  @include sp{
+    margin: 1rem;
+  }
+  .game-ranking-item{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 0.5rem 0;
+    .game-ranking-item-rank{
+      background: none;
+      color: var(--font-color1);
+      font-size: 1.5rem;
+      line-height: 2.4rem;
+      min-width: 2.4rem;
+      text-align: center;
+      font-weight: bold;
+      border-radius: 300px;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    .game-ranking-item-title{
+      font-size: 1.2rem;
+      padding: 0 1rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    &:first-child{
+      .game-ranking-item-rank{
+        color: #fff;
+        background-color: #ffffff;
+        background-image: linear-gradient(160deg, #ffde8b 0%, #ffc156 17%, #f3af2d 59%);
+      }
+    }
+    &:nth-child(2) {
+      .game-ranking-item-rank{
+        color: #fff;
+        background-color: #ffffff;
+        background-image: linear-gradient(160deg, #dddddd 0%, #c2c2c2 17%, #909090 59%);
+      }
+    }
+    &:nth-child(3) {
+      .game-ranking-item-rank{
+        color: #fff;
+        background-color: #e89b60;
+        background-image: linear-gradient(160deg, #ffebdd 0%, #ee7f4a 17%, #b53705 59%);
+      }
+    }
   }
 }
 
