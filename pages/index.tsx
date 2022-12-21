@@ -149,7 +149,7 @@ const Index = () => {
       <div className='container'>
         <div className='index-games-container'>
           {/* The Latest Games */}
-          <div className='index-games-col7'>
+          <div className='index-latest'>
             <div className='index-title'>
               <div className='index-title-icon'>
                 <Image src='/icons/svg/new.svg' width={42} height={23} alt={'New'} />
@@ -163,7 +163,7 @@ const Index = () => {
             </div>
           </div>
           {/* Weekly Ranking */}
-          <div className='index-games-col3'>
+          <div className='index-ranking'>
             {/* The Latest Games */}
             <div className='index-title'>
               <div className='index-title-icon'>

@@ -81,7 +81,7 @@
 /******************************************
   Sass variables and functions
  ******************************************/
- $sp-break-point: 599px;
+ $sp-break-point: 768px;
  $tablet-break-point: 1024px;
 
 @mixin sp {
@@ -1595,6 +1595,24 @@ input[type="checkbox"].checkbox-default{
   justify-content: center;
   align-items: flex-start;
   width: 100%;
+  .index-latest{
+    order: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 0 1rem;
+    @include sp{ padding: 0rem }
+  }
+  .index-ranking{
+    order: 2;
+    width: 350px;
+    min-width: 350px;
+    padding: 0 1rem;
+    @include sp{
+      padding: 0rem;
+      width: 100%;
+    }
+  }
   .index-games-col{
     display: flex;
     flex-direction: column;
