@@ -178,7 +178,7 @@ export default {
     LANGUAGE: 'Lang',
     WORD_COUNT: 'Words',
     CHARACTER_COUNT: 'Chars',
-    CHALLENGE_COUNT: 'Challenge',
+    CHALLENGE_COUNT: 'Attempts',
   },
   TOS: {
     TITLE: 'Terms of Service'
@@ -204,7 +204,7 @@ export default {
   GAME: {
     TITLE: 'Title',
     DESC: 'Description',
-    CHALLENGE_COUNT: 'Challenge',
+    CHALLENGE_COUNT: 'Attempts',
     CHARACTER_COUNT: 'Chars',
     LANGUAGE: 'Language',
     IS_PUBLISHED: 'Visibility',
