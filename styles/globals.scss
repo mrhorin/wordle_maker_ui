@@ -903,9 +903,9 @@ input[type="checkbox"].checkbox-default{
   flex-wrap: wrap;
   justify-content: center;
   button.kaminari-page{
-    background: var(--secondary-color);
+    background: var(--base-color4);
     border: 1px solid var(--base-color1);
-    color: var(--font-color1);
+    color: var(--font-color4);
     font-size: 1rem;
     line-height: 2rem;
     padding: 0 0.5rem;
@@ -914,7 +914,7 @@ input[type="checkbox"].checkbox-default{
     white-space: nowrap;
     cursor: pointer;
     &:hover{
-      filter: brightness(110%);
+      background: var(--base-color3);
     }
     &:first-child{
       border-top-left-radius: 5px;
@@ -926,12 +926,12 @@ input[type="checkbox"].checkbox-default{
     }
   }
   button.kaminari-page.kaminari-page-current{
-    background-color: var(--font-color1);
-    color: var(--secondary-color);
+    background-color: var(--font-color4);
+    color: var(--base-color4);
     cursor: default;
     &:hover{
-      background-color: var(--font-color1);
-      color: var(--secondary-color);
+      background-color: var(--font-color4);
+      color: var(--base-color4);
     }
   }
 }
