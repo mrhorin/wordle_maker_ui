@@ -811,8 +811,9 @@ input[type="checkbox"].checkbox-default{
     border-radius: 100px;
     line-height: 1.3rem;
     cursor: pointer;
-    color: #fff;
-    background: var(--base-color4);
+    color: var(--base-color1);
+    background: var(--font-color4);
+
     &:hover{
       filter: brightness(110%);
     }
@@ -826,12 +827,13 @@ input[type="checkbox"].checkbox-default{
       font-size: 0.8rem;
       line-height: 1.3rem;
       height: 1.3rem;
-      font-weight: 300;
+      font-weight: 500;
       background: rgba(0,0,0,0);
       border: none;
       overflow: hidden;
     }
     input[type="text"].chip-textarea-chip-value:focus{
+      color: var(--base-color1);
       outline: none;
       border: none;
       padding: 0;
@@ -858,8 +860,8 @@ input[type="checkbox"].checkbox-default{
       }
       &:hover{
         svg,i{
-          background: #fff;
-          color: var(--base-color4);
+          background: var(--base-color1);
+          color: var(--font-color4);
         }
       }
     }
@@ -867,6 +869,10 @@ input[type="checkbox"].checkbox-default{
   .chip-textarea-chip-invalid{
     background: var(--danger-color);
     color: #fff;
+    .chip-textarea-chip-value:focus{
+      background: var(--danger-color);
+      color: #fff !important;
+    }
     .chip-textarea-chip-xmark{
       svg,i{
         &:hover{
@@ -893,6 +899,7 @@ input[type="checkbox"].checkbox-default{
 .chip-textarea.chip-textarea-invalid{
   border: 1px solid #ff6600;
 }
+
 
 /* ------- Kaminari ------- */
 .kaminari{
