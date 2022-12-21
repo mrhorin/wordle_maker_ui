@@ -1478,7 +1478,18 @@ input[type="checkbox"].checkbox-default{
     background: var(--base-color3);
     border-radius: 10px;
     margin-bottom: 1.5rem;
-    padding: 1rem;
+    a{
+      color: var(--font-color4);
+      padding: 1rem;
+      &:hover{
+        color: var(--font-color1);
+        text-decoration: none;
+      }
+    }
+    &:hover{
+      filter: brightness(110%);
+      cursor: pointer;
+    }
     .game-index-item-title{
       order: 1;
       font-size: 1.2rem;
@@ -1486,13 +1497,7 @@ input[type="checkbox"].checkbox-default{
       display: inline-flex;
       flex-direction: row;
       align-items: baseline;
-      a{
-        color: var(--font-color4);
-        &:hover{
-          color: var(--font-color1);
-          text-decoration: none;
-        }
-      }
+
       svg,i{
         order: 1;
         margin-right: 0.5rem;

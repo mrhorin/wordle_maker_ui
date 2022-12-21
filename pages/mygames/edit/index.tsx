@@ -7,7 +7,6 @@ import useLocale from 'hooks/useLocale'
 
 import ReactLoading from 'react-loading'
 import Head from 'next/head'
-import Link from 'next/link'
 
 import AccountContext from 'contexts/account'
 
@@ -60,11 +59,11 @@ const MygamesEditIndex = () => {
     if (games && games.length > 0) {
       // Game List
       const gameComponents: JSX.Element[] = games.map((game: Game, index: number) => {
-        const titleElement: JSX.Element = <Link href={{
+        const href = {
           pathname: '/mygames/edit/[id]',
           query: { id: game.id, t: '1' }
-        }}><a>{ game.title }</a></Link>
-        return <GameIndexItem game={game} key={index} titleElement={titleElement} />
+        }
+        return <GameIndexItem game={game} key={index} href={href} />
       })
       return <div className='game-index'>{gameComponents}</div>
     }

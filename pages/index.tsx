@@ -85,11 +85,11 @@ const Index = () => {
   function GameIndex(): JSX.Element{
     if (games && games.length > 0) {
       const gameComponents: JSX.Element[] = games.map((game: Game, index: number) => {
-        const titleElement: JSX.Element = <Link href={{
+        const href = {
           pathname: '/games/[id]',
           query: { id: game.id }
-        }}><a>{ game.title }</a></Link>
-        return <GameIndexItem game={game} key={index} titleElement={titleElement} />
+        }
+        return <GameIndexItem game={game} key={index} href={href} />
       })
       return <>{gameComponents}</>
     } else if (games == null) {
