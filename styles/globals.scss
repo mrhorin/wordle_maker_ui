@@ -1469,7 +1469,7 @@ input[type="checkbox"].checkbox-default{
   display: flex;
   flex-direction: column;
   @include sp{
-    margin: 0 1rem;
+    padding: 0 1rem;
   }
   .game-index-item{
     display: flex;
@@ -1486,6 +1486,13 @@ input[type="checkbox"].checkbox-default{
       display: inline-flex;
       flex-direction: row;
       align-items: baseline;
+      a{
+        color: var(--font-color4);
+        &:hover{
+          color: var(--font-color1);
+          text-decoration: none;
+        }
+      }
       svg,i{
         order: 1;
         margin-right: 0.5rem;
@@ -1504,6 +1511,7 @@ input[type="checkbox"].checkbox-default{
     }
     .game-index-item-desc{
       order: 2;
+      color: var(--font-color2);
       font-size: 1rem;
       line-height: 1.5rem;
       display: -webkit-box;
@@ -1584,18 +1592,19 @@ input[type="checkbox"].checkbox-default{
 .index-games-container{
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
   align-items: flex-start;
+  width: 100%;
   .index-games-col{
     display: flex;
     flex-direction: column;
     &:first-child{
-       margin-right: 1rem;
-       @include sp{ margin: 0rem }
-      }
+      padding: 0 1rem;
+      @include sp{ padding: 0rem }
+    }
     &:last-child{
-      margin-left: 1rem ;
-      @include sp{ margin: 0rem }
+      padding: 0 1rem;
+      @include sp{ padding: 0rem }
     }
     .index-title{ order: 1; }
     .game-index, .game-ranking{ order: 2; }
@@ -1681,6 +1690,7 @@ input[type="checkbox"].checkbox-default{
       font-size: 1.4rem;
       .game-ranking-item-rank-text{
         color: var(--font-color1);
+
         position: absolute;
         top: 50%;
         left: 50%;
@@ -1694,7 +1704,13 @@ input[type="checkbox"].checkbox-default{
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      a{ color: var(--font-color1); }
+      a{
+        color: var(--font-color4);
+        &:hover{
+          color: var(--font-color1);
+          text-decoration: none;
+        }
+      }
     }
     &:first-child{
       .game-ranking-item-rank{
