@@ -2,6 +2,8 @@ import type { Game } from 'types/global'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import useLocale from 'hooks/useLocale'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCrown } from '@fortawesome/free-solid-svg-icons'
 
 import ReactLoading from 'react-loading'
 import SlideoutMenu from 'components/slideout_menu'
@@ -23,11 +25,22 @@ type GameRankingItemProps = {
 }
 
 const GameRankingItem = (props: GameRankingItemProps) => {
+
+  function Rank(): JSX.Element {
+    if (props.rank.rank <= 3) {
+      return (
+        <div className='game-ranking-item-rank'>
+          <FontAwesomeIcon icon={faCrown} className="fa-xl" />
+          <span className='game-ranking-item-rank-text'>{ props.rank.rank }</span>
+        </div>
+      )
+    }
+    return <div className='game-ranking-item-rank'>{props.rank.rank}</div>
+  }
+
   return (
     <div className='game-ranking-item'>
-      <div className='game-ranking-item-rank'>
-        { props.rank.rank }
-      </div>
+      <Rank />
       <div className='game-ranking-item-title'>
         <Link href={{ pathname: '/games/[id]', query: { id: props.rank.game.id } }}>
           <a>{props.rank.game.title}</a>

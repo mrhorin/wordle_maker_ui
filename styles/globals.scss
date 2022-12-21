@@ -1647,44 +1647,65 @@ input[type="checkbox"].checkbox-default{
     justify-content: flex-start;
     align-items: center;
     margin: 0.5rem 0;
+    line-height: 2.4rem;
+    font-size: 1.2rem;
     .game-ranking-item-rank{
-      background: none;
       color: var(--font-color1);
-      font-size: 1.5rem;
-      line-height: 2.4rem;
       min-width: 2.4rem;
+      max-width: 2.4rem;
       text-align: center;
       font-weight: bold;
-      border-radius: 300px;
       font-family: Arial, Helvetica, sans-serif;
+      position: relative;
+      font-size: 1.4rem;
+      .game-ranking-item-rank-text{
+        color: var(--font-color1);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+      }
     }
     .game-ranking-item-title{
-      font-size: 1.2rem;
-      padding: 0 1rem;
+      padding: 0 0.5rem;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      a{ color: var(--font-color1); }
     }
     &:first-child{
       .game-ranking-item-rank{
-        color: #fff;
-        background-color: #ffffff;
-        background-image: linear-gradient(160deg, #ffde8b 0%, #ffc156 17%, #f3af2d 59%);
+         svg{
+          color: #f8ab26;
+         }
+         .game-ranking-item-rank-text{
+          font-size: 1.1rem;
+          color: #fff;
+          margin-top: 10%;
+         }
       }
     }
     &:nth-child(2) {
-      .game-ranking-item-rank{
+      svg{
+        color: #9c9898;
+       }
+       .game-ranking-item-rank-text{
+        font-size: 1.1rem;
         color: #fff;
-        background-color: #ffffff;
-        background-image: linear-gradient(160deg, #dddddd 0%, #c2c2c2 17%, #909090 59%);
-      }
+        margin-top: 10%;
+       }
     }
     &:nth-child(3) {
-      .game-ranking-item-rank{
+      svg{
+        color: #b54f00;
+       }
+       .game-ranking-item-rank-text{
+        font-size: 1.1rem;
         color: #fff;
-        background-color: #e89b60;
-        background-image: linear-gradient(160deg, #ffebdd 0%, #ee7f4a 17%, #b53705 59%);
-      }
+        margin-top: 10%;
+       }
     }
   }
 }
