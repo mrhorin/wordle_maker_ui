@@ -16,7 +16,7 @@ const LinkedText = ({ text, enableLink = false }: Props) => {
     return (
       <>
         {reactStringReplace(text, /(https?:\/\/[\w/:%#\$&\?~\.=\+\-]+)/g, (match, i) => (
-          <a key={i} href={match} target="_blank">{extractDomain(match)}</a>
+          <a key={i} href={match} target="_blank" rel="noreferrer">{extractDomain(match)}</a>
         ))}
       </>
     )
