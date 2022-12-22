@@ -253,7 +253,7 @@ select:focus{
   border: 1px solid #0099ff;
 }
 input[type="text"]:disabled{
-  filter: contrast(50%);
+  filter: contrast(30%);
   cursor: not-allowed;
 }
 
