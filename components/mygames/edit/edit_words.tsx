@@ -273,6 +273,7 @@ const EditWords = ({ game }: EditWordsProps) => {
 
   function getParams(page: number): string {
     let params = `?page=${page}`
+    params += '&per=100'
     if (sortStatus == 'NAME_ASC') params += `&s=name&o=a`
     if (sortStatus == 'NAME_DESC') params += `&s=name&o=d`
     if (sortStatus == 'ID_ASC') params += `&s=id&o=a`
