@@ -419,7 +419,6 @@ label{
 #main {
   order: 2;
   padding: 0;
-  padding-bottom: 50px;
   display: flex;
   flex-grow: 1;
   flex-direction: column;
@@ -1600,6 +1599,7 @@ input[type="checkbox"].checkbox-default{
   justify-content: center;
   align-items: flex-start;
   width: 100%;
+  padding-bottom: 50px;
   .index-latest{
     order: 1;
     display: flex;
