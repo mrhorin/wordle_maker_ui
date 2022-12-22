@@ -379,19 +379,19 @@ const EditWords = ({ game }: EditWordsProps) => {
                         <option value={'ID_DESC'}>{t.MY_GAMES.EDIT.EDIT_WORDS.SORT.NEWEST_DESC}</option>
                       </Select>
                     </div>
-                    {/* delete */}
-                    <div className='editwords-th-ctrlpanel-item'>
-                      <div className='btn-bg-animation-container'>
-                        <div className='editwords-btn' onClick={handleClickDeleteCheckedWords} title={t.MY_GAMES.EDIT.EDIT_WORDS.DELETE_CHECKED_WORDS}>
-                          <FontAwesomeIcon icon={faTrashCan} />
-                        </div>
-                      </div>
-                    </div>
                     {/* save as a csv file */}
                     <div className='editwords-th-ctrlpanel-item'>
                       <div className='btn-bg-animation-container'>
                         <div className='editwords-btn' onClick={handleClickSaveCSV} title={t.MY_GAMES.EDIT.EDIT_WORDS.SAVE_CSV}>
                           <FontAwesomeIcon icon={faDownload} />
+                        </div>
+                      </div>
+                    </div>
+                    {/* delete */}
+                    <div className='editwords-th-ctrlpanel-item'>
+                      <div className='btn-bg-animation-container'>
+                        <div className='editwords-btn' onClick={handleClickDeleteCheckedWords} title={t.MY_GAMES.EDIT.EDIT_WORDS.DELETE_CHECKED_WORDS}>
+                          <FontAwesomeIcon icon={faTrashCan} />
                         </div>
                       </div>
                     </div>
