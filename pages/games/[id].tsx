@@ -14,6 +14,7 @@ import UnplayableGame from 'components/game/unplayable_game'
 import SlideoutMenu from 'components/slideout_menu'
 import TileComponent from 'components/game/tile'
 import NextGameTimer from 'components/game/next_game_timer'
+import LinkedText from 'components/game/linked_text'
 import Modal from 'components/modal'
 import EnKeyboard from 'components/keyboard/en/qwerty'
 import JaKeyboard from 'components/keyboard/ja/gozyuon'
@@ -467,7 +468,9 @@ const Games = (props: Props) => {
               <div className='howtoplay-text'>{props.game.title}</div>
               {/* Desc */}
               <label className='howtoplay-label'>{t.GAME.DESC}:</label>
-              <div className='howtoplay-text' suppressHydrationWarning={true}>{props.game.desc}</div>
+              <div className='howtoplay-text' suppressHydrationWarning={true}>
+                <LinkedText text={props.game.desc} enableLink={true} />
+              </div>
               {/* Attrs */}
               <div className='howtoplay-attrs'>
                 <div className='howtoplay-attrs-item'>

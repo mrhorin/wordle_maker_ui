@@ -6,6 +6,7 @@ import useLocale from 'hooks/useLocale'
 import { UrlObject } from 'url'
 
 import Link from 'next/link'
+import LinkedText from 'components/game/linked_text'
 
 type Props = {
   game: Game,
@@ -39,7 +40,11 @@ const GameIndexItem = (props: Props) => {
     if (props.game.is_suspended) {
       return <div className='game-index-item-desc'>{t.MY_GAMES.EDIT.INDEX.SUSPENDED_GAME}</div>
     } else {
-      return <div className='game-index-item-desc'>{props.game.desc}</div>
+      return (
+        <div className='game-index-item-desc'>
+          <LinkedText text={props.game.desc} enableLink={false} />
+        </div>
+      )
     }
   }
 
