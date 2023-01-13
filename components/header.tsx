@@ -7,7 +7,7 @@ import { faBars, faCaretDown, faEdit, faPlus, faGear, faRightFromBracket, faXmar
 import { faTwitter } from '@fortawesome/free-brands-svg-icons'
 
 import Modal from 'components/modal'
-import Checkbox from './form/checkbox'
+import Checkbox from 'components/form/checkbox'
 
 import AccountContext from 'contexts/account'
 import ShowContext from 'contexts/show'
@@ -49,7 +49,6 @@ const Header = () => {
 
   const handleClickTos = useMemo(() => {
     return () => {
-      router.push('/tos')
       setShowModal(false)
     }
   }, [checkedConfirmation])
@@ -164,7 +163,11 @@ const Header = () => {
             <div className='signin'>
               {/* tos */}
               <div className='signin-tos'>
-                {t.SIGN_IN.TOS_TEXT.A}<a onClick={handleClickTos}>{t.TOS.TITLE}</a>{t.SIGN_IN.TOS_TEXT.B}
+                {t.SIGN_IN.TOS_TEXT.A}
+                <Link href="/tos">
+                  <a onClick={handleClickTos}>{t.TOS.TITLE}</a>
+                </Link>
+                {t.SIGN_IN.TOS_TEXT.B}
               </div>
               {/* agreement */}
               <div className='signin-agreement'>
