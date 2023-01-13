@@ -5,6 +5,7 @@ interface Props{
   enableLink?: boolean,
 }
 
+// textに含まれるURLを外部リンク化して表示
 const LinkedText = ({ text, enableLink = false }: Props) => {
 
   function extractDomain(url: string): string{
@@ -24,7 +25,7 @@ const LinkedText = ({ text, enableLink = false }: Props) => {
   return (
     <>
       {reactStringReplace(text, /(https?:\/\/[\w/:%#\$&\?~\.=\+\-]+)/g, (match, i) => (
-        <>{extractDomain(match)}</>
+        <span key={i}>{extractDomain(match)}</span>
       ))}
     </>
   )
