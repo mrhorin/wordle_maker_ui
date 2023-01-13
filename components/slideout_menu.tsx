@@ -11,7 +11,8 @@ import cookie from 'scripts/cookie'
 
 import ShowContext from 'contexts/show'
 
-import Select from './form/select'
+import Link from 'next/link'
+import Select from 'components/form/select'
 
 type Props = {
   children?: JSX.Element
@@ -32,12 +33,15 @@ const SlideoutMenu = ({ children }: Props) => {
   }, [])
 
   function handleClickHome(): void{
-    router.push('/')
     showContext.setSlideoutMenu(false)
   }
 
   function handleClickTerms(): void{
     router.push('/tos')
+    showContext.setSlideoutMenu(false)
+  }
+
+  function hideSlideoutMenu(): void{
     showContext.setSlideoutMenu(false)
   }
 
@@ -68,26 +72,30 @@ const SlideoutMenu = ({ children }: Props) => {
         <ul>
           {children}
           {/* Home */}
-          <li onClick={handleClickHome}>
-            <a className='slideout-menu-main-item'>
-              <div className='slideout-menu-main-item-icon'>
-                <FontAwesomeIcon icon={faHome} />
-              </div>
-              <div className='slideout-menu-main-item-text'>
-                {t.SLIDEOUT_MENU.HOME}
-              </div>
-            </a>
+          <li>
+            <Link href="/">
+              <a className='slideout-menu-main-item' onClick={hideSlideoutMenu}>
+                <div className='slideout-menu-main-item-icon'>
+                  <FontAwesomeIcon icon={faHome} />
+                </div>
+                <div className='slideout-menu-main-item-text'>
+                  {t.SLIDEOUT_MENU.HOME}
+                </div>
+              </a>
+            </Link>
           </li>
           {/* TOS */}
-          <li onClick={handleClickTerms}>
-            <a className='slideout-menu-main-item'>
-              <div className='slideout-menu-main-item-icon'>
-                <FontAwesomeIcon icon={faSignature} />
-              </div>
-              <div className='slideout-menu-main-item-text'>
-                {t.SLIDEOUT_MENU.TERMS}
-              </div>
-            </a>
+          <li>
+            <Link href="/tos">
+              <a className='slideout-menu-main-item' onClick={hideSlideoutMenu}>
+                <div className='slideout-menu-main-item-icon'>
+                  <FontAwesomeIcon icon={faSignature} />
+                </div>
+                <div className='slideout-menu-main-item-text'>
+                  {t.SLIDEOUT_MENU.TERMS}
+                </div>
+              </a>
+            </Link>
           </li>
           {/* Theme */}
           <li>
