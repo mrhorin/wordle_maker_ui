@@ -1,14 +1,21 @@
 interface Props {
   checked: boolean,
   handleClick(): void,
-  label?: string,
   text?: string,
+  label?: string,
+  id?: string,
 }
 
-const Checkbox = ({ checked, handleClick, label, text }: Props) => {
+const Checkbox = ({ checked, handleClick, label, text, id }: Props) => {
+
+  function getAriaLabel(): string{
+    if (text) return text
+    if (label) return label
+    return ""
+  }
 
   function Label(): JSX.Element{
-    if (label) return <label className='checkbox-label'>{label}</label>
+    if (label) return <label htmlFor={id} className='checkbox-label'>{label}</label>
     return <></>
   }
 
@@ -21,7 +28,7 @@ const Checkbox = ({ checked, handleClick, label, text }: Props) => {
     <div className='checkbox-group'>
       <Label />
       <div className='checkbox-input-group' onClick={handleClick}>
-        <input className="checkbox-default" type="checkbox" checked={checked} onChange={handleClick} />
+        <input id={id} aria-label={getAriaLabel()} className="checkbox-default" type="checkbox" checked={checked} onChange={handleClick} />
         <Text />
       </div>
     </div>

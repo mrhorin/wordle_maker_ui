@@ -91,6 +91,7 @@ export default {
         GAME_LINK: 'Game Link',
       },
       ADD_WORDS: {
+        LABEL: "Words",
         CANNOT_ADD_DUPLICATED_WORDS: "Can't add words duplicated with others.",
         WILL_TURN_RED: "Invalid words you inputted will turn red.",
       },

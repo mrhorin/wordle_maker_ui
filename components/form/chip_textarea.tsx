@@ -9,10 +9,11 @@ interface Props {
   addChips(inputList: string[]): void
   removeChip(index: number): void
   updateChip(index: number, value: string): void
-  maxLength?: number
+  maxLength?: number,
+  id?: string,
 }
 
-const ChipTextarea = ({ chips, addChips, removeChip, updateChip, maxLength }: Props) => {
+const ChipTextarea = ({ chips, addChips, removeChip, updateChip, maxLength, id }: Props) => {
   const [inputValue, setInputValue] = useState<string>('')
   const [chipsCount, setChipsCount] = useState<number>(0)
   const inputEle = useRef<HTMLInputElement>(null)
@@ -108,7 +109,7 @@ const ChipTextarea = ({ chips, addChips, removeChip, updateChip, maxLength }: Pr
       {chips.map((chip) => {
         return <ChipBadge key={chip.id} chip={chip} handleClickChipXmark={handleClickChipXmark} handleChangeChip={handleChangeChip} />
       })}
-      <input ref={inputEle} className='chip-textarea-input' type='text' value={inputValue}
+      <input id={id} ref={inputEle} className='chip-textarea-input' type='text' value={inputValue}
         onChange={e => handleChangeInput(e)} onFocus={handleFocusInput} onBlur={handleBlurInput} />
     </div>
   )

@@ -16,15 +16,15 @@
  ******************************************/
 @mixin dark-theme-vars {
   // base
-  --base-color1: #131514;
+  --base-color1: #030302;
   --base-color2: #1e201f;
-  --base-color3: #2c2f32;
+  --base-color3: #1a1a1b;
   --base-color4: #414548;
   // accent
   --accent-color1: #42c897;
   --accent-color2: #cf8e1d;
   --default-color: #fafafa;
-  --primary-color: #307fe5;
+  --primary-color: #0077c8;
   --warning-color: #e4b32d;
   --secondary-color: #565761;
   --danger-color: #eb0000;
@@ -40,7 +40,7 @@
   --font-color1: #dfe3e5;
   --font-color2: #8b99a0;
   --font-color3: #7d8d95;
-  --font-color4: #c3cace;
+  --font-color4: #d7dadc;
   --font-link-color: #5d9ff3;
   --font-tile-color: #fff;
   // header

@@ -122,7 +122,7 @@ const MygamesEdit = () => {
     return (
       <div className='title'>
         <div className='title-button'>
-          <Link href="/mygames/edit"><a><FontAwesomeIcon icon={faArrowLeft} /></a></Link>
+          <Link href="/mygames/edit"><a aria-label="Go back to the index page"><FontAwesomeIcon icon={faArrowLeft} /></a></Link>
         </div>
         <div className='title-text'>{text}</div>
       </div>

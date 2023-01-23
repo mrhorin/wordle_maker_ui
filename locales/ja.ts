@@ -91,6 +91,7 @@ export default {
         GAME_LINK: 'リンク',
       },
       ADD_WORDS: {
+        LABEL: "追加ワード",
         CANNOT_ADD_DUPLICATED_WORDS: "登録済みのワードと重複するワードは登録できません",
         WILL_TURN_RED: "無効なワードを入力すると赤色で表示されます",
       },

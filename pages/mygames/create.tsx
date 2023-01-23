@@ -120,7 +120,7 @@ const MygamesCreate = () => {
             <form id='game-form' className='sp-padding' onSubmit={e => e.preventDefault()}>
               {/* Title */}
               <div className='form-group'>
-                <label>{ t.GAME.TITLE }</label>
+                <label htmlFor='game-title'>{ t.GAME.TITLE }</label>
                 <div className='form-countable-input-group'>
                   <input ref={inputTitleEl} type='text' id='game-title' maxLength={100} value={title} onChange={e => setTitle(e.target.value)} />
                   <div className='form-countable-input-counter'>{`${title.length} / 100`}</div>
@@ -129,7 +129,7 @@ const MygamesCreate = () => {
               </div>
               {/* Description */}
               <div className='form-group'>
-                <label>{ t.GAME.DESC }</label>
+                <label htmlFor='game-desc'>{ t.GAME.DESC }</label>
                 <div className='form-countable-input-group'>
                   <textarea id='game-desc' rows={8} maxLength={200} value={desc} onChange={e => setDesc(e.target.value)} />
                   <div className='form-countable-input-counter'>{`${desc.length} / 200`}</div>

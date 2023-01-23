@@ -152,10 +152,10 @@ const Settings = ({ game, setGame }: Props) => {
       {/* Game Form */}
       <form id='game-form' onSubmit={e => e.preventDefault()}>
         {/* Public */}
-        <Checkbox checked={isPublished} handleClick={handleClickVisibility} label={t.GAME.IS_PUBLISHED} text={t.FORM.PUBLIC} />
+        <Checkbox checked={isPublished} handleClick={handleClickVisibility} label={t.GAME.IS_PUBLISHED} text={t.FORM.PUBLIC} id='game-form-public' />
         {/* Title */}
         <div className='form-group'>
-          <label>{ t.GAME.TITLE }</label>
+          <label htmlFor='game-title'>{ t.GAME.TITLE }</label>
           <div className='form-countable-input-group'>
             <input ref={inputTitleEl} type='text' id='game-title' maxLength={100} value={title} onChange={e => setTitle(e.target.value)} />
             <div className='form-countable-input-counter'>{`${title.length} / 100`}</div>
@@ -164,7 +164,7 @@ const Settings = ({ game, setGame }: Props) => {
         </div>
         {/* Description */}
         <div className='form-group'>
-          <label>{ t.GAME.DESC }</label>
+          <label htmlFor='game-desc'>{ t.GAME.DESC }</label>
           <div className='form-countable-input-group'>
             <textarea id='game-desc' rows={8} maxLength={200} value={desc} onChange={e => setDesc(e.target.value)} />
             <div className='form-countable-input-counter'>{`${desc.length} / 200`}</div>
@@ -187,13 +187,13 @@ const Settings = ({ game, setGame }: Props) => {
         </div>
         {/* Character count */}
         <div className='form-group'>
-          <label>{ t.GAME.CHARACTER_COUNT }</label>
-          <input type='text' value={game.char_count} disabled={true} />
+          <label htmlFor='game-char-count'>{ t.GAME.CHARACTER_COUNT }</label>
+          <input id='game-char-count' type='text' value={game.char_count} disabled={true} />
         </div>
         {/* Language */}
         <div className='form-group'>
-          <label>{ t.GAME.LANGUAGE }</label>
-          <input type='text' value={language.name} disabled={true} />
+          <label htmlFor='game-lang'>{ t.GAME.LANGUAGE }</label>
+          <input id='game-lang' type='text' value={language.name} disabled={true} />
         </div>
         {/* Update */}
         <button type='button' id='game-submit' className='btn btn-primary' disabled={!isChanged} onClick={handleClickUpdate}>{ t.FORM.UPDATE }</button>

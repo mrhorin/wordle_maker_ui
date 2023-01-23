@@ -138,7 +138,8 @@ const AddWords = ({ game }: Props) => {
         </div>
       </div>
       <div className='form-group'>
-        <ChipTextarea chips={chips} addChips={addChips} removeChip={removeChip} updateChip={updateChip} maxLength={5000} />
+        <label htmlFor='addwords-textarea'>{t.MY_GAMES.EDIT.ADD_WORDS.LABEL}</label>
+        <ChipTextarea chips={chips} addChips={addChips} removeChip={removeChip} updateChip={updateChip} maxLength={5000} id='addwords-textarea'/>
       </div>
       <button className='btn btn-primary' disabled={!validateWords() || 0 == chips.length} onClick={handleClickSubmit}>{ t.FORM.SUBMIT }</button>
       <LoadingOverlay showOverlay={showOverlay} />
