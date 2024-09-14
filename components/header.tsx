@@ -164,9 +164,7 @@ const Header = () => {
               {/* tos */}
               <div className='signin-tos'>
                 {t.SIGN_IN.TOS_TEXT.A}
-                <Link href="/tos">
-                  <a onClick={handleClickTos}>{t.TOS.TITLE}</a>
-                </Link>
+                <Link href="/tos" onClick={handleClickTos}>{t.TOS.TITLE}</Link>
                 {t.SIGN_IN.TOS_TEXT.B}
               </div>
               {/* agreement */}
@@ -194,7 +192,7 @@ const Header = () => {
           </div>
           <div className='header-home'>
             <Link href="/">
-              <a><Image src="/icons/svg/icon.svg" width={23} height={23} alt="HOME" /></a>
+              <div><Image src="/icons/svg/icon.svg" width={23} height={23} alt="HOME" /></div>
             </Link>
           </div>
           <div className='header-account'>

@@ -74,27 +74,27 @@ const SlideoutMenu = ({ children }: Props) => {
           {/* Home */}
           <li>
             <Link href="/">
-              <a className='slideout-menu-main-item' onClick={hideSlideoutMenu}>
+              <div className='slideout-menu-main-item' onClick={hideSlideoutMenu}>
                 <div className='slideout-menu-main-item-icon'>
                   <FontAwesomeIcon icon={faHome} />
                 </div>
                 <div className='slideout-menu-main-item-text'>
                   {t.SLIDEOUT_MENU.HOME}
                 </div>
-              </a>
+              </div>
             </Link>
           </li>
           {/* TOS */}
           <li>
             <Link href="/tos">
-              <a className='slideout-menu-main-item' onClick={hideSlideoutMenu}>
+              <div className='slideout-menu-main-item' onClick={hideSlideoutMenu}>
                 <div className='slideout-menu-main-item-icon'>
                   <FontAwesomeIcon icon={faSignature} />
                 </div>
                 <div className='slideout-menu-main-item-text'>
                   {t.SLIDEOUT_MENU.TERMS}
                 </div>
-              </a>
+              </div>
             </Link>
           </li>
           {/* Theme */}

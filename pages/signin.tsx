@@ -37,7 +37,9 @@ const Signin: NextPage = () => {
           <h1 className='signin-title'>{t.SIGN_IN.TITLE}</h1>
           {/* TOS */}
           <div className='signin-tos'>
-            {t.SIGN_IN.TOS_TEXT.A}<Link href="/tos" shallow={true}><a>{t.TOS.TITLE}</a></Link>{t.SIGN_IN.TOS_TEXT.B}
+            {t.SIGN_IN.TOS_TEXT.A}
+            <Link href="/tos" shallow={true}>{t.TOS.TITLE}</Link>
+            {t.SIGN_IN.TOS_TEXT.B}
           </div>
           {/* agreement */}
           <div className='signin-agreement'>

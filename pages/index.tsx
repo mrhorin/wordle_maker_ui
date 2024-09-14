@@ -43,7 +43,7 @@ const GameRankingItem = (props: GameRankingItemProps) => {
       <Rank />
       <div className='game-ranking-item-title'>
         <Link href={{ pathname: '/games/[id]', query: { id: props.rank.game.id } }}>
-          <a>{props.rank.game.title}</a>
+          {props.rank.game.title}
         </Link>
       </div>
     </div>

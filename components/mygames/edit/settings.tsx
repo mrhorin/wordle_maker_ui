@@ -139,9 +139,9 @@ const Settings = ({ game, setGame }: Props) => {
         <div className='form-group-input mygames-edit-link'>
           <div className='mygames-edit-link-text'>
             <Link href={`/games/${game.id}`}>
-              <a>
+              <div className='.mygames-edit-link-text-url'>
                 {`${process.env.NEXT_PUBLIC_API_PROTOCOL}://${process.env.NEXT_PUBLIC_API_DOMAIN}/games/${game.id}`}
-              </a>
+              </div>
             </Link>
           </div>
           <div className='mygames-edit-link-copy' onClick={handleClickCopy}>

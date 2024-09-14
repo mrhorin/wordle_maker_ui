@@ -1730,12 +1730,10 @@ input[type="checkbox"].checkbox-default{
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      a{
-        color: var(--font-color4);
-        &:hover{
-          color: var(--font-color1);
-          text-decoration: none;
-        }
+      color: var(--font-color4);
+      &:hover{
+        color: var(--font-color1);
+        text-decoration: none;
       }
     }
     &:first-child{
@@ -2440,7 +2438,7 @@ input[type="checkbox"].checkbox-default{
     &:hover{
       filter: brightness(90%);
     }
-    a{
+    .mygames-edit-link-text-url{
       display: block;
       line-height: 2rem;
       padding: 0 1rem;
