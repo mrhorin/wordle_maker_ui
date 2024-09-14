@@ -1,3 +1,3 @@
-FROM node:16.13.2
+FROM node:22.8.0
 
 WORKDIR /wordle_maker_ui
