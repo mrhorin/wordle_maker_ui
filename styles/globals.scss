@@ -16,9 +16,9 @@
  ******************************************/
 @mixin dark-theme-vars {
   // base
-  --base-color1: #030302;
+  --base-color1: #151515;
   --base-color2: #1e201f;
-  --base-color3: #1a1a1b;
+  --base-color3: #232324;
   --base-color4: #414548;
   // accent
   --accent-color1: #42c897;
@@ -44,7 +44,7 @@
   --font-link-color: #5d9ff3;
   --font-tile-color: #fff;
   // header
-  --header-color: #131514;
+  --header-color: #1a1a1a;
 }
 @mixin light-theme-vars {
   // base
@@ -1571,7 +1571,7 @@ input[type="checkbox"].checkbox-default{
     color: #fff;
   }
   @include dark{
-    background: #151a1b;
+    background: #171b1c;
     color: var(--font-color4);
   }
   .index-board-title{
