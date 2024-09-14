@@ -1,15 +1,16 @@
 import type { Token, Game, Word, Pagination } from 'types/global'
 import { useEffect, useState, useRef, useCallback, memo, ChangeEvent } from 'react'
 import { useRouter } from 'next/router'
-import { useAlert } from 'react-alert'
 import ReactLoading from 'react-loading'
 import nprogress from 'nprogress'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faDownload, faTrashCan, faArrowDownAZ, faXmark } from '@fortawesome/free-solid-svg-icons'
+import { ToastContainer } from 'react-toastify'
 
 import useLanguage from 'hooks/useLanguage'
 import useLocale from 'hooks/useLocale'
 import useSignOut from 'hooks/useSignOut'
+import useToastify from 'hooks/useToastify'
 
 import Kaminari from 'components/kaminari'
 import Select from 'components/form/select'
@@ -87,10 +88,11 @@ const EditWords = ({ game }: EditWordsProps) => {
   const inputUpdateWordModalEl = useRef<HTMLInputElement>(null)
   const divInvalidWordModaldEl = useRef<HTMLDivElement>(null)
 
+  /********** Hook ***********/
   const router = useRouter()
   const { t } = useLocale()
   const signOut = useSignOut()
-  const alert = useAlert()
+  const toastify = useToastify()
   const language = useLanguage(game.lang)
 
   useEffect(() => {
@@ -158,13 +160,12 @@ const EditWords = ({ game }: EditWordsProps) => {
       setShowOverlay(true)
       nprogress.start()
       deleteWord(token, nextWord.id).then(json => {
-        alert.removeAll()
         if (json.ok && nextWord.id) {
           removeWord(nextWord.id)
           setShowModal(false)
-          alert.show(t.ALERT.DELETED, { type: 'success' })
+          toastify.alertSuccess(t.ALERT.DELETED)
         } else {
-          alert.show(t.ALERT.FAILED, { type: 'error' })
+          toastify.alertError(t.ALERT.FAILED)
         }
       }).catch(error => {
         console.error(error)
@@ -203,13 +204,12 @@ const EditWords = ({ game }: EditWordsProps) => {
       setShowOverlay(true)
       nprogress.start()
       deleteWord(token, ids).then(json => {
-        alert.removeAll()
         if (json.ok) {
           ids.forEach(id => removeWord(id))
           setShowModal(false)
-          alert.show(t.ALERT.DELETED, { type: 'success' })
+          toastify.alertSuccess(t.ALERT.DELETED)
         } else {
-          alert.show(t.ALERT.FAILED, { type: 'error' })
+          toastify.alertError(t.ALERT.FAILED)
         }
       }).catch(error => {
         console.error(error)
@@ -232,14 +232,13 @@ const EditWords = ({ game }: EditWordsProps) => {
         setShowOverlay(true)
         nprogress.start()
         putWord(token, nextWord as Word).then(json => {
-          alert.removeAll()
           if (json.ok) {
             updateWord(json.data)
             setShowModal(false)
-            alert.show(t.ALERT.UPDATED, { type: 'success' })
+            toastify.alertSuccess(t.ALERT.UPDATED)
           } else {
             console.error(json)
-            alert.show(t.ALERT.FAILED, { type: 'error' })
+            toastify.alertError(t.ALERT.FAILED)
           }
         }).catch(error => {
           console.error(error)
@@ -354,6 +353,7 @@ const EditWords = ({ game }: EditWordsProps) => {
       </Modal>
 
       <LoadingOverlay showOverlay={showOverlay} />
+      <ToastContainer />
 
       {/* word list */}
       {(() => {

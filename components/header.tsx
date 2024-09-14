@@ -1,8 +1,9 @@
 import type { Token, User, Query } from 'types/global'
 import { useRouter } from 'next/router'
 import { useState, useEffect, useContext, useMemo, memo } from 'react'
-import { useAlert } from 'react-alert'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { ToastContainer } from 'react-toastify'
+
 import { faBars, faCaretDown, faEdit, faPlus, faGear, faRightFromBracket, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { faTwitter } from '@fortawesome/free-brands-svg-icons'
 
@@ -16,6 +17,7 @@ import useSignIn from 'hooks/useSignIn'
 import useSignOut from 'hooks/useSignOut'
 import useOauth from 'hooks/useOauth'
 import useLocale from 'hooks/useLocale'
+import useToastify from 'hooks/useToastify'
 
 import cookie from 'scripts/cookie'
 import validate from 'scripts/validate'
@@ -32,10 +34,10 @@ const Header = () => {
   const showContext = useContext(ShowContext)
   /********** Hook ***********/
   const router = useRouter()
-  const alert = useAlert()
   const signIn = useSignIn()
   const signOut = useSignOut()
   const oauth = useOauth()
+  const toastify = useToastify()
   const { t } = useLocale()
 
   useEffect(() => {
@@ -112,8 +114,7 @@ const Header = () => {
   function handleSignOut(): void {
     signOut(() => {
       accountContext.setStatus('SIGNIN')
-      alert.removeAll()
-      alert.show(t.ALERT.SIGN_OUT, { type: 'success' })
+      toastify.alertSuccess(t.ALERT.SIGN_OUT)
       router.push('/signin')
     })
   }
@@ -182,6 +183,8 @@ const Header = () => {
           </div>
         </div>
       </Modal>
+
+      <ToastContainer />
 
       <header className='header'>
         <div className='container'>

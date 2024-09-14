@@ -1,10 +1,11 @@
 import type { Token } from 'types/global'
 import { useRouter } from 'next/router'
 import { useState, useMemo } from 'react'
-import { useAlert } from 'react-alert'
+import { ToastContainer } from 'react-toastify'
 
 import useLocale from 'hooks/useLocale'
 import useSignOut from 'hooks/useSignOut'
+import useToastify from 'hooks/useToastify'
 
 import nprogress from 'nprogress'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -28,7 +29,7 @@ const Account = () => {
   const [showModal, setShowModal] = useState<boolean>(false)
   const router = useRouter()
   const { t } = useLocale()
-  const alert = useAlert()
+  const toastify = useToastify()
   const signOut = useSignOut()
 
   /*********** Memo ***********/
@@ -44,16 +45,15 @@ const Account = () => {
       setShowOverlay(true)
       nprogress.start()
       deleteCurrentUser(token as Token).then(json => {
-        alert.removeAll()
         if (json.status == 'success') {
           signOut(() => {
-            alert.show(t.ALERT.DELETED, { type: 'success' })
+            toastify.alertSuccess(t.ALERT.DELETED)
             router.replace('/')
           })
         } else if (json.code == 1001) {
-          alert.show(t.ALERT.CURRENT_USER_SUSPENDED, { type: 'error' })
+          toastify.alertError(t.ALERT.CURRENT_USER_SUSPENDED)
         } else {
-          alert.show(t.ALERT.FAILED, { type: 'error' })
+          toastify.alertError(t.ALERT.FAILED)
           console.error('Error', json)
         }
       }).catch(error => {
@@ -101,6 +101,7 @@ const Account = () => {
       </Modal>
 
       <LoadingOverlay showOverlay={showOverlay} />
+      <ToastContainer />
 
       <div className='container'>
         <SlideoutMenu />

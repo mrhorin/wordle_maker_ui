@@ -3,11 +3,12 @@
 import type { Game, Chip, Token } from 'types/global'
 import { useState, useCallback } from 'react'
 import { useRouter } from 'next/router'
-import { useAlert } from 'react-alert'
+import { ToastContainer } from 'react-toastify'
 
 import useSignOut from 'hooks/useSignOut'
 import useLanguage from 'hooks/useLanguage'
 import useLocale from 'hooks/useLocale'
+import useToastify from 'hooks/useToastify'
 
 import nprogress from 'nprogress'
 
@@ -33,7 +34,7 @@ const AddWords = ({ game }: Props) => {
 
   const router = useRouter()
   const { t } = useLocale()
-  const alert = useAlert()
+  const toastify = useToastify()
 
   const signOut = useSignOut()
   const language = useLanguage(game.lang)
@@ -96,7 +97,6 @@ const AddWords = ({ game }: Props) => {
   function handleClickSubmit(): void{
     const token: Token | null = cookie.client.loadToken()
     if (validate.token(token)) {
-      alert.removeAll()
       if (validateWords() && game.id) {
         setShowOverlay(true)
         nprogress.start()
@@ -104,9 +104,9 @@ const AddWords = ({ game }: Props) => {
         postWords(token, game, words).then(json => {
           if (json.ok) {
             setChips([])
-            alert.show(t.ALERT.SUCCESS, { type: 'success' })
+            toastify.alertSuccess(t.ALERT.SUCCESS)
           } else {
-            alert.show(t.ALERT.FAILED, { type: 'error' })
+            toastify.alertError(t.ALERT.FAILED)
             console.error(json)
           }
         }).catch(error => {
@@ -116,7 +116,7 @@ const AddWords = ({ game }: Props) => {
           nprogress.done()
         })
       } else {
-        alert.show(t.ALERT.ADDED_INVALID_WORDS.replace(/\*/g, game.char_count.toString()), { type: 'error' })
+        toastify.alertError(t.ALERT.ADDED_INVALID_WORDS.replace(/\*/g, game.char_count.toString()))
       }
     } else {
       signOut(() => router.replace('/signin'))
@@ -143,6 +143,7 @@ const AddWords = ({ game }: Props) => {
       </div>
       <button className='btn btn-primary' disabled={!validateWords() || 0 == chips.length} onClick={handleClickSubmit}>{ t.FORM.SUBMIT }</button>
       <LoadingOverlay showOverlay={showOverlay} />
+      <ToastContainer />
     </div>
   )
 }

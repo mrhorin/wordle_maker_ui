@@ -3,12 +3,13 @@ import Head from 'next/head'
 import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import { useState, useEffect, useCallback, useContext } from 'react'
-import { useAlert } from 'react-alert'
+import { ToastContainer } from 'react-toastify'
 import nookies from 'nookies'
 
 import useLocale from 'hooks/useLocale'
 import useCopyToClipboard from 'hooks/useCopyToClipboard'
 import useLanguage from 'hooks/useLanguage'
+import useToastify from 'hooks/useToastify'
 
 import UnplayableGame from 'components/game/unplayable_game'
 import SlideoutMenu from 'components/slideout_menu'
@@ -116,7 +117,7 @@ const Games = (props: Props) => {
   const LOCAL_STORAGE_WORDS_STATE_KEY = `wordsState.${props.game.id}`
   const LOCAL_STORAGE_STATISTICS_KEY = `statistics.${props.game.id}`
 
-  const alert = useAlert()
+  const toastify = useToastify()
   const language = useLanguage(props.game.lang)
 
   useEffect(() => {
@@ -203,16 +204,15 @@ const Games = (props: Props) => {
           })
         })
         .catch(status => {
-          alert.removeAll()
           if (status == SetCurrentWordStatus.NotEnoughLetters) {
             setGameStatus(GameStatus.Ready)
-            alert.show(t.ALERT.NOT_ENOUGH_LETTERS, { type: 'error' })
+            toastify.alertError(t.ALERT.NOT_ENOUGH_LETTERS)
           } else if (status == SetCurrentWordStatus.NotInWordList) {
             setGameStatus(GameStatus.Ready)
-            alert.show(t.ALERT.NOT_IN_WORD_LIST, { type: 'error' })
+            toastify.alertError(t.ALERT.NOT_IN_WORD_LIST)
           } else if (status == SetCurrentWordStatus.FinishedGame) {
             setGameStatus(GameStatus.Finished)
-            alert.show(t.ALERT.FIINISHED_GAME, { type: 'error' })
+            toastify.alertError(t.ALERT.FIINISHED_GAME)
           }
         })
     }
@@ -354,8 +354,7 @@ const Games = (props: Props) => {
 
   function handleClickCopy(): void{
     copy(getResultText())
-    alert.removeAll()
-    alert.show(t.ALERT.COPIED, { type: 'success' })
+    toastify.alertSuccess(t.ALERT.COPIED)
   }
 
   function handleClickTweet(): void{
@@ -451,6 +450,7 @@ const Games = (props: Props) => {
       </Head>
 
       <SlideoutMenu />
+      <ToastContainer />
 
       {/* How to Play Modal */}
       <Modal showModal={showHowToPlayModal} setShowModal={setShowHowToPlayModal}>

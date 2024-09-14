@@ -2,10 +2,10 @@
  *  This component should be imported from MygamesEdit component. */
 import type { Game, Token } from 'types/global'
 import { useEffect, useState, useRef } from 'react'
-import { useAlert } from 'react-alert'
 import { useRouter } from 'next/router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCopy } from '@fortawesome/free-regular-svg-icons'
+import { ToastContainer } from 'react-toastify'
 
 import useSignOut from 'hooks/useSignOut'
 
@@ -15,6 +15,7 @@ import nprogress from 'nprogress'
 import useLanguage from 'hooks/useLanguage'
 import useLocale from 'hooks/useLocale'
 import useCopyToClipboard from 'hooks/useCopyToClipboard'
+import useToastify from 'hooks/useToastify'
 
 import LoadingOverlay from 'components/loading_overlay'
 import Checkbox from 'components/form/checkbox'
@@ -48,9 +49,10 @@ const Settings = ({ game, setGame }: Props) => {
   const inputTitleEl = useRef<HTMLInputElement>(null)
   const divTitleInvalidEl = useRef<HTMLDivElement>(null)
 
+  /********** Hook ***********/
   const router = useRouter()
   const { t, locale } = useLocale()
-  const alert = useAlert()
+  const toastify = useToastify()
 
   const signOut = useSignOut()
   const language = useLanguage(game.lang)
@@ -106,13 +108,12 @@ const Settings = ({ game, setGame }: Props) => {
           is_published: isPublished,
         }
         putGame(token, nextGame).then(json => {
-          alert.removeAll()
           if (json.ok) {
-            alert.show(t.ALERT.UPDATED, { type: 'success' })
+            toastify.alertSuccess(t.ALERT.UPDATED)
             setGame(json.data as Game)
           } else {
             console.error(json)
-            alert.show(t.ALERT.FAILED, {type: 'error'})
+            toastify.alertError(t.ALERT.FAILED)
           }
         }).catch(error => console.error(error)).finally(() => {
           nprogress.done()
@@ -127,8 +128,7 @@ const Settings = ({ game, setGame }: Props) => {
   function handleClickCopy(): void{
     const localePath = !locale || locale == 'en' ? '' : `/${locale}`
     copy(`${process.env.NEXT_PUBLIC_PROTOCOL}://${process.env.NEXT_PUBLIC_DOMAIN}${localePath}/games/${game.id}`)
-    alert.removeAll()
-    alert.show(t.ALERT.COPIED, { type: 'success' })
+    toastify.alertSuccess(t.ALERT.COPIED)
   }
 
   return (
@@ -199,6 +199,7 @@ const Settings = ({ game, setGame }: Props) => {
         <button type='button' id='game-submit' className='btn btn-primary' disabled={!isChanged} onClick={handleClickUpdate}>{ t.FORM.UPDATE }</button>
       </form>
       <LoadingOverlay showOverlay={showOverlay} />
+      <ToastContainer />
     </div>
   )
 }

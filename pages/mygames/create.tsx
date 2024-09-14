@@ -1,10 +1,11 @@
 import type { Token, Game } from 'types/global'
 import { useRouter } from 'next/router'
 import React, { useState, useRef, useContext } from 'react'
-import { useAlert } from 'react-alert'
+import { ToastContainer } from 'react-toastify'
 
 import useSignOut from 'hooks/useSignOut'
 import useLocale from 'hooks/useLocale'
+import useToastify from 'hooks/useToastify'
 
 import Head from 'next/head'
 import nprogress from 'nprogress'
@@ -33,7 +34,7 @@ const MygamesCreate = () => {
   const signOut = useSignOut()
   const router = useRouter()
   const { t } = useLocale()
-  const alert = useAlert()
+  const toastify = useToastify()
 
   function validateTitle(): boolean{
     const titleLength: number = Number(title.length)
@@ -79,12 +80,11 @@ const MygamesCreate = () => {
           is_published: false,
         }
         postGame(token, nextGame).then(json => {
-          alert.removeAll()
           if (json.ok) {
-            alert.show(t.ALERT.CREATED, { type: 'success' })
+            toastify.alertSuccess(t.ALERT.CREATED)
             router.push(`/mygames/edit/${json.data.id}?t=2`)
           } else {
-            alert.show(json.message, {type: 'error'})
+            toastify.alertError(json.message)
             console.error(json)
             setShowOverlay(false)
           }
@@ -178,6 +178,7 @@ const MygamesCreate = () => {
             </form>
 
             <LoadingOverlay showOverlay={showOverlay} />
+            <ToastContainer />
           </div>
         </div>
       </div>

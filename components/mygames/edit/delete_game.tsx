@@ -1,11 +1,13 @@
 import type { Game, Token } from 'types/global'
 import { useRouter } from 'next/router'
 import { useState, useMemo } from 'react'
+import { ToastContainer } from 'react-toastify'
+
 import useLocale from 'hooks/useLocale'
 import useSignOut from 'hooks/useSignOut'
+import useToastify from 'hooks/useToastify'
 
 import nprogress from 'nprogress'
-import { useAlert } from 'react-alert'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 
@@ -36,7 +38,7 @@ const DeleteGame = ({ game }: Props) => {
   const router = useRouter()
   const { t } = useLocale()
   const signOut = useSignOut()
-  const alert = useAlert()
+  const toastify = useToastify()
 
   /*********** Memo ***********/
   const handleClickConfirmation = useMemo(() => {
@@ -51,12 +53,11 @@ const DeleteGame = ({ game }: Props) => {
       setShowOverlay(true)
       nprogress.start()
       deleteGame(token, game).then(json => {
-        alert.removeAll()
         if (json.ok) {
-          alert.show(t.ALERT.DELETED, {type: 'success'})
+          toastify.alertSuccess(t.ALERT.DELETED)
           router.replace('/mygames/edit')
         } else {
-          alert.show(t.ALERT.FAILED, {type: 'error'})
+          toastify.alertError(t.ALERT.FAILED)
           console.error(json.message)
         }
       })
@@ -100,6 +101,7 @@ const DeleteGame = ({ game }: Props) => {
       </Modal>
       {/* LoadingOverlay */}
       <LoadingOverlay showOverlay={showOverlay} />
+      <ToastContainer />
     </div>
   )
 }

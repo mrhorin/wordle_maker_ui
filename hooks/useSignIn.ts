@@ -1,6 +1,5 @@
 import type { Token, User } from 'types/global'
 import { useContext } from 'react'
-import { useAlert } from 'react-alert'
 import nprogress from 'nprogress'
 
 import cookie from 'scripts/cookie'
@@ -13,7 +12,6 @@ export default () => {
   /********* Context *********/
   const accountContext = useContext(AccountContext)
   /********** Hook ***********/
-  const alert = useAlert()
 
   const destroyCookies = () => {
     cookie.client.destroyToken()
@@ -24,7 +22,6 @@ export default () => {
     if (validate.token(token)) {
       nprogress.start()
       getCuurentUser(token).then(json => {
-        alert.removeAll()
         if (json.ok) {
           const user: User = {
             provider: json.data.provider,

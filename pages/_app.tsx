@@ -1,8 +1,6 @@
 import type { AppContext, AppProps } from 'next/app'
 import Router from 'next/router'
 import Script from 'next/script'
-import { transitions, positions, Provider as AlertProvider } from 'react-alert'
-import AlertTemplate from 'react-alert-template-basic'
 import nprogress from 'nprogress'
 import nookies from 'nookies'
 import 'styles/globals.scss'
@@ -12,14 +10,6 @@ import '@fortawesome/fontawesome-svg-core/styles.css'
 config.autoAddCss = false
 
 import Layout from 'components/layout'
-
-const alertOptions = {
-  position: positions.TOP_CENTER,
-  timeout: 2000,
-  offset: '0px',
-  transition: transitions.SCALE,
-  containerStyle: { textAlign: 'center', zIndex: 100 },
-}
 
 nprogress.configure({ showSpinner: false, speed: 400, minimum: 0.25 })
 Router.events.on('routeChangeStart', nprogress.start)
@@ -49,13 +39,13 @@ function MyApp({ Component, pageProps }: AppProps) {
   }
 
   return (
-    <AlertProvider template={AlertTemplate} {...alertOptions}>
+    <>
       {/* Google Tag Manager */}
       <GTMScript />
       <Layout>
         <Component {...pageProps} />
       </Layout>
-    </AlertProvider>
+    </>
   )
 }
 
