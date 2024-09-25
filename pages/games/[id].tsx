@@ -13,7 +13,7 @@ import useToastify from 'hooks/useToastify'
 
 import UnplayableGame from 'components/game/unplayable_game'
 import SlideoutMenu from 'components/slideout_menu'
-import TileComponent from 'components/game/tile'
+import LargeTile from 'components/game/large_tile'
 import NextGameTimer from 'components/game/next_game_timer'
 import LinkedText from 'components/game/linked_text'
 import Modal from 'components/modal'
@@ -427,7 +427,7 @@ const Games = (props: Props) => {
         if (tilesTable[i] && tilesTable[i][j]) tile = tilesTable[i][j]
         // When the row is located below the last row
         if (tilesTable.length == i && currentWord[j]) tile.letter = currentWord[j]
-        row.push(<TileComponent key={`${i}-${j}`} tile={tile} index={j} />)
+        row.push(<LargeTile key={`${i}-${j}`} tile={tile} index={j} />)
       }
       rowComponents.push(<div key={i} className='tiles-table-row'>{row}</div>)
     }

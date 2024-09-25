@@ -6,7 +6,7 @@ interface Props{
   index: number;
 }
 
-const Tile = ({ tile, index }: Props) => {
+const LargeTile = ({ tile, index }: Props) => {
   let classes = 'tiles-table-row-tile'
   if (tile.status == 'CORRECT') classes += ' tiles-table-row-tile-correct'
   if (tile.status == 'PRESENT') classes += ' tiles-table-row-tile-present'
@@ -22,7 +22,7 @@ const Tile = ({ tile, index }: Props) => {
   return <div className={classes} style={style}>{tile.letter}</div>
 }
 
-export default memo(Tile, (prevProps, nextProps) => {
+export default memo(LargeTile, (prevProps, nextProps) => {
   return prevProps.tile.letter == nextProps.tile.letter &&
     prevProps.tile.status == nextProps.tile.status
 })
