@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+
 const nextConfig = {
   reactStrictMode: true,
   images: {
@@ -14,6 +15,10 @@ const nextConfig = {
 const withPWA = require('next-pwa')({
   dest: 'public',
   disable: process.env.NEXT_PUBLIC_ENV === 'development',
+})
+
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
 })
 
 module.exports = withPWA(nextConfig)
