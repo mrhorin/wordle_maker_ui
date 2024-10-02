@@ -6,6 +6,7 @@ import nprogress from 'nprogress'
 import Head from 'next/head'
 import Link from 'next/link'
 import ReactLoading from 'react-loading'
+import { ToastContainer } from 'react-toastify'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft} from '@fortawesome/free-solid-svg-icons'
@@ -155,6 +156,7 @@ const MygamesEdit = () => {
       </Head>
 
       <SlideoutMenu />
+      <ToastContainer />
 
       <div className='container'>
         <div id='sidemenu-container'>

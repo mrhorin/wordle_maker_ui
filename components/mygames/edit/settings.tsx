@@ -5,7 +5,6 @@ import { useEffect, useState, useRef } from 'react'
 import { useRouter } from 'next/router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCopy } from '@fortawesome/free-regular-svg-icons'
-import { ToastContainer } from 'react-toastify'
 
 import useSignOut from 'hooks/useSignOut'
 
@@ -109,8 +108,8 @@ const Settings = ({ game, setGame }: Props) => {
         }
         putGame(token, nextGame).then(json => {
           if (json.ok) {
-            toastify.alertSuccess(t.ALERT.UPDATED)
             setGame(json.data as Game)
+            toastify.alertSuccess(t.ALERT.UPDATED)
           } else {
             console.error(json)
             toastify.alertError(t.ALERT.FAILED)
@@ -198,8 +197,8 @@ const Settings = ({ game, setGame }: Props) => {
         {/* Update */}
         <button type='button' id='game-submit' className='btn btn-primary' disabled={!isChanged} onClick={handleClickUpdate}>{ t.FORM.UPDATE }</button>
       </form>
+
       <LoadingOverlay showOverlay={showOverlay} />
-      <ToastContainer />
     </div>
   )
 }
