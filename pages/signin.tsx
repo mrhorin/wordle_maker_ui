@@ -8,7 +8,6 @@ import useLocale from 'hooks/useLocale'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTwitter } from '@fortawesome/free-brands-svg-icons'
 
-import SlideoutMenu from 'components/slideout_menu'
 import Checkbox from 'components/form/checkbox'
 
 import Link from 'next/link'
@@ -30,8 +29,6 @@ const Signin: NextPage = () => {
         <Head>
           <title>{`${t.SIGN_IN.TITLE} | ${t.APP_NAME}`}</title>
         </Head>
-
-        <SlideoutMenu />
 
         <div className='signin text'>
           <h1 className='signin-title'>{t.SIGN_IN.TITLE}</h1>

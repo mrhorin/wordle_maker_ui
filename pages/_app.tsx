@@ -1,15 +1,18 @@
 import type { AppContext, AppProps } from 'next/app'
 import Router from 'next/router'
 import Script from 'next/script'
+
 import nprogress from 'nprogress'
 import nookies from 'nookies'
 import 'styles/globals.scss'
 import 'nprogress/nprogress.css'
 import { config } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
-config.autoAddCss = false
 import { ToastContainer } from 'react-toastify'
+
 import Layout from 'components/layout'
+
+config.autoAddCss = false
 
 nprogress.configure({ showSpinner: false, speed: 400, minimum: 0.25 })
 Router.events.on('routeChangeStart', nprogress.start)

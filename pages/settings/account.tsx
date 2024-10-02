@@ -12,7 +12,6 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons'
 
 import Head from 'next/head'
 
-import SlideoutMenu from 'components/slideout_menu'
 import Sidemenu from 'components/sidemenu'
 import Modal from 'components/modal'
 import LoadingOverlay from 'components/loading_overlay'
@@ -102,7 +101,6 @@ const Account = () => {
       <LoadingOverlay showOverlay={showOverlay} />
 
       <div className='container'>
-        <SlideoutMenu />
         <div id='sidemenu-container'>
           {/* Sidemenu */}
           <Sidemenu activeMenu={'account'} />

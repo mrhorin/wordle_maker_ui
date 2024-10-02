@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import useLocale from 'hooks/useLocale'
 
+import SlideoutMenu from './slideout_menu'
 import Header from 'components/header'
 
 import AccountContext from 'contexts/account'
@@ -60,6 +61,7 @@ export default function Layout({ children }: Props) {
         </Head>
 
         <div id='wrap' onClick={hideAccountMenu}>
+          <SlideoutMenu />
           <Header />
           {children}
         </div>

@@ -10,7 +10,6 @@ import Head from 'next/head'
 
 import AccountContext from 'contexts/account'
 
-import SlideoutMenu from 'components/slideout_menu'
 import Sidemenu from 'components/sidemenu'
 import GameIndexItem from 'components/game_index_item'
 
@@ -78,8 +77,6 @@ const MygamesEditIndex = () => {
       <Head>
         <title>{`${t.MY_GAMES.EDIT.TITLE} | ${t.APP_NAME}`}</title>
       </Head>
-
-      <SlideoutMenu />
 
       <div className='container'>
         <div id='sidemenu-container'>

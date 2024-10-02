@@ -2,8 +2,6 @@ import type { Game } from 'types/global'
 import Head from 'next/head'
 import useLocale from 'hooks/useLocale'
 
-import SlideoutMenu from 'components/slideout_menu'
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLock } from '@fortawesome/free-solid-svg-icons'
 
@@ -27,8 +25,6 @@ const UnplayableGame = (props: Props) => {
         <title>{`${props.game.title} | ${t.APP_NAME}`}</title>
         <meta name="description" content={props.game.desc ? props.game.desc : t.APP_DESC.FIRST_LINE + t.APP_DESC.SECOND_LINE} />
       </Head>
-
-      <SlideoutMenu />
 
       <div className='container'>
         <div className='games-private text'>

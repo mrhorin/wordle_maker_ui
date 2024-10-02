@@ -10,7 +10,6 @@ import ReactLoading from 'react-loading'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft} from '@fortawesome/free-solid-svg-icons'
 
-import SlideoutMenu from 'components/slideout_menu'
 import Sidemenu from 'components/sidemenu'
 import Settings from 'components/mygames/edit/settings'
 import AddWords from 'components/mygames/edit/add_words'
@@ -153,8 +152,6 @@ const MygamesEdit = () => {
       <Head>
         <title>{`${t.MY_GAMES.EDIT.TITLE} | ${t.APP_NAME}`}</title>
       </Head>
-
-      <SlideoutMenu />
 
       <div className='container'>
         <div id='sidemenu-container'>

@@ -9,7 +9,6 @@ import useToastify from 'hooks/useToastify'
 import Head from 'next/head'
 import nprogress from 'nprogress'
 
-import SlideoutMenu from 'components/slideout_menu'
 import Sidemenu from 'components/sidemenu'
 import LoadingOverlay from 'components/loading_overlay'
 
@@ -102,8 +101,6 @@ const MygamesCreate = () => {
       <Head>
         <title>{`${t.MY_GAMES.CREATE.TITLE} | ${t.APP_NAME}`}</title>
       </Head>
-
-      <SlideoutMenu />
 
       <div className='container'>
         <div id='sidemenu-container'>

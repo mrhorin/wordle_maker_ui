@@ -6,7 +6,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCrown } from '@fortawesome/free-solid-svg-icons'
 
 import ReactLoading from 'react-loading'
-import SlideoutMenu from 'components/slideout_menu'
 import GameIndexItem from 'components/game_index_item'
 
 import Link from 'next/link'
@@ -122,8 +121,6 @@ const Index = () => {
 
   return (
     <main id='main'>
-      <SlideoutMenu />
-
       <div className='index-board'>
         <div className='container'>
           {/* App Name */}

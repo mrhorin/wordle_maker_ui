@@ -1,4 +1,4 @@
-import type { Game, Word, Tile, Token } from 'types/global'
+import type { Game, Tile, Token } from 'types/global'
 import Head from 'next/head'
 import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
@@ -11,7 +11,6 @@ import useLanguage from 'hooks/useLanguage'
 import useToastify from 'hooks/useToastify'
 
 import UnplayableGame from 'components/game/unplayable_game'
-import SlideoutMenu from 'components/slideout_menu'
 import LargeTile from 'components/game/large_tile'
 import NextGameTimer from 'components/game/next_game_timer'
 import LinkedText from 'components/game/linked_text'
@@ -447,8 +446,6 @@ const Games = (props: Props) => {
         <title>{`${props.game.title} | ${t.APP_NAME}`}</title>
         <meta name="description" content={props.game.desc ? props.game.desc : t.APP_DESC.FIRST_LINE + t.APP_DESC.SECOND_LINE} />
       </Head>
-
-      <SlideoutMenu />
 
       {/* How to Play Modal */}
       <Modal showModal={showHowToPlayModal} setShowModal={setShowHowToPlayModal}>

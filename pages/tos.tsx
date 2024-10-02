@@ -3,8 +3,6 @@ import useLocale from 'hooks/useLocale'
 
 import Link from 'next/link'
 
-import SlideoutMenu from 'components/slideout_menu'
-
 const Tos = () => {
   const { t } = useLocale()
 
@@ -13,8 +11,6 @@ const Tos = () => {
       <Head>
         <title>{`${t.TOS.TITLE} | ${t.APP_NAME}`}</title>
       </Head>
-
-      <SlideoutMenu />
 
       <div className='container'>
         <div className='text'>
