@@ -1,7 +1,6 @@
 import type { Token, Game } from 'types/global'
 import { useRouter } from 'next/router'
-import React, { useState, useRef, useContext } from 'react'
-import { ToastContainer } from 'react-toastify'
+import React, { useState, useRef } from 'react'
 
 import useSignOut from 'hooks/useSignOut'
 import useLocale from 'hooks/useLocale'
@@ -178,7 +177,6 @@ const MygamesCreate = () => {
             </form>
 
             <LoadingOverlay showOverlay={showOverlay} />
-            <ToastContainer />
           </div>
         </div>
       </div>

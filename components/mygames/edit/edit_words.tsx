@@ -5,7 +5,6 @@ import ReactLoading from 'react-loading'
 import nprogress from 'nprogress'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faDownload, faTrashCan, faArrowDownAZ, faXmark } from '@fortawesome/free-solid-svg-icons'
-import { ToastContainer } from 'react-toastify'
 
 import useLanguage from 'hooks/useLanguage'
 import useLocale from 'hooks/useLocale'
@@ -353,7 +352,6 @@ const EditWords = ({ game }: EditWordsProps) => {
       </Modal>
 
       <LoadingOverlay showOverlay={showOverlay} />
-      <ToastContainer />
 
       {/* word list */}
       {(() => {

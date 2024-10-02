@@ -8,7 +8,7 @@ import 'nprogress/nprogress.css'
 import { config } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 config.autoAddCss = false
-
+import { ToastContainer } from 'react-toastify'
 import Layout from 'components/layout'
 
 nprogress.configure({ showSpinner: false, speed: 400, minimum: 0.25 })
@@ -42,6 +42,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <>
       {/* Google Tag Manager */}
       <GTMScript />
+      <ToastContainer />
       <Layout>
         <Component {...pageProps} />
       </Layout>

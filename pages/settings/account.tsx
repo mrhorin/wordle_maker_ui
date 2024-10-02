@@ -1,7 +1,6 @@
 import type { Token } from 'types/global'
 import { useRouter } from 'next/router'
 import { useState, useMemo } from 'react'
-import { ToastContainer } from 'react-toastify'
 
 import useLocale from 'hooks/useLocale'
 import useSignOut from 'hooks/useSignOut'
@@ -101,7 +100,6 @@ const Account = () => {
       </Modal>
 
       <LoadingOverlay showOverlay={showOverlay} />
-      <ToastContainer />
 
       <div className='container'>
         <SlideoutMenu />

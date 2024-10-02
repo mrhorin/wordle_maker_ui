@@ -3,7 +3,6 @@ import Head from 'next/head'
 import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import { useState, useEffect, useCallback, useContext } from 'react'
-import { ToastContainer } from 'react-toastify'
 import nookies from 'nookies'
 
 import useLocale from 'hooks/useLocale'
@@ -450,7 +449,6 @@ const Games = (props: Props) => {
       </Head>
 
       <SlideoutMenu />
-      <ToastContainer />
 
       {/* How to Play Modal */}
       <Modal showModal={showHowToPlayModal} setShowModal={setShowHowToPlayModal}>

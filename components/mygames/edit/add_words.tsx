@@ -3,7 +3,6 @@
 import type { Game, Chip, Token } from 'types/global'
 import { useState, useCallback } from 'react'
 import { useRouter } from 'next/router'
-import { ToastContainer } from 'react-toastify'
 
 import useSignOut from 'hooks/useSignOut'
 import useLanguage from 'hooks/useLanguage'
@@ -143,7 +142,6 @@ const AddWords = ({ game }: Props) => {
       </div>
       <button className='btn btn-primary' disabled={!validateWords() || 0 == chips.length} onClick={handleClickSubmit}>{ t.FORM.SUBMIT }</button>
       <LoadingOverlay showOverlay={showOverlay} />
-      <ToastContainer />
     </div>
   )
 }

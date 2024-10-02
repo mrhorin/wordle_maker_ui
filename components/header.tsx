@@ -2,7 +2,6 @@ import type { Token, User, Query } from 'types/global'
 import { useRouter } from 'next/router'
 import { useState, useEffect, useContext, useMemo, memo } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { ToastContainer } from 'react-toastify'
 
 import { faBars, faCaretDown, faEdit, faPlus, faGear, faRightFromBracket, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { faTwitter } from '@fortawesome/free-brands-svg-icons'
@@ -183,8 +182,6 @@ const Header = () => {
           </div>
         </div>
       </Modal>
-
-      <ToastContainer />
 
       <header className='header'>
         <div className='container'>
